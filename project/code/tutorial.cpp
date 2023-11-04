@@ -51,16 +51,16 @@ CTutorial::~CTutorial()
 HRESULT CTutorial::Init(void)
 {
 	// 外部ファイル読み込みの生成
-	//if (m_pFileLoad == NULL)
-	//{// 使用していない場合
-	//	m_pFileLoad = new CFileLoad;
+	if (m_pFileLoad == NULL)
+	{// 使用していない場合
+		m_pFileLoad = new CFileLoad;
 
-	//	if (m_pFileLoad != NULL)
-	//	{
-	//		m_pFileLoad->Init();
-	//		m_pFileLoad->OpenFile("data\\TXT\\tutorial.txt");
-	//	}
-	//}
+		if (m_pFileLoad != NULL)
+		{
+			m_pFileLoad->Init();
+			m_pFileLoad->OpenFile("data\\TXT\\tutorial.txt");
+		}
+	}
 
 	//カメラ初期化
 	{

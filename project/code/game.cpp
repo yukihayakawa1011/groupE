@@ -52,7 +52,7 @@
 //===============================================
 // 静的メンバ変数
 //===============================================
-CGame::STATE CGame::m_state = CGame::STATE_MULTI;	// 状態
+CGame::STATE CGame::m_state = CGame::STATE_LOCAL;	// 状態
 
 //===============================================
 // コンストラクタ
@@ -60,12 +60,30 @@ CGame::STATE CGame::m_state = CGame::STATE_MULTI;	// 状態
 CGame::CGame()
 {
 	// 値のクリア
-	m_pPlayer = NULL;
+	m_ppPlayer = NULL;
 	m_pFileLoad = NULL;
 	m_pMeshDome = NULL;
 	m_pClient = NULL;
 	m_nSledCnt = 0;
 	m_bEnd = false;
+	m_nNumPlayer = 0;
+}
+
+//===============================================
+// コンストラクタ(人数設定)
+//===============================================
+CGame::CGame(int nNumPlayer)
+{
+	// 値のクリア
+	m_ppPlayer = NULL;
+	m_pFileLoad = NULL;
+	m_pMeshDome = NULL;
+	m_pClient = NULL;
+	m_nSledCnt = 0;
+	m_bEnd = false;
+
+	// 人数設定
+	m_nNumPlayer = nNumPlayer;
 }
 
 //===============================================
@@ -101,15 +119,45 @@ HRESULT CGame::Init(void)
 		}
 	}
 
+	switch (m_state)
+	{
+	case STATE_LOCAL:
+	{// ローカルの場合
+		if (m_nNumPlayer == 0)
+		{// 人数が指定されていない
+			m_nNumPlayer = PLAYER_MAX;
+		}
+
+		// 人数分ポインタ生成
+		m_ppPlayer = new CPlayer*[m_nNumPlayer];
+
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 10.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			m_ppPlayer[nCnt]->BindId(nCnt);
+			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+		}
+	}
+		break;
+
+	case STATE_ONLINE:
+	{// オンライン通信の場合
 		m_pClient = new CClient;
 		AddressLoad(&m_aAddress[0]);
 
 		if (m_pClient->Init(&m_aAddress[0], DEF_PORT))
 		{// 初期接続成功
-			// マルチスレッド
+			// オンライン関数をマルチスレッド
 			std::thread th(&CGame::Online, this);
 			th.detach();
 		}
+	}
+		break;
+
+	default:
+
+		break;
+	}
 
 	//カメラ初期化
 	{
@@ -138,7 +186,7 @@ HRESULT CGame::Init(void)
 //===============================================
 void CGame::Uninit(void)
 {
-	m_pPlayer = nullptr;
+	m_ppPlayer = nullptr;
 	m_bEnd = true;
 
 	while (1)
@@ -163,6 +211,19 @@ void CGame::Uninit(void)
 		m_pClient->Uninit();
 		delete m_pClient;
 		m_pClient = NULL;
+	}
+
+	if (m_ppPlayer != NULL)
+	{// 使用していた場合
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			// 終了処理
+			m_ppPlayer[nCnt]->Uninit();
+			m_ppPlayer[nCnt] = NULL;	// 使用していない状態にする
+		}
+
+		delete[] m_ppPlayer;	// ポインタの開放
+		m_ppPlayer = NULL;	// 使用していない状態にする
 	}
 
 	//Winsock終了処理
@@ -200,7 +261,7 @@ void CGame::Draw(void)
 //===================================================
 CPlayer *CGame::GetPlayer(void)
 {
-	return m_pPlayer;
+	return *m_ppPlayer;
 }
 
 //===================================================
@@ -220,7 +281,7 @@ void CGame::Online(void)
 
 	while (1)
 	{
-		if (m_pPlayer == NULL || m_bEnd == true)
+		if (m_ppPlayer == NULL || m_bEnd == true)
 		{
 			break;
 		}
@@ -321,14 +382,14 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 			}
 		}
 
-		if (m_pPlayer == NULL)
+		if (m_ppPlayer == NULL)
 		{
 			m_nSledCnt--;
 			m_mutex.unlock();
 			return;
 		}
 
-		if (nId != -1 && m_pPlayer->GetId() != -1)
+		if (nId != -1 && (*m_ppPlayer)->GetId() != -1)
 		{// IDを受信できた
 
 			pPlayer = CPlayer::GetTop();	// 先頭を取得
@@ -337,7 +398,7 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 			{// 使用されている間繰り返し
 				pPlayerNext = pPlayer->GetNext();	// 次を保持
 
-				if (nId == pPlayer->GetId() && m_pPlayer->GetId() != nId)
+				if (nId == pPlayer->GetId() && (*m_ppPlayer)->GetId() != nId)
 				{// 自分以外かつ操作していない
 
 				 // コマンドごとに分ける
@@ -388,7 +449,7 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 					bIn = true;	// いる状態にする
 					break;
 				}
-				else if (nId == pPlayer->GetId() && m_pPlayer->GetId() == nId)
+				else if (nId == pPlayer->GetId() && (*m_ppPlayer)->GetId() == nId)
 				{// 自分以外かつ操作キャラ
 
 					bIn = true;	// いる状態にする
@@ -398,19 +459,19 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 				pPlayer = pPlayerNext;	// 次に移動
 			}
 
-			if (bIn == false && m_pPlayer->GetId() != -1 && nType > COMMAND_TYPE_NONE && nType < COMMAND_TYPE_MAX)
+			if (bIn == false && (*m_ppPlayer)->GetId() != -1 && nType > COMMAND_TYPE_NONE && nType < COMMAND_TYPE_MAX)
 			{// まだ存在していない場合
-				pPlayer = CPlayer::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+				pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 				pPlayer->BindId(nId);
 				pPlayer->SetType(CPlayer::TYPE_NONE);
 			}
 		}
-		else if (nId == -1 && m_pPlayer->GetId() == -1)
+		else if (nId == -1 && (*m_ppPlayer)->GetId() == -1)
 		{// IDが受信できていないかつ自分自身のIDも存在していない
 			nId = nType;
 
 			// 自分のIDを設定
-			m_pPlayer->BindId(nId);
+			(*m_ppPlayer)->BindId(nId);
 
 			break;
 		}

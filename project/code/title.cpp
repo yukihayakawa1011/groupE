@@ -104,7 +104,7 @@ void CTitle::Update(void)
 
 	if (CManager::GetInstance()->GetCamera() != NULL)
 	{
-		CManager::GetInstance()->GetCamera()->TitleRotateCamera();
+		//CManager::GetInstance()->GetCamera()->TitleRotateCamera();
 	}
 
 	CScene::Update();

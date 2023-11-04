@@ -31,8 +31,8 @@ public:
 
 	enum STATE
 	{
-		STATE_TIMEATTACK = 0,
-		STATE_MULTI,
+		STATE_LOCAL = 0,	// ローカル通信
+		STATE_ONLINE,		// TCPオンライン
 		STATE_END,
 		STATE_MAX
 	};
@@ -41,6 +41,7 @@ public:
 
 	// メンバ関数
 	CGame();	// コンストラクタ
+	CGame(int nNumPlayer);	// コンストラクタ
 	~CGame();	// デストラクタ
 
 	// メンバ関数
@@ -55,6 +56,8 @@ public:
 	void SendLife(int nLife);
 	void SendSetUp(void);
 	void SendGoal(void);
+	void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
+	int GetNumPlayer(void) { return m_nNumPlayer; }
 
 	// メンバ関数(ポインタ)
 	CPlayer *GetPlayer(void);
@@ -69,12 +72,13 @@ private:
 	void AddressLoad(char *pAddrss);
 
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
-	CPlayer *m_pPlayer;	// プレイヤーのポインタ
+	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
 	CClient *m_pClient;	// クライアントのポインタ
 	char m_aAddress[30];	// 接続先サーバーのアドレス
 	static STATE m_state;	// 状態
 	int m_nSledCnt;		// 現在動作しているスレッド数
+	int m_nNumPlayer;		// プレイ人数
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;
