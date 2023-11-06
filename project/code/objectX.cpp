@@ -351,7 +351,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z
 			&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
 		{//右から左にめり込んだ
-			bLand = true;
 			move.x *= -1.0f;
 			move.x *= fRefMulti;
 			pos.x = m_pos.x + vtxObjMax.x - vtxMin.x + 0.1f + move.x;
@@ -362,7 +361,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
 		{//左から右にめり込んだ
 		 //位置を戻す
-			bLand = true;
 			move.x *= -1.0f;
 			move.x *= fRefMulti;
 			pos.x = m_pos.x + vtxObjMin.x - vtxMax.x - 0.1f + move.x;
@@ -374,7 +372,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x)
 		{//奥から手前にめり込んだ
 		 //位置を戻す
-			bLand = true;
 			move.z *= -1.0f;
 			move.z *= fRefMulti;
 			pos.z = m_pos.z + vtxObjMax.z - vtxMin.z + 0.1f + move.z;
@@ -386,7 +383,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x)
 		{//手前から奥にめり込んだt
 		 //位置を戻す
-			bLand = true;
 			move.z *= -1.0f;
 			move.z *= fRefMulti;
 			pos.z = m_pos.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
@@ -455,5 +451,40 @@ void CObjectX::ListOut(void)
 		{
 			m_pPrev->m_pNext = m_pNext;	// 自身の前に次のポインタを覚えさせる
 		}
+	}
+}
+
+void CObjectX::CollisionLand(D3DXVECTOR3 &pos)
+{
+	CObjectX *pObj = m_pTop;	// 先頭取得
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+
+	while (pObj != NULL)
+	{
+		CObjectX *pObjNext = pObj->m_pNext;
+		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		// 向きを反映
+		pObj->SetRotSize(vtxObjMax,
+			vtxObjMin,
+			pFile->GetMax(pObj->GetIdx()),
+			pFile->GetMin(pObj->GetIdx()),
+			pObj->m_rot.y);
+
+		if (pos.x >= pObj->m_pos.x + vtxObjMin.x
+			&& pos.x <= pObj->m_pos.x + vtxObjMax.x
+			&& pos.z >= pObj->m_pos.z + vtxObjMin.z
+			&& pos.z <= pObj->m_pos.z + vtxObjMax.z)
+		{//範囲内にある
+			//上からの判定
+			if (pos.y < pObj->m_pos.y + vtxObjMax.y)
+			{//上からめり込んだ
+				//上にのせる
+				pos.y = pObj->m_pos.y + vtxObjMax.y + 4.0f;
+			}
+		}
+
+		pObj = pObjNext;
 	}
 }

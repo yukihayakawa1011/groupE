@@ -11,6 +11,7 @@
 #include "renderer.h"
 #include "slow.h"
 #include "meshfield.h"
+#include "objectX.h"
 
 //==========================================================
 // コンストラクタ
@@ -190,8 +191,9 @@ void CModel::Draw(void)
 		// 平面情報を設定
 		if (m_mtxWorld._42 >= -296.0f)
 		{
-			pos = D3DXVECTOR3(0.0f, -296.0f, 0.0f);
+			pos = D3DXVECTOR3(m_mtxWorld._41, -296.0f, m_mtxWorld._43);
 			pos.y = CMeshField::GetHeight(D3DXVECTOR3(m_mtxWorld._41, m_mtxWorld._42, m_mtxWorld._43)) + 4.0f;
+			CObjectX::CollisionLand(pos);
 			normal = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 			D3DXPlaneFromPointNormal(&plane, &pos, &normal);
 
@@ -235,7 +237,6 @@ void CModel::Draw(void)
 					}
 					else
 					{
-
 						pDevice->SetMaterial(&m_ChangeMat);
 					}
 

@@ -32,8 +32,7 @@
 // マクロ定義
 //===============================================
 #define MOVE	(4.0f)		// 移動量
-#define PLAYER_GRAVITY	(-0.15f)		//プレイヤー重力
-#define PLAYER_JUMP		(10.0f)		//プレイヤージャンプ力
+#define GRAVITY	(-1.0f)		//プレイヤー重力
 #define ROT_MULTI	(0.1f)	// 向き補正倍率
 #define WIDTH	(20.0f)		// 幅
 #define HEIGHT	(80.0f)	// 高さ
@@ -48,6 +47,7 @@
 #define SPAWN_INTERVAL	(60.0f)
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
+#define JUMP	(25.0f)
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -82,6 +82,7 @@ CPlayer::CPlayer(const D3DXVECTOR3 pos)
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
 	m_nId = m_nNumCount;
+	m_bJump = false;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -117,6 +118,7 @@ CPlayer::CPlayer(int nPriOrity)
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
 	m_action = ACTION_NEUTRAL;
+	m_bJump = false;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -157,6 +159,7 @@ HRESULT CPlayer::Init(void)
 	m_action = ACTION_NEUTRAL;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
+	m_bJump = false;
 
 	return S_OK;
 }
@@ -177,6 +180,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
+	m_bJump = false;
 
 	return S_OK;
 }
@@ -253,14 +257,6 @@ void CPlayer::Update(void)
 
 	StateSet();
 
-	if (m_type == TYPE_SEND)
-	{
-		CManager::GetInstance()->GetCamera()->Setting(m_Info.pos, m_Info.rot);
-		CManager::GetInstance()->GetScene()->SendPosition(m_Info.pos);
-		CManager::GetInstance()->GetScene()->SendRotation(m_Info.rot);
-		CManager::GetInstance()->GetScene()->SendLife(m_nLife);
-	}
-
 	if (m_type == TYPE_ACTIVE)
 	{
 
@@ -301,6 +297,20 @@ void CPlayer::Update(void)
 	// 起伏との当たり判定
 	D3DXVECTOR3 nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	float fHeight = CMeshField::GetHeight(m_Info.pos);
+
+	// オブジェクトとの当たり判定
+	if (nullptr != m_pObject)
+	{
+		CXFile *pFile = CManager::GetInstance()->GetModelFile();
+		D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
+
+		// 壁
+		if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
+		{
+			m_bJump = false;
+		}
+	}
 }
 
 //===============================================
@@ -351,9 +361,14 @@ void CPlayer::Controller(void)
 	{
 		Move();		// 移動
 		Rotation();	// 回転
+		Jump();		// ジャンプ
 	}
 
 	pos = GetPosition();	// 座標を取得
+
+	float fGravity = GRAVITY * CManager::GetInstance()->GetSlow()->Get();
+	m_Info.move.y += fGravity;
+	pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
 	m_Info.move.x += (0.0f - m_Info.move.x) * INER;	//x座標
 	m_Info.move.z += (0.0f - m_Info.move.z) * INER;	//x座標
@@ -365,6 +380,15 @@ void CPlayer::Controller(void)
 	Adjust();
 
 	m_Info.pos = pos;
+
+	float fHeight = CMeshField::GetHeight(m_Info.pos);
+
+	// 起伏との当たり判定
+	if (m_Info.pos.y <= fHeight)
+	{
+		m_Info.pos.y = fHeight;
+		m_bJump = false;
+	}
 }
 
 //===============================================
@@ -420,13 +444,12 @@ void CPlayer::Rotation(void)
 		return;
 	}
 
-	//// コントローラーの入力方向取得
-	//D3DXVECTOR2 vec;
-	//vec.y = pInputPad->GetStickAdd(m_nId, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS);
-	//vec.x = pInputPad->GetStickAdd(m_nId, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS);
-	//D3DXVec2Normalize(&vec, &vec);
-
-	//m_fRotDest = atan2f(vec.y, vec.x);
+	// コントローラーの入力方向取得
+	/*D3DXVECTOR2 vec;
+	vec.y = pInputPad->GetStickAdd(m_nId, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS);
+	vec.x = pInputPad->GetStickAdd(m_nId, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS);
+	D3DXVec2Normalize(&vec, &vec);
+	m_fRotDest = atan2f(vec.y, vec.x);*/
 }
 
 //===============================================
@@ -560,6 +583,29 @@ void CPlayer::MoveController(void)
 
 		// 移動した状態にする
 		m_bMove = true;
+	}
+}
+
+//===============================================
+// ジャンプ
+//===============================================
+void CPlayer::Jump(void)
+{
+	if (m_nId < 0 || m_nId >= PLAYER_MAX)
+	{// コントローラー数オーバー
+		return;
+	}
+
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	// 入力
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_B, m_nId))
+	{
+		if (m_bJump == false)
+		{// ジャンプしていない場合
+			m_bJump = true;
+			m_Info.move.y = JUMP;
+		}
 	}
 }
 

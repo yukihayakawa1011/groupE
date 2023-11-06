@@ -110,6 +110,7 @@ private:	// 自分だけがアクセス可能
 	void Adjust(void);
 	void KeyBoardRotation(void);
 	void MoveController(void);
+	void Jump(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -121,7 +122,8 @@ private:	// 自分だけがアクセス可能
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
-	bool m_bMove;
+	bool m_bMove;			//移動したかどうか
+	bool m_bJump;			// ジャンプ
 	int m_nLife;	// 体力
 	int m_nId;	// ID
 	TYPE m_type;	// 種類
