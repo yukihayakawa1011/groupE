@@ -80,6 +80,7 @@ CPlayer::CPlayer(const D3DXVECTOR3 pos)
 	m_pObject = NULL;
 	m_nLife = 0;
 	m_type = TYPE_NONE;
+	m_action = ACTION_NEUTRAL;
 	m_nId = m_nNumCount;
 
 	// 自分自身をリストに追加
@@ -115,6 +116,7 @@ CPlayer::CPlayer(int nPriOrity)
 	m_nLife = 0;
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
+	m_action = ACTION_NEUTRAL;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -152,6 +154,7 @@ HRESULT CPlayer::Init(void)
 	}
 
 	m_Info.state = STATE_APPEAR;
+	m_action = ACTION_NEUTRAL;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
 
@@ -173,6 +176,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
+	m_action = ACTION_NEUTRAL;
 
 	return S_OK;
 }

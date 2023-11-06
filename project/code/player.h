@@ -44,6 +44,16 @@ private:	// 自分だけがアクセス可能な定義
 		STATE_MAX
 	};
 
+	// アクション列挙型
+	enum ACTION
+	{
+		ACTION_NEUTRAL = 0,	// 待機状
+		ACTION_WALK,			// 歩行
+		ACTION_JUMP,			// ジャンプ
+		ACTION_ATK,			// 攻撃
+		ACTION_MAX
+	};
+
 	// 情報構造体
 	typedef struct
 	{
@@ -115,6 +125,7 @@ private:	// 自分だけがアクセス可能
 	int m_nLife;	// 体力
 	int m_nId;	// ID
 	TYPE m_type;	// 種類
+	ACTION m_action;	// アクション
 	static int m_nNumCount;
 	
 };

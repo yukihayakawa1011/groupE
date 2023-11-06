@@ -26,7 +26,6 @@
 #include "protocol_online.h"
 #include "object2D.h"
 #include "player.h"
-
 #include "enemy.h"
 
 // ƒOƒ[ƒoƒ‹
