@@ -98,7 +98,7 @@ void CDebugProc::Update(void)
 
 	if(pInputKeyboard->GetTrigger(DIK_F1) == true)
 	{//F1ƒL[‚ª‰Ÿ‚³‚ê‚½‚Æ‚«
-		//m_bDisp = m_bDisp ? false : true;
+		m_bDisp = m_bDisp ? false : true;
 	}
 
 	Print("FPS : %d\n", GetFPS());
