@@ -49,6 +49,8 @@
 #define SPAWN_INTERVAL	(60.0f)
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
+#define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
+#define SEARCH_LENGTH	(200.0f)	//プレイヤー探索範囲
 
 // 前方宣言
 CEnemy *CEnemy::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -386,7 +388,7 @@ void CEnemy::Rotation(void)
 	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
 
-	m_fRotDest = m_fRotMove + 0.1f;
+	m_fRotDest = m_fRotMove + DEFAULT_ROTATE;
 }
 
 //===============================================
@@ -402,7 +404,7 @@ void CEnemy::Search(void)
 	{
 		D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
 		float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
-		if (fLength <= 200.0f && fLengthNear > fLength)
+		if (fLength <= SEARCH_LENGTH && fLengthNear > fLength)
 		{//一番近いやつ
 			pPlayerNear = pPlayer;
 			fLengthNear = fLength;
