@@ -31,17 +31,15 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(0.1f)		// 移動量
-#define SHW_MOVE	(1.0f)	// シャワー中移動量
+#define MOVE	(4.0f)		// 移動量
 #define PLAYER_GRAVITY	(-0.15f)		//プレイヤー重力
 #define PLAYER_JUMP		(10.0f)		//プレイヤージャンプ力
-#define ROT_MULTI	(0.075f)	// 向き補正倍率
+#define ROT_MULTI	(0.1f)	// 向き補正倍率
 #define WIDTH	(20.0f)		// 幅
 #define HEIGHT	(80.0f)	// 高さ
-#define INER	(0.003f)		// 慣性
+#define INER	(0.3f)		// 慣性
 #define STEP_SPEED	(50.0f)
 #define STEP_COOLTIME	(90.0f)
-#define STEP_INER	(0.05f)
 #define START_LIFE	(4)	// 初期体力
 #define DAMAGE_INTERVAL	(10.0f)
 #define DAMAGE_APPEAR	(110.0f)
@@ -353,8 +351,8 @@ void CPlayer::Controller(void)
 
 	pos = GetPosition();	// 座標を取得
 
-	m_Info.move.x += (0.0f - m_Info.move.x) * STEP_INER;	//x座標
-	m_Info.move.z += (0.0f - m_Info.move.z) * STEP_INER;	//x座標
+	m_Info.move.x += (0.0f - m_Info.move.x) * INER;	//x座標
+	m_Info.move.z += (0.0f - m_Info.move.z) * INER;	//x座標
 
 	pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
 	pos.z += m_Info.move.z * CManager::GetInstance()->GetSlow()->Get();
@@ -404,10 +402,15 @@ void CPlayer::Rotation(void)
 		return;
 	}
 
-	if (!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS) && 
-		!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_MINUS) &&
-		!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS) &&
-		!pInputPad->GetStickPress(0, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_MINUS))
+	if (m_nId < 0 || m_nId >= PLAYER_MAX)
+	{// コントローラー数オーバー
+		return;
+	}
+
+	if (!pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS) && 
+		!pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_MINUS) &&
+		!pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS) &&
+		!pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_MINUS))
 	{// コントローラー入力無し
 		KeyBoardRotation();
 		return;
@@ -415,8 +418,8 @@ void CPlayer::Rotation(void)
 
 	//// コントローラーの入力方向取得
 	//D3DXVECTOR2 vec;
-	//vec.y = pInputPad->GetStickAdd(0, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS);
-	//vec.x = pInputPad->GetStickAdd(0, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS);
+	//vec.y = pInputPad->GetStickAdd(m_nId, CInputPad::BUTTON_LEFT_X, 0.1f, CInputPad::STICK_PLUS);
+	//vec.x = pInputPad->GetStickAdd(m_nId, CInputPad::BUTTON_LEFT_Y, 0.1f, CInputPad::STICK_PLUS);
 	//D3DXVec2Normalize(&vec, &vec);
 
 	//m_fRotDest = atan2f(vec.y, vec.x);

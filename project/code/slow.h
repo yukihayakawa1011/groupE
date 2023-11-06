@@ -28,10 +28,10 @@ public:		// 誰でもアクセス可能
 
 private:	// 自分だけがアクセス可能
 
-	bool m_b;			// カウントが回ったか否か
+	bool m_b;		// カウントが回ったか否か
 	bool m_bUse;		// スロー入力されたか
 	int m_nBoostCnt;	// 強さ上昇カウント
-	int m_nTimeCnt;		// タイマー
+	int m_nTimeCnt;	// タイマー
 	int m_nTimer;		// カウント規定値
 	float m_fAdd;		// スロー倍率
 	float m_fMulOld;	// 前回の倍率
