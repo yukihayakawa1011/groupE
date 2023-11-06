@@ -27,6 +27,8 @@
 #include "object2D.h"
 #include "player.h"
 
+#include "enemy.h"
+
 // ƒOƒ[ƒoƒ‹
 
 //===============================================
@@ -137,6 +139,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}
+		CEnemy::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL)->SetType(CEnemy::TYPE_ACTIVE);
 	}
 		break;
 
