@@ -13,6 +13,7 @@
 #include "task.h"
 
 // 前方宣言
+class CPlayer;
 class CCharacter;
 
 //==========================================================
@@ -20,17 +21,6 @@ class CCharacter;
 //==========================================================
 class CEnemy : public CTask
 {
-public:
-
-	// 操作種類列挙型
-	enum TYPE
-	{
-		TYPE_NONE,	// 操作不可能
-		TYPE_SEND,	// データ送信
-		TYPE_ACTIVE,	// 操作可能
-		TYPE_MAX
-	};
-
 private:	// 自分だけがアクセス可能な定義
 
 	// 状態列挙型
@@ -50,11 +40,11 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 pos;		// 位置
 		D3DXVECTOR3 rot;		// 向き
 		D3DXVECTOR3 move;		// 移動量
-		D3DXVECTOR3 posOld;	// 設定位置
+		D3DXVECTOR3 posOld;		// 設定位置
 		D3DXMATRIX mtxWorld;	// ワールドマトリックス
 		D3DXVECTOR3 posDiff;
 		STATE state;			// 状態
-		float fStateCounter;	// 状態管理カウンター
+		int nStateCounter;		// 状態管理カウンター
 	}SInfo;
 
 public:	// 誰でもアクセス可能
@@ -99,6 +89,7 @@ private:	// 自分だけがアクセス可能
 	void Rotation(void);
 	void Adjust(void);
 	void Search(void);
+	CPlayer* SearchNearPlayer(float* pLength = nullptr);
 
 	// メンバ変数
 	static CEnemy *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -112,6 +103,7 @@ private:	// 自分だけがアクセス可能
 	float m_fRotDest;		// 角度計算
 	bool m_bMove;
 	int m_nLife;	// 体力
+	int m_nCounterAttack;	//攻撃カウンター
 	int m_nId;	// ID
 	TYPE m_type;	// 種類
 	static int m_nNumCount;

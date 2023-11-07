@@ -39,18 +39,14 @@
 #define WIDTH	(20.0f)		// 幅
 #define HEIGHT	(80.0f)	// 高さ
 #define INER	(0.3f)		// 慣性
-#define STEP_SPEED	(50.0f)
-#define STEP_COOLTIME	(90.0f)
 #define START_LIFE	(4)	// 初期体力
-#define DAMAGE_INTERVAL	(10.0f)
-#define DAMAGE_APPEAR	(110.0f)
-#define DEATH_INTERVAL	(120.0f)
-#define DASH_INTERVAL	(60.0f)
-#define SPAWN_INTERVAL	(60.0f)
-#define PARTICLE_TIMER	 (5.0f)
-#define SHADOW_ALPHA	(0.4f)
+#define DAMAGE_INTERVAL	(10)
 #define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
 #define SEARCH_LENGTH	(200.0f)	//プレイヤー探索範囲
+#define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
+#define ATTACK_COOLTIME	(60)		//攻撃クールタイム
+
+#define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//角度を-PI~PIに修正
 
 // 前方宣言
 CEnemy *CEnemy::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -82,6 +78,7 @@ CEnemy::CEnemy(const D3DXVECTOR3 pos)
 	m_fRotDest = 0.0f;
 	m_pObject = NULL;
 	m_nLife = 0;
+	m_nCounterAttack = ATTACK_COOLTIME;
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
 
@@ -252,43 +249,27 @@ void CEnemy::Update(void)
 
 	StateSet();
 
-	if (m_type == TYPE_SEND)
+	m_nCounterAttack--;
+
+	if (m_Info.state != STATE_SPAWN)
 	{
-		CManager::GetInstance()->GetCamera()->Setting(m_Info.pos, m_Info.rot);
-		CManager::GetInstance()->GetScene()->SendPosition(m_Info.pos);
-		CManager::GetInstance()->GetScene()->SendRotation(m_Info.rot);
-		CManager::GetInstance()->GetScene()->SendLife(m_nLife);
+		// 敵操作
+		Controller();
 	}
 
-	if (m_type == TYPE_ACTIVE)
-	{
+	// カメラ追従
+	CCamera* pCamera = CManager::GetInstance()->GetCamera();
 
-		if (m_Info.state != STATE_SPAWN)
-		{
-			// 敵操作
-			Controller();
-		}
+	// 追従処理
+	pCamera->Pursue(GetPosition(), GetRotation());
 
-		// カメラ追従
-		CCamera *pCamera = CManager::GetInstance()->GetCamera();
-
-		// 追従処理
-		pCamera->Pursue(GetPosition(), GetRotation());
-
-		// オンライン送信
-		CManager::GetInstance()->GetScene()->SendPosition(m_Info.pos);
-		CManager::GetInstance()->GetScene()->SendRotation(m_Info.rot);
-		CManager::GetInstance()->GetScene()->SendLife(m_nLife);
-	}
-	else
-	{// 操作キャラではない
-		D3DXVECTOR3 posDest = m_Info.posDiff - m_Info.pos;
-		m_Info.pos += posDest * 0.95f;
-	}
+#ifdef _DEBUG	//デバッグモードのみ表示
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
 	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ]\n", m_nLife);
+
+#endif // _DEBUG
 
 	// 使用オブジェクト更新
 	if (nullptr != m_pObject) {
@@ -348,8 +329,8 @@ void CEnemy::Controller(void)
 
 	// 操作処理
 	{
-		Search();	// 探索
 		Move();		// 移動
+		Search();	// 探索
 	}
 
 	pos = GetPosition();	// 座標を取得
@@ -376,8 +357,8 @@ void CEnemy::Move(void)
 	float fSpeed = MOVE;	// 移動量
 
 	//敵の更新
-	m_Info.move.x += cosf(CamRot.y + (-m_fRotMove)) * fSpeed;
-	m_Info.move.z += sinf(CamRot.y + (-m_fRotMove)) * fSpeed;
+	m_Info.move.x += -sinf(CamRot.y - m_fRotMove) * fSpeed;
+	m_Info.move.z += cosf(CamRot.y - m_fRotMove) * fSpeed;
 }
 
 //===============================================
@@ -385,16 +366,45 @@ void CEnemy::Move(void)
 //===============================================
 void CEnemy::Rotation(void)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
-	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
-
-	m_fRotDest = m_fRotMove + DEFAULT_ROTATE;
+	m_fRotDest = m_fRotMove - DEFAULT_ROTATE;
 }
 
 //===============================================
 // 探索
 //===============================================
 void CEnemy::Search(void)
+{
+	float fLengthNear = FLT_MAX;
+	CPlayer* pPlayerNear = SearchNearPlayer(&fLengthNear);
+
+	if (pPlayerNear != nullptr && fLengthNear <= SEARCH_LENGTH)
+	{//プレイヤー見つけた
+		if (pPlayerNear != nullptr && fLengthNear <= ATTACK_LENGTH)
+		{//攻撃範囲
+			m_Info.move.x = 0.0f;
+			m_Info.move.z = 0.0f;
+			if (m_nCounterAttack <= 0)
+			{//クールタイム終了
+				pPlayerNear->Damage(1);
+				m_nCounterAttack = ATTACK_COOLTIME;
+			}
+		}
+		else
+		{//追跡範囲
+			D3DXVECTOR3 posPlayer = pPlayerNear->GetPosition();
+			m_fRotDest = atan2f(m_Info.pos.x - posPlayer.x, m_Info.pos.z - posPlayer.z);
+		}
+	}
+	else
+	{//適当にぐるぐる
+		Rotation();	// 回転
+	}
+}
+
+//===============================================
+// 近いプレイヤー探索
+//===============================================
+CPlayer* CEnemy::SearchNearPlayer(float* pLength)
 {
 	CPlayer* pPlayer = CPlayer::GetTop();
 	CPlayer* pPlayerNear = nullptr;
@@ -404,7 +414,7 @@ void CEnemy::Search(void)
 	{
 		D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
 		float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
-		if (fLength <= SEARCH_LENGTH && fLengthNear > fLength)
+		if (fLengthNear > fLength)
 		{//一番近いやつ
 			pPlayerNear = pPlayer;
 			fLengthNear = fLength;
@@ -413,15 +423,12 @@ void CEnemy::Search(void)
 		pPlayer = pPlayer->GetNext();
 	}
 
-	if (pPlayerNear != nullptr)
-	{//プレイヤー見つけた
-		D3DXVECTOR3 posPlayer = pPlayerNear->GetPosition();
-		m_fRotDest = atan2f(m_Info.pos.x - posPlayer.x, m_Info.pos.z - posPlayer.z);
+	if (pLength != nullptr)
+	{//距離も欲しい
+		*pLength = fLengthNear;
 	}
-	else
-	{//適当にぐるぐる
-		Rotation();	// 回転
-	}
+
+	return pPlayerNear;	//近いプレイヤーのポインタを返す
 }
 
 //===============================================
@@ -429,66 +436,13 @@ void CEnemy::Search(void)
 //===============================================
 void CEnemy::Adjust(void)
 {
-	while (1)
-	{
-		if (m_fRotDest > D3DX_PI || m_fRotDest < -D3DX_PI)
-		{//-3.14～3.14の範囲外の場合
-			if (m_fRotDest > D3DX_PI)
-			{
-				m_fRotDest += (-D3DX_PI * 2);
-			}
-			else if (m_fRotDest < -D3DX_PI)
-			{
-				m_fRotDest += (D3DX_PI * 2);
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
+	m_fRotDest = FIX_ROT(m_fRotDest);
 
 	m_fRotDiff = m_fRotDest - m_fRotMove;	//目標までの移動方向の差分
-
-	while (1)
-	{
-		if (m_fRotDiff > D3DX_PI || m_fRotDiff < -D3DX_PI)
-		{//-3.14～3.14の範囲外の場合
-			if (m_fRotDiff > D3DX_PI)
-			{
-				m_fRotDiff += (-D3DX_PI * 2);
-			}
-			else if (m_fRotDiff < -D3DX_PI)
-			{
-				m_fRotDiff += (D3DX_PI * 2);
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
+	m_fRotDiff = FIX_ROT(m_fRotDiff);
 
 	m_Info.rot.y += m_fRotDiff * ROT_MULTI;
-
-	while (1)
-	{
-		if (m_Info.rot.y > D3DX_PI || m_Info.rot.y < -D3DX_PI)
-		{//-3.14～3.14の範囲外の場合
-			if (m_Info.rot.y > D3DX_PI)
-			{
-				m_Info.rot.y += (-D3DX_PI * 2);
-			}
-			else if (m_Info.rot.y < -D3DX_PI)
-			{
-				m_Info.rot.y += (D3DX_PI * 2);
-			}
-		}
-		else
-		{
-			break;
-		}
-	}
+	m_Info.rot.y = FIX_ROT(m_Info.rot.y);
 }
 
 //===============================================
@@ -545,7 +499,7 @@ void CEnemy::Damage(int nDamage)
 
 	if (m_nLife != nOldLife)
 	{
-		m_Info.fStateCounter = DAMAGE_INTERVAL;
+		m_Info.nStateCounter = DAMAGE_INTERVAL;
 		m_Info.state = STATE_DAMAGE;
 	}
 }
