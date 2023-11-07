@@ -254,11 +254,11 @@ void CEnemy::Update(void)
 		Controller();
 	}
 
-	// カメラ追従
-	CCamera* pCamera = CManager::GetInstance()->GetCamera();
+	//// カメラ追従
+	//CCamera* pCamera = CManager::GetInstance()->GetCamera();
 
-	// 追従処理
-	pCamera->Pursue(GetPosition(), GetRotation());
+	//// 追従処理
+	//pCamera->Pursue(GetPosition(), GetRotation());
 
 #ifdef _DEBUG	//デバッグモードのみ表示
 

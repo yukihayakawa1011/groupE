@@ -354,11 +354,11 @@ void CPlayer::Update(void)
 			Controller();
 		}
 
-		// ƒJƒƒ‰’Ç]
-		CCamera *pCamera = CManager::GetInstance()->GetCamera();
+		//// ƒJƒƒ‰’Ç]
+		//CCamera *pCamera = CManager::GetInstance()->GetCamera();
 
-		// ’Ç]ˆ—
-		pCamera->Pursue(GetPosition(), GetRotation());
+		//// ’Ç]ˆ—
+		//pCamera->Pursue(GetPosition(), GetRotation());
 
 		// ƒIƒ“ƒ‰ƒCƒ“‘—M
 		CManager::GetInstance()->GetScene()->SendPosition(m_Info.pos);
