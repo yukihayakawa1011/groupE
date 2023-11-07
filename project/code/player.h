@@ -13,6 +13,7 @@
 #include "task.h"
 
 // 前方宣言
+class CWaist;
 class CCharacter;
 
 //==========================================================
@@ -106,6 +107,7 @@ public:	// 誰でもアクセス可能
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
+	void SetMatrix(void);
 	void StateSet(void);
 	void Controller(void);
 	void Move(void);
@@ -125,7 +127,9 @@ private:	// 自分だけがアクセス可能
 	CPlayer *m_pPrev;	// 前のオブジェクトへのポインタ
 	CPlayer *m_pNext;	// 次のオブジェクトへのポインタ
 	SInfo m_Info;			// 自分自身の情報
-	CCharacter *m_pObject;	// 描画オブジェクト
+	CWaist *m_pWaist;		// 腰
+	CCharacter *m_pBody;	// 上半身
+	CCharacter *m_pLeg;	// 下半身
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算

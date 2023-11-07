@@ -127,7 +127,7 @@ HRESULT CGame::Init(void)
 	{// ローカルの場合
 		if (m_nNumPlayer == 0)
 		{// 人数が指定されていない
-			m_nNumPlayer = PLAYER_MAX;
+			m_nNumPlayer = 1;
 		}
 
 		// 人数分ポインタ生成
@@ -135,7 +135,8 @@ HRESULT CGame::Init(void)
 
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 10.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 10.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 
+				"data\\TXT\\motion_body.txt", "data\\TXT\\motion_leg.txt");
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}

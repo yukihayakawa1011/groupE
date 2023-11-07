@@ -27,6 +27,8 @@
 #include "character.h"
 #include "motion.h"
 #include "sound.h"
+#include "waist.h"
+#include "model.h"
 
 //===============================================
 // マクロ定義
@@ -77,7 +79,7 @@ CPlayer::CPlayer(const D3DXVECTOR3 pos)
 	m_fRotMove = 0.0f;
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
-	m_pObject = NULL;
+	m_pBody = NULL;
 	m_nLife = 0;
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
@@ -113,7 +115,7 @@ CPlayer::CPlayer(int nPriOrity)
 	m_fRotMove = 0.0f;
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
-	m_pObject = NULL;
+	m_pBody = NULL;
 	m_nLife = 0;
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
@@ -149,10 +151,48 @@ CPlayer::~CPlayer()
 //===============================================
 HRESULT CPlayer::Init(void)
 {
-	if (nullptr == m_pObject)
+	// 腰の生成
+	if (m_pWaist == NULL)
 	{
-		m_pObject = CCharacter::Create(GetPosition(), GetRotation(), "data\\TXT\\motion_kidsboy.txt");
-		m_pObject->SetShadow(true);
+		m_pWaist = new CWaist;
+		m_pWaist->SetParent(&m_Info.mtxWorld);
+	}
+
+	// 胴体の設定
+	m_pBody = CCharacter::Create("data\\TXT\\motion_body.txt");
+	m_pBody->SetParent(m_pWaist->GetMtxWorld());
+
+	if (m_pBody->GetMotion() != NULL)
+	{
+		// 初期モーションの設定
+		m_pBody->GetMotion()->InitSet(m_action);
+	}
+
+	// 下半身の設定
+	m_pLeg = CCharacter::Create("data\\TXT\\motion_leg.txt");
+	m_pLeg->SetParent(m_pWaist->GetMtxWorld());
+
+	if (m_pLeg->GetMotion() != NULL)
+	{
+		// 初期モーションの設定
+		m_pLeg->GetMotion()->InitSet(m_action);
+	}
+
+	// 腰の高さを合わせる
+	if (m_pLeg != NULL)
+	{// 脚が使用されている場合
+		CModel *pModel = m_pLeg->GetParts(0);	// 腰パーツを取得
+
+		if (pModel != NULL)
+		{// パーツが存在する場合
+			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
+
+			// 高さを設定
+			m_pWaist->SetHeight(pos);
+
+			// 腰のモデルの位置を変更
+			pModel->SetPosition(pos);
+		}
 	}
 
 	m_Info.state = STATE_APPEAR;
@@ -169,12 +209,58 @@ HRESULT CPlayer::Init(void)
 //===============================================
 HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 {
-	if (nullptr == m_pObject)
+	// 腰の生成
+	if (m_pWaist == NULL)
 	{
-		m_pObject = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-		m_pObject->GetMotion()->InitSet(0);
-		m_pObject->SetShadow(true);
-		m_pObject->SetDraw();
+		m_pWaist = new CWaist;
+		m_pWaist->SetParent(&m_Info.mtxWorld);
+	}
+
+	// 胴体の設定
+	if (pBodyName != NULL)
+	{// ファイル名が存在している
+		m_pBody = CCharacter::Create(pBodyName);
+		m_pBody->SetParent(m_pWaist->GetMtxWorld());
+		m_pBody->SetShadow(true);
+		m_pBody->SetDraw();
+
+		if (m_pBody->GetMotion() != NULL)
+		{
+			// 初期モーションの設定
+			m_pBody->GetMotion()->InitSet(m_action);
+		}
+	}
+
+	// 下半身の設定
+	if (pLegName != NULL)
+	{// ファイル名が存在している
+		m_pLeg = CCharacter::Create(pLegName);
+		m_pLeg->SetParent(m_pWaist->GetMtxWorld());
+		m_pLeg->SetShadow(true);
+		m_pLeg->SetDraw();
+
+		if (m_pLeg->GetMotion() != NULL)
+		{
+			// 初期モーションの設定
+			m_pLeg->GetMotion()->InitSet(m_action);
+		}
+	}
+
+	// 腰の高さを合わせる
+	if (m_pLeg != NULL)
+	{// 脚が使用されている場合
+		CModel *pModel = m_pLeg->GetParts(0);	// 腰パーツを取得
+
+		if (pModel != NULL)
+		{// パーツが存在する場合
+			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
+
+			// 高さを設定
+			m_pWaist->SetHeight(pos);
+
+			// 腰のモデルの位置を変更
+			pModel->SetPosition(pos);
+		}
 	}
 
 	m_nLife = START_LIFE;
@@ -229,16 +315,16 @@ void CPlayer::Uninit(void)
 		}
 	}
 
-	if (nullptr != m_pObject){
-		m_pObject->Uninit();
-		m_pObject = NULL;
+	if (nullptr != m_pBody){
+		m_pBody->Uninit();
+		m_pBody = NULL;
 	}
 
-	if (m_pObject != NULL)
+	if (m_pBody != NULL)
 	{
-		m_pObject->Uninit();
-		delete m_pObject;
-		m_pObject = NULL;
+		m_pBody->Uninit();
+		delete m_pBody;
+		m_pBody = NULL;
 	}
 
 	m_nNumCount--;
@@ -287,11 +373,33 @@ void CPlayer::Update(void)
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
 	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ]\n", m_nLife);
 
-	// 使用オブジェクト更新
-	if (nullptr != m_pObject) {
-		m_pObject->SetPosition(m_Info.pos);
-		m_pObject->SetRotation(m_Info.rot);
-		m_pObject->Update();
+	// マトリックス設定
+	SetMatrix();
+
+	// 腰の設定
+	if (m_pWaist != NULL)
+	{
+		m_pWaist->SetMatrix();
+	}
+
+	// 下半身更新
+	if (m_pLeg != NULL)
+	{// 使用されている場合
+		m_pLeg->Update();
+
+		CModel *pModel = m_pLeg->GetParts(0);
+
+		// 腰の高さを補填
+		if (pModel != NULL)
+		{
+			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
+		}
+	}
+
+	// 胴体更新
+	if (m_pBody != NULL)
+	{// 使用されている場合
+		m_pBody->Update();
 	}
 }
 
@@ -534,6 +642,9 @@ void CPlayer::MoveController(void)
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed;
 			m_fRotDest = -CamRot.y;
 		}
+
+		// 移動した状態にする
+		m_bMove = true;
 	}
 	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.5f, CInputPad::STICK_PLUS) == true)
 	{
@@ -757,12 +868,12 @@ void CPlayer::SetType(TYPE type)
 //===============================================
 void CPlayer::MotionSet(void)
 {
-	if (nullptr == m_pObject)
+	if (nullptr == m_pBody)
 	{// オブジェクト無し
 		return;
 	}
 
-	if (nullptr == m_pObject->GetMotion())
+	if (nullptr == m_pBody->GetMotion())
 	{// モーション無し
 		return;
 	}
@@ -771,48 +882,48 @@ void CPlayer::MotionSet(void)
 		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
 	{// 何もしていない
 		m_action = ACTION_NEUTRAL;
-		m_pObject->GetMotion()->BlendSet(m_action);
+		m_pBody->GetMotion()->BlendSet(m_action);
 	}
 	else if(m_bJump && 
 		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
 	{// ジャンプした
 		m_action = ACTION_JUMP;
-		m_pObject->GetMotion()->BlendSet(m_action);
+		m_pBody->GetMotion()->BlendSet(m_action);
 	}
 	else if (m_bMove &&
 		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
 	{// 移動した
 		m_action = ACTION_WALK;
-		m_pObject->GetMotion()->BlendSet(m_action);
+		m_pBody->GetMotion()->BlendSet(m_action);
 	}
 	else if (m_action == ACTION_ATK)
 	{// 攻撃した
-		m_pObject->GetMotion()->Set(m_action);
-		if (m_pObject->GetMotion()->GetEnd())
+		m_pBody->GetMotion()->Set(m_action);
+		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
 			m_action = ACTION_NEUTRAL;
 		}
 	}
 	else if (m_action == ACTION_CATCH)
 	{// 持った
-		m_pObject->GetMotion()->Set(m_action);
-		if (m_pObject->GetMotion()->GetEnd())
+		m_pBody->GetMotion()->Set(m_action);
+		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
 			m_action = ACTION_HOLD;	// 保持状態に変更
 		}
 	}
 	else if (m_action == ACTION_HOLD)
 	{// 保持している
-		m_pObject->GetMotion()->BlendSet(m_action);
-		if (m_pObject->GetMotion()->GetEnd())
+		m_pBody->GetMotion()->BlendSet(m_action);
+		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
 		
 		}
 	}
 	else if (m_action == ACTION_THROW)
 	{// 投げる
-		m_pObject->GetMotion()->BlendSet(m_action);
-		if (m_pObject->GetMotion()->GetEnd())
+		m_pBody->GetMotion()->BlendSet(m_action);
+		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
 			m_action = ACTION_NEUTRAL;
 		}
@@ -820,6 +931,27 @@ void CPlayer::MotionSet(void)
 	else
 	{
 
+	}
+
+	if (nullptr == m_pLeg){	// 脚がない
+		return;
+	}
+
+	if (nullptr == m_pLeg->GetMotion()) {	// モーションがない
+		return;
+	}
+
+	if (m_bJump)
+	{
+		m_pLeg->GetMotion()->BlendSet(ACTION_JUMP);
+	}
+	else if (m_bMove)
+	{
+		m_pLeg->GetMotion()->BlendSet(ACTION_WALK);
+	}
+	else
+	{
+		m_pLeg->GetMotion()->BlendSet(ACTION_NEUTRAL);
 	}
 }
 
@@ -878,4 +1010,23 @@ void CPlayer::Throw(void)
 	{
 		m_action = ACTION_THROW;
 	}
+}
+
+//===============================================
+// マトリックス設定
+//===============================================
+void CPlayer::SetMatrix(void)
+{
+	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
+
+	//ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_Info.mtxWorld);
+
+	//向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_Info.rot.y, m_Info.rot.x, m_Info.rot.z);
+	D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxRot);
+
+	//位置を反映
+	D3DXMatrixTranslation(&mtxTrans, m_Info.pos.x, m_Info.pos.y, m_Info.pos.z);
+	D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
 }
