@@ -47,10 +47,13 @@ private:	// 自分だけがアクセス可能な定義
 	// アクション列挙型
 	enum ACTION
 	{
-		ACTION_NEUTRAL = 0,	// 待機状
+		ACTION_NEUTRAL = 0,	// 待機
 		ACTION_WALK,			// 歩行
 		ACTION_JUMP,			// ジャンプ
 		ACTION_ATK,			// 攻撃
+		ACTION_CATCH,			// 持つ
+		ACTION_HOLD,			// 保持
+		ACTION_THROW,			// 投げる
 		ACTION_MAX
 	};
 
@@ -62,7 +65,7 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 move;		// 移動量
 		D3DXVECTOR3 posOld;	// 設定位置
 		D3DXMATRIX mtxWorld;	// ワールドマトリックス
-		D3DXVECTOR3 posDiff;
+		D3DXVECTOR3 posDiff;	// 目標の座標
 		STATE state;			// 状態
 		float fStateCounter;	// 状態管理カウンター
 	}SInfo;
@@ -111,6 +114,10 @@ private:	// 自分だけがアクセス可能
 	void KeyBoardRotation(void);
 	void MoveController(void);
 	void Jump(void);
+	void MotionSet(void);
+	void Attack(void);
+	void Catch(void);
+	void Throw(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ

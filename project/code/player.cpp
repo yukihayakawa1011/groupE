@@ -293,24 +293,6 @@ void CPlayer::Update(void)
 		m_pObject->SetRotation(m_Info.rot);
 		m_pObject->Update();
 	}
-
-	// 起伏との当たり判定
-	D3DXVECTOR3 nor = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	float fHeight = CMeshField::GetHeight(m_Info.pos);
-
-	// オブジェクトとの当たり判定
-	if (nullptr != m_pObject)
-	{
-		CXFile *pFile = CManager::GetInstance()->GetModelFile();
-		D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
-
-		// 壁
-		if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
-		{
-			m_bJump = false;
-		}
-	}
 }
 
 //===============================================
@@ -362,6 +344,10 @@ void CPlayer::Controller(void)
 		Move();		// 移動
 		Rotation();	// 回転
 		Jump();		// ジャンプ
+		Attack();	// 攻撃
+		Catch();		// 掴む
+		Throw();		// 投げる
+		MotionSet();	// モーション設定
 	}
 
 	pos = GetPosition();	// 座標を取得
@@ -380,13 +366,22 @@ void CPlayer::Controller(void)
 	Adjust();
 
 	m_Info.pos = pos;
-
-	float fHeight = CMeshField::GetHeight(m_Info.pos);
+	m_bJump = true;	// ジャンプ状態リセット
 
 	// 起伏との当たり判定
+	float fHeight = CMeshField::GetHeight(m_Info.pos);
 	if (m_Info.pos.y <= fHeight)
 	{
 		m_Info.pos.y = fHeight;
+		m_bJump = false;
+	}
+
+	// オブジェクトとの当たり判定
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
+	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
+	{
 		m_bJump = false;
 	}
 }
@@ -517,6 +512,7 @@ void CPlayer::MoveController(void)
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
+	m_bMove = false;
 
 	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.5f, CInputPad::STICK_MINUS) == true)
 	{
@@ -754,4 +750,132 @@ void CPlayer::SetLife(int nLife)
 void CPlayer::SetType(TYPE type)
 {
 	m_type = type;
+}
+
+//===============================================
+// モーション設定
+//===============================================
+void CPlayer::MotionSet(void)
+{
+	if (nullptr == m_pObject)
+	{// オブジェクト無し
+		return;
+	}
+
+	if (nullptr == m_pObject->GetMotion())
+	{// モーション無し
+		return;
+	}
+
+	if (!m_bJump && !m_bMove && 
+		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
+	{// 何もしていない
+		m_action = ACTION_NEUTRAL;
+		m_pObject->GetMotion()->BlendSet(m_action);
+	}
+	else if(m_bJump && 
+		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
+	{// ジャンプした
+		m_action = ACTION_JUMP;
+		m_pObject->GetMotion()->BlendSet(m_action);
+	}
+	else if (m_bMove &&
+		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
+	{// 移動した
+		m_action = ACTION_WALK;
+		m_pObject->GetMotion()->BlendSet(m_action);
+	}
+	else if (m_action == ACTION_ATK)
+	{// 攻撃した
+		m_pObject->GetMotion()->Set(m_action);
+		if (m_pObject->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
+	}
+	else if (m_action == ACTION_CATCH)
+	{// 持った
+		m_pObject->GetMotion()->Set(m_action);
+		if (m_pObject->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_HOLD;	// 保持状態に変更
+		}
+	}
+	else if (m_action == ACTION_HOLD)
+	{// 保持している
+		m_pObject->GetMotion()->BlendSet(m_action);
+		if (m_pObject->GetMotion()->GetEnd())
+		{// モーション終了
+		
+		}
+	}
+	else if (m_action == ACTION_THROW)
+	{// 投げる
+		m_pObject->GetMotion()->BlendSet(m_action);
+		if (m_pObject->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
+	}
+	else
+	{
+
+	}
+}
+
+//===============================================
+// 攻撃
+//===============================================
+void CPlayer::Attack(void)
+{
+	if (m_action < ACTION_NEUTRAL || m_action > ACTION_JUMP)
+	{// 攻撃不可能
+		return;
+	}
+
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	// 入力
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_A, m_nId))
+	{
+		m_action = ACTION_ATK;
+	}
+}
+
+//===============================================
+// 物を持つ
+//===============================================
+void CPlayer::Catch(void)
+{
+	if (m_action < ACTION_NEUTRAL || m_action > ACTION_WALK)
+	{// 待機か移動中
+		return;
+	}
+
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	// 入力
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_X, m_nId))
+	{
+		m_action = ACTION_CATCH;
+	}
+}
+
+//===============================================
+// 物を投げる
+//===============================================
+void CPlayer::Throw(void)
+{
+	if (m_action != ACTION_HOLD)
+	{// 持っていない
+		return;
+	}
+
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	// 入力
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_X, m_nId))
+	{
+		m_action = ACTION_THROW;
+	}
 }

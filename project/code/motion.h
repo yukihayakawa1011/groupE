@@ -74,6 +74,7 @@ public:		// 誰でもアクセス可能
 	int GetOldMotion(void) { return m_nOldType; }
 	float GetNowFrame(void) { return m_fNowFrame; }
 	int GetNowNumKey(void) { return aInfo[m_nNowMotion].nNumKey; }
+	bool GetEnd(void) { return m_bEnd; }
 
 private:	// 自分だけがアクセス可能
 
@@ -84,6 +85,7 @@ private:	// 自分だけがアクセス可能
 	int m_nNowFrame;		// 現在のフレーム数
 	float m_fNowFrame;		// 現在のフレーム数
 	int m_nNowMotion;		// 現在のモーション番号
+	bool m_bEnd;			// 終了したかどうか
 	int m_nNowKey;			// 現在のキー数
 	int m_nOldType;			// 前回のモーションタイプ
 	BodyFileData m_FileData;// ファイル情報
