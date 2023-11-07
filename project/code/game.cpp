@@ -27,6 +27,7 @@
 #include "object2D.h"
 #include "player.h"
 #include "enemy.h"
+#include "item.h"
 
 // グローバル
 
@@ -160,6 +161,9 @@ HRESULT CGame::Init(void)
 
 		break;
 	}
+
+	CItem::Create(D3DXVECTOR3(100.0f, 100.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", NULL);
+	CItem::Create(D3DXVECTOR3(-100.0f, 100.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", NULL);
 
 	//カメラ初期化
 	{
