@@ -209,11 +209,13 @@ HRESULT CPlayer::Init(void)
 //===============================================
 HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 {
+	SetMatrix();
 	// 腰の生成
 	if (m_pWaist == NULL)
 	{
 		m_pWaist = new CWaist;
 		m_pWaist->SetParent(&m_Info.mtxWorld);
+		m_pWaist->SetMatrix();
 	}
 
 	// 胴体の設定
@@ -379,21 +381,28 @@ void CPlayer::Update(void)
 	// 腰の設定
 	if (m_pWaist != NULL)
 	{
+		// 腰の高さを補填
+		if (m_pLeg != NULL)
+		{
+			CModel *pModel = m_pLeg->GetParts(0);
+			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
+		}
 		m_pWaist->SetMatrix();
 	}
 
 	// 下半身更新
 	if (m_pLeg != NULL)
 	{// 使用されている場合
-		m_pLeg->Update();
 
 		CModel *pModel = m_pLeg->GetParts(0);
 
-		// 腰の高さを補填
-		if (pModel != NULL)
-		{
-			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
-		}
+		D3DXVECTOR3 pos = pModel->GetCurrentPosition();
+
+		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+		m_pLeg->Update();
+
+		pModel->SetCurrentPosition(pos);
 	}
 
 	// 胴体更新
@@ -1017,6 +1026,7 @@ void CPlayer::Throw(void)
 //===============================================
 void CPlayer::SetMatrix(void)
 {
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタを取得
 	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
 
 	//ワールドマトリックスの初期化
@@ -1029,4 +1039,7 @@ void CPlayer::SetMatrix(void)
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_Info.pos.x, m_Info.pos.y, m_Info.pos.z);
 	D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
+
+	//ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_Info.mtxWorld);
 }

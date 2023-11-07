@@ -87,6 +87,11 @@ void CMotion::Update(void)
 		return;
 	}
 
+	if (m_bEnd && !aInfo[m_nNowMotion].bLoop)
+	{
+		return;
+	}
+
 	int nNowMotion = m_nNowMotion;	// 現在のモーション番号
 	int nNowKey = m_nNowKey;		// 現在のキー
 	int nNextkey = (nNowKey + 1) % aInfo[nNowMotion].nNumKey;	//次のキー
@@ -182,8 +187,8 @@ void CMotion::Update(void)
 			m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetCurrentRotation().z;
 		}
 
-		if (m_nOldType == nNowMotion && nNextkey == 0)
-		{// モーションが終了した
+		if (nNextkey >= aInfo[nNowMotion].nNumKey - 1)
+		{// 終了
 			m_bEnd = true;
 		}
 
