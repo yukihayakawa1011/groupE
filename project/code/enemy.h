@@ -49,7 +49,6 @@ private:	// 自分だけがアクセス可能な定義
 
 public:	// 誰でもアクセス可能
 
-	//CEnemy();	// コンストラクタ
 	CEnemy(const D3DXVECTOR3 pos);	// コンストラクタ(オーバーロード)
 	CEnemy(int nPriOrity = 1);
 	~CEnemy();	// デストラクタ
@@ -68,7 +67,7 @@ public:	// 誰でもアクセス可能
 	void SetDiffPosition(const D3DXVECTOR3 pos) { m_Info.posDiff = pos; }
 	void SetRotation(const D3DXVECTOR3 rot) { m_Info.rot = rot; }
 	void BindId(int nId) { m_nId = nId; }
-	void SetType(TYPE type);
+	void SetType(TYPE type){ m_type = type; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -89,6 +88,7 @@ private:	// 自分だけがアクセス可能
 	void Rotation(void);
 	void Adjust(void);
 	void Search(void);
+	void Chace(void);
 	CPlayer* SearchNearPlayer(float* pLength = nullptr);
 
 	// メンバ変数
@@ -101,9 +101,10 @@ private:	// 自分だけがアクセス可能
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
-	bool m_bMove;
+	bool m_bJump;			// ジャンプ
 	int m_nLife;	// 体力
 	int m_nCounterAttack;	//攻撃カウンター
+	bool m_bChace;	//追跡モードか否か
 	int m_nId;	// ID
 	TYPE m_type;	// 種類
 	static int m_nNumCount;
