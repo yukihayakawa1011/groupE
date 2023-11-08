@@ -93,13 +93,13 @@ void CModel::Draw(void)
 		return;
 	}
 
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタを取得
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	// デバイスへのポインタを取得
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();	// テクスチャへのポインタ
-	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
+	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
 	CXFile *pModelFile = CManager::GetInstance()->GetModelFile();	// Xファイル情報のポインタ
-	D3DMATERIAL9 matDef;			//現在のマテリアル保存用
-	D3DXMATERIAL *pMat;				//マテリアルデータへのポインタ
-	D3DXMATRIX mtxParent;			// 親のマトリックス情報
+	D3DMATERIAL9 matDef;	// 現在のマテリアル保存用
+	D3DXMATERIAL *pMat;	// マテリアルデータへのポインタ
+	D3DXMATRIX mtxParent;	// 親のマトリックス情報
 	CSlow *pSlow = CManager::GetInstance()->GetSlow();
 
 	//ワールドマトリックスの初期化
@@ -117,15 +117,15 @@ void CModel::Draw(void)
 	{// 覚えている場合
 		mtxParent = *m_pParentMtx;
 
-		//パーツのマトリックスと親のマトリックスをかけ合わせる
+		// パーツのマトリックスと親のマトリックスをかけ合わせる
 		D3DXMatrixMultiply(&m_mtxWorld,
 			&m_mtxWorld, &mtxParent);
 	}
 
-	//ワールドマトリックスの設定
+	// ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 
-	//現在のマテリアルを取得
+	// 現在のマテリアルを取得
 	pDevice->GetMaterial(&matDef);
 
 	// モデル情報を取得
@@ -133,7 +133,7 @@ void CModel::Draw(void)
 
 	if (pFileData != NULL)
 	{// 使用されている場合
-	 //マテリアルデータへのポインタを取得
+		// マテリアルデータへのポインタを取得
 		pMat = (D3DXMATERIAL*)pFileData->pBuffMat->GetBufferPointer();
 		for (int nCntMat = 0; nCntMat < (int)pFileData->dwNumMat; nCntMat++)
 		{
@@ -141,12 +141,12 @@ void CModel::Draw(void)
 
 			if (m_bChangeCol == false)
 			{
-				//マテリアルの設定
+				// マテリアルの設定
 				pDevice->SetMaterial(&pMat[nCntMat].MatD3D);
 			}
 			else
 			{
-				//マテリアルの設定
+				// マテリアルの設定
 				if (pSlow->Get() != 1.0f)
 				{
 					m_ChangeMat.Emissive.r -= 0.3f;
@@ -165,15 +165,15 @@ void CModel::Draw(void)
 				pDevice->SetMaterial(&m_ChangeMat);
 			}
 
-			//テクスチャの設定
+			// テクスチャの設定
 			pDevice->SetTexture(0, pTexture->SetAddress(nIdxTex));
 
-			//モデル(パーツ)の描画
+			// モデル(パーツ)の描画
 			pFileData->pMesh->DrawSubset(nCntMat);
 		}
 	}
 
-	//保存していたマテリアルを戻す
+	// 保存していたマテリアルを戻す
 	pDevice->SetMaterial(&matDef);
 
 	if(m_bShadow == true)

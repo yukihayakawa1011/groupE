@@ -15,7 +15,7 @@ NUM_TEXTURE = 2
 # テクスチャファイル名
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/river000.jpg			# [0]川水(下)
-TEXTURE_FILENAME = data/TEXTURE/river000.png			# [1]川水(上)
+TEXTURE_FILENAME = data/TEXTURE/field000.jpg			# [1]川水(上)
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -74,8 +74,8 @@ FIELDSET
 	TEXTYPE = 0
 	POS = 0.0 0.0 0.0
 	ROT = 0 0 0
-	BLOCK = 10 10
-	SIZE = 400 300
+	BLOCK = 50 50
+	SIZE = 80 60
 	MOVE = -0.0025 0.0
 END_FIELDSET
 
@@ -83,8 +83,8 @@ FIELDSET
 	TEXTYPE = 1
 	POS = 0.0 1.0 0.0
 	ROT = 0 0 0
-	BLOCK = 10 10
-	SIZE = 400 300
+	BLOCK = 50 50
+	SIZE = 80 60
 	MOVE = -0.0005 0.0
 END_FIELDSET
 

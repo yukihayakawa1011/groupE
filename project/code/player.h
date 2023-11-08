@@ -120,6 +120,7 @@ private:	// 自分だけがアクセス可能
 	void Attack(void);
 	void Catch(void);
 	void Throw(void);
+	void DamageCollision(D3DXVECTOR3 pos);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ

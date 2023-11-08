@@ -50,6 +50,7 @@
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
 #define JUMP	(25.0f)
+#define ATK_RANGE	(20.0f)
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -373,7 +374,7 @@ void CPlayer::Update(void)
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ]\n", m_nLife);
+	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ]\n", m_nLife, m_Info.state);
 
 	// マトリックス設定
 	SetMatrix();
@@ -797,11 +798,18 @@ void CPlayer::Adjust(void)
 //===============================================
 void CPlayer::StateSet(void)
 {
+	float fSlawMul = CManager::GetInstance()->GetSlow()->Get();
 	switch (m_Info.state)
 	{
 	case STATE_APPEAR:
 	{
+		m_Info.fStateCounter -= fSlawMul;
 
+		if (m_Info.fStateCounter <= 0.0f)
+		{
+			m_Info.fStateCounter = 0.0f;
+			m_Info.state = STATE_NORMAL;
+		}
 	}
 		break;
 
@@ -813,7 +821,13 @@ void CPlayer::StateSet(void)
 
 	case STATE_DAMAGE:
 	{
+		m_Info.fStateCounter -= fSlawMul;
 
+		if (m_Info.fStateCounter <= 0.0f)
+		{
+			m_Info.fStateCounter = DAMAGE_APPEAR;
+			m_Info.state = STATE_APPEAR;
+		}
 	}
 		break;
 
@@ -836,6 +850,11 @@ void CPlayer::StateSet(void)
 //===============================================
 void CPlayer::Damage(int nDamage) 
 { 
+	if (m_Info.state != STATE_NORMAL)
+	{// ダメージを食らわない
+		return;
+	}
+
 	int nOldLife = m_nLife;
 	m_nLife -= nDamage;
 
@@ -971,15 +990,39 @@ void CPlayer::Attack(void)
 {
 	if (m_action < ACTION_NEUTRAL || m_action > ACTION_JUMP)
 	{// 攻撃不可能
-		return;
+		if (m_action != ACTION_ATK)
+		{// 攻撃中ではない
+			return;
+		}
 	}
 
+	// パッド入力
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
 	// 入力
 	if (pInputPad->GetTrigger(CInputPad::BUTTON_A, m_nId))
 	{
-		m_action = ACTION_ATK;
+		if (m_action != ACTION_ATK)
+		{// 攻撃中ではない
+			m_action = ACTION_ATK;
+		}
+	}
+
+	// 攻撃判定
+	if (m_pBody == nullptr){	// 胴体がない
+		return;
+	}
+
+	if (m_pBody->GetMotion() == nullptr){	// モーションがない
+		return;
+	}
+
+	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK && 
+		m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
+	{// 攻撃判定中
+		CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+		D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtxWorld()->_41, pModel->GetMtxWorld()->_42, pModel->GetMtxWorld()->_43);
+		DamageCollision(pos);
 	}
 }
 
@@ -1042,4 +1085,41 @@ void CPlayer::SetMatrix(void)
 
 	//ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_Info.mtxWorld);
+}
+
+//===============================================
+// プレイヤー同士の攻撃判定
+//===============================================
+void CPlayer::DamageCollision(D3DXVECTOR3 pos)
+{
+	CPlayer *pPlayer = GetTop();	// 先頭を受け取る
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+
+	while (pPlayer != nullptr)
+	{
+		CPlayer *pPlayerNext = pPlayer->GetNext();	// 次を保持
+
+		if (pPlayer == this)
+		{// 自分自身か相手が通常状態以外
+			pPlayer = pPlayerNext;
+			continue;
+		}
+
+		D3DXVECTOR3 ObjPos = pPlayer->GetPosition();	// 座標
+		D3DXVECTOR3 HeadPos = pPlayer->m_pBody->GetParts(1)->GetPosition();
+		D3DXVECTOR3 HeadMax = pFile->GetMax(pPlayer->m_pBody->GetParts(1)->GetId());
+		D3DXVECTOR3 vtxMax = pFile->GetMax(pPlayer->m_pBody->GetParts(0)->GetId());
+		D3DXVECTOR3 vtxMin = pFile->GetMin(pPlayer->m_pBody->GetParts(0)->GetId());
+
+		if (pos.x + -ATK_RANGE <= ObjPos.x + vtxMax.x && pos.x + ATK_RANGE >= ObjPos.x + vtxMin.x
+			&& pos.z + -ATK_RANGE <= ObjPos.z + vtxMax.z && pos.z + ATK_RANGE >= ObjPos.z + vtxMin.z)
+		{// 左右判定内
+			if (pos.y >= ObjPos.y && pos.y <= ObjPos.y + HeadPos.y + HeadMax.y)
+			{// 高さ判定内
+				pPlayer->Damage(1);
+			}
+		}
+
+		pPlayer = pPlayerNext;
+	}
 }
