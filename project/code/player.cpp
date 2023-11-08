@@ -458,6 +458,7 @@ void CPlayer::Controller(void)
 	m_fRotMove = rot.y;	//現在の向きを取得
 
 	// 操作処理
+	if(m_action != ACTION_DAMAGE)
 	{
 		Move();		// 移動
 		Rotation();	// 回転
@@ -465,8 +466,9 @@ void CPlayer::Controller(void)
 		Attack();	// 攻撃
 		Catch();		// 掴む
 		Throw();		// 投げる
-		MotionSet();	// モーション設定
 	}
+
+	MotionSet();	// モーション設定
 
 	pos = GetPosition();	// 座標を取得
 
@@ -906,6 +908,22 @@ void CPlayer::MotionSet(void)
 		return;
 	}
 
+	if (m_Info.state == STATE_DAMAGE)
+	{// ダメージ状態
+		m_action = ACTION_DAMAGE;
+		m_pBody->GetMotion()->Set(m_action);
+		m_pLeg->GetMotion()->Set(m_action);
+
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;	// 保持状態に変更
+		}
+		else
+		{
+			return;
+		}
+	}
+
 	if (!m_bJump && !m_bMove && 
 		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
 	{// 何もしていない
@@ -955,6 +973,16 @@ void CPlayer::MotionSet(void)
 		{// モーション終了
 			m_action = ACTION_NEUTRAL;
 		}
+	}
+	else if (m_action == ACTION_DAMAGE)
+	{// 投げる
+		m_pBody->GetMotion()->BlendSet(m_action);
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
+
+		return;
 	}
 	else
 	{

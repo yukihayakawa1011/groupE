@@ -41,7 +41,6 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
-
 	D3DXVECTOR3 GetOldPos(void) { return m_posOld; }
 	int GetType(void) { return m_nType; }
 

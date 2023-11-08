@@ -334,7 +334,6 @@ void CCamera::MoveR(void)
 	//x軸の移動
 	if (pKey->GetPress(DIK_Q) == true && pKey->GetPress(DIK_E) != true)
 	{//Qキー入力
-
 		//角度の変更
 		m_rot.y += D3DX_PI * ROTATE_SPEED;
 		if (m_rot.y > D3DX_PI)
@@ -344,7 +343,6 @@ void CCamera::MoveR(void)
 	}
 	else if (pKey->GetPress(DIK_E) == true && pKey->GetPress(DIK_Q) != true)
 	{//Eキー入力
-
 		//角度の変更
 		m_rot.y += -D3DX_PI * ROTATE_SPEED;
 
@@ -357,11 +355,10 @@ void CCamera::MoveR(void)
 	//z軸の移動
 	if (pKey->GetPress(DIK_T) == true && pKey->GetPress(DIK_B) != true)
 	{//Tキー入力
-
 		//角度の変更
 		m_rot.z += D3DX_PI * ROTATE_SPEED;
 
-		if (m_rot.z >  MAX_CAMERA_ROTZ)
+		if (m_rot.z > MAX_CAMERA_ROTZ)
 		{//角度が限界を超えた場合
 			m_rot.z = MAX_CAMERA_ROTZ;
 		}
@@ -815,14 +812,15 @@ void CCamera::SetRotation(D3DXVECTOR3 rot)
 		m_rot.y = -D3DX_PI;
 		m_rot.y *= -1.0f;
 	}
-	//if (m_rot.z < MIN_CAMERA_ROTZ)
-	//{//角度が限界を超えた場合
-	//	m_rot.z = MIN_CAMERA_ROTZ;
-	//}
-	//else if (m_rot.z > MAX_CAMERA_ROTZ)
-	//{//角度が限界を超えた場合
-	//	m_rot.z = MAX_CAMERA_ROTZ;
-	//}
+
+	if (m_rot.z < MIN_CAMERA_ROTZ)
+	{//角度が限界を超えた場合
+		m_rot.z = MIN_CAMERA_ROTZ;
+	}
+	else if (m_rot.z > MAX_CAMERA_ROTZ)
+	{//角度が限界を超えた場合
+		m_rot.z = MAX_CAMERA_ROTZ;
+	}
 
 	SetV();
 }
@@ -854,14 +852,22 @@ void CCamera::TitleRotateCamera(void)
 }
 
 //==========================================================
-// 座標設定
+// V座標設定
+//==========================================================
+void CCamera::SetPositionV(D3DXVECTOR3 pos)
+{
+	m_posV = pos;
+	SetR();
+}
+
+//==========================================================
+// R座標設定
 //==========================================================
 void CCamera::SetPositionR(D3DXVECTOR3 pos)
 { 
 	m_posR = pos; 
 	SetV();
 }
-
 
 //==========================================================
 // コンストラクタ

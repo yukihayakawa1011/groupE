@@ -55,6 +55,7 @@ private:	// 自分だけがアクセス可能な定義
 		ACTION_CATCH,			// 持つ
 		ACTION_HOLD,			// 保持
 		ACTION_THROW,			// 投げる
+		ACTION_DAMAGE,		// 攻撃を受けた
 		ACTION_MAX
 	};
 
