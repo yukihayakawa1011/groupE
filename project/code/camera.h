@@ -77,6 +77,7 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	D3DXMATRIX m_mtxView;		// ビューマトリックス
 	D3DXMATRIX m_mtxProjection;	// プロジェクションマトリックス
+	D3DXVECTOR3 m_move;			// 移動量
 	D3DXVECTOR3 m_posV;			// 視点
 	D3DXVECTOR3 m_posR;			// 注視点
 	D3DXVECTOR3 m_vecU;			// 上方向ベクトル
