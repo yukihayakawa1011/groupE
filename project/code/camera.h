@@ -10,7 +10,7 @@
 #include "main.h"		//main.hで定義しているものが必要なためinclude
 
 // マクロ定義
-#define MAX_CAMERA_ROTZ (D3DX_PI * 0.999f)	// カメラ最大角度
+#define MAX_CAMERA_ROTZ (D3DX_PI * 0.9f)	// カメラ最大角度
 #define MIN_CAMERA_ROTZ (D3DX_PI * 0.1f)	// カメラ最大角度
 
 //**********************************************************
@@ -46,6 +46,7 @@ public:	// 誰でもアクセス可能
 	void MouseCamera(void);
 	void MoveVR(void);
 	void SetPositionR(D3DXVECTOR3 pos);
+	void SetPositionV(D3DXVECTOR3 pos);
 
 	// タイトル用
 	void TitleRotateCamera(void);

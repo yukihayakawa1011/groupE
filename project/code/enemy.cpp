@@ -42,8 +42,8 @@
 #define START_LIFE	(4)	// 初期体力
 #define DAMAGE_INTERVAL	(10)
 #define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
-#define SEARCH_LENGTH	(300.0f)	//プレイヤー探索範囲
-#define CHACE_LENGTH	(500.0f)	//追跡範囲
+#define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
+#define CHACE_LENGTH	(800.0f)	//追跡範囲
 #define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
 #define ATTACK_COOLTIME	(60)		//攻撃クールタイム
 
@@ -372,9 +372,21 @@ void CEnemy::Controller(void)
 
 	//追跡モードでかつxzどちらか処理前から変化している
 	if (m_bChace == true && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
-	{//ジャンプ処理
-		m_Info.move.y = ENEMY_JUMP;
-		m_bJump = true;
+	{
+		//ジャンプする必要があるか確認
+		CPlayer* pPlayerNear = SearchNearPlayer();
+		D3DXVECTOR3 vecMove = pPlayerNear->GetPosition() - m_Info.pos;
+		D3DXVECTOR3 posDecoy = m_Info.pos + vecMove;
+		posDecoy.y = 0.0f;
+		D3DXVECTOR3 posOldDecoy = m_Info.pos;
+		posOldDecoy.y = 0.0f;
+
+		CObjectX::Collision(posDecoy, posOldDecoy, vecMove, vtxMin, vtxMax, 0.3f);
+		if (posDecoy != m_Info.pos + vecMove)
+		{//ジャンプ処理
+			m_Info.move.y = ENEMY_JUMP;
+			m_bJump = true;
+		}
 	}
 }
 

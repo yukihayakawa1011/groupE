@@ -31,9 +31,9 @@ CMotion::CMotion()
 
 	for (int nCnt = 0; nCnt < MAX_MOTION; nCnt++)
 	{
-		aInfo[nCnt].nNumKey = 0;
-		aInfo[nCnt].pKeyInfo = NULL;
-		aInfo[nCnt].bLoop = false;
+		m_aInfo[nCnt].nNumKey = 0;
+		m_aInfo[nCnt].pKeyInfo = NULL;
+		m_aInfo[nCnt].bLoop = false;
 	}
 
 	m_bEnd = false;
@@ -57,17 +57,17 @@ void CMotion::Uninit(void)
 	// モーション情報の廃棄
 	for (int nCntMotion = 0; nCntMotion < MAX_MOTION; nCntMotion++)
 	{// モーション数分繰り返す
-		if (aInfo[nCntMotion].pKeyInfo != NULL)
+		if (m_aInfo[nCntMotion].pKeyInfo != NULL)
 		{// キー情報が使われている場合
 
-			for (int nCntKey = 0; nCntKey < aInfo[nCntMotion].nNumKey; nCntKey++)
+			for (int nCntKey = 0; nCntKey < m_aInfo[nCntMotion].nNumKey; nCntKey++)
 			{// キー数分繰り返す
 
-				delete[] aInfo[nCntMotion].pKeyInfo[nCntKey].aKey;
-				aInfo[nCntMotion].pKeyInfo[nCntKey].aKey = NULL;
+				delete[] m_aInfo[nCntMotion].pKeyInfo[nCntKey].aKey;
+				m_aInfo[nCntMotion].pKeyInfo[nCntKey].aKey = NULL;
 			}
-			delete[] aInfo[nCntMotion].pKeyInfo;
-			aInfo[nCntMotion].pKeyInfo = NULL;
+			delete[] m_aInfo[nCntMotion].pKeyInfo;
+			m_aInfo[nCntMotion].pKeyInfo = NULL;
 		}
 	}
 }
@@ -82,20 +82,20 @@ void CMotion::Update(void)
 		return;
 	}
 
-	if (aInfo[m_nNowMotion].nNumKey <= 0)
+	if (m_aInfo[m_nNowMotion].nNumKey <= 0)
 	{//キー数が存在している場合
 		return;
 	}
 
-	if (m_bEnd && !aInfo[m_nNowMotion].bLoop)
+	if (m_bEnd && !m_aInfo[m_nNowMotion].bLoop)
 	{
 		return;
 	}
 
 	int nNowMotion = m_nNowMotion;	// 現在のモーション番号
 	int nNowKey = m_nNowKey;		// 現在のキー
-	int nNextkey = (nNowKey + 1) % aInfo[nNowMotion].nNumKey;	//次のキー
-	int nFrame = aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame;
+	int nNextkey = (nNowKey + 1) % m_aInfo[nNowMotion].nNumKey;	//次のキー
+	int nFrame = m_aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame;
 	float fFrame = ((float)m_fNowFrame / (float)nFrame);	// フレーム間の差分
 
 	for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
@@ -104,17 +104,17 @@ void CMotion::Update(void)
 		D3DXVECTOR3 setRot = m_FileData.ppParts[nCntParts]->GetRotation();	// 初期向き
 
 		//差分を算出
-		float fPosDiffX = setPos.x + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosX	// X座標
+		float fPosDiffX = setPos.x + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosX	// X座標
 			- m_OldKey[nCntParts].fPosX;
-		float fPosDiffY = setPos.y + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosY	// Y座標
+		float fPosDiffY = setPos.y + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosY	// Y座標
 			- m_OldKey[nCntParts].fPosY;
-		float fPosDiffZ = setPos.z + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosZ	// Z座標
+		float fPosDiffZ = setPos.z + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosZ	// Z座標
 			- m_OldKey[nCntParts].fPosZ;
-		float fRotDiffX = setRot.x + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotX	// X向き
+		float fRotDiffX = setRot.x + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotX	// X向き
 			- m_OldKey[nCntParts].fRotX;
-		float fRotDiffY = setRot.y + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotY	// Y向き
+		float fRotDiffY = setRot.y + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotY	// Y向き
 			- m_OldKey[nCntParts].fRotY;
-		float fRotDiffZ = setRot.z + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotZ	// Z向き
+		float fRotDiffZ = setRot.z + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotZ	// Z向き
 			- m_OldKey[nCntParts].fRotZ;
 
 		if (fRotDiffZ < -D3DX_PI)
@@ -167,7 +167,7 @@ void CMotion::Update(void)
 
 	m_fNowFrame += CManager::GetInstance()->GetSlow()->Get();
 
-	if (aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame == 0)
+	if (m_aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame == 0)
 	{//フレームが0ではない場合
 		m_nNowKey = 0;
 		m_fNowFrame = 0;
@@ -187,7 +187,7 @@ void CMotion::Update(void)
 			m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetCurrentRotation().z;
 		}
 
-		if (nNextkey >= aInfo[nNowMotion].nNumKey - 1)
+		if (nNextkey >= m_aInfo[nNowMotion].nNumKey - 1)
 		{// 終了
 			m_bEnd = true;
 		}
@@ -213,7 +213,7 @@ void CMotion::LoadMotionData(FILE *pFile)
 		//テキスト読み込み
 		int nResult = fscanf(pFile, "%s", &aStr[0]);
 
-		if (nCntKey >= aInfo[m_nNumMotion].nNumKey && bKey == true)
+		if (nCntKey >= m_aInfo[m_nNumMotion].nNumKey && bKey == true)
 		{//キー数に来た場合
 			m_nNumMotion++;	// モーション数カウントアップ
 			break;
@@ -226,27 +226,27 @@ void CMotion::LoadMotionData(FILE *pFile)
 
 			if (nLoop == 0)
 			{//ループしない場合
-				aInfo[m_nNumMotion].bLoop = false;	//ループしないようにする
+				m_aInfo[m_nNumMotion].bLoop = false;	//ループしないようにする
 			}
 			else
 			{
-				aInfo[m_nNumMotion].bLoop = true;	//ループするようにする
+				m_aInfo[m_nNumMotion].bLoop = true;	//ループするようにする
 			}
 		}
 		else if (strcmp(&aStr[0], "NUM_KEY") == 0)
 		{//キー数
 			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
-			fscanf(pFile, "%d", &aInfo[m_nNumMotion].nNumKey);	//キー数読み込み
+			fscanf(pFile, "%d", &m_aInfo[m_nNumMotion].nNumKey);	//キー数読み込み
 
 																					// キー数分のメモリの確保
-			aInfo[m_nNumMotion].pKeyInfo = new KEY_INFO[aInfo[m_nNumMotion].nNumKey];
+			m_aInfo[m_nNumMotion].pKeyInfo = new KEY_INFO[m_aInfo[m_nNumMotion].nNumKey];
 
 			// パーツ数分キーを確保
-			for (int nCnt = 0; nCnt < aInfo[m_nNumMotion].nNumKey; nCnt++)
+			for (int nCnt = 0; nCnt < m_aInfo[m_nNumMotion].nNumKey; nCnt++)
 			{
-				memset(&aInfo[m_nNumMotion].pKeyInfo[nCnt], NULL, sizeof(KEY_INFO));
+				memset(&m_aInfo[m_nNumMotion].pKeyInfo[nCnt], NULL, sizeof(KEY_INFO));
 
-				aInfo[m_nNumMotion].pKeyInfo[nCnt].aKey = new KEY[m_FileData.nNumParts];
+				m_aInfo[m_nNumMotion].pKeyInfo[nCnt].aKey = new KEY[m_FileData.nNumParts];
 			}
 
 			bKey = true;	//キー数を取得した状態にする
@@ -267,7 +267,7 @@ void CMotion::LoadMotionData(FILE *pFile)
 				else if (strcmp(&aStr[0], "FRAME") == 0)
 				{//フレーム数
 					fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
-					fscanf(pFile, "%d", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].nFrame);	//読み込み
+					fscanf(pFile, "%d", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].nFrame);	//読み込み
 					bFrame = true;
 				}
 				else if (strcmp(&aStr[0], "KEY") == 0 && bFrame == true)
@@ -284,16 +284,16 @@ void CMotion::LoadMotionData(FILE *pFile)
 						else if (strcmp(&aStr[0], "POS") == 0)
 						{//フレーム数
 							fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
-							fscanf(pFile, "%f", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fPosX);	//x座標読み込み
-							fscanf(pFile, "%f", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fPosY);	//y座標読み込み
-							fscanf(pFile, "%f", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fPosZ);	//z座標読み込み
+							fscanf(pFile, "%f", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fPosX);	//x座標読み込み
+							fscanf(pFile, "%f", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fPosY);	//y座標読み込み
+							fscanf(pFile, "%f", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fPosZ);	//z座標読み込み
 						}
 						else if (strcmp(&aStr[0], "ROT") == 0)
 						{//フレーム数																   
 							fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み								
-							fscanf(pFile, "%f", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fRotX);	//x座標読み込み
-							fscanf(pFile, "%f", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fRotY);	//y座標読み込み
-							fscanf(pFile, "%f", &aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fRotZ);	//z座標読み込み
+							fscanf(pFile, "%f", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fRotX);	//x座標読み込み
+							fscanf(pFile, "%f", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fRotY);	//y座標読み込み
+							fscanf(pFile, "%f", &m_aInfo[m_nNumMotion].pKeyInfo[nCntKey].aKey[nCntParts].fRotZ);	//z座標読み込み
 						}
 					}
 					nCntParts++;
@@ -324,7 +324,7 @@ void CMotion::BlendSet(int nType)
 		{// 現在のモーションと違う場合
 			m_nOldType = m_nNowMotion;
 			m_nNowMotion = nType;	// 種類を設定
-			m_nNowKey = aInfo[m_nNowMotion].nNumKey - 1;
+			m_nNowKey = m_aInfo[m_nNowMotion].nNumKey - 1;
 			m_fNowFrame = 0;
 			m_bEnd = false;
 
@@ -366,12 +366,12 @@ void CMotion::InitSet(int nType)
 		for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
 		{
 			// 前回の値を取得
-			m_OldKey[nCntParts].fPosX = m_FileData.ppParts[nCntParts]->GetPosition().x + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosX;
-			m_OldKey[nCntParts].fPosY = m_FileData.ppParts[nCntParts]->GetPosition().y + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosY;
-			m_OldKey[nCntParts].fPosZ = m_FileData.ppParts[nCntParts]->GetPosition().z + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosZ;
-			m_OldKey[nCntParts].fRotX = m_FileData.ppParts[nCntParts]->GetRotation().x + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotX;
-			m_OldKey[nCntParts].fRotY = m_FileData.ppParts[nCntParts]->GetRotation().y + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotY;
-			m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetRotation().z + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotZ;
+			m_OldKey[nCntParts].fPosX = m_FileData.ppParts[nCntParts]->GetPosition().x + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosX;
+			m_OldKey[nCntParts].fPosY = m_FileData.ppParts[nCntParts]->GetPosition().y + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosY;
+			m_OldKey[nCntParts].fPosZ = m_FileData.ppParts[nCntParts]->GetPosition().z + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosZ;
+			m_OldKey[nCntParts].fRotX = m_FileData.ppParts[nCntParts]->GetRotation().x + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotX;
+			m_OldKey[nCntParts].fRotY = m_FileData.ppParts[nCntParts]->GetRotation().y + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotY;
+			m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetRotation().z + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotZ;
 		}
 	}
 }
@@ -393,12 +393,12 @@ void CMotion::Set(int nType)
 			for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
 			{
 				// 前回の値を取得
-				m_OldKey[nCntParts].fPosX = m_FileData.ppParts[nCntParts]->GetPosition().x + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosX;
-				m_OldKey[nCntParts].fPosY = m_FileData.ppParts[nCntParts]->GetPosition().y + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosY;
-				m_OldKey[nCntParts].fPosZ = m_FileData.ppParts[nCntParts]->GetPosition().z + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosZ;
-				m_OldKey[nCntParts].fRotX = m_FileData.ppParts[nCntParts]->GetRotation().x + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotX;
-				m_OldKey[nCntParts].fRotY = m_FileData.ppParts[nCntParts]->GetRotation().y + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotY;
-				m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetRotation().z + aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotZ;
+				m_OldKey[nCntParts].fPosX = m_FileData.ppParts[nCntParts]->GetPosition().x + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosX;
+				m_OldKey[nCntParts].fPosY = m_FileData.ppParts[nCntParts]->GetPosition().y + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosY;
+				m_OldKey[nCntParts].fPosZ = m_FileData.ppParts[nCntParts]->GetPosition().z + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fPosZ;
+				m_OldKey[nCntParts].fRotX = m_FileData.ppParts[nCntParts]->GetRotation().x + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotX;
+				m_OldKey[nCntParts].fRotY = m_FileData.ppParts[nCntParts]->GetRotation().y + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotY;
+				m_OldKey[nCntParts].fRotZ = m_FileData.ppParts[nCntParts]->GetRotation().z + m_aInfo[m_nNowMotion].pKeyInfo[m_nNowKey].aKey[nCntParts].fRotZ;
 
 				// 設定
 				m_FileData.ppParts[nCntParts]->SetCurrentPosition(D3DXVECTOR3(m_OldKey[nCntParts].fPosX, m_OldKey[nCntParts].fPosY, m_OldKey[nCntParts].fPosZ));
@@ -415,16 +415,16 @@ void CMotion::Update(float fSpeedMul)
 {
 	if (m_FileData.ppParts != NULL)
 	{// 使用されていない場合
-		if (aInfo[m_nNowMotion].nNumKey > 0)
+		if (m_aInfo[m_nNowMotion].nNumKey > 0)
 		{//キー数が存在している場合
 			int nNowMotion = m_nNowMotion;	// 現在のモーション番号
 			int nNowKey = m_nNowKey;		// 現在のキー
-			int nNextkey = (nNowKey + 1) % aInfo[nNowMotion].nNumKey;	//次のキー
-			float fNumFrame = aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame * fSpeedMul;
+			int nNextkey = (nNowKey + 1) % m_aInfo[nNowMotion].nNumKey;	//次のキー
+			float fNumFrame = m_aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame * fSpeedMul;
 
 			if (fNumFrame == 0.0f)
 			{
-				fNumFrame = (float)aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame;
+				fNumFrame = (float)m_aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame;
 			}
 			float fFrame = ((float)m_fNowFrame / fNumFrame);	// フレーム間の差分
 
@@ -434,17 +434,17 @@ void CMotion::Update(float fSpeedMul)
 				D3DXVECTOR3 setRot = m_FileData.ppParts[nCntParts]->GetRotation();	// 初期向き
 
 				//差分を算出
-				float fPosDiffX = setPos.x + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosX	// X座標
+				float fPosDiffX = setPos.x + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosX	// X座標
 					- m_OldKey[nCntParts].fPosX;
-				float fPosDiffY = setPos.y + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosY	// Y座標
+				float fPosDiffY = setPos.y + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosY	// Y座標
 					- m_OldKey[nCntParts].fPosY;
-				float fPosDiffZ = setPos.z + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosZ	// Z座標
+				float fPosDiffZ = setPos.z + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fPosZ	// Z座標
 					- m_OldKey[nCntParts].fPosZ;
-				float fRotDiffX = setRot.x + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotX	// X向き
+				float fRotDiffX = setRot.x + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotX	// X向き
 					- m_OldKey[nCntParts].fRotX;
-				float fRotDiffY = setRot.y + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotY	// Y向き
+				float fRotDiffY = setRot.y + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotY	// Y向き
 					- m_OldKey[nCntParts].fRotY;
-				float fRotDiffZ = setRot.z + aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotZ	// Z向き
+				float fRotDiffZ = setRot.z + m_aInfo[nNowMotion].pKeyInfo[nNextkey].aKey[nCntParts].fRotZ	// Z向き
 					- m_OldKey[nCntParts].fRotZ;
 
 				if (fRotDiffZ < -D3DX_PI)
@@ -497,7 +497,7 @@ void CMotion::Update(float fSpeedMul)
 
 			m_fNowFrame += CManager::GetInstance()->GetSlow()->Get();
 
-			if (aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame != 0)
+			if (m_aInfo[nNowMotion].pKeyInfo[nNowKey].nFrame != 0)
 			{//フレームが0ではない場合
 				if (m_fNowFrame >= fNumFrame)
 				{//現在のフレーム数が到達した場合

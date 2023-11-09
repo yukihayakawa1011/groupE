@@ -29,6 +29,7 @@
 #include "sound.h"
 #include "waist.h"
 #include "model.h"
+#include "item.h"
 
 //===============================================
 // マクロ定義
@@ -41,7 +42,7 @@
 #define INER	(0.3f)		// 慣性
 #define STEP_SPEED	(50.0f)
 #define STEP_COOLTIME	(90.0f)
-#define START_LIFE	(4)	// 初期体力
+#define START_LIFE	(6)	// 初期体力
 #define DAMAGE_INTERVAL	(10.0f)
 #define DAMAGE_APPEAR	(110.0f)
 #define DEATH_INTERVAL	(120.0f)
@@ -51,6 +52,8 @@
 #define SHADOW_ALPHA	(0.4f)
 #define JUMP	(25.0f)
 #define ATK_RANGE	(20.0f)
+#define DROP_CNT	(4)
+#define START_COIN	(10)
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -86,6 +89,7 @@ CPlayer::CPlayer(const D3DXVECTOR3 pos)
 	m_action = ACTION_NEUTRAL;
 	m_nId = m_nNumCount;
 	m_bJump = false;
+	m_nItemCnt = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -122,6 +126,7 @@ CPlayer::CPlayer(int nPriOrity)
 	m_nId = m_nNumCount;
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
+	m_nItemCnt = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -201,6 +206,7 @@ HRESULT CPlayer::Init(void)
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
 	m_bJump = false;
+	m_nItemCnt = START_COIN;
 
 	return S_OK;
 }
@@ -270,6 +276,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
+	m_nItemCnt = START_COIN;
 
 	return S_OK;
 }
@@ -458,6 +465,7 @@ void CPlayer::Controller(void)
 	m_fRotMove = rot.y;	//現在の向きを取得
 
 	// 操作処理
+	if(m_action != ACTION_DAMAGE)
 	{
 		Move();		// 移動
 		Rotation();	// 回転
@@ -465,8 +473,9 @@ void CPlayer::Controller(void)
 		Attack();	// 攻撃
 		Catch();		// 掴む
 		Throw();		// 投げる
-		MotionSet();	// モーション設定
 	}
+
+	MotionSet();	// モーション設定
 
 	pos = GetPosition();	// 座標を取得
 
@@ -501,6 +510,15 @@ void CPlayer::Controller(void)
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
 		m_bJump = false;
+	}
+
+	// アイテムとの当たり判定
+	CItem *pItem = CItem::Collision(m_Info.pos);
+
+	if (pItem != nullptr)
+	{
+		m_nItemCnt++;
+		pItem->Uninit();
 	}
 }
 
@@ -863,6 +881,8 @@ void CPlayer::Damage(int nDamage)
 		m_nLife = 0;
 	}
 
+	Drop(DROP_CNT * (nOldLife - m_nLife));
+
 	if (m_nLife != nOldLife)
 	{
 		m_Info.fStateCounter = DAMAGE_INTERVAL;
@@ -904,6 +924,22 @@ void CPlayer::MotionSet(void)
 	if (nullptr == m_pBody->GetMotion())
 	{// モーション無し
 		return;
+	}
+
+	if (m_Info.state == STATE_DAMAGE)
+	{// ダメージ状態
+		m_action = ACTION_DAMAGE;
+		m_pBody->GetMotion()->Set(m_action);
+		m_pLeg->GetMotion()->Set(m_action);
+
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;	// 保持状態に変更
+		}
+		else
+		{
+			return;
+		}
 	}
 
 	if (!m_bJump && !m_bMove && 
@@ -955,6 +991,16 @@ void CPlayer::MotionSet(void)
 		{// モーション終了
 			m_action = ACTION_NEUTRAL;
 		}
+	}
+	else if (m_action == ACTION_DAMAGE)
+	{// 投げる
+		m_pBody->GetMotion()->BlendSet(m_action);
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
+
+		return;
 	}
 	else
 	{
@@ -1121,5 +1167,37 @@ void CPlayer::DamageCollision(D3DXVECTOR3 pos)
 		}
 
 		pPlayer = pPlayerNext;
+	}
+}
+
+//===============================================
+// アイテムを落とす
+//===============================================
+void CPlayer::Drop(int nDropCnt)
+{
+	int nOldCnt = m_nItemCnt;
+
+	m_nItemCnt -= nDropCnt;
+
+	if (m_nItemCnt < 0) {	// 所持数が0を下回った
+		m_nItemCnt = 0;
+	}
+
+	int nDiff = nOldCnt - m_nItemCnt;	// 減少量
+
+	// 落とした分生成
+	for (int nCnt = 0; nCnt < nDiff; nCnt++)
+	{
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
+
+		if (nullptr != pItem)
+		{
+			D3DXVECTOR3 move;
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+			move.y = 18.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+			pItem->SetMove(move);
+		}
 	}
 }
