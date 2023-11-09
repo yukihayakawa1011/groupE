@@ -42,6 +42,7 @@ private:	// 自分だけがアクセス可能な定義
 		STATE_DAMAGE,		// ダメージ状態
 		STATE_DEATH,		// 死亡状態
 		STATE_SPAWN,		// 復活中状態
+		STATE_CATCH,		// 掴まれている状態
 		STATE_MAX
 	};
 
@@ -60,7 +61,7 @@ private:	// 自分だけがアクセス可能な定義
 	};
 
 	// 情報構造体
-	typedef struct
+	struct SInfo
 	{
 		D3DXVECTOR3 pos;		// 位置
 		D3DXVECTOR3 rot;		// 向き
@@ -70,7 +71,14 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 posDiff;	// 目標の座標
 		STATE state;			// 状態
 		float fStateCounter;	// 状態管理カウンター
-	}SInfo;
+	};
+
+	// 掴み情報構造体
+	struct SCatch
+	{
+		CPlayer *pPlayer;	// プレイヤー
+		int nMoveCnt;		// 移動した量
+	};
 
 public:	// 誰でもアクセス可能
 
@@ -104,6 +112,7 @@ public:	// 誰でもアクセス可能
 	CPlayer *GetNext(void) { return m_pNext; }
 	void Damage(int nDamage);
 	void SetLife(int nLife);
+	STATE GetState(void) { return m_Info.state; }
 
 private:	// 自分だけがアクセス可能
 
@@ -120,6 +129,8 @@ private:	// 自分だけがアクセス可能
 	void MotionSet(void);
 	void Attack(void);
 	void Catch(void);
+	void PlayerCatch(D3DXVECTOR3 pos);
+	void SetCatchMatrix(void);
 	void Throw(void);
 	void Drop(int nDropCnt);
 	void DamageCollision(D3DXVECTOR3 pos);
@@ -129,18 +140,19 @@ private:	// 自分だけがアクセス可能
 	static CPlayer *m_pCur;	// 最後尾のオブジェクトへのポインタ
 	CPlayer *m_pPrev;	// 前のオブジェクトへのポインタ
 	CPlayer *m_pNext;	// 次のオブジェクトへのポインタ
-	SInfo m_Info;			// 自分自身の情報
-	CWaist *m_pWaist;		// 腰
+	SInfo m_Info;		// 自分自身の情報
+	SCatch m_Catch;	// 掴みに関する情報
+	CWaist *m_pWaist;	// 腰
 	CCharacter *m_pBody;	// 上半身
 	CCharacter *m_pLeg;	// 下半身
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
-	bool m_bMove;			//移動したかどうか
-	bool m_bJump;			// ジャンプ
-	int m_nLife;	// 体力
-	int m_nId;	// ID
-	TYPE m_type;	// 種類
+	bool m_bMove;		// 移動したかどうか
+	bool m_bJump;		// ジャンプ
+	int m_nLife;		// 体力
+	int m_nId;		// ID
+	TYPE m_type;		// 種類
 	ACTION m_action;	// アクション
 	int m_nItemCnt;
 	static int m_nNumCount;
