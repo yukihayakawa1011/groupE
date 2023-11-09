@@ -17,7 +17,7 @@ class CObject3D : public CObject
 {
 public:	// 誰でもアクセス可能
 
-	CObject3D(int nPriority = 5);	// コンストラクタ
+	CObject3D(int nPriority = 6);	// コンストラクタ
 	~CObject3D();	// デストラクタ
 
 	// メンバ関数

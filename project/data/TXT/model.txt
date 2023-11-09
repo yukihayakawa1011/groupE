@@ -20,12 +20,19 @@ TEXTURE_FILENAME = data/TEXTURE/field000.jpg			# [1]川水(上)
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 1
+NUM_MODEL = 8
 
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/5mcube.x	# [0]5mキューブ
+MODEL_FILENAME = data/MODEL/5mcube.x	  # [0]5mキューブ
+MODEL_FILENAME = data/MODEL/botan.x       # [1]ボタン
+MODEL_FILENAME = data/MODEL/camera000.x   # [2]監視カメラ
+MODEL_FILENAME = data/MODEL/desk.x        # [3]机
+MODEL_FILENAME = data/MODEL/gate.x        # [4]ドア
+MODEL_FILENAME = data/MODEL/gate001.x     # [5]ドア
+MODEL_FILENAME = data/MODEL/roundchair.x  # [6]丸椅子
+MODEL_FILENAME = data/MODEL/wall000.x     # [7]壁
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -632,6 +639,62 @@ END_MODELSET
 MODELSET
 	TYPE = 0
 	POS = -1000.0 0.0 -700.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -550.0 0.0 -550.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 1
+	POS = -700.0 0.0 -550.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -650.0 100.0 640.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = -200.0 50.0 -550.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 5
+	POS = 500.0 150.0 300.0
+	ROT = 0.0 90.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = -100.0 40.0 -550.0
+	ROT = 0.0 90.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 6
+	POS = -200.0 40.0 -450.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 7
+	POS = 800.0 150.0 0.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
