@@ -68,6 +68,7 @@ public:	// 誰でもアクセス可能
 	int GetPri(void) { return m_nPriority; }
 	CObject *GetNext(void) { return m_pNext; }
 	CObject *GetPrev(void) { return m_pPrev; }
+	bool GetDraw(void) { return m_bDraw; }
 
 	// メンバ関数(設定)
 	void SetType(const TYPE type);

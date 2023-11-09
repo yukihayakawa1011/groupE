@@ -163,8 +163,10 @@ HRESULT CGame::Init(void)
 		break;
 	}
 
-	CItem::Create(D3DXVECTOR3(100.0f, 100.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", NULL);
-	CItem::Create(D3DXVECTOR3(-100.0f, 100.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", NULL);
+	for (int nCnt = 0; nCnt < 10; nCnt++)
+	{
+		CItem::Create(D3DXVECTOR3(400.0f + nCnt * -100.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_NORMAL);
+	}
 
 	//ƒJƒƒ‰‰Šú‰»
 	{

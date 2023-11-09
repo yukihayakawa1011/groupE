@@ -121,6 +121,7 @@ private:	// 自分だけがアクセス可能
 	void Attack(void);
 	void Catch(void);
 	void Throw(void);
+	void Drop(int nDropCnt);
 	void DamageCollision(D3DXVECTOR3 pos);
 
 	// メンバ変数
@@ -141,6 +142,7 @@ private:	// 自分だけがアクセス可能
 	int m_nId;	// ID
 	TYPE m_type;	// 種類
 	ACTION m_action;	// アクション
+	int m_nItemCnt;
 	static int m_nNumCount;
 	
 };
