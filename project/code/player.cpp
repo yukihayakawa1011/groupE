@@ -1192,7 +1192,8 @@ void CPlayer::Drop(int nDropCnt)
 
 		if (nullptr != pItem)
 		{
-			D3DXVECTOR3 move;
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
 			//à⁄ìÆó ÇÃê›íË
 			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
 			move.y = 18.0f;

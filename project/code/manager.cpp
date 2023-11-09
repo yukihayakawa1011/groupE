@@ -324,6 +324,10 @@ void CManager::Uninit(void)
 //===================================================
 void CManager::Update(void)
 {
+	if (m_pFade != NULL)
+	{
+		m_pFade->Update();
+	}
 	// デバッグ表示の更新処理
 	if (m_pDebugProc != NULL)
 	{// 使用している場合
@@ -565,6 +569,13 @@ void CManager::SetMode(CScene::MODE mode)
 		m_pScene->Uninit();
 		delete m_pScene;
 		m_pScene = NULL;
+	}
+
+	if (m_pFade != NULL)
+	{
+		m_pFade->Uninit();
+		delete m_pFade;
+		m_pFade = NULL;
 	}
 
 	// データリセット

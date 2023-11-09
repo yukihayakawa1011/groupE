@@ -76,8 +76,6 @@ void CFade::Uninit(void)
 		m_pObject->Uninit();
 		m_pObject = NULL;
 	}
-
-	Release();
 }
 
 //===============================================

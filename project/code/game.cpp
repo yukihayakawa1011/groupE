@@ -243,6 +243,7 @@ void CGame::Uninit(void)
 	//WinsockI—¹ˆ—
 	WSACleanup();	// WSACleanupŠÖ” : winsock‚ÌI—¹ˆ—
 
+	m_state = STATE_LOCAL;
 }
 
 //===============================================
@@ -257,9 +258,13 @@ void CGame::Update(void)
 	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+		m_state = STATE_END;
 	}
 
-	CScene::Update();
+	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
+	{
+		CScene::Update();
+	}
 }
 
 //===============================================

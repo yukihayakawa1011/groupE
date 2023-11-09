@@ -75,7 +75,7 @@ void CObjectManager::ReleaseAll(void)
 
 			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
 
-														// 終了処理
+			// 終了処理
 			pObject->Uninit();
 
 			pObject = pObjectNext;	// 次のオブジェクトに移動
