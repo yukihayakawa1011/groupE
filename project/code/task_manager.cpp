@@ -63,8 +63,11 @@ void CTaskManager::ReleaseAll(void)
 
 		CTask *pTaskNext = pTask->GetNext();	// 次のオブジェクトへのポインタを取得
 
-		// 終了処理
-		pTask->Uninit();
+		if (!pTask->GetDeath())
+		{
+			// 終了処理
+			pTask->Uninit();
+		}
 
 		pTask = pTaskNext;	// 次のオブジェクトに移動
 	}
@@ -85,8 +88,11 @@ void CTaskManager::UpdateAll(void)
 
 		CTask *pTaskNext = pTask->GetNext();	// 次のオブジェクトへのポインタを取得
 
-		// 更新処理
-		pTask->Update();
+		if (!pTask->GetDeath())
+		{
+			// 更新処理
+			pTask->Update();
+		}
 
 		pTask = pTaskNext;	// 次のオブジェクトに移動
 	}

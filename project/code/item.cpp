@@ -129,6 +129,8 @@ HRESULT CItem::Init(const char *pFileName)
 //==========================================================
 void CItem::Uninit(void)
 {
+	Release();
+
 	// リストから自分自身を削除する
 	if (m_pTop == this)
 	{// 自身が先頭
@@ -172,15 +174,6 @@ void CItem::Uninit(void)
 		m_pObject->Uninit();
 		m_pObject = NULL;
 	}
-
-	if (m_pObject != NULL)
-	{
-		m_pObject->Uninit();
-		delete m_pObject;
-		m_pObject = NULL;
-	}
-
-	Release();
 }
 
 //==========================================================
@@ -214,7 +207,7 @@ void CItem::Update(void)
 		break;
 
 	case TYPE_DROP:
-
+	{
 		m_posOld = m_pos;
 
 		//位置を代入する
@@ -229,12 +222,12 @@ void CItem::Update(void)
 			m_move.y *= -1.0f;
 			m_nBound++;
 
-			if(m_nBound >= BOUND_COUNT)
+			if (m_nBound >= BOUND_COUNT)
 			{
 				m_nType = TYPE_NORMAL;
 			}
 		}
-
+	}
 		break;
 	}
 
