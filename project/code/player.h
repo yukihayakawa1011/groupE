@@ -112,7 +112,7 @@ public:	// 誰でもアクセス可能
 	CPlayer *GetNext(void) { return m_pNext; }
 	void Damage(int nDamage);
 	void SetLife(int nLife);
-	int GetLife(void) { m_nLife; }
+	int GetLife(void) { return m_nLife; }
 	STATE GetState(void) { return m_Info.state; }
 
 private:	// 自分だけがアクセス可能

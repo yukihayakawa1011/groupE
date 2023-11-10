@@ -461,12 +461,15 @@ CPlayer* CEnemy::SearchNearPlayer(float* pLength)
 
 	while (pPlayer != nullptr)
 	{
-		D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
-		float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
-		if (fLengthNear > fLength)
-		{//ˆê”Ô‹ß‚¢‚â‚Â
-			pPlayerNear = pPlayer;
-			fLengthNear = fLength;
+		if (pPlayer->GetLife() > 0)
+		{//¶‚«‚Ä‚¢‚é“z‚ðŒv‘ª
+			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
+			float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
+			if (fLengthNear > fLength)
+			{//ˆê”Ô‹ß‚¢‚â‚Â
+				pPlayerNear = pPlayer;
+				fLengthNear = fLength;
+			}
 		}
 
 		pPlayer = pPlayer->GetNext();
