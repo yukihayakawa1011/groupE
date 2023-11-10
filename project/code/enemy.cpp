@@ -375,15 +375,9 @@ void CEnemy::Controller(void)
 	{
 		//ジャンプする必要があるか確認
 		CPlayer* pPlayerNear = SearchNearPlayer();
-		D3DXVECTOR3 vecMove = pPlayerNear->GetPosition() - m_Info.pos;
-		D3DXVECTOR3 posDecoy = m_Info.pos + vecMove;
-		posDecoy.y = 0.0f;
-		D3DXVECTOR3 posOldDecoy = m_Info.pos;
-		posOldDecoy.y = 0.0f;
 
-		CObjectX::Collision(posDecoy, posOldDecoy, vecMove, vtxMin, vtxMax, 0.3f);
-		if (posDecoy != m_Info.pos + vecMove)
-		{//ジャンプ処理
+		if (CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
+		{
 			m_Info.move.y = ENEMY_JUMP;
 			m_bJump = true;
 		}
@@ -395,13 +389,9 @@ void CEnemy::Controller(void)
 //===============================================
 void CEnemy::Move(void)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
-	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
-	float fSpeed = MOVE;	// 移動量
-
 	//敵の更新
-	m_Info.move.x += -sinf(CamRot.y - m_fRotMove) * fSpeed;
-	m_Info.move.z += cosf(CamRot.y - m_fRotMove) * fSpeed;
+	m_Info.move.x += sinf(m_fRotDest - D3DX_PI) * MOVE;
+	m_Info.move.z += cosf(m_fRotDest - D3DX_PI) * MOVE;
 }
 
 //===============================================
@@ -451,7 +441,8 @@ void CEnemy::Chace(void)
 	else if (pPlayerNear != nullptr && fLengthNear <= CHACE_LENGTH)
 	{//追跡範囲
 		D3DXVECTOR3 posPlayer = pPlayerNear->GetPosition();
-		m_fRotDest = atan2f(m_Info.pos.x - posPlayer.x, m_Info.pos.z - posPlayer.z);
+		float aaa = atan2f(posPlayer.x - m_Info.pos.x, posPlayer.z - m_Info.pos.z);
+		m_fRotDest = FIX_ROT(atan2f(posPlayer.x - m_Info.pos.x, posPlayer.z - m_Info.pos.z) + D3DX_PI);
 	}
 	else
 	{

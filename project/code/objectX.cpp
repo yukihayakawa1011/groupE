@@ -293,6 +293,27 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 }
 
 //==========================================================
+// 当たり判定(外積使用)
+//==========================================================
+bool CObjectX::CollisionCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld)
+{
+	CObjectX* pObj = m_pTop;	// 先頭取得
+
+	while (pObj != NULL)
+	{
+		CObjectX* pObjNext = pObj->m_pNext;
+		if (pObj->CollisionCheckCloss(pos, posOld))
+		{
+			return true;
+		}
+
+		pObj = pObjNext;
+	}
+
+	return false;
+}
+
+//==========================================================
 // 当たり判定
 //==========================================================
 void CObjectX::SetRotSize(D3DXVECTOR3 &SetMax, D3DXVECTOR3 &SetMin, D3DXVECTOR3 vtxMax, D3DXVECTOR3 vtxMin, float fRot)
@@ -377,53 +398,6 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 		pFile->GetMin(GetIdx()),
 		m_rot.y);
 
-	//if (pos.y + vtxMax.y > m_pos.y + vtxObjMin.y
-	//	&& pos.y + vtxMin.y <= m_pos.y + vtxObjMax.y)
-	//{//プレイヤーとモデルが同じ高さにある
-	//	if (posOld.x + vtxMin.x >= m_pos.x + vtxObjMax.x
-	//		&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x
-	//		&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z
-	//		&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
-	//	{//右から左にめり込んだ
-	//		move.x *= -1.0f;
-	//		move.x *= fRefMulti;
-	//		pos.x = m_pos.x + vtxObjMax.x - vtxMin.x + 0.1f + move.x;
-	//	}
-	//	else if (posOld.x + vtxMax.x <= m_pos.x + vtxObjMin.x
-	//		&& pos.x + vtxMax.x > m_pos.x + vtxObjMin.x
-	//		&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z
-	//		&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
-	//	{//左から右にめり込んだ
-	//	 //位置を戻す
-	//		move.x *= -1.0f;
-	//		move.x *= fRefMulti;
-	//		pos.x = m_pos.x + vtxObjMin.x - vtxMax.x - 0.1f + move.x;
-	//		//move.x = 0.0f;
-	//	}
-	//	else if (posOld.z + vtxMin.z >= m_pos.z + vtxObjMax.z
-	//		&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z
-	//		&& pos.x + vtxMax.x > m_pos.x + vtxObjMin.x
-	//		&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x)
-	//	{//奥から手前にめり込んだ
-	//	 //位置を戻す
-	//		move.z *= -1.0f;
-	//		move.z *= fRefMulti;
-	//		pos.z = m_pos.z + vtxObjMax.z - vtxMin.z + 0.1f + move.z;
-	//		//move.z = 0.0f;
-	//	}
-	//	else if (posOld.z + vtxMax.z <= m_pos.z + vtxObjMin.z
-	//		&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z
-	//		&& pos.x + vtxMax.x > m_pos.x + vtxObjMin.x
-	//		&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x)
-	//	{//手前から奥にめり込んだ
-	//	 //位置を戻す
-	//		move.z *= -1.0f;
-	//		move.z *= fRefMulti;
-	//		pos.z = m_pos.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
-	//		//move.z = 0.0f;
-	//	}
-	//}
-
 	//X
 	if (pos.y + vtxMax.y > m_pos.y + vtxObjMin.y
 		&& pos.y + vtxMin.y < m_pos.y + vtxObjMax.y
@@ -492,6 +466,59 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 	}
 
 	return bLand;
+}
+
+//==========================================================
+// 個別判定チェック(外積使用)
+//==========================================================
+bool CObjectX::CollisionCheckCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld)
+{
+	CXFile* pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	// 向きを反映
+	SetRotSize(vtxObjMax,
+		vtxObjMin,
+		pFile->GetMax(GetIdx()),
+		pFile->GetMin(GetIdx()),
+		m_rot.y);
+
+	D3DXVECTOR3 posPoint[4] =
+	{
+		D3DXVECTOR3(m_pos.x + vtxObjMin.x,0.0f,m_pos.z + vtxObjMin.z),
+		D3DXVECTOR3(m_pos.x + vtxObjMax.x,0.0f,m_pos.z + vtxObjMin.z),
+		D3DXVECTOR3(m_pos.x + vtxObjMax.x,0.0f,m_pos.z + vtxObjMax.z),
+		D3DXVECTOR3(m_pos.x + vtxObjMin.x,0.0f,m_pos.z + vtxObjMax.z)
+	};
+
+	D3DXVECTOR3 vecMove, vecLine;
+	D3DXVECTOR3 vecToPos, vecToPosOld;
+	float fAreaA = 1.0f, fAreaB = 1.1f;
+
+	for (int cnt = 0; cnt < 4; cnt++)
+	{
+		vecMove = pos - posOld;
+		vecLine = posPoint[(cnt + 1) % 4] - posPoint[cnt];	//境界線ベクトル
+		vecToPos = pos - posPoint[cnt];
+		vecToPos.y = 0.0f;
+		vecToPosOld = posOld - posPoint[cnt];
+		vecToPosOld.y = 0.0f;
+
+		//面積求める
+		fAreaA = (vecToPos.z * vecMove.x) - (vecToPos.x * vecMove.z);
+		fAreaB = (vecLine.z * vecMove.x) - (vecLine.x * vecMove.z);
+
+		if ((vecLine.z * vecToPosOld.x) - (vecLine.x * vecToPosOld.z) >= 0.0f && (vecLine.z * vecToPos.x) - (vecLine.x * vecToPos.z) < 0.0f)
+		{
+			if (fAreaA / fAreaB >= 0.0f && fAreaA / fAreaB <= 1.0f)
+			{//ごっつん
+				return true;
+			}
+		}
+	}
+
+	return false;
 }
 
 //==========================================================
