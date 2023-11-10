@@ -27,6 +27,7 @@
 #include "object2D.h"
 #include "player.h"
 #include "enemy.h"
+#include "enemymanager.h"
 #include "item.h"
 
 // グローバル
@@ -162,6 +163,9 @@ HRESULT CGame::Init(void)
 
 		break;
 	}
+
+	//敵マネージャ生成（投げっぱ）
+	CEnemyManager::Create();
 
 	for (int nCnt = 0; nCnt < 10; nCnt++)
 	{

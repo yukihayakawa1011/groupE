@@ -78,6 +78,7 @@ public:	// 誰でもアクセス可能
 	CEnemy *GetNext(void) { return m_pNext; }
 	void Damage(int nDamage);
 	void SetLife(int nLife);
+	static int GetNum(void) { return m_nNumCount; }
 
 private:	// 自分だけがアクセス可能
 
