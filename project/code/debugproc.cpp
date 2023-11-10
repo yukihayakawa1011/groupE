@@ -134,6 +134,12 @@ void CDebugProc::Update(void)
 		D3DXVECTOR3 CamRot = CManager::GetInstance()->GetCamera()->GetRotation();
 		CManager::GetInstance()->GetDebugProc()->Print("       向き : [%f, %f, %f]\n", CamRot.x, CamRot.y, CamRot.z);
 	}
+
+	{
+		Print("\n-------------------------------------------------------------------------------------\n");
+		Print("プレイヤーの操作(コントローラーのみ) : 移動 [左スティック] : ジャンプ [Bボタン]\n");
+		Print("                                     : 攻撃 [Aボタン] : 掴む(プレイヤー) [Xボタン]\n");
+	}
 }
 
 //==========================================================

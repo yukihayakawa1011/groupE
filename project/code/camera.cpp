@@ -90,14 +90,14 @@ void CCamera::Update(void)
 		Edit();
 	}*/
 	// 全視点の移動
-	MoveVR();
+	//MoveVR();
 
-	//注視点の移動
-	MoveR();
+	////注視点の移動
+	//MoveR();
 
-	//視点の移動
-	MoveV();
-	MouseCamera();
+	////視点の移動
+	//MoveV();
+	//MouseCamera();
 
 }
 
