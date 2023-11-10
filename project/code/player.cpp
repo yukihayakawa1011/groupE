@@ -751,7 +751,7 @@ void CPlayer::Jump(void)
 		return;
 	}
 
-	if (m_Catch.pPlayer != nullptr)
+	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH)
 	{
 		return;
 	}
@@ -764,7 +764,16 @@ void CPlayer::Jump(void)
 		if (m_bJump == false)
 		{// ジャンプしていない場合
 			m_bJump = true;
-			m_Info.move.y = JUMP;
+
+			if(m_Catch.pPlayer != nullptr)
+			{
+				m_Info.move.y = JUMP * 0.5f;
+			}
+			else
+			{
+				m_Info.move.y = JUMP;
+			}
+
 		}
 	}
 }
@@ -1123,7 +1132,7 @@ void CPlayer::MotionSet(void)
 //===============================================
 void CPlayer::Attack(void)
 {
-	if (m_action < ACTION_NEUTRAL || m_action > ACTION_JUMP)
+	if (m_action < ACTION_NEUTRAL || m_action > ACTION_JUMP || m_Info.state == STATE_CATCH)
 	{// 攻撃不可能
 		if (m_action != ACTION_ATK)
 		{// 攻撃中ではない
@@ -1196,8 +1205,24 @@ void CPlayer::Catch(void)
 			m_fRotDest = m_fRotMove;
 			if (m_Catch.pPlayer->m_bMove) {	// 相手が移動
 				m_Catch.nMoveCnt++;	// カウントアップ
-				m_Info.pos.x += m_Catch.pPlayer->m_Info.move.x * 0.75f;	// 相手の移動量に引っ張られる
-				m_Info.pos.z += m_Catch.pPlayer->m_Info.move.z * 0.75f;	// 相手の移動量に引っ張られる
+				if (m_Catch.pPlayer->m_bJump)
+				{
+					m_Info.pos.x += m_Catch.pPlayer->m_Info.move.x * 1.5f;	// 相手の移動量に引っ張られる
+					m_Info.pos.z += m_Catch.pPlayer->m_Info.move.z * 1.5f;	// 相手の移動量に引っ張られる
+				}
+				else
+				{
+					m_Info.pos.x += m_Catch.pPlayer->m_Info.move.x * 0.75f;	// 相手の移動量に引っ張られる
+					m_Info.pos.z += m_Catch.pPlayer->m_Info.move.z * 0.75f;	// 相手の移動量に引っ張られる
+				}
+
+				m_Catch.pPlayer->m_Info.pos.y += m_Catch.pPlayer->m_Info.move.y;
+
+				if (m_Catch.pPlayer->m_Info.pos.y < m_Info.pos.y)
+				{
+					m_Catch.pPlayer->m_Info.pos.y = m_Info.pos.y;
+					m_Catch.pPlayer->m_Info.move.y = 0.0f;
+				}
 			}
 
 			if (m_Catch.nMoveCnt >= CATCH_LIMIT							// カウント限界値
@@ -1378,7 +1403,7 @@ void CPlayer::SetCatchMatrix(void)
 
 	if (m_Catch.pPlayer != nullptr)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, m_Catch.pPlayer->m_Info.mtxWorld._42 - m_Info.pos.y, -50.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, m_Info.pos.y - m_Catch.pPlayer->m_Info.mtxWorld._42, -50.0f);
 
 		// 位置を反映
 		D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
