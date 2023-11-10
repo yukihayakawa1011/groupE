@@ -92,6 +92,8 @@ private:	// 自分だけがアクセス可能
 	void Search(void);
 	void Chace(void);
 	void Death(void);
+	void Collision(void);
+	void CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
 	CPlayer* SearchNearPlayer(float* pLength = nullptr);
 
 	// メンバ変数
