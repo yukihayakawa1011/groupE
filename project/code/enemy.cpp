@@ -573,7 +573,7 @@ void CEnemy::Damage(int nDamage)
 
 	if (m_nLife <= 0)
 	{//Ž€
-
+		Death();
 	}
 
 	if (m_nLife != nOldLife)
