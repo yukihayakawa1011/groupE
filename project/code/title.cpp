@@ -103,6 +103,31 @@ void CTitle::Update(void)
 		}
 	}
 
+	if (pInputKey->GetTrigger(DIK_C))
+	{
+		CItem *pItem = CItem::GetTop();
+
+
+		while (pItem != NULL)
+		{// 使用されていない状態まで
+
+			CItem *pItemNext = pItem->GetNext();	// 次のオブジェクトへのポインタを取得
+
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
+			pItem->SetMove(move);
+
+
+			//タイプの変更											
+			pItem->SetType(CItem::TYPE_CRASH);
+
+			pItem = pItemNext;	// 次のオブジェクトに移動
+		}
+	}
+
 	if (CManager::GetInstance()->GetCamera() != NULL)
 	{
 		//CManager::GetInstance()->GetCamera()->TitleRotateCamera();

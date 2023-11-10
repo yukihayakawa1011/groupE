@@ -23,6 +23,7 @@ public:
 	{
 		TYPE_NORMAL = 0,	// 通常
 		TYPE_DROP,		// ドロップしたもの
+		TYPE_CRASH,			//崩れる
 		TYPE_MAX
 	};
 
@@ -50,6 +51,7 @@ public:	// 誰でもアクセス可能
 	CItem *GetPrev(void) { return m_pPrev; }
 
 	// メンバ関数(取得)
+	static CItem *GetTop(void) { return m_pTop; }
 	D3DXVECTOR3 GetMove(void) { return m_move; }
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
