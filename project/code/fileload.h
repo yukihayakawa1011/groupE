@@ -52,6 +52,7 @@ private:	// 自分だけがアクセス可能
 	void LoadMeshWallData(FILE *pFile);
 	void LoadMeshFieldData(FILE *pFile);
 	void LoadModelData(FILE *pFile);
+	void LoadItemData(FILE *pFile);
 	void LoadDomeData(FILE *pFile);
 	void LoadCylinderData(FILE *pFile);
 	void LoadVtxMaxData(FILE *pFile, int nIdx);

@@ -14,6 +14,7 @@
 #include "Xfile.h"
 #include "objectX.h"
 #include "game.h"
+#include "item.h"
 
 //==========================================================
 // マクロ定義
@@ -31,6 +32,8 @@
 #define ENDWALLSET_TXT	"END_WALLSET"			// 壁読み込み終了
 #define MODELSET_TXT	"MODELSET"				// モデル配置確認文字
 #define ENDMODELSET_TXT	"END_MODELSET"			// モデル読み込み終了
+#define ITEMSET_TXT		"ITEMSET"				// アイテム配置確認文字
+#define ENDITEMSET_TXT	"END_ITEMSET"			// アイテム読み込み終了
 #define LOAD_POS		"POS"					// 座標
 #define LOAD_ROT		"ROT"					// 向き
 #define LOAD_TEXTYPE	"TEXTYPE"				// テクスチャ番号
@@ -172,6 +175,10 @@ void CFileLoad::LoadFileData(FILE *pFile)
 		else if (strcmp(&aStr[0], MODELSET_TXT) == 0)
 		{//モデル配置の場合
 			LoadModelData(pFile);
+		}
+		else if (strcmp(&aStr[0], ITEMSET_TXT) == 0)
+		{//モデル配置の場合
+			LoadItemData(pFile);
 		}
 
 		//終了確認
@@ -512,6 +519,59 @@ void CFileLoad::LoadModelData(FILE *pFile)
 	//フィールドの配置
 	CObjectX::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx));
 }
+
+//==========================================================
+// アイテム配置情報取得
+//==========================================================
+void CFileLoad::LoadItemData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nWidth = 0;			// 幅枚数
+	int nHeight = 0;		// 高さ枚数
+	float fWidth = 0.0f;	// 幅
+	float fHeight = 0.0f;	// 高さ
+	int nIdx = -1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_MODELTYPE) == 0)
+		{//テクスチャ
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nIdx);	//テクスチャ名読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ROT) == 0)
+		{//向き
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &rot.x);	//x座標読み込み
+			fscanf(pFile, "%f", &rot.y);	//y座標読み込み
+			fscanf(pFile, "%f", &rot.z);	//z座標読み込み
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDITEMSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CItem::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx), CItem::TYPE_NORMAL);
+}
+
 
 //==========================================================
 // メッシュドーム配置情報取得
