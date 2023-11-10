@@ -56,6 +56,7 @@
 // 静的メンバ変数
 //===============================================
 CGame::STATE CGame::m_state = CGame::STATE_LOCAL;	// 状態
+int CGame::m_nNumPlayer = 0;
 
 //===============================================
 // コンストラクタ
@@ -69,7 +70,7 @@ CGame::CGame()
 	m_pClient = NULL;
 	m_nSledCnt = 0;
 	m_bEnd = false;
-	m_nNumPlayer = 0;
+	
 }
 
 //===============================================
@@ -141,6 +142,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}
+
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 	}
 		break;
