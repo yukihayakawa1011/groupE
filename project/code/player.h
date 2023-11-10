@@ -109,9 +109,11 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetRotation(void) { return m_Info.rot; }
 	int GetId(void) { return m_nId; }
 	static CPlayer *GetTop(void) { return m_pTop; }
+	static int GetNum(void) { return m_nNumCount; }
 	CPlayer *GetNext(void) { return m_pNext; }
 	void Damage(int nDamage);
 	void SetLife(int nLife);
+	int GetLife(void) { return m_nLife; }
 	STATE GetState(void) { return m_Info.state; }
 
 private:	// 自分だけがアクセス可能

@@ -11,6 +11,7 @@
 
 // 前方宣言
 class CFileLoad;
+class CPlayer;
 
 //===============================================
 // ゲームクラスの定義(派生クラス)
@@ -34,6 +35,7 @@ public:
 
 private:
 
+	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
 	CFileLoad *m_pFileLoad;			// ファイル読み込みのポインタ
 };
 

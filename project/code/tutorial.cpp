@@ -19,6 +19,8 @@
 #include "result.h"
 #include "sound.h"
 #include "debugproc.h"
+#include "player.h"
+#include "game.h"
 
 //===============================================
 // マクロ定義
@@ -64,8 +66,25 @@ HRESULT CTutorial::Init(void)
 
 	//カメラ初期化
 	{
-		
+		CManager::GetInstance()->GetCamera()->Init();
+		D3DVIEWPORT9 viewport;
+		//プレイヤー追従カメラの画面位置設定
+		viewport.X = 0;
+		viewport.Y = 0;
+		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+		viewport.MinZ = 0.0f;
+		viewport.MaxZ = 1.0f;
+		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
+
+	// 人数分ポインタ生成
+	m_ppPlayer = new CPlayer*[PLAYER_MAX];
+
+	m_ppPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+		"data\\TXT\\motion_body.txt", "data\\TXT\\motion_leg.txt");
+	m_ppPlayer[0]->BindId(0);
+	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 
@@ -84,6 +103,20 @@ void CTutorial::Uninit(void)
 		delete m_pFileLoad;		// メモリの開放
 		m_pFileLoad = NULL;
 	}
+
+	if (m_ppPlayer != NULL)
+	{// 使用していた場合
+		int nNum = CPlayer::GetNum();
+		for (int nCnt = 0; nCnt < nNum; nCnt++)
+		{
+			// 終了処理
+			m_ppPlayer[nCnt]->Uninit();
+			m_ppPlayer[nCnt] = NULL;	// 使用していない状態にする
+		}
+
+		delete[] m_ppPlayer;	// ポインタの開放
+		m_ppPlayer = NULL;	// 使用していない状態にする
+	}
 }
 
 //===============================================
@@ -94,6 +127,28 @@ void CTutorial::Update(void)
 	if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0) || CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
+		CGame::SetNumPlayer(CPlayer::GetNum());
+	}
+
+	bool bCreate = false;
+
+	if (CPlayer::GetNum() < PLAYER_MAX){ // 人数が最大ではない場合
+		if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, CPlayer::GetNum())) {
+			int nId = CPlayer::GetNum();
+			m_ppPlayer[nId] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TXT\\motion_body.txt", "data\\TXT\\motion_leg.txt");
+			m_ppPlayer[nId]->BindId(nId);
+			m_ppPlayer[nId]->SetType(CPlayer::TYPE_ACTIVE);
+			bCreate = true;
+		}
+	}
+
+	if (CPlayer::GetNum() - 1 > 0 && !bCreate) { // 人数が最大ではない場合
+		if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, CPlayer::GetNum() - 1)) {
+			int nId = CPlayer::GetNum() - 1;
+			m_ppPlayer[nId]->Uninit();
+			m_ppPlayer[nId] = 0;
+		}
 	}
 
 	// 更新処理

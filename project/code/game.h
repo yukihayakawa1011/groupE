@@ -56,8 +56,8 @@ public:
 	void SendLife(int nLife);
 	void SendSetUp(void);
 	void SendGoal(void);
-	void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
-	int GetNumPlayer(void) { return m_nNumPlayer; }
+	static void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
+	static int GetNumPlayer(void) { return m_nNumPlayer; }
 
 	// メンバ関数(ポインタ)
 	CPlayer *GetPlayer(void);
@@ -74,11 +74,11 @@ private:
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
 	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
-	CClient *m_pClient;	// クライアントのポインタ
-	char m_aAddress[30];	// 接続先サーバーのアドレス
-	static STATE m_state;	// 状態
-	int m_nSledCnt;		// 現在動作しているスレッド数
-	int m_nNumPlayer;		// プレイ人数
+	CClient *m_pClient;			// クライアントのポインタ
+	char m_aAddress[30];			// 接続先サーバーのアドレス
+	static STATE m_state;			// 状態
+	int m_nSledCnt;				// 現在動作しているスレッド数
+	static int m_nNumPlayer;				// プレイ人数
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;

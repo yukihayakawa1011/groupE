@@ -63,307 +63,6 @@ HRESULT CTitle::Init(void)
 		}
 	}
 
-	//P
-	//CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 600.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 600.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 600.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, 600.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 600.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	
-	//R
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 450.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 425.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 450.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 425.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, 400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	
-	//E
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 350.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 275.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 350.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 350.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, 350.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 350.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 275.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//S
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 175.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 225.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 175.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, 125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 175.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//S
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, 0.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, 75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, 0.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, 0.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//E
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//N
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -225.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -275.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//T
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -350.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -375.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -425.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -450.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//E
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//R
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -650.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-200.0f, 100.0f, -675.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-225.0f, 100.0f, -700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -650.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-250.0f, 100.0f, -675.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-275.0f, 100.0f, -700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-300.0f, 100.0f, -700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//O
-	CItem::Create(D3DXVECTOR3(-350.0f, 100.0f, 100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-350.0f, 100.0f, 75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-375.0f, 100.0f, 125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-375.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-400.0f, 100.0f, 125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-400.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-425.0f, 100.0f, 125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-425.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-450.0f, 100.0f, 100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-450.0f, 100.0f, 75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	
-	//R
-	CItem::Create(D3DXVECTOR3(-350.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-350.0f, 100.0f, -50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-350.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-375.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-375.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-400.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-400.0f, 100.0f, -50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-400.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-425.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-425.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-450.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-450.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//S
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 675.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 750.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 675.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 650.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 675.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//T
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 600.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//A
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 425.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 450.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 450.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 425.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 375.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 475.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 375.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//R
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 275.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 275.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 325.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//T
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 200.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 175.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//B
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, 0.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, 0.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 50.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 25.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, 0.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//U
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -75.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -150.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -100.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -125.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//T
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -200.00f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -225.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -275.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -300.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -250.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//T
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -350.00f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -375.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -425.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -450.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -400.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//O
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -500.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -575.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -525.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -550.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-	//N
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-500.0f, 100.0f, -725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -650.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-525.0f, 100.0f, -725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -675.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-550.0f, 100.0f, -725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -700.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-575.0f, 100.0f, -725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -625.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-	CItem::Create(D3DXVECTOR3(-600.0f, 100.0f, -725.0f), D3DXVECTOR3(D3DX_PI * 0.5f, 0.0f, 0.0f), "data\\MODEL\\coin_mini.x", NULL);
-
-
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
 	return S_OK;
@@ -401,6 +100,31 @@ void CTitle::Update(void)
 			m_col.a = 1.0f;
 			m_bClick = true;
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
+		}
+	}
+
+	if (pInputKey->GetTrigger(DIK_C))
+	{
+		CItem *pItem = CItem::GetTop();
+
+
+		while (pItem != NULL)
+		{// 使用されていない状態まで
+
+			CItem *pItemNext = pItem->GetNext();	// 次のオブジェクトへのポインタを取得
+
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
+			pItem->SetMove(move);
+
+
+			//タイプの変更											
+			pItem->SetType(CItem::TYPE_CRASH);
+
+			pItem = pItemNext;	// 次のオブジェクトに移動
 		}
 	}
 

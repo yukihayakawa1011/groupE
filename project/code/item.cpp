@@ -229,7 +229,32 @@ void CItem::Update(void)
 		}
 	}
 		break;
+
+	case TYPE_CRASH:
+	{
+		m_posOld = m_pos;
+
+		//ˆÊ’u‚ð‘ã“ü‚·‚é
+		m_move.x += GRAVITY;
+		m_pos += m_move;
+
+		if (m_pos.x <= -900.0f)
+		{
+			m_pos.x = -900.0f;
+			m_move *= 0.8f;
+			m_move.x *= -1.0f;
+
+
+			m_nType = TYPE_NORMAL;
+
+			Uninit();
+		}
 	}
+
+	break;
+	}
+	
+
 
 	while (1)
 	{

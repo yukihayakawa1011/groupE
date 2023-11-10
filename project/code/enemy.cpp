@@ -28,6 +28,7 @@
 #include "motion.h"
 #include "sound.h"
 #include "player.h"
+#include "item.h"
 
 //===============================================
 // マクロ定義
@@ -46,6 +47,8 @@
 #define CHACE_LENGTH	(800.0f)	//追跡範囲
 #define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
 #define ATTACK_COOLTIME	(60)		//攻撃クールタイム
+#define ENEMY_VTX_MIN	D3DXVECTOR3(-20.0f,0.0f,-20.0f)
+#define ENEMY_VTX_MAX	D3DXVECTOR3(20.0f,0.0f,20.0f)
 
 #define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//角度を-PI~PIに修正
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
@@ -371,7 +374,7 @@ void CEnemy::Controller(void)
 	}
 
 	//追跡モードでかつxzどちらか処理前から変化している
-	if (m_bChace == true && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
+	if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
 	{
 		//ジャンプする必要があるか確認
 		CPlayer* pPlayerNear = SearchNearPlayer();
@@ -382,6 +385,9 @@ void CEnemy::Controller(void)
 			m_bJump = true;
 		}
 	}
+
+	//敵同士当たり判定
+	this->Collision();
 }
 
 //===============================================
@@ -451,6 +457,138 @@ void CEnemy::Chace(void)
 }
 
 //===============================================
+// 死亡処理
+//===============================================
+void CEnemy::Death(void)
+{
+	// 落とした分生成（playerから拝借）
+	for (int nCnt = 0; nCnt < 5; nCnt++)	//回数仮
+	{
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
+
+		if (nullptr != pItem)
+		{
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.04f;
+			move.y = 18.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.04f;
+			pItem->SetMove(move);
+		}
+	}
+
+	//自滅
+	Uninit();
+}
+
+//===============================================
+// 敵同士当たり判定
+//===============================================
+void CEnemy::Collision(void)
+{
+	CEnemy *pObj = m_pTop;	// 先頭取得
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+	bool bLand = false;	// 着地したか否か
+
+	//仮置き
+	D3DXVECTOR3 posTemp = m_Info.posOld;
+
+	//X
+	posTemp.x = m_Info.pos.x;
+	pObj = m_pTop;
+	while (pObj != NULL)
+	{
+		CEnemy *pObjNext = pObj->m_pNext;
+		if (pObj != this)
+		{
+			pObj->CollisionCheck(posTemp, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
+		}
+
+		pObj = pObjNext;
+	}
+
+	//Y
+	posTemp.y = m_Info.pos.y;
+	pObj = m_pTop;
+	while (pObj != NULL)
+	{
+		CEnemy* pObjNext = pObj->m_pNext;
+		if (pObj != this)
+		{
+			pObj->CollisionCheck(posTemp, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
+		}
+
+		pObj = pObjNext;
+	}
+
+	//Z
+	posTemp.z = m_Info.pos.z;
+	pObj = m_pTop;
+	while (pObj != NULL)
+	{
+		CEnemy* pObjNext = pObj->m_pNext;
+		if (pObj != this)
+		{
+			pObj->CollisionCheck(posTemp, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
+		}
+
+		pObj = pObjNext;
+	}
+
+	m_Info.pos = posTemp;
+}
+
+//===============================================
+// 敵単体当たり判定
+//===============================================
+void CEnemy::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti)
+{
+	//X
+	if (pos.z + vtxMax.z > m_Info.pos.z + vtxMin.z
+		&& pos.z + vtxMin.z < m_Info.pos.z + vtxMax.z)
+	{//範囲内にある
+		if (posOld.x + vtxMin.x >= m_Info.pos.x + vtxMax.x
+			&& pos.x + vtxMin.x < m_Info.pos.x + vtxMax.x)
+		{//右から左にめり込んだ
+			move.x *= -1.0f;
+			move.x *= fRefMulti;
+			pos.x = m_Info.pos.x + vtxMax.x - vtxMin.x + 0.1f + move.x;
+		}
+		else if (posOld.x + vtxMax.x <= m_Info.pos.x + vtxMin.x
+			&& pos.x + vtxMax.x > m_Info.pos.x + vtxMin.x)
+		{//左から右にめり込んだ
+		 //位置を戻す
+			move.x *= -1.0f;
+			move.x *= fRefMulti;
+			pos.x = m_Info.pos.x + vtxMin.x - vtxMax.x - 0.1f + move.x;
+		}
+	}
+
+	//Z
+	if (pos.x + vtxMax.x > m_Info.pos.x + vtxMin.x
+		&& pos.x + vtxMin.x < m_Info.pos.x + vtxMax.x)
+	{//範囲内にある
+		if (posOld.z + vtxMin.z >= m_Info.pos.z + vtxMax.z
+			&& pos.z + vtxMin.z < m_Info.pos.z + vtxMax.z)
+		{//奥から手前にめり込んだ
+		 //位置を戻す
+			move.z *= -1.0f;
+			move.z *= fRefMulti;
+			pos.z = m_Info.pos.z + vtxMax.z - vtxMin.z + 0.1f + move.z;
+		}
+		else if (posOld.z + vtxMax.z <= m_Info.pos.z + vtxMin.z
+			&& pos.z + vtxMax.z > m_Info.pos.z + vtxMin.z)
+		{//手前から奥にめり込んだ
+		 //位置を戻す
+			move.z *= -1.0f;
+			move.z *= fRefMulti;
+			pos.z = m_Info.pos.z + vtxMin.z - vtxMax.z - 0.1f + move.z;
+		}
+	}
+}
+
+//===============================================
 // 近いプレイヤー探索
 //===============================================
 CPlayer* CEnemy::SearchNearPlayer(float* pLength)
@@ -461,12 +599,15 @@ CPlayer* CEnemy::SearchNearPlayer(float* pLength)
 
 	while (pPlayer != nullptr)
 	{
-		D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
-		float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
-		if (fLengthNear > fLength)
-		{//一番近いやつ
-			pPlayerNear = pPlayer;
-			fLengthNear = fLength;
+		if (pPlayer->GetLife() > 0)
+		{//生きている奴を計測
+			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
+			float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
+			if (fLengthNear > fLength)
+			{//一番近いやつ
+				pPlayerNear = pPlayer;
+				fLengthNear = fLength;
+			}
 		}
 
 		pPlayer = pPlayer->GetNext();
@@ -540,6 +681,11 @@ void CEnemy::Damage(int nDamage)
 { 
 	int nOldLife = m_nLife;
 	m_nLife = MINUS_GUARD(m_nLife - nDamage);
+
+	if (m_nLife <= 0)
+	{//死
+		Death();
+	}
 
 	if (m_nLife != nOldLife)
 	{

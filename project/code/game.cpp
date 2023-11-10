@@ -27,6 +27,7 @@
 #include "object2D.h"
 #include "player.h"
 #include "enemy.h"
+#include "enemymanager.h"
 #include "item.h"
 
 // グローバル
@@ -55,6 +56,7 @@
 // 静的メンバ変数
 //===============================================
 CGame::STATE CGame::m_state = CGame::STATE_LOCAL;	// 状態
+int CGame::m_nNumPlayer = 0;
 
 //===============================================
 // コンストラクタ
@@ -68,7 +70,7 @@ CGame::CGame()
 	m_pClient = NULL;
 	m_nSledCnt = 0;
 	m_bEnd = false;
-	m_nNumPlayer = 0;
+	
 }
 
 //===============================================
@@ -140,6 +142,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}
+
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 	}
 		break;
@@ -162,6 +165,9 @@ HRESULT CGame::Init(void)
 
 		break;
 	}
+
+	//敵マネージャ生成（投げっぱ）
+	CEnemyManager::Create();
 
 	for (int nCnt = 0; nCnt < 10; nCnt++)
 	{
