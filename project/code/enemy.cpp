@@ -372,10 +372,9 @@ void CEnemy::Controller(void)
 	{
 		m_bJump = false;
 	}
-	this->Collision();
 
 	//追跡モードでかつxzどちらか処理前から変化している
-	if (m_bChace == true && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
+	if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
 	{
 		//ジャンプする必要があるか確認
 		CPlayer* pPlayerNear = SearchNearPlayer();
@@ -386,6 +385,9 @@ void CEnemy::Controller(void)
 			m_bJump = true;
 		}
 	}
+
+	//敵同士当たり判定
+	this->Collision();
 }
 
 //===============================================
