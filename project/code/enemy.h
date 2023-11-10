@@ -91,6 +91,7 @@ private:	// 自分だけがアクセス可能
 	void Adjust(void);
 	void Search(void);
 	void Chace(void);
+	void Death(void);
 	CPlayer* SearchNearPlayer(float* pLength = nullptr);
 
 	// メンバ変数

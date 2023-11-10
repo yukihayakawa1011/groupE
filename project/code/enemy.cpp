@@ -28,6 +28,7 @@
 #include "motion.h"
 #include "sound.h"
 #include "player.h"
+#include "item.h"
 
 //===============================================
 // マクロ定義
@@ -451,6 +452,32 @@ void CEnemy::Chace(void)
 }
 
 //===============================================
+// 死亡処理
+//===============================================
+void CEnemy::Death(void)
+{
+	// 落とした分生成（playerから拝借）
+	for (int nCnt = 0; nCnt < 5; nCnt++)	//回数仮
+	{
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
+
+		if (nullptr != pItem)
+		{
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+			move.y = 18.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+			pItem->SetMove(move);
+		}
+	}
+
+	//自滅
+	Uninit();
+}
+
+//===============================================
 // 近いプレイヤー探索
 //===============================================
 CPlayer* CEnemy::SearchNearPlayer(float* pLength)
@@ -543,6 +570,11 @@ void CEnemy::Damage(int nDamage)
 { 
 	int nOldLife = m_nLife;
 	m_nLife = MINUS_GUARD(m_nLife - nDamage);
+
+	if (m_nLife <= 0)
+	{//死
+		Death();
+	}
 
 	if (m_nLife != nOldLife)
 	{
