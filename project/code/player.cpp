@@ -335,16 +335,16 @@ void CPlayer::Uninit(void)
 		}
 	}
 
-	if (nullptr != m_pBody){
-		m_pBody->Uninit();
-		m_pBody = NULL;
-	}
-
-	if (m_pBody != NULL)
-	{
+	if (m_pBody != NULL) {
 		m_pBody->Uninit();
 		delete m_pBody;
 		m_pBody = NULL;
+	}
+
+	if (m_pLeg != NULL) {
+		m_pLeg->Uninit();
+		delete m_pLeg;
+		m_pLeg = NULL;
 	}
 
 	m_nNumCount--;
@@ -741,15 +741,15 @@ void CPlayer::MoveController(void)
 	}
 	else
 	{
-		if (m_Info.state == STATE_CATCH)
-		{
-			m_Info.move.x += cosf(CamRot.y) * fSpeed * 0.5f;
-			m_Info.move.z += sinf(CamRot.y) * fSpeed * 0.5f;
-			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.5f);
+		//if (m_Info.state == STATE_CATCH)
+		//{
+		//	m_Info.move.x += cosf(CamRot.y) * fSpeed * 0.5f;
+		//	m_Info.move.z += sinf(CamRot.y) * fSpeed * 0.5f;
+		//	m_fRotDest = (-CamRot.y + -D3DX_PI * 0.5f);
 
-			// à⁄ìÆÇµÇΩèÛë‘Ç…Ç∑ÇÈ
-			m_bMove = true;
-		}
+		//	// à⁄ìÆÇµÇΩèÛë‘Ç…Ç∑ÇÈ
+		//	m_bMove = true;
+		//}
 	}
 }
 
