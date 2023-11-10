@@ -739,18 +739,6 @@ void CPlayer::MoveController(void)
 		// 移動した状態にする
 		m_bMove = true;
 	}
-	else
-	{
-		//if (m_Info.state == STATE_CATCH)
-		//{
-		//	m_Info.move.x += cosf(CamRot.y) * fSpeed * 0.5f;
-		//	m_Info.move.z += sinf(CamRot.y) * fSpeed * 0.5f;
-		//	m_fRotDest = (-CamRot.y + -D3DX_PI * 0.5f);
-
-		//	// 移動した状態にする
-		//	m_bMove = true;
-		//}
-	}
 }
 
 //===============================================
@@ -1205,8 +1193,11 @@ void CPlayer::Catch(void)
 		}
 		else 
 		{
+			m_fRotDest = m_fRotMove;
 			if (m_Catch.pPlayer->m_bMove) {	// 相手が移動
-				m_Catch.nMoveCnt++;
+				m_Catch.nMoveCnt++;	// カウントアップ
+				m_Info.pos.x += m_Catch.pPlayer->m_Info.move.x * 0.75f;	// 相手の移動量に引っ張られる
+				m_Info.pos.z += m_Catch.pPlayer->m_Info.move.z * 0.75f;	// 相手の移動量に引っ張られる
 			}
 
 			if (m_Catch.nMoveCnt >= CATCH_LIMIT							// カウント限界値
@@ -1387,7 +1378,7 @@ void CPlayer::SetCatchMatrix(void)
 
 	if (m_Catch.pPlayer != nullptr)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, -50.0f);
+		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, m_Catch.pPlayer->m_Info.mtxWorld._42 - m_Info.pos.y, -50.0f);
 
 		// 位置を反映
 		D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
