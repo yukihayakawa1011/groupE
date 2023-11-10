@@ -45,7 +45,7 @@ public:	// 誰でもアクセス可能
 	void SetOldPos(D3DXVECTOR3 posOld) { m_posOld = posOld; }
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(const D3DXVECTOR3 rot) { m_rot = rot; }
-	void SetType(TYPE type);
+	void SetType(TYPE type) { m_nType = type; }
 	CItem *GetNext(void) { return m_pNext; }
 	CItem *GetPrev(void) { return m_pPrev; }
 

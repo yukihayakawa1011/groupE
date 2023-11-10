@@ -231,6 +231,8 @@ void CItem::Update(void)
 		break;
 	}
 
+
+
 	while (1)
 	{
 		if (m_rot.y > D3DX_PI || m_rot.y < -D3DX_PI)
