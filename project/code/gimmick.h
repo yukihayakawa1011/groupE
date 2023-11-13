@@ -35,7 +35,7 @@ public:	// 誰でもアクセス可能
 	void Update(void) = 0;
 
 	// メンバ関数(取得)
-	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax);
+	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction);
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXMATRIX *GetMtxWorld(void) { return &m_mtxWorld; }
@@ -54,7 +54,7 @@ protected:
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
-	virtual bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax) = 0;
+	virtual bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction) = 0;
 
 	// メンバ変数
 	static CGimmick *m_pTop;	// 先頭のオブジェクトへのポインタ

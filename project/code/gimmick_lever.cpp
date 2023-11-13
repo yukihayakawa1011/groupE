@@ -1,27 +1,29 @@
 //==========================================================
 //
-// ボタン [gimmick_button.cpp]
+// ギミックレバー [gimmick_lever.cpp]
 // Author : Ibuki Okusada
 //
 //==========================================================
-#include "gimmick_transbutton.h"
+#include "gimmick_lever.h"
 #include "model.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "player.h"
 
 // マクロ定義
 #define COLLISION_RANGE	(50.0f)
+#define INTERVAL			(90)
 
 // 静的メンバ変数宣言
-char *CGimmickTransButton::m_apFileName[MODEL_MAX] = {
-	"data\\MODEL\\trans_button.x",
-	"data\\MODEL\\button_frame.x",
+char *CGimmickLever::m_apFileName[MODEL_MAX] = {
+	"data\\MODEL\\lever_frame.x",
+	"data\\MODEL\\lever.x",
 };
 
 //==========================================================
 // コンストラクタ
 //==========================================================
-CGimmickTransButton::CGimmickTransButton()
+CGimmickLever::CGimmickLever()
 {
 	// 値のクリア
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
@@ -29,13 +31,14 @@ CGimmickTransButton::CGimmickTransButton()
 		m_apObj[nCnt] = nullptr;
 	}
 
+	m_nInterval = 0;
 	m_state = STATE_NONE;
 }
 
 //==========================================================
 // デストラクタ
 //==========================================================
-CGimmickTransButton::~CGimmickTransButton()
+CGimmickLever::~CGimmickLever()
 {
 
 }
@@ -43,7 +46,7 @@ CGimmickTransButton::~CGimmickTransButton()
 //==========================================================
 // 初期化処理
 //==========================================================
-HRESULT CGimmickTransButton::Init(void)
+HRESULT CGimmickLever::Init(void)
 {
 	// モデルの生成
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
@@ -57,13 +60,15 @@ HRESULT CGimmickTransButton::Init(void)
 		}
 	}
 
+	m_apObj[MODEL_BUTTON]->SetCurrentRotation(D3DXVECTOR3(D3DX_PI * 0.15f, 0.0f, 0.0f));
+
 	return S_OK;
 }
 
 //==========================================================
 // 終了処理
 //==========================================================
-void CGimmickTransButton::Uninit(void)
+void CGimmickLever::Uninit(void)
 {
 	// 値のクリア
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
@@ -77,7 +82,7 @@ void CGimmickTransButton::Uninit(void)
 
 	// リストから削除
 	ListOut();
-	
+
 	// リリース
 	Release();
 }
@@ -85,8 +90,12 @@ void CGimmickTransButton::Uninit(void)
 //==========================================================
 // 更新処理
 //==========================================================
-void CGimmickTransButton::Update(void)
+void CGimmickLever::Update(void)
 {
+	if (m_nInterval > 0){
+		m_nInterval--;
+	}
+
 	// マトリックス設定
 	SetMtxWorld();
 
@@ -94,30 +103,37 @@ void CGimmickTransButton::Update(void)
 	switch (m_state)
 	{
 	case STATE_NONE:	// 何もない
-		
+		m_RotDest = D3DXVECTOR3(D3DX_PI * 0.15f, 0.0f, 0.0f);
 		break;
 
 	case STATE_PRESS:	// 押されている
-
+		m_RotDest = D3DXVECTOR3(-D3DX_PI * 0.15f, 0.0f, 0.0f);
 		break;
 	}
 
-	m_state = STATE_NONE;
+	if (m_apObj[MODEL_BUTTON] != nullptr) {
+		D3DXVECTOR3 rot = m_apObj[MODEL_BUTTON]->GetCurrentRotation();
+		D3DXVECTOR3 rotDiff = m_RotDest - rot;
+
+		rot += rotDiff * 0.1f;
+		m_apObj[MODEL_BUTTON]->SetCurrentRotation(rot);
+	}
 }
 
 //==========================================================
 // 生成
 //==========================================================
-CGimmickTransButton *CGimmickTransButton::Create(const D3DXVECTOR3 pos)
+CGimmickLever *CGimmickLever::Create(const D3DXVECTOR3 pos)
 {
-	CGimmickTransButton *pSample = nullptr;
+	CGimmickLever *pSample = nullptr;
 
-	pSample = new CGimmickTransButton;
+	pSample = new CGimmickLever;
 
 	if (pSample != nullptr)
 	{
 		// 初期化処理
 		pSample->Init();
+	
 		pSample->SetPosition(pos);
 	}
 
@@ -127,7 +143,7 @@ CGimmickTransButton *CGimmickTransButton::Create(const D3DXVECTOR3 pos)
 //==========================================================
 // 判定確認
 //==========================================================
-bool CGimmickTransButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction)
 {
 	bool bValue = false;
 	D3DXVECTOR3 ObjPos = GetPosition();
@@ -138,13 +154,22 @@ bool CGimmickTransButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, 
 		sqrtf((pos.x - ObjPos.x) * (pos.x - ObjPos.x)
 			+ (pos.z - ObjPos.z) * (pos.z - ObjPos.z));
 
-	if (fLength > COLLISION_RANGE){		// 範囲外
+	if (fLength > COLLISION_RANGE) {		// 範囲外
 		return bValue;
 	}
 
-	bValue = true;			// 触れた状態
-	m_state = STATE_PRESS;		// 押された状態にする
-	CManager::GetInstance()->GetDebugProc()->Print("押されているよー\n");
+	if (nAction != CPlayer::ACTION_ATK) {
+		return bValue;
+	}
+
+	if(m_nInterval > 0)
+	{
+		return bValue;
+	}
+
+	bValue = true;					// 触れた状態
+	m_state = (STATE)(m_state ^ 1);	// 押された状態にする
+	m_nInterval = INTERVAL;			// インターバル
 
 	return bValue;
 }

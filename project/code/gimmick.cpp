@@ -77,7 +77,7 @@ void CGimmick::SetMtxWorld(void)
 //==========================================================
 // “–‚½‚è”»’è
 //==========================================================
-bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction)
 {
 	CGimmick *pObj = m_pTop;	// æ“ªŽæ“¾
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
@@ -86,7 +86,7 @@ bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 	while (pObj != nullptr)
 	{
 		CGimmick *pObjNext = pObj->m_pNext;
-		if (pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax))
+		if (pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax, nAction))
 		{
 			bLand = true;
 		}

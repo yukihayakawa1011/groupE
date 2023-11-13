@@ -538,7 +538,7 @@ void CPlayer::Controller(void)
 	}
 
 	// ƒMƒ~ƒbƒN‚Æ‚Ì”»’è
-	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
+	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, m_action);
 }
 
 //===============================================
