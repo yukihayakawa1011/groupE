@@ -32,20 +32,6 @@ public:
 		TYPE_MAX
 	};
 
-	// アクション列挙型
-	enum ACTION
-	{
-		ACTION_NEUTRAL = 0,	// 待機
-		ACTION_WALK,			// 歩行
-		ACTION_JUMP,			// ジャンプ
-		ACTION_ATK,			// 攻撃
-		ACTION_CATCH,			// 持つ
-		ACTION_HOLD,			// 保持
-		ACTION_THROW,			// 投げる
-		ACTION_DAMAGE,		// 攻撃を受けた
-		ACTION_MAX
-	};
-
 private:	// 自分だけがアクセス可能な定義
 
 	// 状態列挙型
@@ -58,6 +44,20 @@ private:	// 自分だけがアクセス可能な定義
 		STATE_SPAWN,		// 復活中状態
 		STATE_CATCH,		// 掴まれている状態
 		STATE_MAX
+	};
+
+	// アクション列挙型
+	enum ACTION
+	{
+		ACTION_NEUTRAL = 0,	// 待機
+		ACTION_WALK,			// 歩行
+		ACTION_JUMP,			// ジャンプ
+		ACTION_ATK,			// 攻撃
+		ACTION_CATCH,			// 持つ
+		ACTION_HOLD,			// 保持
+		ACTION_THROW,			// 投げる
+		ACTION_DAMAGE,		// 攻撃を受けた
+		ACTION_MAX
 	};
 
 	// 情報構造体

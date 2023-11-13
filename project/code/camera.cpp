@@ -82,22 +82,22 @@ void CCamera::Uninit(void)
 void CCamera::Update(void)
 {
 
-	{
-		//マウスでの視点移動
-	}
-	/*else
+	//{
+	//	//マウスでの視点移動
+	//}
+	//else
 	{
 		Edit();
-	}*/
+	}
 	// 全視点の移動
-	//MoveVR();
+	MoveVR();
 
-	////注視点の移動
-	//MoveR();
+	//注視点の移動
+	MoveR();
 
-	////視点の移動
-	//MoveV();
-	//MouseCamera();
+	//視点の移動
+	MoveV();
+	MouseCamera();
 
 }
 

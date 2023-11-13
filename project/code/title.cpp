@@ -36,8 +36,6 @@ CTitle::CTitle()
 	m_bClick = false;
 	m_fMoveCol = 0.01f;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	m_nCounter = 0;
-	m_bPush = false;
 }
 
 //===============================================
@@ -63,20 +61,6 @@ HRESULT CTitle::Init(void)
 			m_pFileLoad->Init();
 			m_pFileLoad->OpenFile("data\\TXT\\title_model.txt");
 		}
-	}
-
-	//カメラ初期化
-	{
-		CManager::GetInstance()->GetCamera()->Init();
-		D3DVIEWPORT9 viewport;
-		//プレイヤー追従カメラの画面位置設定
-		viewport.X = 0;
-		viewport.Y = 0;
-		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
-		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
-		viewport.MinZ = 0.0f;
-		viewport.MaxZ = 1.0f;
-		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
@@ -109,7 +93,20 @@ void CTitle::Update(void)
 	// 入力遷移
 	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_A, 0))
 	{
+		CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
+
+		if (m_bClick == false)
+		{
+			m_col.a = 1.0f;
+			m_bClick = true;
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
+		}
+	}
+
+	if (pInputKey->GetTrigger(DIK_C))
+	{
 		CItem *pItem = CItem::GetTop();
+
 
 		while (pItem != NULL)
 		{// 使用されていない状態まで
@@ -123,29 +120,11 @@ void CTitle::Update(void)
 			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
 			pItem->SetMove(move);
 
+
 			//タイプの変更											
 			pItem->SetType(CItem::TYPE_CRASH);
 
 			pItem = pItemNext;	// 次のオブジェクトに移動
-		}
-
-		m_bPush = true;
-
-		if (m_bClick == false)
-		{
-			m_col.a = 1.0f;
-			m_bClick = true;
-			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
-		}
-	}
-
-	if (m_bPush == true)
-	{
-		m_nCounter++;
-
-		if (m_nCounter >= 110)
-		{
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
 		}
 	}
 
