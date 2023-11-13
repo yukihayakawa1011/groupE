@@ -4,7 +4,7 @@
 // Author : Ibuki Okusada
 //
 //==========================================================
-#include "gimmick_transbutton.h"
+#include "gimmick_button.h"
 #include "model.h"
 #include "manager.h"
 #include "debugproc.h"
@@ -13,7 +13,7 @@
 #define COLLISION_RANGE	(50.0f)
 
 // 静的メンバ変数宣言
-char *CGimmickTransButton::m_apFileName[MODEL_MAX] = {
+char *CGimmickButton::m_apFileName[MODEL_MAX] = {
 	"data\\MODEL\\trans_button.x",
 	"data\\MODEL\\button_frame.x",
 };
@@ -21,7 +21,7 @@ char *CGimmickTransButton::m_apFileName[MODEL_MAX] = {
 //==========================================================
 // コンストラクタ
 //==========================================================
-CGimmickTransButton::CGimmickTransButton()
+CGimmickButton::CGimmickButton()
 {
 	// 値のクリア
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
@@ -35,7 +35,7 @@ CGimmickTransButton::CGimmickTransButton()
 //==========================================================
 // デストラクタ
 //==========================================================
-CGimmickTransButton::~CGimmickTransButton()
+CGimmickButton::~CGimmickButton()
 {
 
 }
@@ -43,7 +43,7 @@ CGimmickTransButton::~CGimmickTransButton()
 //==========================================================
 // 初期化処理
 //==========================================================
-HRESULT CGimmickTransButton::Init(void)
+HRESULT CGimmickButton::Init(void)
 {
 	// モデルの生成
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
@@ -63,7 +63,7 @@ HRESULT CGimmickTransButton::Init(void)
 //==========================================================
 // 終了処理
 //==========================================================
-void CGimmickTransButton::Uninit(void)
+void CGimmickButton::Uninit(void)
 {
 	// 値のクリア
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
@@ -85,7 +85,7 @@ void CGimmickTransButton::Uninit(void)
 //==========================================================
 // 更新処理
 //==========================================================
-void CGimmickTransButton::Update(void)
+void CGimmickButton::Update(void)
 {
 	// マトリックス設定
 	SetMtxWorld();
@@ -108,11 +108,11 @@ void CGimmickTransButton::Update(void)
 //==========================================================
 // 生成
 //==========================================================
-CGimmickTransButton *CGimmickTransButton::Create(const D3DXVECTOR3 pos)
+CGimmickButton *CGimmickButton::Create(const D3DXVECTOR3 pos)
 {
-	CGimmickTransButton *pSample = nullptr;
+	CGimmickButton *pSample = nullptr;
 
-	pSample = new CGimmickTransButton;
+	pSample = new CGimmickButton;
 
 	if (pSample != nullptr)
 	{
@@ -127,7 +127,7 @@ CGimmickTransButton *CGimmickTransButton::Create(const D3DXVECTOR3 pos)
 //==========================================================
 // 判定確認
 //==========================================================
-bool CGimmickTransButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+bool CGimmickButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
 {
 	bool bValue = false;
 	D3DXVECTOR3 ObjPos = GetPosition();
