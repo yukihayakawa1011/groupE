@@ -30,7 +30,6 @@
 #include "enemymanager.h"
 #include "item.h"
 #include "gimmick_button.h"
-#include "gimmick_transbutton.h"
 #include "pitfall.h"
 
 // ÉOÉçÅ[ÉoÉã
@@ -149,9 +148,8 @@ HRESULT CGame::Init(void)
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
 		CGimmickButton::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickTransButton::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-		CPitFall::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	}
 		break;
 

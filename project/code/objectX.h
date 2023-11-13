@@ -39,6 +39,7 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos);
 	void SetRotation(const D3DXVECTOR3 rot);
+	void SetEnableCollision(const bool bEnable) { m_bEnableCollision = bEnable; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
@@ -65,6 +66,7 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_rot;	// 向き
 	D3DXMATRIX m_mtxWorld;	//ワールドマトリックス
 	int m_nIdxModel;		// モデル番号
+	bool m_bEnableCollision;	//当たり判定の有効・無効
 };
 
 #endif
