@@ -49,12 +49,12 @@ protected:
 	// 種類設定
 	void BindType(TYPE type) { m_type = type; }
 	void ListOut(void);
+	void SetMtxWorld(void);
 
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	virtual bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax) = 0;
-	void SetMtxWorld(void);
 
 	// メンバ変数
 	static CGimmick *m_pTop;	// 先頭のオブジェクトへのポインタ

@@ -33,7 +33,7 @@ MODEL_FILENAME = data/MODEL/roundchair.x  # [4]丸椅子
 MODEL_FILENAME = data/MODEL/gate.x        # [5]ドア
 MODEL_FILENAME = data/MODEL/gate001.x     # [6]ドア
 MODEL_FILENAME = data/MODEL/wall000.x     # [7]壁
-MODEL_FILENAME = data/MODEL/Aisle.x       # [8]通路
+MODEL_FILENAME = data/MODEL/button_frame.x       # [8]通路
 
 #------------------------------------------------------------------------------
 # カメラ情報

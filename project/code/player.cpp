@@ -30,6 +30,7 @@
 #include "waist.h"
 #include "model.h"
 #include "item.h"
+#include "gimmick.h"
 
 //===============================================
 // マクロ定義
@@ -535,6 +536,9 @@ void CPlayer::Controller(void)
 		m_nItemCnt++;
 		pItem->Uninit();
 	}
+
+	// ギミックとの判定
+	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
 }
 
 //===============================================
@@ -773,7 +777,6 @@ void CPlayer::Jump(void)
 			{
 				m_Info.move.y = JUMP;
 			}
-
 		}
 	}
 }
