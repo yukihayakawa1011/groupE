@@ -4,8 +4,8 @@
 // Author : Ibuki Okusada
 //
 //==========================================================
-#ifndef _GIMMICK_TRANSBUTTON_H_		// このマクロが定義されていない場合
-#define _GIMMICK_TRANSBUTTON_H_		// 二重インクルード防止用マクロを定義
+#ifndef _GIMMICK_BUTTON_H_		// このマクロが定義されていない場合
+#define _GIMMICK_BUTTON_H_		// 二重インクルード防止用マクロを定義
 
 #include "gimmick.h"				// これでファイルインクルードできます
 
@@ -14,7 +14,7 @@ class CModel;
 //==========================================================
 // サンプルのクラス定義
 //==========================================================
-class CGimmickTransButton : public CGimmick
+class CGimmickButton : public CGimmick
 {
 private:
 
@@ -26,6 +26,8 @@ private:
 		MODEL_MAX
 	};
 
+public:
+
 	// 状態列挙型
 	enum STATE
 	{
@@ -36,16 +38,17 @@ private:
 
 public:	// 誰でもアクセス可能
 
-	CGimmickTransButton();		// コンストラクタ(オーバーロード)
-	~CGimmickTransButton();	// デストラクタ
+	CGimmickButton();		// コンストラクタ(オーバーロード)
+	~CGimmickButton();	// デストラクタ
 
 	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	static CGimmickTransButton *Create(const D3DXVECTOR3 pos);
+	static CGimmickButton *Create(const D3DXVECTOR3 pos);
 
 	// メンバ関数(取得)
+	STATE GetState(void) { return m_state; }
 
 	// メンバ関数(設定)
 
