@@ -29,10 +29,8 @@
 #include "enemy.h"
 #include "enemymanager.h"
 #include "item.h"
-#include "pitfall.h"
 #include "gimmick_button.h"
-#include "gimmick_startdoor.h"
-#include "gimmick_lever.h"
+#include "pitfall.h"
 #include "gimmick_rotatedoor.h"
 
 // ƒOƒ[ƒoƒ‹
@@ -150,12 +148,10 @@ HRESULT CGame::Init(void)
 
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
-		CGimmickLever *pLever = CGimmickLever::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickStartDoor *pDoor = CGimmickStartDoor::Create(D3DXVECTOR3(100.0f, 0.0f, 0.0f));
-		pDoor->SetLever(pLever);
+		CGimmickButton::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 0.0f, 0.0f));
 
-		CPitFall::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	}
 		break;
 

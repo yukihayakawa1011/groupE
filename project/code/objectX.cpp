@@ -37,6 +37,8 @@ CObjectX::CObjectX(int nPriority) : CObject(nPriority)
 		m_pTop = this;	// Ž©•ªŽ©g‚ªæ“ª‚É‚È‚é
 		m_pCur = this;	// Ž©•ªŽ©g‚ªÅŒã”ö‚É‚È‚é
 	}
+
+	m_bEnableCollision = true;
 }
 
 //==========================================================
@@ -253,7 +255,7 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 		CObjectX* pObjNext = pObj->m_pNext;
 		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		if (pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, fRefMulti))
+		if (pObj->m_bEnableCollision == true && pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, fRefMulti))
 		{
 			bLand = true;
 		}
@@ -269,7 +271,10 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 		CObjectX* pObjNext = pObj->m_pNext;
 		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, fRefMulti);
+		if (pObj->m_bEnableCollision == true)
+		{
+			pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, fRefMulti);
+		}
 
 		pObj = pObjNext;
 	}
@@ -282,7 +287,10 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 		CObjectX *pObjNext = pObj->m_pNext;
 		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, fRefMulti);
+		if (pObj->m_bEnableCollision == true)
+		{
+			pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, fRefMulti);
+		}
 
 		pObj = pObjNext;
 	}
