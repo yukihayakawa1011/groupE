@@ -187,6 +187,7 @@
     <ClCompile Include="code\object3D.cpp" />
     <ClCompile Include="code\objectX.cpp" />
     <ClCompile Include="code\object_manager.cpp" />
+    <ClCompile Include="code\pitfall.cpp" />
     <ClCompile Include="code\player.cpp" />
     <ClCompile Include="code\precompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -240,6 +241,7 @@
     <ClInclude Include="code\object3D.h" />
     <ClInclude Include="code\objectX.h" />
     <ClInclude Include="code\object_manager.h" />
+    <ClInclude Include="code\pitfall.h" />
     <ClInclude Include="code\player.h" />
     <ClInclude Include="code\precompile.h" />
     <ClInclude Include="code\protocol_online.h" />
