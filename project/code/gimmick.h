@@ -43,6 +43,7 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(const D3DXVECTOR3 rot) { m_rot = rot; }
+	void SetActionId(const int nId) { m_nActionId = nId; }
 
 protected:
 
@@ -64,6 +65,7 @@ private:	// 自分だけがアクセス可能
 	TYPE m_type;				// 種類
 	D3DXVECTOR3 m_pos;		// 位置
 	D3DXVECTOR3 m_rot;		// 向き
+	int m_nActionId;			// 自分のアクション№
 	D3DXMATRIX m_mtxWorld;	//ワールドマトリックス
 };
 
