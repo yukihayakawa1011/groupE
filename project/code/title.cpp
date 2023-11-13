@@ -63,6 +63,20 @@ HRESULT CTitle::Init(void)
 		}
 	}
 
+	//カメラ初期化
+	{
+		CManager::GetInstance()->GetCamera()->Init();
+		D3DVIEWPORT9 viewport;
+		//プレイヤー追従カメラの画面位置設定
+		viewport.X = 0;
+		viewport.Y = 0;
+		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+		viewport.MinZ = 0.0f;
+		viewport.MaxZ = 1.0f;
+		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+	}
+
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
 	return S_OK;
