@@ -36,6 +36,8 @@ CTitle::CTitle()
 	m_bClick = false;
 	m_fMoveCol = 0.01f;
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	m_nCounter = 0;
+	m_bPush = false;
 }
 
 //===============================================
@@ -93,20 +95,7 @@ void CTitle::Update(void)
 	// 入力遷移
 	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_A, 0))
 	{
-		CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
-
-		if (m_bClick == false)
-		{
-			m_col.a = 1.0f;
-			m_bClick = true;
-			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
-		}
-	}
-
-	if (pInputKey->GetTrigger(DIK_C))
-	{
 		CItem *pItem = CItem::GetTop();
-
 
 		while (pItem != NULL)
 		{// 使用されていない状態まで
@@ -120,11 +109,29 @@ void CTitle::Update(void)
 			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
 			pItem->SetMove(move);
 
-
 			//タイプの変更											
 			pItem->SetType(CItem::TYPE_CRASH);
 
 			pItem = pItemNext;	// 次のオブジェクトに移動
+		}
+
+		m_bPush = true;
+
+		if (m_bClick == false)
+		{
+			m_col.a = 1.0f;
+			m_bClick = true;
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
+		}
+	}
+
+	if (m_bPush == true)
+	{
+		m_nCounter++;
+
+		if (m_nCounter >= 110)
+		{
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
 		}
 	}
 

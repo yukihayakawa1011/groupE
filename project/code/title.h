@@ -36,8 +36,9 @@ private:
 	bool m_bClick;
 	CObject2D *m_pEnter;
 	D3DXCOLOR m_col;
-	int m_nCounter;
 	float m_fMoveCol;
+	int m_nCounter;
+	bool m_bPush;
 };
 
 #endif
