@@ -12,7 +12,7 @@
 
 // マクロ定義
 #define SPIKE_GRAVITY	(-0.9f)		//敵重力
-#define INER	(0.3f)		// 慣性
+#define INER	(0.12f)		// 慣性
 
 //静的メンバ変数
 CSpike *CSpike::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
