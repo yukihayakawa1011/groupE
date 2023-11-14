@@ -28,6 +28,7 @@ public:
 		TYPE_LEVER,	// レバー
 		TYPE_ROTATEDOOR,	// 回転ドア
 		TYPE_STARTDOOR,	// 開始地点ドア
+		TYPE_SPEAR,		// 槍
 		TYPE_MAX
 	};
 

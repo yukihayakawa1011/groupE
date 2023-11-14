@@ -44,6 +44,7 @@ HRESULT CGimmickPitFall::Init(void)
 //==========================================================
 void CGimmickPitFall::Uninit(void)
 {
+	ListOut();
 	Release();
 }
 
