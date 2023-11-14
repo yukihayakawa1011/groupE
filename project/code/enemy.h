@@ -35,7 +35,7 @@ private:	// 自分だけがアクセス可能な定義
 	};
 
 	// 情報構造体
-	typedef struct
+	struct SInfo
 	{
 		D3DXVECTOR3 pos;		// 位置
 		D3DXVECTOR3 rot;		// 向き
@@ -45,7 +45,7 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 posDiff;
 		STATE state;			// 状態
 		int nStateCounter;		// 状態管理カウンター
-	}SInfo;
+	};
 
 public:	// 誰でもアクセス可能
 

@@ -226,13 +226,6 @@ void CEnemy::Uninit(void)
 		m_pObject = NULL;
 	}
 
-	if (m_pObject != NULL)
-	{
-		m_pObject->Uninit();
-		delete m_pObject;
-		m_pObject = NULL;
-	}
-
 	m_nNumCount--;
 
 	// ”pŠü
