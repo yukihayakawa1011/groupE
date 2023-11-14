@@ -343,7 +343,7 @@ void CCharacter::LoadSetData(FILE *pFile)
 					{// パーツ総数の範囲内の場合
 						if (m_ppParts[nIdxParent] != NULL && m_ppParts[nCntParts] != NULL)
 						{// 親も自分自身も使用している場合
-							m_ppParts[nCntParts]->SetParent(m_ppParts[nIdxParent]->GetMtxWorld());
+							m_ppParts[nCntParts]->SetParent(m_ppParts[nIdxParent]->GetMtx());
 						}
 					}
 					else

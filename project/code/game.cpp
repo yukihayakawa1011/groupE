@@ -154,7 +154,7 @@ HRESULT CGame::Init(void)
 		CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f, 0.0f, 0.0f));
 		CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(-200.0f, 0.0f, 0.0f));
 		p->SetLever(l);
-		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(100.0f, 0.0f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		CPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	}

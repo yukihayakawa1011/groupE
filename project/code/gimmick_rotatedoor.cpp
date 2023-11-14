@@ -15,6 +15,7 @@
 #define COLLISION_RANGE	(50.0f)
 #define UPPOSITION		(150.0f)
 #define ROTATE_SPEED		(D3DX_PI * 0.05f)
+#define SET_POSZ			(75.0f)
 
 // 静的メンバ変数宣言
 char *CGimmickRotateDoor::m_pFileName = {
@@ -100,16 +101,15 @@ void CGimmickRotateDoor::Update(void)
 
 		rot.y += ROTATE_SPEED;
 
-		if (rot.y >= D3DX_PI) {	// 角度が超えた
-			rot.y += -D3DX_PI * 2;
-		}
+		m_pObj->SetCurrentRotation(rot);
 
-		if (rot.y >= m_RotDest.y || rot.y <= -D3DX_PI * 0.9999f)
+		if (rot.y >= m_RotDest.y)
 		{// 超えた
 			m_state = STATE_NONE;
+			m_RotDest.y = 0.0f;
+			rot.y = 0.0f;
+			m_pObj->SetCurrentRotation(rot);
 		}
-
-		m_pObj->SetCurrentRotation(rot);
 	}
 		break;
 	}
@@ -129,7 +129,10 @@ CGimmickRotateDoor *CGimmickRotateDoor::Create(const D3DXVECTOR3 pos, const D3DX
 		// 初期化処理
 		pSample->Init();
 
+		// 値の設定
 		pSample->SetPosition(pos);
+		pSample->SetRotation(rot);
+		pSample->BindType(TYPE_ROTATEDOOR);
 	}
 
 	return pSample;
@@ -138,7 +141,7 @@ CGimmickRotateDoor *CGimmickRotateDoor::Create(const D3DXVECTOR3 pos, const D3DX
 //==========================================================
 // 判定確認
 //==========================================================
-bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction)
+bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
 	if (m_state == STATE_ROTATE) {	// 開く扉
 		return false;
@@ -178,6 +181,11 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
 				}
+
+				if (ppGimmick != nullptr) {
+					*ppGimmick = this;
+					SetPos.z = SET_POSZ;
+				}
 			}
 		}
 		else if (posOld.x + vtxMax.x <= ObjPos.x + vtxObjMin.x
@@ -193,6 +201,11 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
+				}
+
+				if (ppGimmick != nullptr) {
+					*ppGimmick = this;
+					SetPos.z = -SET_POSZ;
 				}
 			}
 		}
@@ -218,6 +231,11 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
 				}
+
+				if (ppGimmick != nullptr) {
+					*ppGimmick = this;
+					SetPos.z = SET_POSZ;
+				}
 			}
 		}
 		else if (posOld.z + vtxMax.z <= ObjPos.z + vtxObjMin.z
@@ -233,6 +251,11 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
+				}
+
+				if (ppGimmick != nullptr) {
+					*ppGimmick = this;
+					SetPos.z = -SET_POSZ;
 				}
 			}
 		}

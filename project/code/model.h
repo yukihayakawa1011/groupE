@@ -37,7 +37,7 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXVECTOR3 GetCurrentPosition(void) { return m_CurPos; }
 	D3DXVECTOR3 GetCurrentRotation(void) { return m_CurRot; }
-	D3DXMATRIX *GetMtxWorld(void) { return &m_mtxWorld; }
+	D3DXMATRIX *GetMtx(void) { return &m_mtxWorld; }
 	int GetId(void) { return m_nIdxModel; }
 
 	// メンバ関数(設定)

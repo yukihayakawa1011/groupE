@@ -9,18 +9,25 @@
 
 #include "task.h"	// これでファイルインクルードできます
 
+// 前方宣言
+class CGimmickRotateDoor;
+
 //==========================================================
 // サンプルのクラス定義
 //==========================================================
 class CGimmick : public CTask
 {
+
 public:
 
 	// 種類列挙型
 	enum TYPE
 	{
 		TYPE_NONE = 0,	// 何もない
-		TYPE_TRAN_SWITCH,	// ステージ遷移スイッチ
+		TYPE_BUTTON,	// ボタン
+		TYPE_LEVER,	// レバー
+		TYPE_ROTATEDOOR,	// 回転ドア
+		TYPE_STARTDOOR,	// 開始地点ドア
 		TYPE_MAX
 	};
 
@@ -35,10 +42,14 @@ public:	// 誰でもアクセス可能
 	void Update(void) = 0;
 
 	// メンバ関数(取得)
-	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction);
+	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick = nullptr);
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXMATRIX *GetMtxWorld(void) { return &m_mtxWorld; }
+	TYPE GetType(void) { return m_type; }
+
+	// ダウンキャスト用関数
+	virtual CGimmickRotateDoor *GetRotateDoor(void) { return nullptr; }
 
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }
@@ -55,7 +66,7 @@ protected:
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
-	virtual bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction) = 0;
+	virtual bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick) = 0;
 
 	// メンバ変数
 	static CGimmick *m_pTop;	// 先頭のオブジェクトへのポインタ

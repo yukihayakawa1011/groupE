@@ -119,6 +119,7 @@ CGimmickButton *CGimmickButton::Create(const D3DXVECTOR3 pos)
 		// ‰Šú‰»ˆ—
 		pSample->Init();
 		pSample->SetPosition(pos);
+		pSample->BindType(TYPE_BUTTON);
 	}
 
 	return pSample;
@@ -127,7 +128,7 @@ CGimmickButton *CGimmickButton::Create(const D3DXVECTOR3 pos)
 //==========================================================
 // ”»’èŠm”F
 //==========================================================
-bool CGimmickButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction)
+bool CGimmickButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
 	bool bValue = false;
 	D3DXVECTOR3 ObjPos = GetPosition();

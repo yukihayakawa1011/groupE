@@ -136,6 +136,7 @@ CGimmickStartDoor *CGimmickStartDoor::Create(const D3DXVECTOR3 pos)
 		pSample->Init();
 
 		pSample->SetPosition(pos);
+		pSample->BindType(TYPE_STARTDOOR);
 	}
 
 	return pSample;
@@ -144,7 +145,7 @@ CGimmickStartDoor *CGimmickStartDoor::Create(const D3DXVECTOR3 pos)
 //==========================================================
 // ”»’èŠm”F
 //==========================================================
-bool CGimmickStartDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction)
+bool CGimmickStartDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
 	if (m_state == STATE_OPEN) {	// ŠJ‚­”à
 		return false;

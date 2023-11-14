@@ -15,6 +15,7 @@
 // 前方宣言
 class CWaist;
 class CCharacter;
+class CGimmick;
 
 //==========================================================
 // プレイヤーのクラス定義(派生クラス)
@@ -77,8 +78,10 @@ private:	// 自分だけがアクセス可能な定義
 	// 掴み情報構造体
 	struct SCatch
 	{
-		CPlayer *pPlayer;	// プレイヤー
-		int nMoveCnt;		// 移動した量
+		CGimmick *pGimmick;	// ギミック
+		CPlayer *pPlayer;		// プレイヤー
+		int nMoveCnt;			// 移動した量
+		D3DXVECTOR3 SetPos;	// 設定座標
 	};
 
 public:	// 誰でもアクセス可能
