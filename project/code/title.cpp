@@ -18,6 +18,7 @@
 #include "sound.h"
 #include "camera.h"
 #include "item.h"
+#include "objectX.h"
 
 //===============================================
 // ƒ}ƒNƒ’è‹`
@@ -64,6 +65,9 @@ HRESULT CTitle::Init(void)
 			m_pFileLoad->OpenFile("data\\TXT\\title_model.txt");
 		}
 	}
+
+	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\house.x", NULL);
+
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
