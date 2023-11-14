@@ -53,6 +53,8 @@ public:	// 誰でもアクセス可能
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
+	void CollisionCloss(void);
+	void Collision(void);
 
 	// メンバ変数
 	static CSpike *m_pTop;	// 先頭のオブジェクトへのポインタ

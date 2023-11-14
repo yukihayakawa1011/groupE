@@ -9,6 +9,7 @@
 #include "objectX.h"
 #include "slow.h"
 #include "meshfield.h"
+#include "player.h"
 
 // マクロ定義
 #define SPIKE_GRAVITY	(-0.9f)		//敵重力
@@ -146,12 +147,15 @@ void CSpike::Update(void)
 	if (m_info.pos.y <= fHeight)
 	{
 		m_info.pos.y = fHeight;
+		this->Collision();
 	}
 
 	//当たり判定
-	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(20.0f, 0.0f, 20.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-20.0f, 0.0f, -20.0f);
+
 	CObjectX::Collision(m_info.pos, m_info.posOld, m_info.move, vtxMin, vtxMax, 0.3f);
+	this->CollisionCloss();
 
 	// 使用オブジェクト更新
 	if (nullptr != m_pObj) {
@@ -188,4 +192,90 @@ CSpike *CSpike::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float
 	}
 
 	return pSpike;
+}
+
+//==========================================================
+// 当たり判定(通過中（外積）)
+//==========================================================
+void CSpike::CollisionCloss(void)
+{
+	CPlayer* pPlayer = CPlayer::GetTop();
+
+	while (pPlayer != nullptr)
+	{
+		CPlayer* pPlayerNext = pPlayer->GetNext();
+		D3DXVECTOR3 vtxPlayerMax = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
+		D3DXVECTOR3 vtxPlayerMin = D3DXVECTOR3(-50.0f, -50.0f, -50.0f);
+		D3DXVECTOR3 pos = pPlayer->GetPosition();
+
+		D3DXVECTOR3 posPoint[4] =
+		{
+			D3DXVECTOR3(pos.x + vtxPlayerMin.x,0.0f,pos.z + vtxPlayerMin.z),
+			D3DXVECTOR3(pos.x + vtxPlayerMax.x,0.0f,pos.z + vtxPlayerMin.z),
+			D3DXVECTOR3(pos.x + vtxPlayerMax.x,0.0f,pos.z + vtxPlayerMax.z),
+			D3DXVECTOR3(pos.x + vtxPlayerMin.x,0.0f,pos.z + vtxPlayerMax.z)
+		};
+
+		D3DXVECTOR3 vecMove, vecLine;
+		D3DXVECTOR3 vecToPos, vecToPosOld;
+		float fAreaA = 1.0f, fAreaB = 1.1f;
+
+		for (int cnt = 0; cnt < 4; cnt++)
+		{
+			vecMove = m_info.pos - m_info.posOld;
+			vecLine = posPoint[(cnt + 1) % 4] - posPoint[cnt];	//境界線ベクトル
+			vecToPos = m_info.pos - posPoint[cnt];
+			vecToPos.y = 0.0f;
+			vecToPosOld = m_info.posOld - posPoint[cnt];
+			vecToPosOld.y = 0.0f;
+
+			//面積求める
+			fAreaA = (vecToPos.z * vecMove.x) - (vecToPos.x * vecMove.z);
+			fAreaB = (vecLine.z * vecMove.x) - (vecLine.x * vecMove.z);
+
+			if ((vecLine.z * vecToPosOld.x) - (vecLine.x * vecToPosOld.z) >= 0.0f && (vecLine.z * vecToPos.x) - (vecLine.x * vecToPos.z) < 0.0f)
+			{
+				if (fAreaA / fAreaB >= 0.0f && fAreaA / fAreaB <= 1.0f)
+				{//ごっつん
+					pPlayer->Damage(1);
+					Uninit();
+					return;	//消滅したため終了
+				}
+			}
+		}
+
+		pPlayer = pPlayerNext;
+	}
+}
+
+//==========================================================
+// 当たり判定(落ちてる)
+//==========================================================
+void CSpike::Collision(void)
+{
+	CPlayer* pPlayer = CPlayer::GetTop();
+
+	while (pPlayer != nullptr)
+	{
+		CPlayer* pPlayerNext = pPlayer->GetNext();
+
+		D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
+		D3DXVECTOR3 vtxPlayerMax = D3DXVECTOR3(50.0f, 50.0f, 50.0f);
+		D3DXVECTOR3 vtxPlayerMin = D3DXVECTOR3(-50.0f, -50.0f, -50.0f);
+		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(20.0f, 20.0f, 20.0f);
+		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(-20.0f, -20.0f, -20.0f);
+
+		if (m_info.pos.x + vtxObjMax.x > posPlayer.x + vtxPlayerMin.x
+			&& m_info.pos.x + vtxObjMin.x < posPlayer.x + vtxPlayerMax.x
+			&& m_info.pos.y + vtxObjMax.y > posPlayer.y + vtxPlayerMin.y
+			&& m_info.pos.y + vtxObjMin.y < posPlayer.y + vtxPlayerMax.y
+			&& m_info.pos.z + vtxObjMax.z > posPlayer.z + vtxPlayerMin.z
+			&& m_info.pos.z + vtxObjMin.z < posPlayer.z + vtxPlayerMax.z)
+		{//範囲内にある
+			pPlayer->Damage(1);
+			Uninit();
+		}
+
+		pPlayer = pPlayerNext;
+	}
 }
