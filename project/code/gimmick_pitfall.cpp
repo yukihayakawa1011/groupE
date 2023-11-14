@@ -158,7 +158,6 @@ bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DX
 				 //è„Ç…ÇÃÇπÇÈ
 					pos.y = posObj.y + vtxObjMax.y - vtxMin.y;
 					move.y = 0.0f;
-					bLand = true;
 				}
 			}
 		}

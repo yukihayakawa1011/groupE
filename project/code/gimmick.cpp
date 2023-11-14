@@ -81,20 +81,20 @@ bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 {
 	CGimmick *pObj = m_pTop;	// æ“ªŽæ“¾
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
-	bool bLand = false;	// ’…’n‚µ‚½‚©”Û‚©
+	bool bValue = false;	// ’…’n‚µ‚½‚©”Û‚©
 
 	while (pObj != nullptr)
 	{
 		CGimmick *pObjNext = pObj->m_pNext;
 		if (pObj->CollisionCheck(pos, posOld, move, SetPos, vtxMin, vtxMax, nAction, ppGimmick))
 		{
-			bLand = true;
+			bValue = true;
 		}
 
 		pObj = pObjNext;
 	}
 
-	return bLand;
+	return bValue;
 }
 
 //==========================================================

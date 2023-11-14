@@ -152,13 +152,36 @@ HRESULT CGame::Init(void)
 
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
-		CGimmickButton::Create(D3DXVECTOR3(100.0f, 0.0f, 0.0f));
+		// ギミックの生成
+
+		// 開始扉
 		CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f, 0.0f, 0.0f));
 		CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(-200.0f, 0.0f, 0.0f));
-		CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		p->SetLever(l);
-		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
+		// 槍(ボタン式)
+		CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(100.0f, 0.0f, 0.0f));		
+		pSpear->BindButton(pButton);
+		pSpear->BindType(CGimmickSpear::TYPE_PRESS);
+
+		// 槍(ボタン押したら自動)
+		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(100.0f, 0.0f, 400.0f));
+		pSpear->BindButton(pButton);
+		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
+
+		// 槍(センサー式)
+		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+
+		// 地面からの槍
+		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+
+		// 回転扉
+		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+		// 落とし穴
 		CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 	}
 		break;

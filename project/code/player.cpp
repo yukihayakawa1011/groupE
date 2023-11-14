@@ -542,7 +542,9 @@ void CPlayer::Controller(void)
 	}
 
 
-	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick);
+	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick)) {
+		Damage(1);
+	}
 
 	if (m_Catch.pGimmick != nullptr) {
 		m_Info.state = STATE_CATCH;

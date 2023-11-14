@@ -167,8 +167,7 @@ bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 	{
 		return bValue;
 	}
-
-	bValue = true;					// 触れた状態
+	
 	m_state = (STATE)(m_state ^ 1);	// 押された状態にする
 	m_nInterval = INTERVAL;			// インターバル
 

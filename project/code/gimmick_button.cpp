@@ -143,7 +143,6 @@ bool CGimmickButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXV
 		return bValue;
 	}
 
-	bValue = true;			// G‚ê‚½ó‘Ô
 	m_state = STATE_PRESS;		// ‰Ÿ‚³‚ê‚½ó‘Ô‚É‚·‚é
 	CManager::GetInstance()->GetDebugProc()->Print("‰Ÿ‚³‚ê‚Ä‚¢‚é‚æ[\n");
 

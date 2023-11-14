@@ -10,9 +10,10 @@
 #include "debugproc.h"
 #include "player.h"
 #include "Xfile.h"
+#include "gimmick_button.h"
 
 // マクロ定義
-#define COLLISION_RANGE	(50.0f)	// 当たり判定サイズ
+#define COLLISION_RANGE	(300.0f)		// 当たり判定サイズ
 #define SET_POSY			(-180.0f)	// 地面に埋まってる時の座標設定
 
 // 静的メンバ変数宣言
@@ -42,6 +43,7 @@ CGimmickSpear::CGimmickSpear()
 {
 	// 値のクリア
 	m_pObj = nullptr;
+	m_pInObj = nullptr;
 	m_state = STATE_NONE;
 }
 
@@ -98,8 +100,12 @@ void CGimmickSpear::Update(void)
 	// マトリックス設定
 	SetMtxWorld();
 
-	// 状態管理
-	StateSet();
+	if (m_bActive) {
+		StateSet();	// 状態管理
+	}
+
+	// 種類更新
+	UpdateType();
 
 	CManager::GetInstance()->GetDebugProc()->Print("槍の状態[ %d ] : カウント [ %d ]\n", m_state, m_nStateCounter);
 
@@ -116,7 +122,7 @@ void CGimmickSpear::Update(void)
 //==========================================================
 // 生成
 //==========================================================
-CGimmickSpear *CGimmickSpear::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot)
+CGimmickSpear *CGimmickSpear::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, TYPE type)
 {
 	CGimmickSpear *pSample = nullptr;
 
@@ -130,7 +136,8 @@ CGimmickSpear *CGimmickSpear::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 ro
 		// 値の設定
 		pSample->SetPosition(pos);
 		pSample->SetRotation(rot);
-		pSample->BindType(TYPE_SPEAR);
+		pSample->BindType(type);
+		pSample->CGimmick::BindType(TYPE_SPEAR);
 	}
 
 	return pSample;
@@ -146,6 +153,7 @@ void CGimmickSpear::StateSet(void)
 	if (m_nStateCounter > 0) {
 		return;
 	}
+
 	// 状態に合わせてボタンの色を変更
 	switch (m_state)
 	{
@@ -192,14 +200,29 @@ void CGimmickSpear::StateSet(void)
 //==========================================================
 bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
-	if (m_state >= STATE_NONE) {	// 開く扉
+	D3DXVECTOR3 ObjPos = GetPosition();
+	D3DXVECTOR3 ObjRot = GetRotation();
+
+	if (m_type == TYPE_SENSOR) {
+
+		// 範囲内チェック
+		{
+			float fLength =
+				sqrtf((pos.x - ObjPos.x) * (pos.x - ObjPos.x)
+					+ (pos.z - ObjPos.z) * (pos.z - ObjPos.z));
+
+			if (fLength < COLLISION_RANGE)
+			{
+				m_bActive = true;
+			}
+		}
+	}
+
+	if (m_state < STATE_APPEAR || m_state > STATE_ATKNOW) {	// 開く扉
 		return false;
 	}
 
 	bool bValue = false;
-	D3DXVECTOR3 ObjPos = GetPosition();
-	D3DXVECTOR3 ObjRot = GetRotation();
-
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -211,121 +234,80 @@ bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 		pFile->GetMin(m_pObj->GetId()),
 		ObjRot.y);
 
-	//// X
-	//if (pos.y + vtxMax.y > ObjPos.y + vtxObjMin.y
-	//	&& pos.y + vtxMin.y < ObjPos.y + vtxObjMax.y
-	//	&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
-	//	&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
-	//{//範囲内にある
-	//	if (posOld.x + vtxMin.x >= ObjPos.x + vtxObjMax.x
-	//		&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x)
-	//	{//右から左にめり込んだ
-	//		move.x = 0.0f;
-	//		pos.x = ObjPos.x + vtxObjMax.x - vtxMin.x + 0.1f + move.x;
+	if (pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
+		&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x
+		&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
+		&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z) {	// 範囲内
 
-	//		if ((D3DX_PI * 0.5f == GetRotation().y || -D3DX_PI * 0.5f == GetRotation().y) && nAction == CPlayer::ACTION_ATK && m_state == STATE_NONE) {	// 攻撃した
-	//			m_state = STATE_ROTATE;
-	//			m_RotDest.y += D3DX_PI;
-
-	//			if (m_RotDest.y > D3DX_PI) {
-	//				m_RotDest.y += -D3DX_PI * 2;
-	//			}
-
-	//			if (ppGimmick != nullptr) {
-	//				*ppGimmick = this;
-	//				SetPos.z = SET_POSZ;
-	//			}
-	//		}
-	//	}
-	//	else if (posOld.x + vtxMax.x <= ObjPos.x + vtxObjMin.x
-	//		&& pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x)
-	//	{//左から右にめり込んだ
-	//	 //位置を戻す
-	//		move.x = 0.0f;
-	//		pos.x = ObjPos.x + vtxObjMin.x - vtxMax.x - 0.1f + move.x;
-
-	//		if ((D3DX_PI * 0.5f == GetRotation().y || -D3DX_PI * 0.5f == GetRotation().y) && nAction == CPlayer::ACTION_ATK && m_state == STATE_NONE) {	// 攻撃した
-	//			m_state = STATE_ROTATE;
-	//			m_RotDest.y += D3DX_PI;
-
-	//			if (m_RotDest.y > D3DX_PI) {
-	//				m_RotDest.y += -D3DX_PI * 2;
-	//			}
-
-	//			if (ppGimmick != nullptr) {
-	//				*ppGimmick = this;
-	//				SetPos.z = -SET_POSZ;
-	//			}
-	//		}
-	//	}
-	//}
-
-	////Z
-	//if (pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
-	//	&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x
-	//	&& pos.y + vtxMax.y > ObjPos.y + vtxObjMin.y
-	//	&& pos.y + vtxMin.y < ObjPos.y + vtxObjMax.y)
-	//{//範囲内にある
-	//	if (posOld.z + vtxMin.z >= ObjPos.z + vtxObjMax.z
-	//		&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
-	//	{//奥から手前にめり込んだ
-	//	 //位置を戻す
-	//		move.z = 0.0f;
-	//		pos.z = ObjPos.z + vtxObjMax.z - vtxMin.z + 0.1f + move.z;
-
-	//		if ((D3DX_PI * 1.0f == GetRotation().y || -D3DX_PI * 1.0f == GetRotation().y || 0.0f == GetRotation().y) && nAction == CPlayer::ACTION_ATK && m_state == STATE_NONE) {	// 攻撃した
-	//			m_state = STATE_ROTATE;
-	//			m_RotDest.y += D3DX_PI;
-
-	//			if (m_RotDest.y > D3DX_PI) {
-	//				m_RotDest.y += -D3DX_PI * 2;
-	//			}
-
-	//			if (ppGimmick != nullptr) {
-	//				*ppGimmick = this;
-	//				SetPos.z = SET_POSZ;
-	//			}
-	//		}
-	//	}
-	//	else if (posOld.z + vtxMax.z <= ObjPos.z + vtxObjMin.z
-	//		&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z)
-	//	{//手前から奥にめり込んだ
-	//	 //位置を戻す
-	//		move.z = 0.0f;
-	//		pos.z = ObjPos.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
-
-	//		if ((D3DX_PI * 1.0f == GetRotation().y || -D3DX_PI * 1.0f == GetRotation().y || 0.0f == GetRotation().y) && nAction == CPlayer::ACTION_ATK && m_state == STATE_NONE) {	// 攻撃した
-	//			m_state = STATE_ROTATE;
-	//			m_RotDest.y += D3DX_PI;
-
-	//			if (m_RotDest.y > D3DX_PI) {
-	//				m_RotDest.y += -D3DX_PI * 2;
-	//			}
-
-	//			if (ppGimmick != nullptr) {
-	//				*ppGimmick = this;
-	//				SetPos.z = -SET_POSZ;
-	//			}
-	//		}
-	//	}
-	//}
-
-	////Y
-	//if (pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
-	//	&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x
-	//	&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
-	//	&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
-	//{//範囲内にある
-	// //上からの判定
-	//	if (posOld.y + vtxMin.y >= ObjPos.y + vtxObjMax.y
-	//		&& pos.y + vtxMin.y < ObjPos.y + vtxObjMax.y)
-	//	{//上からめり込んだ
-	//	 //上にのせる
-	//		pos.y = ObjPos.y + vtxObjMax.y - vtxMin.y;
-	//		move.y = 0.0f;
-	//		bValue = true;
-	//	}
-	//}
+		if (pos.y + vtxMin.y >= ObjPos.y + vtxObjMin.y && pos.y <= ObjPos.y + vtxObjMax.y) {	// 高さも範囲内
+			bValue = true;
+		}
+	}
 
 	return bValue;
+}
+
+//==========================================================
+// 種類ごとの更新
+//==========================================================
+void CGimmickSpear::UpdateType(void)
+{
+	// 状態に合わせてボタンの色を変更
+	switch (m_type)
+	{
+	case TYPE_AUTO:	// 自動
+	{	 
+		m_bActive = true;
+	}
+	break;
+
+	case TYPE_PRESS:
+	{
+		if (m_pInObj == nullptr) {
+			return;
+		}
+
+		if (m_pInObj->GetState() == CGimmickButton::STATE_PRESS) {	// 押されている
+			m_bActive = true;
+		}
+		else
+		{
+			if (m_state == STATE_NONE) {
+				m_bActive = false;
+				m_nStateCounter = 0;
+			}
+		}
+	}
+	break;
+
+	case TYPE_PRESSAUTO:
+	{
+		if (m_pInObj == nullptr) {
+			return;
+		}
+
+		if (m_pInObj->GetState() == CGimmickButton::STATE_PRESS) {	// 押されている
+			m_bActive = true;
+			m_type = TYPE_AUTO;
+		}
+		else
+		{
+			m_bActive = false;
+		}
+	}
+	break;
+
+	case TYPE_SENSOR: 
+	{
+		if (m_state == STATE_NONE) {
+			m_bActive = false;
+			m_nStateCounter = 0;
+		}
+	}
+	break;
+
+	default:
+
+		break;
+	}
 }
