@@ -32,19 +32,6 @@ public:
 		TYPE_MAX
 	};
 
-private:	// 自分だけがアクセス可能な定義
-
-	// 状態列挙型
-	enum STATE
-	{
-		STATE_APPEAR = 0,	// 出現状態
-		STATE_NORMAL,		// 通常状態
-		STATE_DAMAGE,		// ダメージ状態
-		STATE_DEATH,		// 死亡状態
-		STATE_SPAWN,		// 復活中状態
-		STATE_CATCH,		// 掴まれている状態
-		STATE_MAX
-	};
 
 	// アクション列挙型
 	enum ACTION
@@ -58,6 +45,20 @@ private:	// 自分だけがアクセス可能な定義
 		ACTION_THROW,			// 投げる
 		ACTION_DAMAGE,		// 攻撃を受けた
 		ACTION_MAX
+	};
+
+private:	// 自分だけがアクセス可能な定義
+
+	// 状態列挙型
+	enum STATE
+	{
+		STATE_APPEAR = 0,	// 出現状態
+		STATE_NORMAL,		// 通常状態
+		STATE_DAMAGE,		// ダメージ状態
+		STATE_DEATH,		// 死亡状態
+		STATE_SPAWN,		// 復活中状態
+		STATE_CATCH,		// 掴まれている状態
+		STATE_MAX
 	};
 
 	// 情報構造体

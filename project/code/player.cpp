@@ -30,6 +30,7 @@
 #include "waist.h"
 #include "model.h"
 #include "item.h"
+#include "gimmick.h"
 
 //===============================================
 // ƒ}ƒNƒ’è‹`
@@ -535,6 +536,8 @@ void CPlayer::Controller(void)
 		m_nItemCnt++;
 		pItem->Uninit();
 	}
+
+	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, m_action);
 }
 
 //===============================================
