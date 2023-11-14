@@ -25,6 +25,7 @@ private:
 		D3DXVECTOR3 rot;		// 向き
 		D3DXVECTOR3 move;		// 移動量
 		D3DXVECTOR3 posOld;		// 設定位置
+		int nLife;
 	};
 
 public:	// 誰でもアクセス可能
@@ -43,12 +44,14 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetRotation(void) { return m_info.rot; }
 	D3DXVECTOR3 GetMove(void) { return m_info.move; }
 	D3DXVECTOR3 GetPositionOld(void) { return m_info.posOld; }
+	int GetLife(void) { return m_info.nLife; }
 
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos) { m_info.pos = pos; }
 	void SetRotation(const D3DXVECTOR3 rot) { m_info.rot = rot; }
 	void SetMove(const D3DXVECTOR3 move) { m_info.move = move; }
 	void SetPositionOld(const D3DXVECTOR3 pos) { m_info.posOld = pos; }
+	void SetLife(const int nLife) { m_info.nLife = nLife; }
 
 private:	// 自分だけがアクセス可能
 

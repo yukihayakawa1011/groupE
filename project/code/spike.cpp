@@ -14,6 +14,7 @@
 // マクロ定義
 #define SPIKE_GRAVITY	(-0.9f)		//敵重力
 #define INER	(0.12f)		// 慣性
+#define SPIKE_LIFE		(180)	//体力（毎フレ1ダメージ）
 
 //静的メンバ変数
 CSpike *CSpike::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
@@ -29,6 +30,7 @@ CSpike::CSpike()
 	m_info.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_info.nLife = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -157,6 +159,14 @@ void CSpike::Update(void)
 	CObjectX::Collision(m_info.pos, m_info.posOld, m_info.move, vtxMin, vtxMax, 0.3f);
 	this->CollisionCloss();
 
+	//体力設定
+	m_info.nLife--;
+
+	if (m_info.nLife <= 0)
+	{//お亡くなり
+		Uninit();
+	}
+
 	// 使用オブジェクト更新
 	if (nullptr != m_pObj) {
 		m_pObj->SetPosition(m_info.pos);
@@ -185,10 +195,13 @@ CSpike *CSpike::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float
 
 		//移動量の設定
 		D3DXVECTOR3 movev3 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		movev3.x = sinf(rot.y) * move;
-		movev3.y = 10.0f;
-		movev3.z = -cosf(rot.y) * move;
+		movev3.x = sinf(rot.y) * move + (rand() % 11 - 5);
+		movev3.y = 10.0f + (rand() % 11 - 5);
+		movev3.z = -cosf(rot.y) * move + (rand() % 11 - 5);
 		pSpike->SetMove(movev3);
+
+		//体力設定
+		pSpike->SetLife(SPIKE_LIFE);
 	}
 
 	return pSpike;
