@@ -20,11 +20,20 @@ private:
 
 public:
 
+	// 種類
+	enum TYPE
+	{
+		TYPE_AUTO = 0,	// 自動作動
+		TYPE_PRESS,		// 
+	};
+
 	// 状態列挙型
 	enum STATE
 	{
 		STATE_NONE = 0,	// 何もない
-		STATE_ROTATE,		// 回転中
+		STATE_APPEAR,		// 出現
+		STATE_ATKNOW,		// 攻撃中
+		STATE_BACK,		// 戻る
 		STATE_MAX
 	};
 
@@ -33,7 +42,7 @@ public:	// 誰でもアクセス可能
 	CGimmickSpear();		// コンストラクタ(オーバーロード)
 	~CGimmickSpear();		// デストラクタ
 
-								// メンバ関数
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
@@ -49,13 +58,17 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick);
+	void StateSet(void);
 
 	// メンバ変数
 	CModel *m_pObj;			// オブジェクトのポインタ
 	STATE m_state;			// 状態
-	D3DXVECTOR3 m_RotDest;		// 目標の角度
+	D3DXVECTOR3 m_PosDest;		// 目標の座標
+	int m_nStateCounter;		// 状態管理カウンター
+	float m_fDiffMulti;		// 差分補正の倍率
 	static char *m_pFileName;	// モデルファイルネーム
-
+	static int m_aStateSetCount[STATE_MAX];	// 遷移カウント
+	static float m_aStateDiffMulti[STATE_MAX];	// 遷移カウント
 };
 
 #endif

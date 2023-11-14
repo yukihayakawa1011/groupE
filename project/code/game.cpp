@@ -34,6 +34,7 @@
 #include "gimmick_rotatedoor.h"
 #include "gimmick_startdoor.h"
 #include "gimmick_lever.h"
+#include "gimmick_spear.h"
 
 // ƒOƒ[ƒoƒ‹
 
@@ -153,6 +154,7 @@ HRESULT CGame::Init(void)
 		CGimmickButton::Create(D3DXVECTOR3(100.0f, 0.0f, 0.0f));
 		CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f, 0.0f, 0.0f));
 		CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(-200.0f, 0.0f, 0.0f));
+		CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		p->SetLever(l);
 		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
