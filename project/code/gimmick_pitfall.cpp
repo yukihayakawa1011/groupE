@@ -124,7 +124,7 @@ CGimmickPitFall *CGimmickPitFall::Create(const D3DXVECTOR3 pos)
 //==========================================================
 // “–‚½‚è”»’è
 //==========================================================
-bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 & move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction)
+bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	bool bLand = false;	// ’…’n‚µ‚½‚©”Û‚©
