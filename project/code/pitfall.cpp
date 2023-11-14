@@ -82,9 +82,11 @@ void CPitFall::Update(void)
 	//ƒ‚ƒfƒ‹‚ÉÝ’è
 	D3DXVECTOR3 rot = m_pObjFloor[0]->GetRotation();
 	m_pObjFloor[0]->SetRotation(D3DXVECTOR3(0.0f, rot.y, -m_fAngle));
+	m_pObjFloor[0]->SetEnableCollision(!m_bOpen);
 
 	rot = m_pObjFloor[1]->GetRotation();
 	m_pObjFloor[1]->SetRotation(D3DXVECTOR3(0.0f, rot.y, -m_fAngle));
+	m_pObjFloor[1]->SetEnableCollision(!m_bOpen);
 }
 
 //==========================================================
