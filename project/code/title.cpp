@@ -68,6 +68,24 @@ HRESULT CTitle::Init(void)
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\house.x", NULL);
 
+	//カメラ初期化
+	{
+		/*CManager::GetInstance()->GetCamera()->Init();*/
+
+		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-0.0f, 0.0f, 0.0f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(75.0f, 300.0f, -0.0f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -1.6f, 1.35f));
+
+		D3DVIEWPORT9 viewport;
+		//プレイヤー追従カメラの画面位置設定
+		viewport.X = 0;
+		viewport.Y = 0;
+		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+		viewport.MinZ = 0.0f;
+		viewport.MaxZ = 1.0f;
+		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
