@@ -7,6 +7,10 @@
 #include "itembox.h"
 #include "spike.h"
 
+//静的メンバ変数
+CItemBox *CItemBox::m_pTop = nullptr;
+CItemBox *CItemBox::m_pCur = nullptr;
+
 // マクロ定義
 
 //==========================================================
@@ -126,5 +130,5 @@ CItemBox *CItemBox::Create(void)
 //==========================================================
 void CItemBox::Emission(void)
 {
-	CSpike::Create(m_pos, m_rot, 40.0f);
+	//CSpike::Create(m_pos, m_rot, 40.0f,);
 }

@@ -178,7 +178,7 @@ void CSpike::Update(void)
 //==========================================================
 // ¶¬
 //==========================================================
-CSpike *CSpike::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float move)
+CSpike *CSpike::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float moveHorizontal, const float moveVertical)
 {
 	CSpike *pSpike = nullptr;
 
@@ -195,9 +195,9 @@ CSpike *CSpike::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float
 
 		//ˆÚ“®—Ê‚Ìİ’è
 		D3DXVECTOR3 movev3 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		movev3.x = sinf(rot.y) * move + (rand() % 11 - 5);
-		movev3.y = 10.0f + (rand() % 11 - 5);
-		movev3.z = -cosf(rot.y) * move + (rand() % 11 - 5);
+		movev3.x = sinf(rot.y) * moveHorizontal + (rand() % 11 - 5);
+		movev3.y = moveVertical + (rand() % 11 - 5);
+		movev3.z = -cosf(rot.y) * moveHorizontal + (rand() % 11 - 5);
 		pSpike->SetMove(movev3);
 
 		//‘Ì—Íİ’è

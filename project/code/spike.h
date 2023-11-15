@@ -37,7 +37,7 @@ public:	// 誰でもアクセス可能
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	static CSpike *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float move);
+	static CSpike *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const float moveHorizontal, const float moveVertical);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_info.pos; }
