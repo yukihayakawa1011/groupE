@@ -489,47 +489,37 @@ void CEnemy::Collision(void)
 
 	//X
 	posTemp.x = m_Info.pos.x;
-	pObj = m_pTop;
+	CollisionAllEnemy(posTemp);
+
+	//Y
+	posTemp.y = m_Info.pos.y;
+	CollisionAllEnemy(posTemp);
+
+	//Z
+	posTemp.z = m_Info.pos.z;
+	CollisionAllEnemy(posTemp);
+
+	m_Info.pos = posTemp;
+}
+
+//===============================================
+// 敵すべてに当たり判定チェック
+//===============================================
+D3DXVECTOR3 CEnemy::CollisionAllEnemy(D3DXVECTOR3 pos)
+{
+	CEnemy *pObj = m_pTop;	// 先頭取得
 	while (pObj != NULL)
 	{
 		CEnemy *pObjNext = pObj->m_pNext;
 		if (pObj != this)
 		{
-			pObj->CollisionCheck(posTemp, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
+			pObj->CollisionCheck(pos, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
 		}
 
 		pObj = pObjNext;
 	}
 
-	//Y
-	posTemp.y = m_Info.pos.y;
-	pObj = m_pTop;
-	while (pObj != NULL)
-	{
-		CEnemy* pObjNext = pObj->m_pNext;
-		if (pObj != this)
-		{
-			pObj->CollisionCheck(posTemp, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
-		}
-
-		pObj = pObjNext;
-	}
-
-	//Z
-	posTemp.z = m_Info.pos.z;
-	pObj = m_pTop;
-	while (pObj != NULL)
-	{
-		CEnemy* pObjNext = pObj->m_pNext;
-		if (pObj != this)
-		{
-			pObj->CollisionCheck(posTemp, m_Info.posOld, m_Info.move, ENEMY_VTX_MIN, ENEMY_VTX_MAX);
-		}
-
-		pObj = pObjNext;
-	}
-
-	m_Info.pos = posTemp;
+	return pos;
 }
 
 //===============================================

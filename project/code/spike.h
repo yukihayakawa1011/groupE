@@ -45,6 +45,8 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetMove(void) { return m_info.move; }
 	D3DXVECTOR3 GetPositionOld(void) { return m_info.posOld; }
 	int GetLife(void) { return m_info.nLife; }
+	static CSpike* GetTop(void) { return m_pTop; }
+	CSpike* GetNext(void) { return m_pNext; }
 
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos) { m_info.pos = pos; }
