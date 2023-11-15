@@ -117,6 +117,7 @@ public:	// 誰でもアクセス可能
 	void SetLife(int nLife);
 	int GetLife(void) { return m_nLife; }
 	STATE GetState(void) { return m_Info.state; }
+	bool GetGoal(void) { return m_bGoal; }
 
 private:	// 自分だけがアクセス可能
 
@@ -156,6 +157,7 @@ private:	// 自分だけがアクセス可能
 	float m_fRotDest;		// 角度計算
 	bool m_bMove;			// 移動したかどうか
 	bool m_bJump;			// ジャンプ
+	bool m_bGoal;			// ゴールフラグ
 	int m_nLife;			// 体力
 	int m_nId;			// ID
 	TYPE m_type;			// 種類

@@ -70,6 +70,7 @@ private:
 	void ByteCheck(char *pRecvData, int nRecvByte);
 	void OnlineEnd(void);
 	void AddressLoad(char *pAddrss);
+	bool EndCheck(void);
 
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
 	CPlayer **m_ppPlayer;			// プレイヤーのポインタ

@@ -102,6 +102,8 @@ void CItemBox::Uninit(void)
 		}
 	}
 
+	ListOut();
+
 	Release();
 }
 
