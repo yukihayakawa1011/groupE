@@ -32,6 +32,7 @@
 #include "item.h"
 #include "gimmick.h"
 #include "gimmick_rotatedoor.h"
+#include "enemy.h"
 
 //===============================================
 // マクロ定義
@@ -77,50 +78,7 @@ int CPlayer::m_nNumCount = 0;
 //===============================================
 // コンストラクタ(オーバーロード)
 //===============================================
-CPlayer::CPlayer(const D3DXVECTOR3 pos)
-{
-	// 値をクリアする
-	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_fRotMove = 0.0f;
-	m_fRotDiff = 0.0f;
-	m_fRotDest = 0.0f;
-	m_pBody = NULL;
-	m_pLeg = NULL;
-	m_pWaist = NULL;
-	m_Catch.pPlayer = NULL;
-	m_Catch.pGimmick = NULL;
-	m_Catch.SetPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Catch.nMoveCnt = 0;
-	m_nLife = 0;
-	m_type = TYPE_NONE;
-	m_action = ACTION_NEUTRAL;
-	m_nId = m_nNumCount;
-	m_bJump = false;
-	m_nItemCnt = 0;
-
-	// 自分自身をリストに追加
-	if (m_pTop != NULL)
-	{// 先頭が存在している場合
-		m_pCur->m_pNext = this;	// 現在最後尾のオブジェクトのポインタにつなげる
-		m_pPrev = m_pCur;
-		m_pCur = this;	// 自分自身が最後尾になる
-	}
-	else
-	{// 存在しない場合
-		m_pTop = this;	// 自分自身が先頭になる
-		m_pCur = this;	// 自分自身が最後尾になる
-	}
-
-	m_nNumCount++;
-}
-
-//===============================================
-// コンストラクタ(オーバーロード)
-//===============================================
-CPlayer::CPlayer(int nPriOrity)
+CPlayer::CPlayer()
 {
 	// 値をクリアする
 	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -444,13 +402,12 @@ void CPlayer::Update(void)
 //===============================================
 // 生成
 //===============================================
-CPlayer *CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName, const int nPriority)
+CPlayer *CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName)
 {
 	CPlayer *pPlayer = NULL;
-	CXFile *pModelFile = CManager::GetInstance()->GetModelFile();
 
 	// オブジェクト2Dの生成
-	pPlayer = new CPlayer(nPriority);
+	pPlayer = new CPlayer();
 
 	if (nullptr != pPlayer)
 	{// 生成できた場合
@@ -525,7 +482,6 @@ void CPlayer::Controller(void)
 	}
 
 	// オブジェクトとの当たり判定
-	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
@@ -556,11 +512,8 @@ void CPlayer::Controller(void)
 //===============================================
 void CPlayer::Move(void)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
-	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();	// キーボードのポインタ
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
-	float fSpeed = MOVE;	// 移動量
 
 	// 入力装置確認
 	if (nullptr == pInputKey){
@@ -1181,6 +1134,8 @@ void CPlayer::Attack(void)
 		CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
 		D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
 		DamageCollision(pos);
+
+		// 
 	}
 }
 
@@ -1425,7 +1380,6 @@ void CPlayer::PlayerCatch(D3DXVECTOR3 pos)
 //===============================================
 void CPlayer::SetCatchMatrix(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	// デバイスへのポインタを取得
 	D3DXMATRIX mtxRot, mtxTrans;	// 計算用マトリックス
 
 	// ワールドマトリックスの初期化
@@ -1482,4 +1436,32 @@ void CPlayer::SetCatchMatrix(void)
 	// 位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_Info.pos.x, m_Info.pos.y, m_Info.pos.z);
 	D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
+}
+
+//===============================================
+// 攻撃中の当たり判定確認
+//===============================================
+void CPlayer::AttackCheck(void)
+{
+	if (m_pBody == nullptr) {
+		return;
+	}
+
+	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+
+	if (pModel == nullptr) {
+		return;
+	}
+
+	CEnemy *pEnem = CEnemy::GetTop()->GetTop();
+	D3DXVECTOR3 AtkPos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);	// 攻撃座標
+
+	// 敵数分確認
+	while (pEnem != nullptr) {
+		CEnemy *pEnemNext = pEnem->GetNext();
+
+		pEnem->HitCheck(AtkPos, ATK_RANGE);	// 触れているかチェック
+		
+		pEnem = pEnemNext;
+	}
 }

@@ -477,10 +477,6 @@ void CFileLoad::LoadModelData(FILE *pFile)
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	int nWidth = 0;			// •–‡”
-	int nHeight = 0;		// ‚‚³–‡”
-	float fWidth = 0.0f;	// •
-	float fHeight = 0.0f;	// ‚‚³
 	int nIdx = -1;
 
 	//I—¹•¶Žš‚Ü‚Å“Ç‚Ýž‚Ý
@@ -529,10 +525,6 @@ void CFileLoad::LoadItemData(FILE *pFile)
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	int nWidth = 0;			// •–‡”
-	int nHeight = 0;		// ‚‚³–‡”
-	float fWidth = 0.0f;	// •
-	float fHeight = 0.0f;	// ‚‚³
 	int nIdx = -1;
 
 	//I—¹•¶Žš‚Ü‚Å“Ç‚Ýž‚Ý
@@ -669,9 +661,4 @@ void CFileLoad::LoadVtxMinData(FILE *pFile, int nIdx)
 	fscanf(pFile, "%f", &VtxMin.z);	//zÀ•W“Ç‚Ýž‚Ý
 
 	CManager::GetInstance()->GetModelFile()->SetSizeVtxMin(nIdx, VtxMin);
-}
-
-void LoadGimmickData(FILE *pFile, int nIdx)
-{
-
 }

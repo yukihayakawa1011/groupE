@@ -64,10 +64,10 @@ public:
 	virtual CPlayer *GetPlayer(void) { return NULL; }
 	virtual CFileLoad *GetFileLoad(void) { return NULL; }
 	virtual CEditor *GetEditor(void) { return NULL; }
-	virtual void SendPosition(D3DXVECTOR3 pos) {  }
-	virtual void SendRotation(D3DXVECTOR3 rot) {  }
-	virtual void SendDamage(int nDamage) {  }
-	virtual void SendLife(int nLife) {  }
+	virtual void SendPosition(D3DXVECTOR3&) {  }
+	virtual void SendRotation(D3DXVECTOR3&) {  }
+	virtual void SendDamage(int) {  }
+	virtual void SendLife(int) {  }
 	void SetMode(MODE mode) { m_mode = mode; }
 	MODE GetMode(void) { return m_mode; }
 

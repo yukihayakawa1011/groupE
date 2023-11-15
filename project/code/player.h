@@ -86,9 +86,7 @@ private:	// 自分だけがアクセス可能な定義
 
 public:	// 誰でもアクセス可能
 
-	//CPlayer();	// コンストラクタ
-	CPlayer(const D3DXVECTOR3 pos);	// コンストラクタ(オーバーロード)
-	CPlayer(int nPriOrity = 1);
+	CPlayer();	// コンストラクタ
 	~CPlayer();	// デストラクタ
 
 	// メンバ関数
@@ -97,7 +95,7 @@ public:	// 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	static CPlayer *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move,
-		const char *pBodyName, const char *pLegName, const int nPriority = 4);
+		const char *pBodyName, const char *pLegName);
 
 	// メンバ関数(設定)
 	void SetMove(const D3DXVECTOR3 move) { m_Info.move = move; }
@@ -140,27 +138,28 @@ private:	// 自分だけがアクセス可能
 	void Throw(void);
 	void Drop(int nDropCnt);
 	void DamageCollision(D3DXVECTOR3 pos);
+	void AttackCheck(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
 	static CPlayer *m_pCur;	// 最後尾のオブジェクトへのポインタ
-	CPlayer *m_pPrev;	// 前のオブジェクトへのポインタ
-	CPlayer *m_pNext;	// 次のオブジェクトへのポインタ
-	SInfo m_Info;		// 自分自身の情報
-	SCatch m_Catch;	// 掴みに関する情報
-	CWaist *m_pWaist;	// 腰
+	CPlayer *m_pPrev;		// 前のオブジェクトへのポインタ
+	CPlayer *m_pNext;		// 次のオブジェクトへのポインタ
+	SInfo m_Info;			// 自分自身の情報
+	SCatch m_Catch;		// 掴みに関する情報
+	CWaist *m_pWaist;		// 腰
 	CCharacter *m_pBody;	// 上半身
 	CCharacter *m_pLeg;	// 下半身
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
-	bool m_bMove;		// 移動したかどうか
-	bool m_bJump;		// ジャンプ
-	int m_nLife;		// 体力
-	int m_nId;		// ID
-	TYPE m_type;		// 種類
-	ACTION m_action;	// アクション
-	int m_nItemCnt;
+	bool m_bMove;			// 移動したかどうか
+	bool m_bJump;			// ジャンプ
+	int m_nLife;			// 体力
+	int m_nId;			// ID
+	TYPE m_type;			// 種類
+	ACTION m_action;		// アクション
+	int m_nItemCnt;		// 
 	static int m_nNumCount;
 	
 };

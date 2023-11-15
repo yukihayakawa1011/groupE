@@ -75,7 +75,6 @@ void CMeshBalloon::Draw(void)
 CMeshBalloon *CMeshBalloon::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, float fLength, const int nPriority, const int nWidth, const int nHeight)
 {
 	CMeshBalloon *pMesh = nullptr;
-	CTexture *pTexture = CManager::GetInstance()->GetTexture();	// テクスチャへのポインタ
 
 	pMesh = new CMeshBalloon;
 

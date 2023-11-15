@@ -80,7 +80,6 @@ void CGimmick::SetMtxWorld(void)
 bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
 	CGimmick *pObj = m_pTop;	// æ“ªŽæ“¾
-	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	bool bValue = false;	// ’…’n‚µ‚½‚©”Û‚©
 
 	while (pObj != nullptr)

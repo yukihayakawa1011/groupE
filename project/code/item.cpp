@@ -298,7 +298,6 @@ void CItem::Update(void)
 CItem *CItem::Collision(D3DXVECTOR3 &pos)
 {
 	CItem *pObj = m_pTop;	// 先頭取得
-	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 
 	while (pObj != NULL)
 	{
@@ -325,7 +324,6 @@ CItem *CItem::Collision(D3DXVECTOR3 &pos)
 //==========================================================
 bool CItem::CollisionCheck(D3DXVECTOR3 &pos)
 {
-	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	D3DXVECTOR3 ObjPos = GetPosition();
 
 	if (m_pObject == nullptr){	// オブジェクトがない
@@ -339,13 +337,6 @@ bool CItem::CollisionCheck(D3DXVECTOR3 &pos)
 	if (m_nType == TYPE_DROP)
 	{
 		return false;
-	}
-
-	// 範囲内チェック
-	{
-		float fLength =
-			sqrtf((pos.x - ObjPos.x) * (pos.x - ObjPos.x)
-				+ (pos.z - ObjPos.z) * (pos.z - ObjPos.z));
 	}
 
 	// 距離を取得

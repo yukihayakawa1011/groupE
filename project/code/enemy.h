@@ -60,6 +60,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CEnemy *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move,
 		const char *pBodyName, const char *pLegName, const int nPriority = 4);
+	void HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage = 1);
 
 	// メンバ関数(設定)
 	void SetMove(const D3DXVECTOR3 move) { m_Info.move = move; }

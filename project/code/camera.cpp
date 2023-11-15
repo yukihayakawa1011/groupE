@@ -730,72 +730,6 @@ void CCamera::Slow(void)
 }
 
 //==========================================================
-// スローシャワー時のカメラ操作
-//==========================================================
-void CCamera::SlowShw(void)
-{
-	CInputKeyboard *pKey = CManager::GetInstance()->GetInputKeyboard();
-	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();	// キーボードのポインタ
-	float fMultiSlow = SLOW_CAMERAROT;
-
-	// 差分を求める
-	float fLeftRot = m_rot.y - (m_SlowOldRot.y + D3DX_PI * 0.3f);
-	float fRightRot = m_rot.y - (m_SlowOldRot.y + -D3DX_PI * 0.3f);
-
-	if (fLeftRot < -D3DX_PI)
-	{//角度がΠを超えた場合
-		fLeftRot += D3DX_PI * 2;
-	}
-	if (fLeftRot > D3DX_PI)
-	{//角度がΠを超えた場合
-		fLeftRot += -D3DX_PI * 2;
-	}
-
-	if (fRightRot < -D3DX_PI)
-	{//角度がΠを超えた場合
-		fRightRot += D3DX_PI * 2;
-	}
-	if (fRightRot > D3DX_PI)
-	{//角度がΠを超えた場合
-		fRightRot += -D3DX_PI * 2;
-	}
-
-	//x軸の移動
-	if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_PLUS) == true)
-	{//Qキー入力
-		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_PLUS) * fMultiSlow;
-		if (m_rot.y < -D3DX_PI)
-		{//角度がΠを超えた場合
-			m_rot.y += D3DX_PI * 2;
-		}
-	}
-	else if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) == true)
-	{//Eキー入力
-		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) * fMultiSlow;
-
-		if (m_rot.y > D3DX_PI)
-		{//角度がΠを超えた場合
-			m_rot.y += -D3DX_PI * 2;
-		}
-	}
-	else
-	{
-		m_SlowOldRot = m_rot;
-	}
-
-	// 距離の変更
-	m_fLength += 30.0f;
-
-	if (m_fLength > CAMERA_MAXLENGTH)
-	{//距離が最大を超えた場合
-		m_fLength = CAMERA_MAXLENGTH;
-	}
-
-	SetV();
-}
-
-
-//==========================================================
 // 向きを設定
 //==========================================================
 void CCamera::SetRotation(D3DXVECTOR3 rot)
@@ -926,6 +860,9 @@ void CMultiCamera::SetCamera(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタを取得
 	D3DXMATRIX mtxView = GetMtxView(), mtxProjection = GetMtxProjection();
+	D3DXVECTOR3 posV = GetPositionV();
+	D3DXVECTOR3 posR = GetPositionR();
+	D3DXVECTOR3 vecU = GetVectorU();
 
 	//ビューポートの設定
 	pDevice->SetViewport(&m_viewport);
@@ -948,9 +885,9 @@ void CMultiCamera::SetCamera(void)
 
 	//ビューマトリックスの作成
 	D3DXMatrixLookAtLH(&mtxView,
-		&GetPositionV(),
-		&GetPositionR(),
-		&GetVectorU());
+		&posV,
+		&posR,
+		&vecU);
 
 	//ビューマトリックスの設定
 	pDevice->SetTransform(D3DTS_VIEW, &mtxView);
@@ -1004,7 +941,6 @@ void CMapCamera::Update(void)
 void CMapCamera::SetCamera(void)
 {
 	CMultiCamera::SetCamera();
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタを取得
 
 	// 床の描画
 	CMeshField *pMesh = CMeshField::GetTop();	// 先頭を取得

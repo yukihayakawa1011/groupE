@@ -372,7 +372,6 @@ void CObjectBillboard::SetCol(D3DXCOLOR col)
 void CObjectBillboard::SetMtx(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタを取得
-	CTexture *pTexture = CManager::GetInstance()->GetTexture();	// テクスチャへのポインタ
 	D3DXMATRIX mtxTrans;	//計算用マトリックス
 	D3DXMATRIX mtxView;		//ビューマトリックス取得用
 

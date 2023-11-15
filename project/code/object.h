@@ -47,8 +47,8 @@ public:	// 誰でもアクセス可能
 	virtual void Draw(void) = 0;
 
 	// メンバ関数(設定)
-	virtual void SetPosition(const D3DXVECTOR3 pos) {}
-	virtual void SetRotation(const D3DXVECTOR3 rot) {}
+	virtual void SetPosition(const D3DXVECTOR3) {}
+	virtual void SetRotation(const D3DXVECTOR3) {}
 
 	// メンバ関数(取得)
 	virtual D3DXVECTOR3 GetPosition(void) { return D3DXVECTOR3(0.0f, 0.0f, 0.0f); }
@@ -60,7 +60,7 @@ public:	// 誰でもアクセス可能
 	virtual bool GetDeath(void) { return m_bDeath; }
 
 	// メンバ関数
-	virtual void Hit(float fDamage){ }
+	virtual void Hit(float){ }
 	void SetDraw(bool bUse = true) { m_bDraw = bUse; }
 
 	// メンバ関数(取得
