@@ -33,6 +33,7 @@
 #include "gimmick.h"
 #include "gimmick_rotatedoor.h"
 #include "enemy.h"
+#include "goal.h"
 
 //===============================================
 // マクロ定義
@@ -323,17 +324,7 @@ void CPlayer::Uninit(void)
 // 更新処理
 //===============================================
 void CPlayer::Update(void)
-{
-
-	//初期表示設定
-#if _DEBUG
-	CInputPad *pInputpad = CManager::GetInstance()->GetInputPad();	// キーボードのポインタ
-
-	if (pInputpad->GetTrigger(CInputPad::BUTTON_START, m_nId)) {
-		m_bGoal = true;
-	}
-#endif
-	
+{	
 	// 前回の座標を取得
 	m_Info.posOld = GetPosition();
 
@@ -510,11 +501,19 @@ void CPlayer::Controller(void)
 	}
 
 
+	// ギミックとの判定
 	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick)) {
 		Damage(1);
 	}
 
-	if (m_Catch.pGimmick != nullptr) {
+	// ゴールとの判定
+	if (!m_bGoal) {	// まだゴールしていない
+		if (CGoal::Collision(m_Info.pos, m_Info.posOld)) {	// ゴールを跨いだ
+			m_bGoal = true;
+		}
+	}
+
+	if (m_Catch.pGimmick != nullptr && m_Info.state != STATE_DEATH) {
 		m_Info.state = STATE_CATCH;
 	}
 }

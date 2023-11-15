@@ -37,6 +37,7 @@
 #include "gimmick_startdoor.h"
 #include "gimmick_lever.h"
 #include "gimmick_spear.h"
+#include "goal.h"
 
 // グローバル
 
@@ -184,6 +185,9 @@ HRESULT CGame::Init(void)
 
 		// 落とし穴
 		CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+
+		// ゴール
+		CGoal::Create(D3DXVECTOR3(1000.0f, 2.0f, -500.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 	}
 		break;
 
@@ -223,7 +227,7 @@ HRESULT CGame::Init(void)
 
 		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, 1.9f, 1.0f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
 
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定
