@@ -39,11 +39,10 @@
 #define ENEMY_GRAVITY	(-0.9f)		//敵重力
 #define ENEMY_JUMP		(25.0f)		//敵ジャンプ力
 #define ROT_MULTI	(0.1f)	// 向き補正倍率
-#define WIDTH	(20.0f)		// 幅
-#define HEIGHT	(80.0f)	// 高さ
 #define INER	(0.3f)		// 慣性
 #define START_LIFE	(4)	// 初期体力
-#define DAMAGE_INTERVAL	(10)
+#define DAMAGE_INTERVAL	(80)
+#define APPEAR_INTERVAL	(120)
 #define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
 #define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
 #define CHACE_LENGTH	(800.0f)	//追跡範囲
@@ -436,7 +435,10 @@ void CEnemy::Chace(void)
 		m_Info.move.z = 0.0f;
 		if (m_nCounterAttack <= 0)
 		{//クールタイム終了
-			pPlayerNear->Damage(1);
+			if (m_Info.state == STATE_NORMAL) {	// 通常状態のときのみ
+				pPlayerNear->Damage(1);				
+			}
+
 			m_nCounterAttack = ATTACK_COOLTIME;
 		}
 	}
@@ -623,11 +625,18 @@ void CEnemy::Adjust(void)
 //===============================================
 void CEnemy::StateSet(void)
 {
+	m_Info.nStateCounter--;
+
+	if (m_Info.nStateCounter > 0)
+	{
+		return;
+	}
+
 	switch (m_Info.state)
 	{
 	case STATE_APPEAR:
 	{
-
+		m_Info.state = STATE_NORMAL;
 	}
 		break;
 
@@ -639,7 +648,7 @@ void CEnemy::StateSet(void)
 
 	case STATE_DAMAGE:
 	{
-
+		m_Info.state = STATE_NORMAL;
 	}
 		break;
 
@@ -651,9 +660,11 @@ void CEnemy::StateSet(void)
 
 	case STATE_SPAWN:
 	{
-
+		m_Info.state = STATE_APPEAR;
+		m_Info.nStateCounter = APPEAR_INTERVAL;
 	}
 		break;
+
 	}
 }
 
