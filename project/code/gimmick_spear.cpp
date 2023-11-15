@@ -107,9 +107,6 @@ void CGimmickSpear::Update(void)
 	// 種類更新
 	UpdateType();
 
-	CManager::GetInstance()->GetDebugProc()->Print("槍の状態[ %d ] : カウント [ %d ]\n", m_state, m_nStateCounter);
-
-
 	if (m_pObj != nullptr) {	// オブジェクトが使われている
 		D3DXVECTOR3 pos = m_pObj->GetCurrentPosition();
 		D3DXVECTOR3 posDiff = m_PosDest - pos;

@@ -19,14 +19,14 @@
 #define CAMERA_MOVESPEED	(1.0f)			// 移動量
 #define CAMERA_LENGTHMOVE	(1.0f)			// カメラ距離移動量
 #define ROTATE_SPEED		(0.03f)			// カメラの回転速度
-#define PAD_ROTATE			(0.02f)
+#define PAD_ROTATE			(0.02f)		// 向き
 #define CAMERA_MAXLENGTH	(5000.0f)		// カメラ最大距離
-#define CAMERA_MINLENGTH	(300.0f)		// カメラ最小距離
-#define MOUSE_MOVESPEED		(0.9f)			// マウス移動速度
+#define CAMERA_MINLENGTH	(300.0f)			// カメラ最小距離
+#define MOUSE_MOVESPEED		(0.9f)		// マウス移動速度
 #define MOUSE_ROTATESPEED_X	(0.004f)		// マウス回転速度x軸
 #define MOUSE_ROTATESPEED_Z	(0.005f)		// マウス回転速度z軸
 #define MOUSE_WHEELSPEED	(0.1f)			// マウスホイール回転速度
-#define MAX_SLOWROT			(0.15f)
+#define MAX_SLOWROT			(0.15f)		// 
 #define MESSAGERAND			(120)
 #define SLOW_CAMERAROT		(0.7f)
 #define TITLE_ROTATESPD		(0.0025f)			// タイトル回転量

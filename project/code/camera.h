@@ -10,8 +10,8 @@
 #include "main.h"		//main.hで定義しているものが必要なためinclude
 
 // マクロ定義
-#define MAX_CAMERA_ROTZ (D3DX_PI * 0.9f)	// カメラ最大角度
-#define MIN_CAMERA_ROTZ (D3DX_PI * 0.1f)	// カメラ最大角度
+#define MAX_CAMERA_ROTZ (D3DX_PI * 0.9999f)	// カメラ最大角度
+#define MIN_CAMERA_ROTZ (D3DX_PI * 0.0001f)	// カメラ最大角度
 
 //**********************************************************
 // カメラクラスの定義

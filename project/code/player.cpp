@@ -100,6 +100,7 @@ CPlayer::CPlayer()
 	m_nId = m_nNumCount;
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
+	m_bGoal = false;
 	m_nItemCnt = 0;
 
 	// 自分自身をリストに追加
@@ -191,6 +192,7 @@ HRESULT CPlayer::Init(void)
 HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 {
 	SetMatrix();
+
 	// 腰の生成
 	if (m_pWaist == NULL)
 	{
@@ -322,6 +324,16 @@ void CPlayer::Uninit(void)
 //===============================================
 void CPlayer::Update(void)
 {
+
+	//初期表示設定
+#if _DEBUG
+	CInputPad *pInputpad = CManager::GetInstance()->GetInputPad();	// キーボードのポインタ
+
+	if (pInputpad->GetTrigger(CInputPad::BUTTON_START, m_nId)) {
+		m_bGoal = true;
+	}
+#endif
+	
 	// 前回の座標を取得
 	m_Info.posOld = GetPosition();
 

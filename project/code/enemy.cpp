@@ -51,6 +51,7 @@
 #define ENEMY_VTX_MIN	D3DXVECTOR3(-20.0f,0.0f,-20.0f)
 #define ENEMY_VTX_MAX	D3DXVECTOR3(20.0f,0.0f,20.0f)
 #define HIT_RANGE	(100.0f)
+#define DROP_COIN	(3)
 
 #define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//äpìxÇ-PI~PIÇ…èCê≥
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
@@ -459,7 +460,7 @@ void CEnemy::Chace(void)
 void CEnemy::Death(void)
 {
 	// óéÇ∆ÇµÇΩï™ê∂ê¨ÅiplayerÇ©ÇÁîqéÿÅj
-	for (int nCnt = 0; nCnt < 5; nCnt++)	//âÒêîâº
+	for (int nCnt = 0; nCnt < DROP_COIN; nCnt++)
 	{
 		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
 

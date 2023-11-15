@@ -303,11 +303,11 @@ void CGame::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
-	// 入力遷移
-	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
-	{
-		CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-		m_state = STATE_END;
+	if (m_state != STATE_END) {	// 終了状態以外
+		if (EndCheck()) {	// 全員ゴールしている
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+			m_state = STATE_END;
+		}
 	}
 
 	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
@@ -338,6 +338,34 @@ CPlayer *CGame::GetPlayer(void)
 CFileLoad *CGame::GetFileLoad(void)
 {
 	return m_pFileLoad;
+}
+
+//===================================================
+// 終了状態を確認して取得
+//===================================================
+bool CGame::EndCheck(void)
+{
+	CPlayer *pPl = CPlayer::GetTop();	// プレイヤー
+	int nNumGoal = 0;
+
+	// ゴールしている人数を判定
+	while (pPl != nullptr) {
+
+		CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
+
+		if (!pPl->GetGoal()) {	// ゴールしていない
+			break;
+		}
+
+		nNumGoal++;
+		pPl = pPlNext;	// 次に移動
+	}
+
+	if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
+		return true;
+	}
+
+	return false;
 }
 
 //===================================================
