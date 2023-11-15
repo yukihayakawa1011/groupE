@@ -29,6 +29,7 @@
 #include "sound.h"
 #include "player.h"
 #include "item.h"
+#include "gimmick.h"
 
 //===============================================
 // マクロ定義
@@ -365,6 +366,7 @@ void CEnemy::Controller(void)
 	{
 		m_bJump = false;
 	}
+	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, D3DXVECTOR3(0.0f,0.0f,0.0f), vtxMin, vtxMax,0);
 
 	//追跡モードでかつxzどちらか処理前から変化している
 	if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
