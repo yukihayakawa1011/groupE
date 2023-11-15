@@ -219,8 +219,6 @@ void CModel::Draw(void)
 				pMat = (D3DXMATERIAL*)pFileData->pBuffMat->GetBufferPointer();
 				for (int nCntMat = 0; nCntMat < (int)pFileData->dwNumMat; nCntMat++)
 				{
-					int nIdxTex = pFileData->pIdexTexture[nCntMat];	// テクスチャ番号
-
 					if (m_bChangeCol == false)
 					{
 						m_ChangeMat.Emissive.r = 0.0f;
@@ -260,7 +258,6 @@ void CModel::Draw(void)
 CModel *CModel::Create(const char *pFileName)
 {
 	CModel *pModel = NULL;
-	CXFile *pModelFile = CManager::GetInstance()->GetModelFile();
 
 	// オブジェクトXの生成
 	pModel = new CModel;

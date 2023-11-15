@@ -339,8 +339,6 @@ void CMeshSmake::SetSize(float fLength, float fHeight)
 void CMeshSmake::SetCol(D3DXCOLOR col)
 {
 	int nVertex = GetVertex();			// 頂点数を取得
-	int nNumWidth = GetNumWidth();		// 幅枚数を取得
-	int nNumHeight = GetNumHeight();	// 高さ枚数を取得
 	D3DXVECTOR3 pos = GetPosition();	// 座標
 	D3DXVECTOR3 vecDir;	//設定変更用ベクトル
 

@@ -204,7 +204,6 @@ void CMeshWall::SetSize(float fWidth, float fHeight)
 void CMeshWall::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld)
 {
 	CMeshWall *pObj = m_pTop;
-	bool bCollision = false;		//“–‚½‚Á‚½‚©‚Ç‚¤‚©”»’è
 
 	while (pObj != NULL)
 	{

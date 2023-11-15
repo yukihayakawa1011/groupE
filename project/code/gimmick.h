@@ -24,8 +24,8 @@ public:
 	enum TYPE
 	{
 		TYPE_NONE = 0,	// 何もない
-		TYPE_BUTTON,	// ボタン
-		TYPE_LEVER,	// レバー
+		TYPE_BUTTON,		// ボタン
+		TYPE_LEVER,		// レバー
 		TYPE_ROTATEDOOR,	// 回転ドア
 		TYPE_STARTDOOR,	// 開始地点ドア
 		TYPE_SPEAR,		// 槍

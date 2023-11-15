@@ -392,7 +392,6 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 		return;
 	}
 
-	int nSetUp = 0;
 	pPlayer = CPlayer::GetTop();	// 先頭を取得
 
 	// 終端文字まで確認する
@@ -553,7 +552,7 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 //===================================================
 // 座標送信
 //===================================================
-void CGame::SendPosition(D3DXVECTOR3 pos)
+void CGame::SendPosition(D3DXVECTOR3& pos)
 {
 	if (m_pClient != nullptr)
 	{
@@ -574,7 +573,7 @@ void CGame::SendPosition(D3DXVECTOR3 pos)
 //===================================================
 // 向き送信
 //===================================================
-void CGame::SendRotation(D3DXVECTOR3 rot)
+void CGame::SendRotation(D3DXVECTOR3& rot)
 {
 	if (m_pClient != nullptr)
 	{
@@ -701,7 +700,7 @@ void CGame::AddressLoad(char *pAddrss)
 	{//ファイルが開けた場合
 		
 		//テキスト読み込み
-		int nResult = fscanf(pFile, "%s", pAddrss);
+		fscanf(pFile, "%s", pAddrss);
 
 		//ファイルを閉じる
 		fclose(pFile);

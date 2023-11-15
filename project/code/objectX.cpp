@@ -54,7 +54,6 @@ CObjectX::~CObjectX()
 //==========================================================
 HRESULT CObjectX::Init(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタを取得
 
 	//各種変数の初期化
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -241,7 +240,6 @@ void CObjectX::SetRotation(const D3DXVECTOR3 rot)
 bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, float fRefMulti)
 {
 	CObjectX *pObj = m_pTop;	// 先頭取得
-	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	bool bLand = false;	// 着地したか否か
 
 	//仮置き

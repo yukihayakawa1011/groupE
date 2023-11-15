@@ -18,7 +18,7 @@ class CObjectMesh : public CObject
 public:	// 誰でもアクセス可能な定義
 
 	// メッシュ種類
-	typedef enum
+	enum TYPE
 	{
 		TYPE_NONE = 0,	// 何もない
 		TYPE_FIELD,		// 床
@@ -26,7 +26,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_DOME,		// ドーム
 		TYPE_CYLINDER,	// シリンダー
 		TYPE_MAX
-	}TYPE;
+	};
 
 public:		// 誰でもアクセス可能
 

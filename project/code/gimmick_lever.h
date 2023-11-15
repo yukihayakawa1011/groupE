@@ -41,7 +41,7 @@ public:	// 誰でもアクセス可能
 	CGimmickLever();		// コンストラクタ(オーバーロード)
 	~CGimmickLever();	// デストラクタ
 
-						// メンバ関数
+	// メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);

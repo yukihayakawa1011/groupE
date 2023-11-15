@@ -22,7 +22,7 @@ private:	// 自分だけがアクセス可能な定数定義
 public:	// 誰でもアクセス可能な定義
 
 	// Xファイル情報
-	typedef struct
+	struct FileData
 	{
 		LPD3DXMESH pMesh;		//メッシュ(頂点情報)へのポインタ
 		LPD3DXBUFFER pBuffMat;	//マテリアルへのポインタ
@@ -30,16 +30,16 @@ public:	// 誰でもアクセス可能な定義
 		DWORD dwNumMat;		//マテリアルの数
 		D3DXVECTOR3 vtxMin;	// 最小
 		D3DXVECTOR3 vtxMax;	// 最大
-	}FileData;
+	};
 
 private:	// 自分だけがアクセス可能な定義
 
 	// ファイル読み込み情報
-	typedef struct
+	struct FileInfo
 	{
 		FileData filedata;			// ファイル情報
 		char aFileName[MAX_NAME];	// ファイル名
-	}FileInfo;
+	};
 
 public:	// 誰でもアクセス可能
 

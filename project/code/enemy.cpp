@@ -29,6 +29,8 @@
 #include "sound.h"
 #include "player.h"
 #include "item.h"
+#include "gimmick.h"
+#include "model.h"
 
 //===============================================
 // マクロ定義
@@ -49,6 +51,7 @@
 #define ATTACK_COOLTIME	(60)		//攻撃クールタイム
 #define ENEMY_VTX_MIN	D3DXVECTOR3(-20.0f,0.0f,-20.0f)
 #define ENEMY_VTX_MAX	D3DXVECTOR3(20.0f,0.0f,20.0f)
+#define HIT_RANGE	(100.0f)
 
 #define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//角度を-PI~PIに修正
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
@@ -278,7 +281,6 @@ void CEnemy::Update(void)
 CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName, const int nPriority)
 {
 	CEnemy *pPlayer = NULL;
-	CXFile *pModelFile = CManager::GetInstance()->GetModelFile();
 
 	// 敵の生成
 	pPlayer = new CEnemy(nPriority);
@@ -365,6 +367,7 @@ void CEnemy::Controller(void)
 	{
 		m_bJump = false;
 	}
+	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, D3DXVECTOR3(0.0f,0.0f,0.0f), vtxMin, vtxMax,0);
 
 	//追跡モードでかつxzどちらか処理前から変化している
 	if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
@@ -440,7 +443,6 @@ void CEnemy::Chace(void)
 	else if (pPlayerNear != nullptr && fLengthNear <= CHACE_LENGTH)
 	{//追跡範囲
 		D3DXVECTOR3 posPlayer = pPlayerNear->GetPosition();
-		float aaa = atan2f(posPlayer.x - m_Info.pos.x, posPlayer.z - m_Info.pos.z);
 		m_fRotDest = FIX_ROT(atan2f(posPlayer.x - m_Info.pos.x, posPlayer.z - m_Info.pos.z) + D3DX_PI);
 	}
 	else
@@ -481,8 +483,6 @@ void CEnemy::Death(void)
 void CEnemy::Collision(void)
 {
 	CEnemy *pObj = m_pTop;	// 先頭取得
-	CXFile *pFile = CManager::GetInstance()->GetModelFile();
-	bool bLand = false;	// 着地したか否か
 
 	//仮置き
 	D3DXVECTOR3 posTemp = m_Info.posOld;
@@ -693,4 +693,40 @@ void CEnemy::Damage(int nDamage)
 void CEnemy::SetLife(int nLife)
 {
 	m_nLife = MINUS_GUARD(nLife);
+}
+
+//===============================================
+// 攻撃のヒット確認
+//===============================================
+void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
+{
+	if (m_Info.state != STATE_NORMAL) {
+		return;
+	}
+
+	if (m_pObject == nullptr) {
+		return;
+	}
+
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 ObjPos = GetPosition();
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(0.0f, 
+		m_pObject->GetParts(1)->GetMtx()->_41 - ObjPos.y + pFile->GetMax(m_pObject->GetParts(1)->GetId()).y, 
+		0.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, -10.0f, 0.0f);
+
+	if (pos.y >= ObjPos.y + vtxMax.y || pos.y <= ObjPos.y - vtxMin.y) {	// 高さ範囲外
+		return;
+	}
+
+	// 範囲内チェック
+	float fLength =
+		sqrtf((pos.x - ObjPos.x) * (pos.x - ObjPos.x)
+			+ (pos.z - ObjPos.z) * (pos.z - ObjPos.z));
+
+	if (fLength > HIT_RANGE + fRange) {		// 範囲外
+		return;
+	}
+
+	Damage(nDamage);
 }

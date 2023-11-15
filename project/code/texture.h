@@ -21,11 +21,11 @@ class CTexture
 public:	// 誰でもアクセス可能な定義
 	
 	// 初期読み込み種類
-	typedef enum
+	enum TYPE
 	{
 		TYPE_EFFECT = 0,		// エフェクト
 		TYPE_MAX
-	}TYPE;
+	};
 
 private:	// 自分だけがアクセス可能な定義
 	

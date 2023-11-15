@@ -128,7 +128,6 @@ void CMeshOrbit::Draw(void)
 CMeshOrbit *CMeshOrbit::Create(D3DXMATRIX *pMtx, D3DXVECTOR3 UpSet, D3DXVECTOR3 DownSet, TYPE type)
 {
 	CMeshOrbit *pMeshOrbit = NULL;	// メッシュフィールドのポインタ
-	CTexture *pTexture = CManager::GetInstance()->GetTexture();	// テクスチャへのポインタ
 
 	// メモリの確保
 	pMeshOrbit = new CMeshOrbit;
@@ -177,7 +176,6 @@ CMeshOrbit *CMeshOrbit::Create(D3DXMATRIX *pMtx, D3DXVECTOR3 UpSet, D3DXVECTOR3 
 void CMeshOrbit::SetVtxInfo(void)
 {
 	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
-	D3DXMATRIX *pMtxWorld = GetMtx();	//ワールドマトリックス
 
 	if (m_pMtxParent != NULL)
 	{

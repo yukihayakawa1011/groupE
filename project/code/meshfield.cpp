@@ -227,7 +227,6 @@ void CMeshField::SetTex(void)
 {
 	int nVertex = GetVertex();			// 頂点数を取得
 	int nNumWidth = GetNumWidth();		// 幅枚数を取得
-	int nNumHeight = GetNumHeight();	// 高さ枚数を取得
 
 	// テクスチャ座標(左奥から右手前に向かって頂点情報を設定する
 	for (int nCntpVtx = 0; nCntpVtx < nVertex; nCntpVtx++)

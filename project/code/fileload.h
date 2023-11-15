@@ -1,7 +1,7 @@
 //==========================================================
 //
 //ファイル、データ読み込み処理
-//Author 奥定伊吹
+//Author Ibuki Okusada
 //
 //==========================================================
 #ifndef _FILELOAD_H_
@@ -17,11 +17,11 @@ class CFileLoad
 private:	// 自分だけがアクセス可能な定義
 
 	// ファイル情報
-	typedef struct
+	struct File
 	{
-		int nIdx;	// 読み込み番号
+		int nIdx;			// 読み込み番号
 		char aFileName[256];	// ファイル名
-	}File;
+	};
 
 public:		// 誰でもアクセス可能
 
