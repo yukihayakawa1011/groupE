@@ -6,12 +6,16 @@
 //==========================================================
 #include "itembox.h"
 #include "spike.h"
+#include "player.h"
+#include "objectX.h"
 
 //静的メンバ変数
 CItemBox *CItemBox::m_pTop = nullptr;
 CItemBox *CItemBox::m_pCur = nullptr;
 
 // マクロ定義
+#define COLLISION_RANGE	(70.0f)
+#define EMISSION_CT		(90)
 
 //==========================================================
 // コンストラクタ
@@ -19,8 +23,8 @@ CItemBox *CItemBox::m_pCur = nullptr;
 CItemBox::CItemBox()
 {
 	// 値のクリア
-	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_pObj = nullptr;
+	m_nCounter = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -49,6 +53,7 @@ CItemBox::~CItemBox()
 //==========================================================
 HRESULT CItemBox::Init(void)
 {
+	m_pObj = CObjectX::Create(GetPosition(), GetRotation(), "data\\MODEL\\pot.x");
 	return S_OK;
 }
 
@@ -104,25 +109,33 @@ void CItemBox::Uninit(void)
 //==========================================================
 void CItemBox::Update(void)
 {
-
+	m_nCounter--;
+	if (m_nCounter < 0)
+	{
+		m_nCounter = 0;
+	}
 }
 
 //==========================================================
 // 生成
 //==========================================================
-CItemBox *CItemBox::Create(void)
+CItemBox *CItemBox::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot)
 {
-	CItemBox *pSample = nullptr;
+	CItemBox *pItemBox = nullptr;
 
-	pSample = new CItemBox;
+	pItemBox = new CItemBox;
 
-	if (pSample != nullptr)
+	if (pItemBox != nullptr)
 	{
 		// 初期化処理
-		pSample->Init();
+		pItemBox->SetPosition(pos);
+		pItemBox->SetRotation(rot);
+		pItemBox->Init();
+
+		//データ設定
 	}
 
-	return pSample;
+	return pItemBox;
 }
 
 //==========================================================
@@ -130,5 +143,24 @@ CItemBox *CItemBox::Create(void)
 //==========================================================
 void CItemBox::Emission(void)
 {
-	//CSpike::Create(m_pos, m_rot, 40.0f,);
+	CSpike::Create(GetPosition(), GetRotation(), 10.0f, 30.0f);
+}
+
+//==========================================================
+// 当たり判定
+//==========================================================
+bool CItemBox::CollisionCheck(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 & move, D3DXVECTOR3 & SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick ** ppGimmick)
+{
+	D3DXVECTOR3 ObjPos = GetPosition();
+
+	// 範囲内チェック
+	float fLength = D3DXVec3Length(&(D3DXVECTOR3((pos.x - ObjPos.x), 0.0f, (pos.z - ObjPos.z))));
+
+	if (fLength < COLLISION_RANGE && nAction == CPlayer::ACTION_ATK && m_nCounter <= 0)
+	{// 範囲内
+		Emission();
+		m_nCounter = EMISSION_CT;
+	}
+
+	return false;
 }

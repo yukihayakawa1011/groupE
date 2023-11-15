@@ -30,6 +30,7 @@
 #include "enemymanager.h"
 #include "item.h"
 #include "spike.h"
+#include "itembox.h"
 #include "gimmick_button.h"
 #include "gimmick_pitfall.h"
 #include "gimmick_rotatedoor.h"
@@ -212,6 +213,9 @@ HRESULT CGame::Init(void)
 	{
 		CItem::Create(D3DXVECTOR3(400.0f + nCnt * -100.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_NORMAL);
 	}
+
+	//ö‚
+	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	//ÉJÉÅÉâèâä˙âª
 	{
