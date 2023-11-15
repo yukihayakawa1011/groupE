@@ -6,6 +6,7 @@
 //==========================================================
 #include "itembox.h"
 #include "spike.h"
+#include "item.h"
 #include "player.h"
 #include "objectX.h"
 
@@ -143,7 +144,27 @@ CItemBox *CItemBox::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot)
 //==========================================================
 void CItemBox::Emission(void)
 {
-	CSpike::Create(GetPosition(), GetRotation(), 10.0f, 30.0f);
+	int nRand = rand() % 2;
+
+	if (nRand == 0)
+	{
+		CItem *pItem = CItem::Create(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
+
+		if (nullptr != pItem)
+		{
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//ˆÚ“®—Ê‚ÌÝ’è
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.04f;
+			move.y = 18.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.04f;
+			pItem->SetMove(move);
+		}
+	}
+	else
+	{
+		CSpike::Create(GetPosition(), GetRotation(), 10.0f, 20.0f);
+	}
 }
 
 //==========================================================
