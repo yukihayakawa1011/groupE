@@ -22,7 +22,7 @@ class CObject
 public:	// 誰でもアクセス可能
 
 	// 種類列挙型の定義
-	typedef enum
+	enum TYPE
 	{
 		TYPE_NONE = 0,	// 何もない
 		TYPE_BG,		// 背景
@@ -35,7 +35,7 @@ public:	// 誰でもアクセス可能
 		TYPE_BLOCK,	// ブロック
 		TYPE_MODEL,	// 3Dモデル
 		TYPE_MAX
-	}TYPE;
+	};
 
 	//CObject();			// コンストラクタ
 	CObject(int nPriority = 3);	// コンストラクタ(オーバーロード)デフォルト引数
