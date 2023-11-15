@@ -20,13 +20,13 @@ class CFade
 public:	// 誰でもアクセス可能な定義
 
 	// 状態列挙型
-	typedef enum
+	enum STATE
 	{
 		STATE_NONE = 0,	//何もしていない状態
 		STATE_IN,		//フェードイン状態
 		STATE_OUT,		//フェードアウト状態
 		STATE_MAX
-	}STATE;
+	};
 
 public:	// 誰でもアクセス可能
 

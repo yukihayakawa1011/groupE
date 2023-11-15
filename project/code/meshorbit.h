@@ -18,13 +18,13 @@ class CMeshOrbit : public CObjectMesh
 public:		// 誰でもアクセス可能
 
 	// 軌跡タイプ
-	typedef enum
+	enum TYPE
 	{
 		TYPE_NONE = 0,		// 何もない
 		TYPE_PLAYER,		// プレイヤー
 		TYPE_BULLET,		// 弾
 		TYPE_MAX
-	}TYPE;
+	};
 
 	CMeshOrbit();	// コンストラクタ
 	~CMeshOrbit();	// デストラクタ

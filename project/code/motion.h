@@ -7,7 +7,7 @@
 #ifndef _MOITON_H_
 #define _MOITON_H_
 
-#include "main.h"		//main.hで定義しているものが必要なためinclude
+#include "main.h"		// main.hで定義しているものが必要なためinclude
 
 #define MAX_MOTION		(64)
 
@@ -22,7 +22,7 @@ class CMotion
 public: // 誰でもアクセス可能な定義
 
 	// キー
-	typedef struct
+	struct KEY
 	{
 		float fPosX;
 		float fPosY;
@@ -30,31 +30,31 @@ public: // 誰でもアクセス可能な定義
 		float fRotX;
 		float fRotY;
 		float fRotZ;
-	}KEY;
+	};
 
 private:	// 自分だけがアクセス可能な定義
 
 	// キー情報
-	typedef struct
+	struct KEY_INFO
 	{
 		int nFrame;			// 再生フレーム
 		KEY *aKey;			// パーツの総数
-	}KEY_INFO;
+	};
 
 	// モーション情報
-	typedef struct
+	struct INFO
 	{
 		bool bLoop;			// ループするかどうか
-		int nNumKey;		// キー数
+		int nNumKey;			// キー数
 		KEY_INFO *pKeyInfo;	// キーの総数
-	}INFO;
+	};
 
 	//胴体ファイル情報
-	typedef struct
+	struct BodyFileData
 	{
 		CModel **ppParts;		// パーツの情報
 		int nNumParts;			// パーツ数
-	}BodyFileData;
+	};
 
 public:		// 誰でもアクセス可能
 	CMotion();	// コンストラクタ
@@ -63,7 +63,6 @@ public:		// 誰でもアクセス可能
 	// メンバ関数
 	void Uninit(void);
 	void Update(void);
-	void Update(float fSpeedMul);
 	void BlendSet(int nType);
 	void Set(int nType);
 	void InitSet(int nType);

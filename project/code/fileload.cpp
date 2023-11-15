@@ -1,7 +1,7 @@
 //==========================================================
 //
 //ファイル、データ読み込み処理
-//Author 奥定伊吹
+//Author Ibuki Okusada
 //
 //==========================================================
 #include "fileload.h"
@@ -20,30 +20,30 @@
 // マクロ定義
 //==========================================================
 //確認文字
-#define START_SCRIPTTXT	"SCRIPT"				// スクリプト開始確認文字
+#define START_SCRIPTTXT	"SCRIPT"			// スクリプト開始確認文字
 #define END_SCRIPTTXT	"END_SCRIPT"			// スクリプト終了確認文字
 #define TEXTURENUM_TXT	"NUM_TEXTURE"			// テクスチャ使用枚数確認文字
 #define TEXTUREFILENAME_TXT	"TEXTURE_FILENAME"	// テクスチャファイル名確認文字
-#define MODELNUM_TXT	"NUM_MODEL"				// モデル使用確認文字
+#define MODELNUM_TXT	"NUM_MODEL"			// モデル使用確認文字
 #define MODELFILENAME_TXT	"MODEL_FILENAME"	// モデルファイル名確認文字
-#define FIELDSET_TXT	"FIELDSET"				// メッシュフィールド設置確認文字
-#define ENDFIELDSET_TXT	"END_FIELDSET"			// 床読み込み終了
-#define WALLSET_TXT		"WALLSET"				// メッシュウォール設置確認文字
+#define FIELDSET_TXT	"FIELDSET"			// メッシュフィールド設置確認文字
+#define ENDFIELDSET_TXT	"END_FIELDSET"	// 床読み込み終了
+#define WALLSET_TXT		"WALLSET"		// メッシュウォール設置確認文字
 #define ENDWALLSET_TXT	"END_WALLSET"			// 壁読み込み終了
-#define MODELSET_TXT	"MODELSET"				// モデル配置確認文字
-#define ENDMODELSET_TXT	"END_MODELSET"			// モデル読み込み終了
-#define ITEMSET_TXT		"ITEMSET"				// アイテム配置確認文字
+#define MODELSET_TXT	"MODELSET"			// モデル配置確認文字
+#define ENDMODELSET_TXT	"END_MODELSET"	// モデル読み込み終了
+#define ITEMSET_TXT		"ITEMSET"		// アイテム配置確認文字
 #define ENDITEMSET_TXT	"END_ITEMSET"			// アイテム読み込み終了
-#define LOAD_POS		"POS"					// 座標
-#define LOAD_ROT		"ROT"					// 向き
-#define LOAD_TEXTYPE	"TEXTYPE"				// テクスチャ番号
-#define LOAD_MODELTYPE	"TYPE"					// モデル番号
-#define LOAD_BLOCK		"BLOCK"					// 枚数
-#define LOAD_SIZE		"SIZE"					// サイズ
-#define LOAD_SHADOW		"SHADOW"				// 影
-#define LOAD_UPDOWN		"UPDOWN"				// 起伏
-#define LOAD_VTXMAX		"VTXMAX"				// 当たり判定最大
-#define LOAD_VTXMIN		"VTXMIN"				// 当たり判定最小
+#define LOAD_POS		"POS"				// 座標
+#define LOAD_ROT		"ROT"				// 向き
+#define LOAD_TEXTYPE	"TEXTYPE"			// テクスチャ番号
+#define LOAD_MODELTYPE	"TYPE"				// モデル番号
+#define LOAD_BLOCK		"BLOCK"			// 枚数
+#define LOAD_SIZE		"SIZE"				// サイズ
+#define LOAD_SHADOW		"SHADOW"			// 影
+#define LOAD_UPDOWN		"UPDOWN"			// 起伏
+#define LOAD_VTXMAX		"VTXMAX"			// 当たり判定最大
+#define LOAD_VTXMIN		"VTXMIN"			// 当たり判定最小
 
 //==========================================================
 // コンストラクタ

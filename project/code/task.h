@@ -15,7 +15,7 @@ class CTask
 protected:	// 誰でもアクセス可能
 
 	// 種類列挙型の定義
-	typedef enum
+	enum TYPE
 	{
 		TYPE_NONE = 0,	// 何もない
 		TYPE_BG,		// 背景
@@ -31,7 +31,7 @@ protected:	// 誰でもアクセス可能
 		TYPE_PAUSE,		// ポーズ画面
 		TYPE_MAP,		// マップ表示
 		TYPE_MAX
-	}TYPE;
+	};
 
 public:
 

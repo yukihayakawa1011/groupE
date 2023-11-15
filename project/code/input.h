@@ -78,13 +78,13 @@ class CInputMouse : public CInput
 public:	// 誰でもアクセス可能
 
 	//マウス
-	typedef enum
+	enum BUTTON
 	{
-		BUTTON_LBUTTON = 0,	//左クリック
-		BUTTON_RBUTTON,		//右クリック
-		BUTTON_WHEEL,		//ホイール
+		BUTTON_LBUTTON = 0,	// 左クリック
+		BUTTON_RBUTTON,		// 右クリック
+		BUTTON_WHEEL,			// ホイール
 		BUTTON_MAX
-	}BUTTON;
+	};
 
 	CInputMouse();	// コンストラクタ
 	~CInputMouse();	// デストラクタ
@@ -119,34 +119,34 @@ public:	// 誰でもアクセス可能
 	//ゲームパッドボタン
 	enum BUTTON
 	{
-		BUTTON_UP = 0,				//上ボタン
-		BUTTON_DOWN,				//下ボタン
-		BUTTON_LEFT,				//左ボタン
-		BUTTON_RIGHT,				//右ボタン
-		BUTTON_START,				//start
-		BUTTON_BACK,				//back
-		BUTTON_LEFTSTCPUSH,			//左スティック押し込み
-		BUTTON_RIGHTSTCPUSH,		//右スティック押し込み
-		BUTTON_LEFTBUTTON,			//LB(L)ボタン
-		BUTTON_RIGHTBUTTON,			//RB(R)ボタン
-		BUTTON_11,					//Lトリガー
-		BUTTON_12,					//Rトリガー
-		BUTTON_A,					//Aボタン
-		BUTTON_B,					//Bボタン
-		BUTTON_X,					//Xボタン
-		BUTTON_Y,					//Yボタン
-		BUTTON_LEFT_Y,				//左(Y)
-		BUTTON_LEFT_X,				//左(X)
-		BUTTON_RIGHT_Y,				//右(Y)
-		BUTTON_RIGHT_X,				//右(X)
+		BUTTON_UP = 0,		// 上ボタン
+		BUTTON_DOWN,			// 下ボタン
+		BUTTON_LEFT,			// 左ボタン
+		BUTTON_RIGHT,			// 右ボタン
+		BUTTON_START,			// start
+		BUTTON_BACK,			// back
+		BUTTON_LEFTSTCPUSH,	// 左スティック押し込み
+		BUTTON_RIGHTSTCPUSH,	// 右スティック押し込み
+		BUTTON_LEFTBUTTON,	// LB(L)ボタン
+		BUTTON_RIGHTBUTTON,	// RB(R)ボタン
+		BUTTON_11,			// Lトリガー
+		BUTTON_12,			// Rトリガー
+		BUTTON_A,			// Aボタン
+		BUTTON_B,			// Bボタン
+		BUTTON_X,			// Xボタン
+		BUTTON_Y,			// Yボタン
+		BUTTON_LEFT_Y,		// 左(Y)
+		BUTTON_LEFT_X,		// 左(X)
+		BUTTON_RIGHT_Y,		// 右(Y)
+		BUTTON_RIGHT_X,		// 右(X)
 		BUTTON_MAX
 	};
 
 	//スティック
 	typedef enum
 	{
-		STICK_PLUS = 0,				//値がプラス
-		STICK_MINUS,				//値がマイナス
+		STICK_PLUS = 0,		// 値がプラス
+		STICK_MINUS,			// 値がマイナス
 		STICK_MAX
 	}Stick;
 
