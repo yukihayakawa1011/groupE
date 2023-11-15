@@ -896,6 +896,8 @@ void CPlayer::StateSet(void)
 //===============================================
 void CPlayer::Damage(int nDamage) 
 { 
+	return;
+
 	if (m_Info.state != STATE_NORMAL)
 	{// ダメージを食らわない
 		if (m_Info.state != STATE_CATCH)
@@ -1131,11 +1133,12 @@ void CPlayer::Attack(void)
 	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK && 
 		m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 	{// 攻撃判定中
-		CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+		CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);	// パーツ
 		D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
 		DamageCollision(pos);
 
-		// 
+		// 当たり判定確認
+		AttackCheck();
 	}
 }
 
@@ -1205,19 +1208,26 @@ void CPlayer::Catch(void)
 	else if(m_Catch.pGimmick != nullptr) {	// ギミックを持っている
 		CGimmickRotateDoor *pDoor = m_Catch.pGimmick->GetRotateDoor();
 
-		if (pDoor != nullptr) {
+		if (pDoor != nullptr) {	// ドアを持っている
 
-			if (pDoor->GetModel() == nullptr) {
-				m_Info.state = STATE_NORMAL;
-				m_Catch.pGimmick = nullptr;
+			if (pDoor->GetModel() == nullptr) {	// ドアのモデルが使用されていない
+				GimmickRelease();	// ギミックを離す
 			}
 
-			if (pDoor->GetModel()->GetCurrentRotation().y == 0.0f) {
-				m_Info.state = STATE_NORMAL;
-				m_Catch.pGimmick = nullptr;
+			if (pDoor->GetModel()->GetCurrentRotation().y == 0.0f) {	// 回転が止まっている
+				GimmickRelease();	// ギミックを離す
 			}
 		}
 	}
+}
+
+//===============================================
+// 所持しているギミックを外す
+//===============================================
+void CPlayer::GimmickRelease(void)
+{
+	m_Info.state = STATE_NORMAL;
+	m_Catch.pGimmick = nullptr;
 }
 
 //===============================================
@@ -1443,25 +1453,23 @@ void CPlayer::SetCatchMatrix(void)
 //===============================================
 void CPlayer::AttackCheck(void)
 {
-	if (m_pBody == nullptr) {
+	if (m_pBody == nullptr) {	// 体がない
 		return;
 	}
 
-	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);	// 手を取得する
 
-	if (pModel == nullptr) {
+	if (pModel == nullptr) {	// モデルがない
 		return;
 	}
 
-	CEnemy *pEnem = CEnemy::GetTop()->GetTop();
 	D3DXVECTOR3 AtkPos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);	// 攻撃座標
-
+	CEnemy *pEnem = CEnemy::GetTop()->GetTop();	// 敵の先頭を取得
+	
 	// 敵数分確認
 	while (pEnem != nullptr) {
 		CEnemy *pEnemNext = pEnem->GetNext();
-
 		pEnem->HitCheck(AtkPos, ATK_RANGE);	// 触れているかチェック
-		
 		pEnem = pEnemNext;
 	}
 }

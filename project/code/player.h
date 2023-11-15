@@ -139,6 +139,7 @@ private:	// 自分だけがアクセス可能
 	void Drop(int nDropCnt);
 	void DamageCollision(D3DXVECTOR3 pos);
 	void AttackCheck(void);
+	void GimmickRelease(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ

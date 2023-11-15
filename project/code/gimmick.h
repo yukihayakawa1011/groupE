@@ -78,7 +78,7 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_pos;		// 位置
 	D3DXVECTOR3 m_rot;		// 向き
 	int m_nActionId;			// 自分のアクション№
-	D3DXMATRIX m_mtxWorld;	//ワールドマトリックス
+	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
 };
 
 #endif

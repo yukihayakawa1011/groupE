@@ -711,7 +711,7 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	D3DXVECTOR3 ObjPos = GetPosition();
 	D3DXVECTOR3 vtxMax = D3DXVECTOR3(0.0f, 
-		m_pObject->GetParts(1)->GetMtx()->_41 - ObjPos.y + pFile->GetMax(m_pObject->GetParts(1)->GetId()).y, 
+		m_pObject->GetParts(1)->GetMtx()->_42 - ObjPos.y + pFile->GetMax(m_pObject->GetParts(1)->GetId()).y, 
 		0.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, -10.0f, 0.0f);
 
