@@ -141,7 +141,7 @@ HRESULT CPlayer::Init(void)
 	}
 
 	// “·‘Ì‚ÌÝ’è
-	m_pBody = CCharacter::Create("data\\TXT\\motion_body.txt");
+	m_pBody = CCharacter::Create("data\\TXT\\motion_ninjabody.txt");
 	m_pBody->SetParent(m_pWaist->GetMtxWorld());
 
 	if (m_pBody->GetMotion() != NULL)
@@ -151,7 +151,7 @@ HRESULT CPlayer::Init(void)
 	}
 
 	// ‰º”¼g‚ÌÝ’è
-	m_pLeg = CCharacter::Create("data\\TXT\\motion_leg.txt");
+	m_pLeg = CCharacter::Create("data\\TXT\\motion_ninjaleg.txt");
 	m_pLeg->SetParent(m_pWaist->GetMtxWorld());
 
 	if (m_pLeg->GetMotion() != NULL)
