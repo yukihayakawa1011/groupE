@@ -82,7 +82,7 @@ HRESULT CTutorial::Init(void)
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];
 
 	m_ppPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-		"data\\TXT\\motion_body.txt", "data\\TXT\\motion_leg.txt");
+		"data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
 	m_ppPlayer[0]->BindId(0);
 	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
 

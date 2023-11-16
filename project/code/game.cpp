@@ -151,7 +151,7 @@ HRESULT CGame::Init(void)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
 			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				"data\\TXT\\motion_body.txt", "data\\TXT\\motion_leg.txt");
+				"data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}
