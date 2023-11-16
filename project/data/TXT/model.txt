@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 7
+NUM_TEXTURE = 8
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -21,12 +21,12 @@ TEXTURE_FILENAME = data/TEXTURE/WoodDesign.jpg		# [3]ちゃぶ台
 TEXTURE_FILENAME = data/TEXTURE/WoodDesign001.jpg	# [4]ちゃぶ台(脚)
 TEXTURE_FILENAME = data/TEXTURE/zabuton000.jpg		# [5]座布団
 TEXTURE_FILENAME = data/TEXTURE/sumdorr.jpg			# [6]ドア左(和)
-TEXTURE_FILENAME = data/TEXTURE/sumdorr.jpg			# [7]ドア右(和)
+TEXTURE_FILENAME = data/TEXTURE/gold000.jpg			# [7]金の掛け軸
 
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 14
+NUM_MODEL = 15
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -45,6 +45,7 @@ MODEL_FILENAME = data/MODEL/sumdorr000.x  # [10]ドア左(和)
 MODEL_FILENAME = data/MODEL/sumdorr001.x  # [11]ドア右(和)
 MODEL_FILENAME = data/MODEL/zabuton.x     # [12]座布団
 MODEL_FILENAME = data/MODEL/Irori.x     # [13]いろり
+MODEL_FILENAME = data/MODEL/kakeziku000.x # [14]掛け軸
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -2600,6 +2601,16 @@ MODELSET
 	TYPE = 8
 	POS = 4300.0 0.0 0.0
 	ROT = 0.0 90.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+//*************************************************
+//***********************掛け軸********************
+//*************************************************
+MODELSET
+	TYPE = 14
+	POS = 500.0 10.0 650.0
+	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
 
