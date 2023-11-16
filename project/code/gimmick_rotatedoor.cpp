@@ -11,15 +11,18 @@
 #include "player.h"
 #include "Xfile.h"
 
-// マクロ定義
-#define COLLISION_RANGE	(50.0f)
-#define UPPOSITION		(150.0f)
-#define ROTATE_SPEED		(D3DX_PI * 0.05f)
-#define SET_POSZ			(75.0f)
+// 無名名前空間
+namespace {
+	const float COLLISION_RANGE = (50.0f);
+	const float UPPOSITION = (150.0f);
+	const float ROTATE_SPEED = (D3DX_PI * 0.045f);
+	const float SET_POSZ = (75.0f);
+	const float SET_POSX = (50.0f);
+}
 
 // 静的メンバ変数宣言
 char *CGimmickRotateDoor::m_pFileName = {
-	"data\\MODEL\\start_door.x",
+	"data\\MODEL\\rotate_door000.x",
 };
 
 //==========================================================
@@ -185,6 +188,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				if (ppGimmick != nullptr) {
 					*ppGimmick = this;
 					SetPos.z = SET_POSZ;
+					SetPos.x = SET_POSX;
 				}
 			}
 		}
@@ -206,6 +210,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				if (ppGimmick != nullptr) {
 					*ppGimmick = this;
 					SetPos.z = -SET_POSZ;
+					SetPos.x = -SET_POSX;
 				}
 			}
 		}
@@ -235,6 +240,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				if (ppGimmick != nullptr) {
 					*ppGimmick = this;
 					SetPos.z = SET_POSZ;
+					SetPos.x = SET_POSX;
 				}
 			}
 		}
@@ -256,6 +262,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				if (ppGimmick != nullptr) {
 					*ppGimmick = this;
 					SetPos.z = -SET_POSZ;
+					SetPos.x = -SET_POSX;
 				}
 			}
 		}
