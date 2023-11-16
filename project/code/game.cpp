@@ -39,7 +39,11 @@
 #include "gimmick_spear.h"
 #include "goal.h"
 
-// グローバル
+// 無名名前空間を定義
+namespace {
+	const D3DXVECTOR3 STARTDOORPOS = { 860.0f, 0.0f, -550.0f };	// スタート地点ドア基本座標
+	const float DOOR_SPACE = (20.0f);	// 各スタート地点ドアの間
+}
 
 //===============================================
 // マクロ定義
@@ -156,10 +160,13 @@ HRESULT CGame::Init(void)
 
 		// ギミックの生成
 
-		// 開始扉
-		CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f, 0.0f, 0.0f));
-		CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(-200.0f, 0.0f, 0.0f));
-		p->SetLever(l);
+		// 開始扉(人数分)
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f * nCnt, 0.0f, 0.0f));
+			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
+			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+			p->SetLever(l);
+		}
 
 		// 槍(ボタン式)
 		CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
@@ -187,7 +194,7 @@ HRESULT CGame::Init(void)
 		CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 
 		// ゴール
-		CGoal::Create(D3DXVECTOR3(1000.0f, 2.0f, -500.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 	}
 		break;
 
@@ -223,7 +230,7 @@ HRESULT CGame::Init(void)
 
 	//カメラ初期化
 	{
-		/*CManager::GetInstance()->GetCamera()->Init();*/
+		//CManager::GetInstance()->GetCamera()->Init();
 
 		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));

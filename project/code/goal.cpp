@@ -16,7 +16,7 @@
 namespace {
 	const D3DXVECTOR3 SETPOS = { 0.0f, 0.0f, 0.0f };	// 初期設定座標
 	const char *FILENAME = "data\\TEXTURE\\line000.jpg";	// ファイル名
-	const float HEIGHT = (50.0f);
+	const float HEIGHT = (25.0f);
 }
 
 // 静的メンバ変数宣言
@@ -187,23 +187,25 @@ bool CGoal::CollisionCheck(const D3DXVECTOR3& pos, const D3DXVECTOR3& posOld)
 		return false;
 	}
 
+	float fWidth = m_pObject->GetWidth() * 0.5f;
+
 	if ((m_rot.y == SETPOS.y) || (m_rot.y == D3DX_PI) || (m_rot.y == -D3DX_PI)) {	// 初期値と同じ向き
-		if ((pos.x >= m_pos.x + (-m_pObject->GetWidth() * m_pObject->GetNumWidth())) &&
-			(pos.x >= m_pos.x + (-m_pObject->GetWidth() * m_pObject->GetNumWidth()))) {	// 範囲内
+		if ((pos.x >= m_pos.x + (-fWidth * m_pObject->GetNumWidth())) &&
+			(pos.x <= m_pos.x + (fWidth * m_pObject->GetNumWidth()))) {	// 範囲内
 
 			if ((posOld.z >= m_pos.z && pos.z <= m_pos.z) ||
-				(pos.z >= m_pos.z && posOld.z <= m_pos.z)) {	// 跨いだ
+				(pos.z >= m_pos.z && posOld.z <= m_pos.z)) {		// 跨いだ
 				return true;
 			}
 		}
 	}
 	else   // 90度回転
 	{
-		if ((pos.z >= m_pos.z + (-m_pObject->GetWidth() * m_pObject->GetNumWidth())) &&
-			(pos.z >= m_pos.z + (-m_pObject->GetWidth() * m_pObject->GetNumWidth()))) {	// 範囲内
+		if ((pos.z >= m_pos.z + (-fWidth * m_pObject->GetNumWidth())) &&
+			(pos.z <= m_pos.z + (fWidth * m_pObject->GetNumWidth()))) {	// 範囲内
 
 			if ((posOld.x >= m_pos.x && pos.x <= m_pos.x) ||
-				(pos.x >= m_pos.x && posOld.x <= m_pos.x)) {	// 跨いだ
+				(pos.x >= m_pos.x && posOld.x <= m_pos.x)) {		// 跨いだ
 				return true;
 			}
 		}

@@ -32,7 +32,7 @@ public:		// 誰でもアクセス可能
 
 	//CMesh();	
 	CObjectMesh(int nPriority = 3);	// コンストラクタ
-	~CObjectMesh();	// デストラクタ
+	virtual ~CObjectMesh();	// デストラクタ
 
 	// メンバ関数
 	virtual HRESULT Init(void) = 0;

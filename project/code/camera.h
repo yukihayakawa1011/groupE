@@ -30,7 +30,7 @@ public:	// 誰でもアクセス可能な定義
 
 public:	// 誰でもアクセス可能
 	CCamera();	// コンストラクタ
-	~CCamera();	// デストラクタ
+	virtual ~CCamera();	// デストラクタ
 
 	// メンバ関数
 	virtual HRESULT Init(void);
@@ -73,7 +73,6 @@ private:	// 自分だけがアクセス可能
 	void SetR(void);
 	void Edit(void);
 	void Slow(void);
-	void SlowShw(void);
 
 	// メンバ変数
 	D3DXMATRIX m_mtxView;		// ビューマトリックス
@@ -99,10 +98,10 @@ public:	// 誰でもアクセス可能
 	~CMultiCamera();	// デストラクタ
 
 	// メンバ関数
-	virtual HRESULT Init(void);
-	virtual void Uninit(void);
-	virtual void Update(void);
-	virtual void SetCamera(void);
+	HRESULT Init(void) override;
+	void Uninit(void) override;
+	void Update(void) override;
+	void SetCamera(void) override;
 	void SetViewPort(D3DVIEWPORT9 viewport) { m_viewport = viewport; }
 	D3DVIEWPORT9 *GetViewPort(void) { return &m_viewport; }
 

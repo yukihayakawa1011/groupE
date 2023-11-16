@@ -35,12 +35,12 @@ public:
 public:	// 誰でもアクセス可能
 
 	CGimmick();	// コンストラクタ(オーバーロード)
-	~CGimmick();	// デストラクタ
+	virtual ~CGimmick();	// デストラクタ
 
 	// メンバ関数
-	HRESULT Init(void) = 0;
-	void Uninit(void) = 0;
-	void Update(void) = 0;
+	virtual HRESULT Init(void) = 0;
+	virtual void Uninit(void) = 0;
+	virtual void Update(void) = 0;
 
 	// メンバ関数(取得)
 	static bool Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick = nullptr);
