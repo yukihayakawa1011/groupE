@@ -211,7 +211,7 @@ Mesh {
    1.000000;1.000000;1.000000;;
    0.910000;0.000000;0.000000;;
    TextureFilename {
-    "Marbl24l.jpg";
+    "data\\TEXTURE\\Marbl24l.jpg";
    }
   }
  }
