@@ -34,6 +34,17 @@ private:	// 自分だけがアクセス可能な定義
 		STATE_MAX
 	};
 
+	// モーション列挙型
+	enum MOTION {
+		MOTION_NEUTRAL = 0,	// 待機
+		MOTION_MOVE,			// 移動
+		MOTION_JUMP,			// ジャンプ状態
+		MOTION_ATK,			// 攻撃
+		MOTION_DAMAGE,		// ダメージ
+		MOTION_DEATH,			// 死亡
+		MOTION_MAX
+	};
+
 	// 情報構造体
 	struct SInfo
 	{
@@ -93,6 +104,7 @@ private:	// 自分だけがアクセス可能
 	void Search(void);
 	void Chace(void);
 	void Death(void);
+	void MotionSet(void);
 	void Collision(void);
 	void CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
 	CPlayer* SearchNearPlayer(float* pLength = nullptr);
@@ -101,8 +113,8 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	static CEnemy *m_pTop;	// 先頭のオブジェクトへのポインタ
 	static CEnemy *m_pCur;	// 最後尾のオブジェクトへのポインタ
-	CEnemy *m_pPrev;	// 前のオブジェクトへのポインタ
-	CEnemy *m_pNext;	// 次のオブジェクトへのポインタ
+	CEnemy *m_pPrev;		// 前のオブジェクトへのポインタ
+	CEnemy *m_pNext;		// 次のオブジェクトへのポインタ
 	SInfo m_Info;			// 自分自身の情報
 	CCharacter *m_pObject;	// 描画オブジェクト
 	float m_fRotMove;		// 現在の角度
