@@ -11,6 +11,7 @@
 
 //前方宣言
 class CModel;
+class CGimmickButton;
 
 //==========================================================
 // サンプルのクラス定義
@@ -40,6 +41,7 @@ public:	// 誰でもアクセス可能
 
 	// メンバ関数(設定)
 	void IsOpen(const bool bOpen) { m_bOpen = bOpen; }
+	void BindButton(CGimmickButton *pButton) { m_pButton = pButton; }
 
 private:	// 自分だけがアクセス可能
 
@@ -48,6 +50,7 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	CModel* m_apModel[FLOOR_MAX];		//穴の床
+	CGimmickButton *m_pButton;		// 連動するボタン
 	float m_fAngle;				//床の開き具合
 	bool m_bOpen;				//穴を開いているか
 };
