@@ -162,7 +162,7 @@ HRESULT CGame::Init(void)
 
 		// ŠJn”à(l”•ª)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f * nCnt, 0.0f, 0.0f));
+			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f * nCnt, 100.0f, 200.0f));
 			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
 			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			p->SetLever(l);

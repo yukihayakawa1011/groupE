@@ -136,7 +136,7 @@ void CTutorial::Update(void)
 		if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, CPlayer::GetNum())) {
 			int nId = CPlayer::GetNum();
 			m_ppPlayer[nId] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TXT\\motion_body.txt", "data\\TXT\\motion_leg.txt");
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
 			m_ppPlayer[nId]->BindId(nId);
 			m_ppPlayer[nId]->SetType(CPlayer::TYPE_ACTIVE);
 			bCreate = true;

@@ -420,7 +420,7 @@ float CMeshField::GetHeight(D3DXVECTOR3 pos, D3DXVECTOR3 &normal)
 float CMeshField::GetHeight(D3DXVECTOR3 pos)
 {
 	CMeshField *pMesh = CMeshField::GetTop();	// æ“ª‚ğæ“¾
-	float fHeight = 0.0f;	// ‚‚³
+	float fHeight = pos.y;	// ‚‚³
 	bool bValue = false;
 	D3DXVECTOR3 Pos0, Pos1, Pos2, Pos3;
 	D3DXVECTOR3 vecToPos;	//”»’è—p•Ï”
