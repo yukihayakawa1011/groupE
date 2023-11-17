@@ -170,13 +170,13 @@ HRESULT CGame::Init(void)
 
 		// 槍(ボタン式)
 		CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(100.0f, 0.0f, 0.0f));		
+		CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
 		pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESS);
 
 		// 槍(ボタン押したら自動)
 		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(100.0f, 0.0f, 400.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
 		pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
@@ -191,10 +191,14 @@ HRESULT CGame::Init(void)
 		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		// 落とし穴
-		CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
+		pFall->BindButton(pButton);
 
 		// ゴール
 		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+
+		CItem::Create(D3DXVECTOR3(500.0f, 100.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", NULL);
 	}
 		break;
 
