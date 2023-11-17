@@ -14,6 +14,7 @@
 #include "light.h"
 #include "sound.h"
 #include "camera.h"
+#include "number.h"
 
 //===============================================
 // マクロ定義
@@ -25,6 +26,7 @@
 // 静的メンバ変数
 //===============================================
 CScore *CRanking::m_apScore[NUM_RANK] = {};	// ランキングのポインタ
+CNumber *CRanking::m_apNumber[NUM_RANK][NUM_SCORE] = {}; // 表示する桁数
 int CRanking::m_nScore = 0;					// スコア
 
 //===============================================
@@ -62,6 +64,14 @@ HRESULT CRanking::Init(void)
 	// ランクイン確認
 	RankIn(&aScore[0], m_nScore);
 
+	for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+	{
+		for (int nCntScore = 0; nCntScore < NUM_SCORE; nCntScore++)
+		{
+			m_apNumber[nCntRank][nCntScore] = CNumber::Create(D3DXVECTOR3(500.0f + nCntScore * 50.0f, 180.0f + nCntRank * 70.0f, 0.0f), 30.0f, 30.0f);
+		}
+	}
+
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
 	return S_OK;
@@ -73,6 +83,16 @@ HRESULT CRanking::Init(void)
 void CRanking::Uninit(void)
 {
 	m_nScore = 0;
+
+	for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+	{
+		for (int nCntScore = 0; nCntScore < NUM_SCORE; nCntScore++)
+		{
+			m_apNumber[nCntRank][nCntScore]->Uninit();
+
+			m_apNumber[nCntRank][nCntScore] = nullptr;
+		}
+	}
 }
 
 //===============================================
