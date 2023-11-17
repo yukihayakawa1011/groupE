@@ -23,7 +23,7 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define AUTOMOVE_RANKING	(1200)	// ランキング自動遷移
+#define AUTOMOVE_RANKING	(640)	// ランキング自動遷移
 #define TITLE_CAMLENGTH		(1000.0f)
 #define TITLE_CAMROTZ		(D3DX_PI * 0.35f)
 
@@ -160,6 +160,17 @@ void CTitle::Update(void)
 	if (CManager::GetInstance()->GetCamera() != NULL)
 	{
 		//CManager::GetInstance()->GetCamera()->TitleRotateCamera();
+	}
+
+	//ランキング画面自動遷移
+	if (m_bClick == false && m_bPush == false)
+	{
+		m_nTimer++;
+
+		if (m_nTimer >= AUTOMOVE_RANKING)
+		{
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
+		}
 	}
 
 	CScene::Update();
