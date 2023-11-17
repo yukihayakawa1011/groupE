@@ -9,6 +9,7 @@
 #include "model.h"
 #include "input.h"
 #include "manager.h"
+#include "gimmick_button.h"
 
 // マクロ定義
 #define ROTATE_ANGLE	(0.05f * D3DX_PI)	//床の開く角度
@@ -21,6 +22,7 @@ CGimmickPitFall::CGimmickPitFall()
 	// 値のクリア
 	m_bOpen = false;
 	m_fAngle = 0.0f;
+	m_pButton = nullptr;
 }
 
 //==========================================================
@@ -54,13 +56,14 @@ void CGimmickPitFall::Uninit(void)
 void CGimmickPitFall::Update(void)
 {
 	CInputKeyboard* pKeyboard = CManager::GetInstance()->GetInputKeyboard();
-	if (pKeyboard->GetPress(DIK_F) == true)
-	{
-		m_bOpen = true;
-	}
-	else
-	{
-		m_bOpen = false;
+
+	if (m_pButton != nullptr) {	// ボタンが使用されている
+		if (m_pButton->GetState() == CGimmickButton::STATE_PRESS) {	// ボタンが押されている
+			m_bOpen = true;
+		}
+		else {	// 押されていない
+			m_bOpen = false;
+		}
 	}
 
 	//開閉による角度設定
