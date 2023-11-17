@@ -1,17 +1,19 @@
 //===============================================
 //
-// 数字全般の処理 [score.h]
-// Author : Ryosuke Ohhara
+// 数字全般の処理 [number.h]
+// Author : Ibuki Okusada
 //
 //===============================================
 #ifndef _SCORE_H_		// このマクロが定義されていない場合
 #define _SCORE_H_		// 二重インクルード防止用マクロを定義
 
 #include "main.h"
-#include "number.h"
 
-//マクロ定義
-#define NUM_SCORE   (8)  // スコアの桁数
+// 前方宣言
+class CNumber;
+
+// マクロ定義
+#define NUM_SCORE  (8)  //スコアの桁数
 
 //===============================================
 // ナンバークラスの定義
@@ -23,7 +25,7 @@ public:	// 誰でもアクセス可能
 	CScore();	// コンストラクタ
 	~CScore();	// デストラクタ
 
-	// メンバ関数
+				// メンバ関数
 	HRESULT Init(D3DXVECTOR3 pos, float fWidth, float fHeight);
 	HRESULT Init(void);
 	void Uninit(void);
@@ -31,10 +33,12 @@ public:	// 誰でもアクセス可能
 	void Draw(void);
 	static CScore *Create(void);
 	static CScore *Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
-	CNumber *GetObject2D(void) { return m_apNumber[0]; }
+	//CObject2D *GetObject2D(void) { return m_pObject2D; }
 	void PolygonDelete(void);
 
-	// メンバ関数(設定)
+	void BindTexture(LPDIRECT3DTEXTURE9 m_Texture);  //テクスチャをバインド
+
+													 // メンバ関数(設定)
 	void SetIdx(const int nIdx);
 
 	// メンバ関数(取得)
@@ -42,9 +46,11 @@ public:	// 誰でもアクセス可能
 
 private:	// 自分だけがアクセス可能
 
-	// メンバ変数
+			// メンバ変数
+	LPDIRECT3DTEXTURE9 m_pTexture;        //テクスチャへのポインタ
 	CNumber *m_apNumber[NUM_SCORE];	// 2Dオブジェクトのポインタ
 	int m_nIdx;	// 数字の番号
+	int m_nIdxTexture;
 };
 
 #endif
