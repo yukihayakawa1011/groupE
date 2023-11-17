@@ -22,6 +22,14 @@
 #include "player.h"
 #include "game.h"
 
+// 無名名前空間
+namespace
+{
+	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
+	const char* FILEEXT = ".txt";				// ファイルの拡張子
+	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+}
+
 //===============================================
 // マクロ定義
 //===============================================
@@ -82,7 +90,7 @@ HRESULT CTutorial::Init(void)
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];
 
 	m_ppPlayer[0] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-		"data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
+		"data\\TXT\\player0\\motion_ninjabody.txt", "data\\TXT\\player0\\motion_ninjaleg.txt");
 	m_ppPlayer[0]->BindId(0);
 	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
 
@@ -135,8 +143,14 @@ void CTutorial::Update(void)
 	if (CPlayer::GetNum() < PLAYER_MAX){ // 人数が最大ではない場合
 		if (CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, CPlayer::GetNum())) {
 			int nId = CPlayer::GetNum();
+			char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
+			char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
+
+			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s",FILEPASS, nId, FILEEXT);
+			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nId, FILEEXT);
+
 			m_ppPlayer[nId] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
+				D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nId]->BindId(nId);
 			m_ppPlayer[nId]->SetType(CPlayer::TYPE_ACTIVE);
 			bCreate = true;

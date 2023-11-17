@@ -43,6 +43,9 @@
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { 860.0f, 0.0f, -550.0f };	// スタート地点ドア基本座標
 	const float DOOR_SPACE = (20.0f);	// 各スタート地点ドアの間
+	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
+	const char* FILEEXT = ".txt";				// ファイルの拡張子
+	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
 }
 
 //===============================================
@@ -150,8 +153,13 @@ HRESULT CGame::Init(void)
 
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				"data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
+			char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
+			char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
+
+			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
+			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
+
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}
