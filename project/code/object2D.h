@@ -72,7 +72,7 @@ protected:	// 派生クラスからもアクセス可能
 private:	// 自分だけがアクセス可能
 
 	// メンバ変数
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		//頂点バッファへのポインタ
+	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	// 頂点バッファへのポインタ
 	float m_fWidth;		// 幅
 	float m_fHeight;		// 高さ
 	float m_fLength;		// 対角線の長さ

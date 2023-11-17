@@ -400,6 +400,10 @@ void CPlayer::Update(void)
 	{// 使用されている場合
 		m_pBody->Update();
 	}
+
+	if (m_nLife <= 0) {	// 体力が0
+		m_Info.state = STATE_DEATH;
+	}
 }
 
 //===============================================
@@ -446,14 +450,15 @@ void CPlayer::Controller(void)
 	m_fRotMove = rot.y;	//現在の向きを取得
 
 	// 操作処理
-	if(m_action != ACTION_DAMAGE)
-	{
-		Move();		// 移動
-		Rotation();	// 回転
-		Jump();		// ジャンプ
-		Attack();	// 攻撃
-		Catch();		// 掴む
-		Throw();		// 投げる
+	if(m_action != ACTION_DAMAGE){	// ダメージリアクションをしていない
+		if (m_Info.state != STATE_DEATH) {	// 死亡していない
+			Move();		// 移動
+			Rotation();	// 回転
+			Jump();		// ジャンプ
+			Attack();	// 攻撃
+			Catch();		// 掴む
+			Throw();		// 投げる
+		}
 	}
 
 	MotionSet();	// モーション設定
