@@ -33,6 +33,8 @@ public:	// 誰でもアクセス可能
 	CObject2D *GetObject2D(void) { return m_pObject2D; }
 	void PolygonDelete(void);
 	
+	void BindTexture(LPDIRECT3DTEXTURE9 m_Texture);  //テクスチャをバインド
+
 	// メンバ関数(設定)
 	void SetIdx(const int nIdx);
 
@@ -42,8 +44,10 @@ public:	// 誰でもアクセス可能
 private:	// 自分だけがアクセス可能
 	
 	// メンバ変数
+	LPDIRECT3DTEXTURE9 m_pTexture;        //テクスチャへのポインタ
 	CObject2D *m_pObject2D;	// 2Dオブジェクトのポインタ
 	int m_nIdx;	// 数字の番号
+	int m_nIdxTexture;
 };
 
 #endif

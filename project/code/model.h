@@ -57,9 +57,9 @@ private:	// 自分だけがアクセス可能
 	D3DMATERIAL9 m_ChangeMat;
 	D3DXVECTOR3 m_pos;		// 位置
 	D3DXVECTOR3 m_rot;		// 向き
-	D3DXVECTOR3 m_CurPos;	// 現在の位置
-	D3DXVECTOR3 m_CurRot;	// 現在の向き
-	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
+	D3DXVECTOR3 m_CurPos;		// 現在の位置
+	D3DXVECTOR3 m_CurRot;		// 現在の向き
+	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
 	D3DXMATRIX *m_pParentMtx;	// 親のワールドマトリックス
 	D3DXMATRIX *m_pCharacterMtx;	// まとめている親のマトリックス
 	bool m_bShadow;		// 影も描画するか否か

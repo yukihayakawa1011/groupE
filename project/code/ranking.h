@@ -13,7 +13,6 @@
 // マクロ定義
 //===============================================
 #define NUM_RANK	(5)		// ランキングの順位数
-#define NUM_SCORE   (8)     // ランキングの数字の桁
 
 // 前方宣言
 class CScore;
@@ -51,7 +50,6 @@ private:
 	// メンバ変数
 	CFileLoad *m_pFileLoad;	// ファイル読み込みのポインタ
 	static CScore *m_apScore[NUM_RANK];	// スコアのポインタ(順位分)
-	static CNumber *m_apNumber[NUM_RANK][NUM_SCORE]; // 表示する桁数
 	static int m_nScore;	// 今回のスコア
 	int m_nTimer;			// 自動遷移タイマー
 	int m_nRank;

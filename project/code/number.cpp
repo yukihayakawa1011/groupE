@@ -6,6 +6,8 @@
 //===============================================
 #include "number.h"
 #include "object2D.h"
+#include "texture.h"
+#include "manager.h"
 
 // マクロ定義
 #define MAX_WIDTHPATTERN	(10)	// パターン数
@@ -17,7 +19,9 @@ CNumber::CNumber()
 {
 	// 値をクリアする
 	m_nIdx = 0;
+	m_nIdxTexture = -1;
 	m_pObject2D = NULL;
+	m_pTexture = NULL;
 }
 
 //===============================================
@@ -45,6 +49,11 @@ HRESULT CNumber::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 
 			// サイズ設定
 			m_pObject2D->SetSize(fWidth, fHeight);
+
+			// テクスチャの情報を取得
+			CTexture *pTexture = CManager::GetInstance()->GetTexture();
+
+			m_pObject2D->BindTexture(pTexture->Regist("data\\TEXTURE\\number000.png"));
 
 			// テクスチャ設定
 			SetIdx(m_nIdx);
@@ -188,4 +197,12 @@ void CNumber::PolygonDelete(void)
 		m_pObject2D->Uninit();
 		m_pObject2D = NULL;
 	}
+}
+
+//================================================================
+//テクスチャ取得
+//================================================================
+void CNumber::BindTexture(LPDIRECT3DTEXTURE9 m_Texture)
+{
+	m_pTexture = m_Texture;
 }

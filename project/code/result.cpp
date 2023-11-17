@@ -193,7 +193,7 @@ void CResult::Update(void)
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 
 		|| CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
-		CManager::GetInstance()->GetFade()->Set(CScene::MODE_TITLE);
+		CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
 	}
 
 	CScene::Update();

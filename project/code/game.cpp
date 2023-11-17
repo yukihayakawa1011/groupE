@@ -43,6 +43,9 @@
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { 860.0f, 0.0f, -550.0f };	// スタート地点ドア基本座標
 	const float DOOR_SPACE = (20.0f);	// 各スタート地点ドアの間
+	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
+	const char* FILEEXT = ".txt";				// ファイルの拡張子
+	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
 }
 
 //===============================================
@@ -150,8 +153,13 @@ HRESULT CGame::Init(void)
 
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-				"data\\TXT\\motion_ninjabody.txt", "data\\TXT\\motion_ninjaleg.txt");
+			char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
+			char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
+
+			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
+			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
+
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 		}
@@ -201,15 +209,15 @@ HRESULT CGame::Init(void)
 		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
 		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -150.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", NULL);
 	}
 		break;
 
