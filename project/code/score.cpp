@@ -6,6 +6,8 @@
 //===============================================
 #include "score.h"
 #include "object2D.h"
+#include "texture.h"
+#include "manager.h"
 
 // マクロ定義
 #define MAX_WIDTHPATTERN	(10)	// パターン数
@@ -17,6 +19,7 @@ CScore::CScore()
 {
 	// 値をクリアする
 	m_nIdx = 0;
+
 	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{
 		m_apNumber[nCount] = nullptr;
@@ -42,13 +45,13 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 		{// 使用されていない場合
 
 			// 生成
-			m_apNumber[nCount] = CNumber::Create(pos, fWidth, fHeight);
+			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * 50.0f, pos.y , pos.z), fWidth, fHeight);
 
 			if (m_apNumber[nCount] != nullptr)
 			{// 使用されている場合
 
 				// 初期化処理
-				m_apNumber[nCount]->Init();
+				m_apNumber[nCount]->Init(pos, fWidth, fHeight);
 			}
 		}
 	}
@@ -171,38 +174,3 @@ CScore *CScore::Create(D3DXVECTOR3 pos, float fWidth, float fHeight)
 
 	return pNum;
 }
-
-////===============================================
-//// 頂点設定
-////===============================================
-//void CScore::SetIdx(const int nIdx)
-//{
-//	m_nIdx = nIdx;	// 値を設定
-//
-//	if (m_nIdx > 10)
-//	{// 値が限界を超えた場合
-//		m_nIdx = 9;
-//	}
-//	else if (m_nIdx < 0)
-//	{// 値が最低値を超えた場合
-//		m_nIdx = 0;
-//	}
-//
-//	if (m_pObject2D != NULL)
-//	{// 使用されている場合
-//	 // 頂点情報の設定
-//		m_pObject2D->SetVtx(m_nIdx, MAX_WIDTHPATTERN, 1);
-//	}
-//}
-//
-////===============================================
-//// ポリゴン廃棄
-////===============================================
-//void CScore::PolygonDelete(void)
-//{
-//	if (m_pObject2D != NULL)
-//	{// 使用されている場合
-//		m_pObject2D->Uninit();
-//		m_pObject2D = NULL;
-//	}
-//}
