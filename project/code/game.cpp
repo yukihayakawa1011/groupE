@@ -195,6 +195,8 @@ HRESULT CGame::Init(void)
 
 		// ÉSÅ[Éã
 		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+
+		CItem::Create(D3DXVECTOR3(500.0f, 100.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", NULL);
 	}
 		break;
 
