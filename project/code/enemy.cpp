@@ -243,15 +243,19 @@ void CEnemy::Update(void)
 	// 前回の座標を取得
 	m_Info.posOld = GetPosition();
 
+	// 状態遷移
 	StateSet();
 
 	m_nCounterAttack--;
 
-	if (m_Info.state != STATE_SPAWN)
+	if (m_Info.state != STATE_DAMAGE)
 	{
 		// 敵操作
 		Controller();
 	}
+
+	// モーション設定
+	MotionSet();
 
 	//// カメラ追従
 	//CCamera* pCamera = CManager::GetInstance()->GetCamera();
@@ -259,13 +263,7 @@ void CEnemy::Update(void)
 	//// 追従処理
 	//pCamera->Pursue(GetPosition(), GetRotation());
 
-#ifdef _DEBUG	//デバッグモードのみ表示
-
-	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
-	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
 	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ]\n", m_nLife);
-
-#endif // _DEBUG
 
 	// 使用オブジェクト更新
 	if (nullptr != m_pObject) {
@@ -731,4 +729,33 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 	}
 
 	Damage(nDamage);
+}
+
+//===============================================
+// モーション設定
+//===============================================
+void CEnemy::MotionSet(void)
+{
+	if (m_pObject == nullptr) {	// 胴体無し
+		return;
+	}
+
+	if (m_pObject->GetMotion() == nullptr) {	// モーション無し
+		return;
+	}
+
+	if (m_Info.state == STATE_DAMAGE) {	// ダメージ状態
+		m_pObject->GetMotion()->Set(MOTION_DAMAGE);
+	}
+	else if (m_nCounterAttack > 0) {	// 攻撃中
+		m_pObject->GetMotion()->Set(MOTION_ATK);
+	}
+	else if (m_bJump) {	// ジャンプ状態
+		m_pObject->GetMotion()->BlendSet(MOTION_JUMP);
+	}
+	else {	// 待機
+		if (m_pObject->GetMotion()->GetEnd()) {	// モーションが終了している
+			m_pObject->GetMotion()->BlendSet(MOTION_NEUTRAL);
+		}
+	}
 }

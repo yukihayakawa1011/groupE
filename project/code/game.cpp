@@ -162,7 +162,8 @@ HRESULT CGame::Init(void)
 
 		// 開始扉(人数分)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-100.0f * nCnt, 100.0f, 200.0f));
+			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + nCnt * 10.0f));
+			l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
 			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
 			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			p->SetLever(l);
@@ -187,8 +188,9 @@ HRESULT CGame::Init(void)
 		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 
 		// 回転扉
-		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(400.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 		// 落とし穴
 		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
@@ -233,9 +235,9 @@ HRESULT CGame::Init(void)
 	//敵マネージャ生成（投げっぱ）
 	CEnemyManager::Create();
 
-	for (int nCnt = 0; nCnt < 10; nCnt++)
+	for (int nCnt = 0; nCnt < 9; nCnt++)
 	{
-		CItem::Create(D3DXVECTOR3(400.0f + nCnt * -100.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_NORMAL);
+		CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 0.0f, 300.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_NORMAL);
 	}
 
 	//壺

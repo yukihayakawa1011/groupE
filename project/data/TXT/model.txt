@@ -44,7 +44,7 @@ MODEL_FILENAME = data/MODEL/Cyabudai.x    # [9]ちゃぶ台
 MODEL_FILENAME = data/MODEL/sumdorr000.x  # [10]ドア左(和)
 MODEL_FILENAME = data/MODEL/sumdorr001.x  # [11]ドア右(和)
 MODEL_FILENAME = data/MODEL/zabuton.x     # [12]座布団
-MODEL_FILENAME = data/MODEL/Irori.x     # [13]いろり
+MODEL_FILENAME = data/MODEL/Irori.x       # [13]いろり
 MODEL_FILENAME = data/MODEL/kakeziku000.x # [14]掛け軸
 
 #------------------------------------------------------------------------------
@@ -2324,61 +2324,44 @@ MODELSET
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
 
-//**************************************
-//**************仮ボタン****************
-//**************************************
 MODELSET
-	TYPE = 1
-	POS = 600.0 0.0 -100.0
-	ROT = 0.0 0.0 0.0
-	SHADOW = 1		#使用しない場合は0
-END_MODELSET
-
-MODELSET
-	TYPE = 1
-	POS = 800.0 0.0 -100.0
-	ROT = 0.0 0.0 0.0
-	SHADOW = 1		#使用しない場合は0
-END_MODELSET
-
-MODELSET
-	TYPE = 1
-	POS = 600.0 0.0 200.0
-	ROT = 0.0 0.0 0.0
-	SHADOW = 1		#使用しない場合は0
-END_MODELSET
-
-MODELSET
-	TYPE = 1
+	TYPE = 0
 	POS = 800.0 0.0 200.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
 
 MODELSET
-	TYPE = 1
-	POS = 3600.0 0.0 -100.0
+	TYPE = 0
+	POS = 500.0 0.0 200.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
 
 MODELSET
-	TYPE = 1
-	POS = 3800.0 0.0 -100.0
+	TYPE = 0
+	POS = 400.0 0.0 200.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
 
 MODELSET
-	TYPE = 1
-	POS = 3600.0 0.0 200.0
+	TYPE = 0
+	POS = 400.0 0.0 300.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
 
 MODELSET
-	TYPE = 1
-	POS = 3800.0 0.0 200.0
+	TYPE = 0
+	POS = 400.0 0.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 1		#使用しない場合は0
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200.0 0.0 -400.0
 	ROT = 0.0 0.0 0.0
 	SHADOW = 1		#使用しない場合は0
 END_MODELSET
