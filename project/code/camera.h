@@ -60,10 +60,14 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetVectorU(void) { return m_vecU; }
 	void SetRotation(D3DXVECTOR3 rot);
 	void SetLength(float fLength) { m_fLength = fLength; }
+	CCamera *GetNext(void) { return m_pNext; }
+	CCamera *GetPrev(void) { return m_pPrev; }
 
 	// メンバ関数(設定)
 	D3DXMATRIX SetMtxView(D3DXMATRIX mtxView) { m_mtxView = mtxView; }
 	D3DXMATRIX SetMtxProjection(D3DXMATRIX mtxProjection) { m_mtxProjection = mtxProjection; }
+	void SetNext(CCamera *pNext) { m_pNext = pNext; }
+	void SetPrev(CCamera *pPrev) { m_pPrev = pPrev; }
 
 private:	// 自分だけがアクセス可能
 
@@ -86,6 +90,8 @@ private:	// 自分だけがアクセス可能
 	MODE m_mode;				// モード
 	float m_fMulScore;			// スコア倍率
 	float m_fLength;			// 視点と注視点の距離
+	CCamera *m_pNext;			// 次
+	CCamera *m_pPrev;			// 前
 };
 
 //**********************************************************

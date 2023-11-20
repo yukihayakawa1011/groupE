@@ -158,6 +158,7 @@
   <ItemGroup>
     <ClCompile Include="code\billboard.cpp" />
     <ClCompile Include="code\camera.cpp" />
+    <ClCompile Include="code\camera_manager.cpp" />
     <ClCompile Include="code\character.cpp" />
     <ClCompile Include="code\debugproc.cpp" />
     <ClCompile Include="code\enemy.cpp" />
@@ -220,6 +221,7 @@
   <ItemGroup>
     <ClInclude Include="code\billboard.h" />
     <ClInclude Include="code\camera.h" />
+    <ClInclude Include="code\camera_manager.h" />
     <ClInclude Include="code\character.h" />
     <ClInclude Include="code\debugproc.h" />
     <ClInclude Include="code\enemy.h" />
