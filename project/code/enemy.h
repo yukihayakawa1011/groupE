@@ -107,7 +107,7 @@ private:	// 自分だけがアクセス可能
 	void MotionSet(void);
 	void Collision(void);
 	void CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
-	CPlayer* SearchNearPlayer(float* pLength = nullptr);
+	CPlayer* SearchNearPlayer(float fRadiusRest, float* pLength = nullptr);
 	D3DXVECTOR3 CollisionAllEnemy(D3DXVECTOR3 pos);
 
 	// メンバ変数

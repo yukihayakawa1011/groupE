@@ -45,6 +45,7 @@
 #define APPEAR_INTERVAL	(120)
 #define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
 #define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
+#define SEARCH_RADIUS	(0.5f)
 #define CHACE_LENGTH	(800.0f)	//追跡範囲
 #define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
 #define ATTACK_COOLTIME	(60)		//攻撃クールタイム
@@ -371,9 +372,9 @@ void CEnemy::Controller(void)
 	if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
 	{
 		//ジャンプする必要があるか確認
-		CPlayer* pPlayerNear = SearchNearPlayer();
+		CPlayer* pPlayerNear = SearchNearPlayer(FLT_MAX);
 
-		if (CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
+		if (pPlayerNear != nullptr && CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
 		{
 			m_Info.move.y = ENEMY_JUMP;
 			m_bJump = true;
@@ -408,7 +409,7 @@ void CEnemy::Rotation(void)
 void CEnemy::Search(void)
 {
 	float fLengthNear = FLT_MAX;
-	CPlayer* pPlayerNear = SearchNearPlayer(&fLengthNear);
+	CPlayer* pPlayerNear = SearchNearPlayer(SEARCH_RADIUS, &fLengthNear);
 
 	if (pPlayerNear != nullptr && fLengthNear <= SEARCH_LENGTH)
 	{//プレイヤー見つけた
@@ -426,7 +427,7 @@ void CEnemy::Search(void)
 void CEnemy::Chace(void)
 {
 	float fLengthNear = FLT_MAX;
-	CPlayer* pPlayerNear = SearchNearPlayer(&fLengthNear);
+	CPlayer* pPlayerNear = SearchNearPlayer(FLT_MAX, &fLengthNear);
 
 	if (pPlayerNear != nullptr && fLengthNear <= ATTACK_LENGTH)
 	{//攻撃範囲
@@ -575,7 +576,7 @@ void CEnemy::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &
 //===============================================
 // 近いプレイヤー探索
 //===============================================
-CPlayer* CEnemy::SearchNearPlayer(float* pLength)
+CPlayer* CEnemy::SearchNearPlayer(float fRadiusRest, float* pLength)
 {
 	CPlayer* pPlayer = CPlayer::GetTop();
 	CPlayer* pPlayerNear = nullptr;
@@ -586,8 +587,15 @@ CPlayer* CEnemy::SearchNearPlayer(float* pLength)
 		if (pPlayer->GetLife() > 0)
 		{//生きている奴を計測
 			D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
-			float fLength = D3DXVec3Length(&(posPlayer - this->m_Info.pos));
-			if (fLengthNear > fLength)
+			D3DXVECTOR3 vecPos = posPlayer - this->m_Info.pos;
+			float fLength = D3DXVec3Length(&vecPos);
+			D3DXVec3Normalize(&vecPos, &vecPos);
+			D3DXVECTOR3 vecGaze = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			vecGaze.x = cosf(this->m_Info.rot.y + 0.5f * D3DX_PI);
+			vecGaze.z = -sinf(this->m_Info.rot.y + 0.5f * D3DX_PI);
+
+			float fRadius = D3DXVec3Dot(&vecGaze, &vecPos) / (D3DXVec3Length(&vecGaze) * D3DXVec3Length(&vecPos));
+			if (fLengthNear > fLength && fRadius >= 1.0f - fRadiusRest)
 			{//一番近いやつ
 				pPlayerNear = pPlayer;
 				fLengthNear = fLength;
