@@ -74,7 +74,7 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXVECTOR3 GetOldPos(void) { return m_posOld; }
-	int GetState(void) { return m_nState; }
+	int GetType(void) { return m_nState; }
 	int GetEachScore(void);
 	void SetNext(CItem *pNext) { m_pNext = pNext; }
 	void SetPrev(CItem *pPrev) { m_pPrev = pPrev; }

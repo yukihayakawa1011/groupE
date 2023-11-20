@@ -38,7 +38,8 @@ public:	// 誰でもアクセス可能
 
 	void BindTexture(LPDIRECT3DTEXTURE9 m_Texture);  //テクスチャをバインド
 
-	void AddScore(int nScore);
+	void AddScore(int nScore);  // スコア加算処理
+	void LowerScore(int nScore);  // スコア減算処理
 
 	// メンバ関数(設定)
 	void SetIdx(const int nIdx);

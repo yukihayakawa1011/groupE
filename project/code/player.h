@@ -17,6 +17,7 @@ class CWaist;
 class CCharacter;
 class CGimmick;
 class CScore;
+class CItem;
 
 //==========================================================
 // プレイヤーのクラス定義(派生クラス)

@@ -105,7 +105,7 @@ CPlayer::CPlayer()
 	m_bJump = false;
 	m_bGoal = false;
 	m_nItemCnt = 0;
-
+	
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
 	{// 先頭が存在している場合
@@ -196,6 +196,8 @@ HRESULT CPlayer::Init(void)
 	m_bJump = false;
 	m_nItemCnt = START_COIN;
 
+	m_pScore->AddScore(500 * m_nItemCnt);
+
 	return S_OK;
 }
 
@@ -276,6 +278,8 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
 	m_nItemCnt = START_COIN;
+
+	m_pScore->AddScore(500 * m_nItemCnt);
 
 	return S_OK;
 }
@@ -539,10 +543,7 @@ void CPlayer::Controller(void)
 		m_nItemCnt++;
 		m_pScore->AddScore(pItem->GetEachScore());
 		pItem->Uninit();
-
-		
 	}
-
 
 	// ギミックとの判定
 	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick)) {
@@ -1381,6 +1382,9 @@ void CPlayer::Drop(int nDropCnt)
 	for (int nCnt = 0; nCnt < nDiff; nCnt++)
 	{
 		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DROP);
+
+		// スコアへらすう
+		m_pScore->LowerScore(pItem->GetEachScore());
 
 		if (nullptr != pItem)
 		{
