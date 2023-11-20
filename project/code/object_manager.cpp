@@ -1,6 +1,6 @@
 //==========================================================
 //
-// オブジェクト管理の処理 [task_manager.cpp]
+// オブジェクト管理の処理 [object_manager.cpp]
 // Author : Ibuki Okusada
 //
 //==========================================================
@@ -58,11 +58,11 @@ void CObjectManager::Uninit(void)
 //==========================================================
 void CObjectManager::Draw(void)
 {
-	CCamera *pCamera = CCameraManager::GetInstance()->GetTop();
+	CCamera *pCamera = CCameraManager::GetInstance()->GetCur();
 
 	while (pCamera != nullptr) {
 
-		CCamera *pCameraNext = pCamera->GetNext();
+		CCamera *pCameraNext = pCamera->GetPrev();
 
 		// 設定
 		pCamera->SetCamera();

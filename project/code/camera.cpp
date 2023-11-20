@@ -40,6 +40,7 @@ CCamera::CCamera()
 {
 	m_pNext = nullptr;
 	m_pPrev = nullptr;
+	m_bDraw = true;
 
 	// リストに挿入
 	CCameraManager::GetInstance()->ListIn(this);
@@ -836,8 +837,8 @@ HRESULT CMultiCamera::Init(void)
 	//プレイヤー追従カメラの画面位置設定
 	m_viewport.X = 0;
 	m_viewport.Y = 0;
-	m_viewport.Width = (DWORD)(SCREEN_WIDTH * 0.125f);
-	m_viewport.Height = (DWORD)(SCREEN_HEIGHT * 0.22f);
+	m_viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+	m_viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
 	m_viewport.MinZ = 0.0f;
 	m_viewport.MaxZ = 1.0f;
 

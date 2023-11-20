@@ -67,6 +67,8 @@ namespace {
 #define DEF_PORT	(22333)	// ポート番号
 #define MAX_STRING	(2048)
 #define ADDRESSFILE	"data\\TXT\\address.txt"
+#define WIDTH_NUM		(2)		// 横の分割数
+#define HEIGHT_NUM	(2)		// 縦の分割数
 
 //===============================================
 // 静的メンバ変数
@@ -268,6 +270,43 @@ HRESULT CGame::Init(void)
 		viewport.MinZ = 0.0f;
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+	}
+
+	// 分割カメラ生成
+	{
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			CMultiCamera *pCamera = new CMultiCamera;
+			pCamera->Init();
+			pCamera->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+			pCamera->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+			pCamera->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
+
+			D3DVIEWPORT9 viewport;
+			//プレイヤー追従カメラの画面位置設定
+			viewport.X = (DWORD)((SCREEN_WIDTH * 0.5f) * (nCnt % WIDTH_NUM));
+			viewport.Y = (DWORD)((SCREEN_HEIGHT * 0.5f) * (nCnt / WIDTH_NUM));
+
+			if (m_nNumPlayer < WIDTH_NUM) {
+				viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+			}
+			else
+			{
+				viewport.Width = (DWORD)(SCREEN_WIDTH * 0.5f);
+			}
+
+			if (m_nNumPlayer <= WIDTH_NUM) {
+				viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+			}
+			else
+			{
+				viewport.Height = (DWORD)(SCREEN_HEIGHT * 0.5f);
+			}
+			
+			viewport.MinZ = 0.0f;
+			viewport.MaxZ = 1.0f;
+			pCamera->SetViewPort(viewport);
+		}
 	}
 
 	// スポットライトをオン
