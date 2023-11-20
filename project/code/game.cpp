@@ -339,7 +339,7 @@ void CGame::Update(void)
 
 	if (m_state != STATE_END) {	// 終了状態以外
 		if (EndCheck()) {	// 全員ゴールしている
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
 			m_state = STATE_END;
 		}
 	}
