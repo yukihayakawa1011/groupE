@@ -8,6 +8,7 @@
 #include "object.h"
 #include "camera.h"
 #include "manager.h"
+#include "camera_manager.h"
 
 CObjectManager *CObjectManager::m_pInstance = NULL;
 
@@ -57,8 +58,20 @@ void CObjectManager::Uninit(void)
 //==========================================================
 void CObjectManager::Draw(void)
 {
-	// リストの全描画
-	DrawAll();
+	CCamera *pCamera = CCameraManager::GetInstance()->GetTop();
+
+	while (pCamera != nullptr) {
+
+		CCamera *pCameraNext = pCamera->GetNext();
+
+		// 設定
+		pCamera->SetCamera();
+
+		// リストの全描画
+		DrawAll();
+
+		pCamera = pCameraNext;
+	}
 }
 
 //===============================================
@@ -91,19 +104,6 @@ void CObjectManager::ReleaseAll(void)
 //===============================================
 void CObjectManager::DrawAll(void)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();
-	CCamera *pMapCamera = CManager::GetInstance()->GetScene()->GetMapCamera();
-
-	if (pMapCamera != NULL)
-	{
-		pMapCamera->SetCamera();
-	}
-
-	if (pCamera != NULL)
-	{// 使用されている場合
-		pCamera->SetCamera();
-	}
-
 	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
 	{
 		CObject *pObject = m_apTop[nCntPri];	// 先頭を取得
