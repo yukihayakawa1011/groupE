@@ -25,7 +25,7 @@ public:	// 誰でもアクセス可能
 	CScore();	// コンストラクタ
 	~CScore();	// デストラクタ
 
-				// メンバ関数
+	// メンバ関数
 	HRESULT Init(D3DXVECTOR3 pos, float fWidth, float fHeight);
 	HRESULT Init(void);
 	void Uninit(void);
@@ -38,7 +38,9 @@ public:	// 誰でもアクセス可能
 
 	void BindTexture(LPDIRECT3DTEXTURE9 m_Texture);  //テクスチャをバインド
 
-													 // メンバ関数(設定)
+	void AddScore(int nScore);
+
+	// メンバ関数(設定)
 	void SetIdx(const int nIdx);
 
 	// メンバ関数(取得)
@@ -46,11 +48,10 @@ public:	// 誰でもアクセス可能
 
 private:	// 自分だけがアクセス可能
 
-			// メンバ変数
-	LPDIRECT3DTEXTURE9 m_pTexture;        //テクスチャへのポインタ
-	CNumber *m_apNumber[NUM_SCORE];	// 2Dオブジェクトのポインタ
-	int m_nIdx;	// 数字の番号
-	int m_nIdxTexture;
+	// メンバ変数
+	CNumber *m_apNumber[NUM_SCORE];	// ナンバーへのポインタ
+	int m_nIdx;	                    // 数字の番号
+	int m_nNumScore;                // スコア
 };
 
 #endif
