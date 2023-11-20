@@ -31,6 +31,7 @@
 #include "item.h"
 #include "gimmick.h"
 #include "model.h"
+#include "object3DFan.h"
 
 //===============================================
 // マクロ定義
@@ -45,7 +46,7 @@
 #define APPEAR_INTERVAL	(120)
 #define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
 #define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
-#define SEARCH_RADIUS	(0.5f)
+#define SEARCH_RADIUS	(0.3f)
 #define CHACE_LENGTH	(800.0f)	//追跡範囲
 #define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
 #define ATTACK_COOLTIME	(60)		//攻撃クールタイム
@@ -58,8 +59,8 @@
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
 
 // 前方宣言
-CEnemy *CEnemy::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
-CEnemy *CEnemy::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
+CEnemy *CEnemy::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
+CEnemy *CEnemy::m_pCur = nullptr;	// 最後尾のオブジェクトへのポインタ
 int CEnemy::m_nNumCount = 0;
 
 //===============================================
@@ -75,7 +76,7 @@ CEnemy::CEnemy(const D3DXVECTOR3 pos)
 	m_fRotMove = 0.0f;
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
-	m_pObject = NULL;
+	m_pObject = nullptr;
 	m_nLife = 0;
 	m_nCounterAttack = ATTACK_COOLTIME;
 	m_bChace = false;
@@ -84,7 +85,7 @@ CEnemy::CEnemy(const D3DXVECTOR3 pos)
 	m_nId = m_nNumCount;
 
 	// 自分自身をリストに追加
-	if (m_pTop != NULL)
+	if (m_pTop != nullptr)
 	{// 先頭が存在している場合
 		m_pCur->m_pNext = this;	// 現在最後尾のオブジェクトのポインタにつなげる
 		m_pPrev = m_pCur;
@@ -112,7 +113,7 @@ CEnemy::CEnemy(int nPriOrity)
 	m_fRotMove = 0.0f;
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
-	m_pObject = NULL;
+	m_pObject = nullptr;
 	m_nLife = 0;
 	m_nCounterAttack = ATTACK_COOLTIME;
 	m_bChace = false;
@@ -121,7 +122,7 @@ CEnemy::CEnemy(int nPriOrity)
 	m_nId = m_nNumCount;
 
 	// 自分自身をリストに追加
-	if (m_pTop != NULL)
+	if (m_pTop != nullptr)
 	{// 先頭が存在している場合
 		m_pCur->m_pNext = this;	// 現在最後尾のオブジェクトのポインタにつなげる
 		m_pPrev = m_pCur;
@@ -155,6 +156,12 @@ HRESULT CEnemy::Init(void)
 		m_pObject->SetShadow(true);
 	}
 
+	if (nullptr == m_pFov)
+	{
+		m_pFov = CObject3DFan::Create(m_Info.pos, m_Info.rot, SEARCH_LENGTH, SEARCH_RADIUS * D3DX_PI, 8);
+		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.4f));
+	}
+
 	m_Info.state = STATE_APPEAR;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
@@ -175,6 +182,12 @@ HRESULT CEnemy::Init(const char *pBodyName, const char *pLegName)
 		m_pObject->SetDraw();
 	}
 
+	if (nullptr == m_pFov)
+	{
+		m_pFov = CObject3DFan::Create(m_Info.pos, m_Info.rot, SEARCH_LENGTH, SEARCH_RADIUS * D3DX_PI, 8);
+		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.6f));
+	}
+
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
 
@@ -189,37 +202,37 @@ void CEnemy::Uninit(void)
 	// リストから自分自身を削除する
 	if (m_pTop == this)
 	{// 自身が先頭
-		if (m_pNext != NULL)
+		if (m_pNext != nullptr)
 		{// 次が存在している
 			m_pTop = m_pNext;	// 次を先頭にする
-			m_pNext->m_pPrev = NULL;	// 次の前のポインタを覚えていないようにする
+			m_pNext->m_pPrev = nullptr;	// 次の前のポインタを覚えていないようにする
 		}
 		else
 		{// 存在していない
-			m_pTop = NULL;	// 先頭がない状態にする
-			m_pCur = NULL;	// 最後尾がない状態にする
+			m_pTop = nullptr;	// 先頭がない状態にする
+			m_pCur = nullptr;	// 最後尾がない状態にする
 		}
 	}
 	else if (m_pCur == this)
 	{// 自身が最後尾
-		if (m_pPrev != NULL)
+		if (m_pPrev != nullptr)
 		{// 次が存在している
 			m_pCur = m_pPrev;			// 前を最後尾にする
-			m_pPrev->m_pNext = NULL;	// 前の次のポインタを覚えていないようにする
+			m_pPrev->m_pNext = nullptr;	// 前の次のポインタを覚えていないようにする
 		}
 		else
 		{// 存在していない
-			m_pTop = NULL;	// 先頭がない状態にする
-			m_pCur = NULL;	// 最後尾がない状態にする
+			m_pTop = nullptr;	// 先頭がない状態にする
+			m_pCur = nullptr;	// 最後尾がない状態にする
 		}
 	}
 	else
 	{
-		if (m_pNext != NULL)
+		if (m_pNext != nullptr)
 		{
 			m_pNext->m_pPrev = m_pPrev;	// 自身の次に前のポインタを覚えさせる
 		}
-		if (m_pPrev != NULL)
+		if (m_pPrev != nullptr)
 		{
 			m_pPrev->m_pNext = m_pNext;	// 自身の前に次のポインタを覚えさせる
 		}
@@ -227,7 +240,12 @@ void CEnemy::Uninit(void)
 
 	if (nullptr != m_pObject){
 		m_pObject->Uninit();
-		m_pObject = NULL;
+		m_pObject = nullptr;
+	}
+	if (nullptr != m_pFov)
+	{
+		m_pFov->Uninit();
+		m_pFov = nullptr;
 	}
 
 	m_nNumCount--;
@@ -272,6 +290,11 @@ void CEnemy::Update(void)
 		m_pObject->SetRotation(m_Info.rot);
 		m_pObject->Update();
 	}
+	if (nullptr != m_pFov)
+	{
+		m_pFov->SetPosition(m_Info.pos);
+		m_pFov->SetRotation(m_Info.rot + D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
+	}
 }
 
 //===============================================
@@ -279,7 +302,7 @@ void CEnemy::Update(void)
 //===============================================
 CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName, const int nPriority)
 {
-	CEnemy *pPlayer = NULL;
+	CEnemy *pPlayer = nullptr;
 
 	// 敵の生成
 	pPlayer = new CEnemy(nPriority);
@@ -302,7 +325,7 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const
 	}
 	else
 	{// 生成に失敗した場合
-		return NULL;
+		return nullptr;
 	}
 
 	return pPlayer;
@@ -414,6 +437,11 @@ void CEnemy::Search(void)
 	if (pPlayerNear != nullptr && fLengthNear <= SEARCH_LENGTH)
 	{//プレイヤー見つけた
 		m_bChace = true;
+		if (nullptr != m_pFov)
+		{
+			m_pFov->SetLength(CHACE_LENGTH);
+			m_pFov->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.4f));
+		}
 	}
 	else
 	{//適当にぐるぐる
@@ -450,6 +478,8 @@ void CEnemy::Chace(void)
 	else
 	{
 		m_bChace = false;
+		m_pFov->SetLength(SEARCH_LENGTH);
+		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.4f));
 	}
 }
 
@@ -510,7 +540,7 @@ void CEnemy::Collision(void)
 D3DXVECTOR3 CEnemy::CollisionAllEnemy(D3DXVECTOR3 pos)
 {
 	CEnemy *pObj = m_pTop;	// 先頭取得
-	while (pObj != NULL)
+	while (pObj != nullptr)
 	{
 		CEnemy *pObjNext = pObj->m_pNext;
 		if (pObj != this)

@@ -105,7 +105,9 @@ CPlayer::CPlayer()
 	m_bJump = false;
 	m_bGoal = false;
 	m_nItemCnt = 0;
+	m_pMyCamera = nullptr;
 	
+
 	// Ž©•ªŽ©g‚ðƒŠƒXƒg‚É’Ç‰Á
 	if (m_pTop != NULL)
 	{// æ“ª‚ª‘¶Ý‚µ‚Ä‚¢‚éê‡
@@ -378,11 +380,11 @@ void CPlayer::Update(void)
 			Controller();
 		}
 
-		//// ƒJƒƒ‰’Ç]
-		//CCamera *pCamera = CManager::GetInstance()->GetCamera();
-
-		//// ’Ç]ˆ—
-		//pCamera->Pursue(GetPosition(), GetRotation());
+		// ƒJƒƒ‰’Ç]
+		if (m_pMyCamera != nullptr) {
+			// ’Ç]ˆ—
+			m_pMyCamera->Pursue(GetPosition(), GetRotation());
+		}
 
 		// ƒIƒ“ƒ‰ƒCƒ“‘—M
 		CManager::GetInstance()->GetScene()->SendPosition(m_Info.pos);

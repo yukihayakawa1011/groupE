@@ -17,6 +17,7 @@ class CWaist;
 class CCharacter;
 class CGimmick;
 class CScore;
+class CCamera;
 class CItem;
 
 //==========================================================
@@ -106,6 +107,7 @@ public:	// 誰でもアクセス可能
 	void SetRotation(const D3DXVECTOR3 rot) { m_Info.rot = rot; }
 	void BindId(int nId) { m_nId = nId; }
 	void SetType(TYPE type);
+	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -167,6 +169,7 @@ private:	// 自分だけがアクセス可能
 	ACTION m_action;		// アクション
 	int m_nItemCnt;		// 
 	static int m_nNumCount;
+	CCamera *m_pMyCamera;	// 自分用のカメラ
 	
 };
 

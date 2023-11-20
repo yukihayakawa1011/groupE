@@ -15,6 +15,7 @@
 // 前方宣言
 class CPlayer;
 class CCharacter;
+class CObject3DFan;
 
 //==========================================================
 // 敵のクラス定義(派生クラス)
@@ -117,6 +118,7 @@ private:	// 自分だけがアクセス可能
 	CEnemy *m_pNext;		// 次のオブジェクトへのポインタ
 	SInfo m_Info;			// 自分自身の情報
 	CCharacter *m_pObject;	// 描画オブジェクト
+	CObject3DFan* m_pFov;	// 視野オブジェクト
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
