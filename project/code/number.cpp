@@ -174,15 +174,18 @@ void CNumber::SetIdx(const int nIdx)
 
 	if (m_nIdx > 10)
 	{// 値が限界を超えた場合
+
 		m_nIdx = 9;
 	}
 	else if (m_nIdx < 0)
 	{// 値が最低値を超えた場合
+
 		m_nIdx = 0;
 	}
 
 	if (m_pObject2D != NULL)
 	{// 使用されている場合
+
 		// 頂点情報の設定
 		m_pObject2D->SetVtx(m_nIdx, MAX_WIDTHPATTERN, 1);
 	}

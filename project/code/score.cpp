@@ -19,8 +19,6 @@ CScore::CScore()
 {
 	// 値をクリアする
 	m_nIdx = 0;
-	m_nIdxTexture = -1;
-	m_pTexture = NULL;
 
 	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{
@@ -177,6 +175,28 @@ CScore *CScore::Create(D3DXVECTOR3 pos, float fWidth, float fHeight)
 	}
 
 	return pNum;
+}
+
+//===============================================
+//スコア加算処理
+//===============================================
+void CScore::AddScore(int nScore)
+{
+	m_nNumScore += nScore;
+
+	m_apNumber[0]->SetIdx(m_nNumScore % 100000000 / 10000000);
+	m_apNumber[1]->SetIdx(m_nNumScore % 10000000 / 1000000);
+	m_apNumber[2]->SetIdx(m_nNumScore % 1000000 / 100000);
+	m_apNumber[3]->SetIdx(m_nNumScore % 100000 / 10000);
+	m_apNumber[4]->SetIdx(m_nNumScore % 10000 / 1000);
+	m_apNumber[5]->SetIdx(m_nNumScore % 1000 / 100);
+	m_apNumber[6]->SetIdx(m_nNumScore % 100 / 10);
+	m_apNumber[7]->SetIdx(m_nNumScore % 10 / 1);
+
+	/*for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+	{
+		m_apNumber[nCount]->SetIdx(m_nNumScore);
+	}*/
 }
 
 ////===============================================
