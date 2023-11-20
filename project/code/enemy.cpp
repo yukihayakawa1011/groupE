@@ -31,6 +31,7 @@
 #include "item.h"
 #include "gimmick.h"
 #include "model.h"
+#include "object3DFan.h"
 
 //===============================================
 // マクロ定義
@@ -45,7 +46,7 @@
 #define APPEAR_INTERVAL	(120)
 #define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
 #define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
-#define SEARCH_RADIUS	(0.5f)
+#define SEARCH_RADIUS	(0.3f)
 #define CHACE_LENGTH	(800.0f)	//追跡範囲
 #define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
 #define ATTACK_COOLTIME	(60)		//攻撃クールタイム
@@ -155,6 +156,12 @@ HRESULT CEnemy::Init(void)
 		m_pObject->SetShadow(true);
 	}
 
+	if (nullptr == m_pFov)
+	{
+		m_pFov = CObject3DFan::Create(m_Info.pos, m_Info.rot, SEARCH_LENGTH, SEARCH_RADIUS * D3DX_PI, 8);
+		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.4f));
+	}
+
 	m_Info.state = STATE_APPEAR;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
@@ -173,6 +180,12 @@ HRESULT CEnemy::Init(const char *pBodyName, const char *pLegName)
 		m_pObject->GetMotion()->InitSet(0);
 		m_pObject->SetShadow(true);
 		m_pObject->SetDraw();
+	}
+
+	if (nullptr == m_pFov)
+	{
+		m_pFov = CObject3DFan::Create(m_Info.pos, m_Info.rot, SEARCH_LENGTH, SEARCH_RADIUS * D3DX_PI, 8);
+		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.6f));
 	}
 
 	m_nLife = START_LIFE;
@@ -271,6 +284,11 @@ void CEnemy::Update(void)
 		m_pObject->SetPosition(m_Info.pos);
 		m_pObject->SetRotation(m_Info.rot);
 		m_pObject->Update();
+	}
+	if (nullptr != m_pFov)
+	{
+		m_pFov->SetPosition(m_Info.pos);
+		m_pFov->SetRotation(m_Info.rot + D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
 	}
 }
 
@@ -414,6 +432,11 @@ void CEnemy::Search(void)
 	if (pPlayerNear != nullptr && fLengthNear <= SEARCH_LENGTH)
 	{//プレイヤー見つけた
 		m_bChace = true;
+		if (nullptr != m_pFov)
+		{
+			m_pFov->SetLength(CHACE_LENGTH);
+			m_pFov->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.4f));
+		}
 	}
 	else
 	{//適当にぐるぐる
@@ -450,6 +473,8 @@ void CEnemy::Chace(void)
 	else
 	{
 		m_bChace = false;
+		m_pFov->SetLength(SEARCH_LENGTH);
+		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.4f));
 	}
 }
 
