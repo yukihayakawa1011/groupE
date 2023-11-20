@@ -306,6 +306,19 @@ HRESULT CGame::Init(void)
 			viewport.MinZ = 0.0f;
 			viewport.MaxZ = 1.0f;
 			pCamera->SetViewPort(viewport);
+
+			CPlayer *pPlayer = CPlayer::GetTop();
+
+			while (pPlayer != nullptr) {
+				CPlayer *pPlayerNext = pPlayer->GetNext();
+
+				if (pPlayer->GetId() == nCnt) {
+					pPlayer->SetCamera(pCamera);
+					break;
+				}
+
+				pPlayer = pPlayerNext;
+			}
 		}
 	}
 
