@@ -12,6 +12,8 @@
 #include "game.h"
 #include "meshfield.h"
 #include "debugproc.h"
+#include "camera.h"
+#include "camera_manager.h"
 
 //==========================================================
 // マクロ定義
@@ -29,14 +31,18 @@
 #define MAX_SLOWROT			(0.15f)		// 
 #define MESSAGERAND			(120)
 #define SLOW_CAMERAROT		(0.7f)
-#define TITLE_ROTATESPD		(0.0025f)			// タイトル回転量
+#define TITLE_ROTATESPD		(0.0025f)	// タイトル回転量
 
 //==========================================================
 // コンストラクタ
 //==========================================================
 CCamera::CCamera()
 {
+	m_pNext = nullptr;
+	m_pPrev = nullptr;
 
+	// リストに挿入
+	CCameraManager::GetInstance()->ListIn(this);
 }
 
 //==========================================================
@@ -73,7 +79,8 @@ HRESULT CCamera::Init(void)
 //==========================================================
 void CCamera::Uninit(void)
 {
-
+	// リストから外す
+	CCameraManager::GetInstance()->ListOut(this);
 }
 
 //==========================================================
