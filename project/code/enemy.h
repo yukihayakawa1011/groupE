@@ -54,7 +54,7 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 move;		// 移動量
 		D3DXVECTOR3 posOld;	// 設定位置
 		D3DXMATRIX mtxWorld;	// ワールドマトリックス
-		D3DXVECTOR3 posDiff;	// 
+		D3DXVECTOR3 posDiff;	
 		STATE state;			// 状態
 		int nStateCounter;		// 状態管理カウンター
 	};

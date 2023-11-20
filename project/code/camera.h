@@ -62,12 +62,14 @@ public:	// 誰でもアクセス可能
 	void SetLength(float fLength) { m_fLength = fLength; }
 	CCamera *GetNext(void) { return m_pNext; }
 	CCamera *GetPrev(void) { return m_pPrev; }
+	bool GetDraw(void) const { return m_bDraw; }
 
 	// メンバ関数(設定)
 	D3DXMATRIX SetMtxView(D3DXMATRIX mtxView) { m_mtxView = mtxView; }
 	D3DXMATRIX SetMtxProjection(D3DXMATRIX mtxProjection) { m_mtxProjection = mtxProjection; }
 	void SetNext(CCamera *pNext) { m_pNext = pNext; }
 	void SetPrev(CCamera *pPrev) { m_pPrev = pPrev; }
+	void SetDraw(const bool bDraw) { m_bDraw = bDraw; }
 
 private:	// 自分だけがアクセス可能
 
@@ -81,17 +83,18 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	D3DXMATRIX m_mtxView;		// ビューマトリックス
 	D3DXMATRIX m_mtxProjection;	// プロジェクションマトリックス
-	D3DXVECTOR3 m_move;			// 移動量
-	D3DXVECTOR3 m_posV;			// 視点
-	D3DXVECTOR3 m_posR;			// 注視点
-	D3DXVECTOR3 m_vecU;			// 上方向ベクトル
-	D3DXVECTOR3 m_rot;			// 向き
+	D3DXVECTOR3 m_move;		// 移動量
+	D3DXVECTOR3 m_posV;		// 視点
+	D3DXVECTOR3 m_posR;		// 注視点
+	D3DXVECTOR3 m_vecU;		// 上方向ベクトル
+	D3DXVECTOR3 m_rot;		// 向き
 	D3DXVECTOR3 m_SlowOldRot;	// スロー前の向き
 	MODE m_mode;				// モード
-	float m_fMulScore;			// スコア倍率
+	float m_fMulScore;		// スコア倍率
 	float m_fLength;			// 視点と注視点の距離
 	CCamera *m_pNext;			// 次
 	CCamera *m_pPrev;			// 前
+	bool m_bDraw;				// 描画
 };
 
 //**********************************************************

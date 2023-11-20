@@ -150,7 +150,7 @@ void CItemBox::Emission(void)
 
 	if (nRand == 0)
 	{
-		CItem *pItem = CItem::Create(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
+		CItem *pItem = CItem::Create(GetPosition(), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DROP);
 
 		if (nullptr != pItem)
 		{

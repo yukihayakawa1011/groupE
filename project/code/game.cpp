@@ -67,6 +67,8 @@ namespace {
 #define DEF_PORT	(22333)	// ポート番号
 #define MAX_STRING	(2048)
 #define ADDRESSFILE	"data\\TXT\\address.txt"
+#define WIDTH_NUM		(2)		// 横の分割数
+#define HEIGHT_NUM	(2)		// 縦の分割数
 
 //===============================================
 // 静的メンバ変数
@@ -208,16 +210,16 @@ HRESULT CGame::Init(void)
 		// ゴール
 		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", NULL);
-		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
 	}
 		break;
 
@@ -245,7 +247,7 @@ HRESULT CGame::Init(void)
 
 	for (int nCnt = 0; nCnt < 9; nCnt++)
 	{
-		CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 0.0f, 300.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_NORMAL);
+		CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 0.0f, 300.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::TYPE_NORMAL);
 	}
 
 	//壺
@@ -268,6 +270,43 @@ HRESULT CGame::Init(void)
 		viewport.MinZ = 0.0f;
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+	}
+
+	// 分割カメラ生成
+	{
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			CMultiCamera *pCamera = new CMultiCamera;
+			pCamera->Init();
+			pCamera->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+			pCamera->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+			pCamera->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
+
+			D3DVIEWPORT9 viewport;
+			//プレイヤー追従カメラの画面位置設定
+			viewport.X = (DWORD)((SCREEN_WIDTH * 0.5f) * (nCnt % WIDTH_NUM));
+			viewport.Y = (DWORD)((SCREEN_HEIGHT * 0.5f) * (nCnt / WIDTH_NUM));
+
+			if (m_nNumPlayer < WIDTH_NUM) {
+				viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+			}
+			else
+			{
+				viewport.Width = (DWORD)(SCREEN_WIDTH * 0.5f);
+			}
+
+			if (m_nNumPlayer <= WIDTH_NUM) {
+				viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+			}
+			else
+			{
+				viewport.Height = (DWORD)(SCREEN_HEIGHT * 0.5f);
+			}
+			
+			viewport.MinZ = 0.0f;
+			viewport.MaxZ = 1.0f;
+			pCamera->SetViewPort(viewport);
+		}
 	}
 
 	// スポットライトをオン
