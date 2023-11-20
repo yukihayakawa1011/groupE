@@ -10,7 +10,7 @@
 // マクロ定義
 #define TEMP_SPAWN_POS	D3DXVECTOR3(-1500.0f,10.0f,300.0f)	//仮のスポーン位置
 #define SPAWN_PULSE		(600)	//スポーン間隔
-#define MAX_SPAWN_ENEMY	(10)	//敵沸き上限
+#define MAX_SPAWN_ENEMY	(1)	//敵沸き上限
 
 //==========================================================
 // コンストラクタ

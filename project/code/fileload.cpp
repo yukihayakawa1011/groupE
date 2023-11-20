@@ -561,7 +561,7 @@ void CFileLoad::LoadItemData(FILE *pFile)
 	}
 
 	//フィールドの配置
-	CItem::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx), CItem::TYPE_NORMAL);
+	CItem::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx), CItem::TYPE_COIN, CItem::TYPE_NORMAL);
 }
 
 

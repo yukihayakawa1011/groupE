@@ -53,7 +53,7 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 move;		// 移動量
 		D3DXVECTOR3 posOld;	// 設定位置
 		D3DXMATRIX mtxWorld;	// ワールドマトリックス
-		D3DXVECTOR3 posDiff;	// 
+		D3DXVECTOR3 posDiff;	
 		STATE state;			// 状態
 		int nStateCounter;		// 状態管理カウンター
 	};
@@ -107,7 +107,7 @@ private:	// 自分だけがアクセス可能
 	void MotionSet(void);
 	void Collision(void);
 	void CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
-	CPlayer* SearchNearPlayer(float* pLength = nullptr);
+	CPlayer* SearchNearPlayer(float fRadiusRest, float* pLength = nullptr);
 	D3DXVECTOR3 CollisionAllEnemy(D3DXVECTOR3 pos);
 
 	// メンバ変数

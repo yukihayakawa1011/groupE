@@ -218,7 +218,6 @@ void CRenderer::Draw(void)
 
 	 // エディターの描画
 #endif
-
 		// デバッグ表示
 		if (pDebugProc != NULL)
 		{

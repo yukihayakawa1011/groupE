@@ -19,6 +19,7 @@ CScore::CScore()
 {
 	// ’l‚ğƒNƒŠƒA‚·‚é
 	m_nIdx = 0;
+	m_nNumScore = 0;
 
 	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{

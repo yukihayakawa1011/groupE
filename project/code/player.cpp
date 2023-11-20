@@ -34,6 +34,7 @@
 #include "gimmick_rotatedoor.h"
 #include "enemy.h"
 #include "goal.h"
+#include "score.h"
 
 //===============================================
 // マクロ定義
@@ -94,6 +95,7 @@ CPlayer::CPlayer()
 	m_pWaist = NULL;
 	m_Catch.pPlayer = NULL;
 	m_Catch.pGimmick = NULL;
+	m_pScore = NULL;
 	m_Catch.SetPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Catch.nMoveCnt = 0;
 	m_nLife = 0;
@@ -177,6 +179,16 @@ HRESULT CPlayer::Init(void)
 		}
 	}
 
+	if (m_pScore == nullptr)
+	{
+		m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 100.0f, 0.0f), 30.0f, 30.0f);
+	}
+	
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Init();
+	}
+
 	m_Info.state = STATE_APPEAR;
 	m_action = ACTION_NEUTRAL;
 	m_type = TYPE_NONE;
@@ -249,6 +261,16 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 		}
 	}
 
+	if (m_pScore == nullptr)
+	{
+		m_pScore = CScore::Create(D3DXVECTOR3(50.0f + (m_nNumCount - 1) * 500.0f, 50.0f, 0.0f), 30.0f, 30.0f);
+	}
+
+	if (m_pScore != nullptr)
+	{
+		m_pScore->Init();
+	}
+
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
@@ -312,6 +334,19 @@ void CPlayer::Uninit(void)
 		m_pLeg->Uninit();
 		delete m_pLeg;
 		m_pLeg = NULL;
+	}
+
+	if (m_pScore != nullptr)
+	{// 使用されている場合
+
+		// 終了処理
+		m_pScore->Uninit();
+
+		// 開放
+		delete m_pScore;
+
+		// 使用されていない状態にする
+		m_pScore = nullptr;
 	}
 
 	m_nNumCount--;
@@ -502,7 +537,10 @@ void CPlayer::Controller(void)
 
 	if (pItem != nullptr) {
 		m_nItemCnt++;
+		m_pScore->AddScore(pItem->GetEachScore());
 		pItem->Uninit();
+
+		
 	}
 
 
@@ -1342,7 +1380,7 @@ void CPlayer::Drop(int nDropCnt)
 	// 落とした分生成
 	for (int nCnt = 0; nCnt < nDiff; nCnt++)
 	{
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), "data\\MODEL\\coin.x", CItem::TYPE_DROP);
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DROP);
 
 		if (nullptr != pItem)
 		{

@@ -16,6 +16,7 @@
 class CWaist;
 class CCharacter;
 class CGimmick;
+class CScore;
 
 //==========================================================
 // プレイヤーのクラス定義(派生クラス)
@@ -152,6 +153,7 @@ private:	// 自分だけがアクセス可能
 	CWaist *m_pWaist;		// 腰
 	CCharacter *m_pBody;	// 上半身
 	CCharacter *m_pLeg;	// 下半身
+	CScore *m_pScore;       // スコアへのポインタ
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
