@@ -53,6 +53,7 @@ HRESULT CNumber::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 			// テクスチャの情報を取得
 			CTexture *pTexture = CManager::GetInstance()->GetTexture();
 
+			// テクスチャをバインド
 			m_pObject2D->BindTexture(pTexture->Regist("data\\TEXTURE\\number000.png"));
 
 			// テクスチャ設定
