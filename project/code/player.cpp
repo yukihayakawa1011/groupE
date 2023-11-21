@@ -107,7 +107,7 @@ CPlayer::CPlayer()
 	m_nItemCnt = 0;
 	m_pMyCamera = nullptr;
 
-	for (int i = 0; i < 1280; i++)
+	for (int i = 0; i < MAX_ITEM; i++)
 	{
 		m_aSaveType[i] = 0;
 	}
@@ -555,7 +555,7 @@ void CPlayer::Controller(void)
 		m_nItemCnt++;
 		m_pScore->AddScore(pItem->GetEachScore());
 
-		for (int i = 0; i < 1280; i++)
+		for (int i = 0; i < MAX_ITEM; i++)
 		{
 			if (m_aSaveType[i] == 0)
 			{
@@ -1308,7 +1308,7 @@ void CPlayer::GimmickRelease(void)
 }
 
 //===============================================
-// 試し
+// アイテムのファイル設定
 //===============================================
 const char *CPlayer::ItemFileName(int type)
 {
@@ -1439,9 +1439,9 @@ const char *CPlayer::ItemFileName(int type)
 //===============================================
 void CPlayer::ItemSort(void)
 {
-	for (int nCount = 0; nCount < 1280 - 1; nCount++)
+	for (int nCount = 0; nCount < MAX_ITEM - 1; nCount++)
 	{
-		for (int nCntRank = 1 + nCount; nCntRank < 1280; nCntRank++)
+		for (int nCntRank = 1 + nCount; nCntRank < MAX_ITEM; nCntRank++)
 		{
 			//大きかったら入れ替え
 			if (m_aSaveType[nCount] == 0)
