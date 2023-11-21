@@ -59,7 +59,7 @@ CItem::~CItem()
 //==========================================================
 // ê∂ê¨
 //==========================================================
-CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, TYPE type, int nType)
+CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType)
 {
 	CItem *pObjectX = nullptr;
 
@@ -112,7 +112,7 @@ HRESULT CItem::Init(void)
 //==========================================================
 // èâä˙âªèàóù
 //==========================================================
-HRESULT CItem::Init(const char *pFileName, TYPE type)
+HRESULT CItem::Init(const char *pFileName, int type)
 {
 	m_pObject = CObjectX::Create(m_pos, m_rot, pFileName);
 

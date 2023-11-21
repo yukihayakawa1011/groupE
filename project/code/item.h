@@ -51,11 +51,11 @@ public:	// 誰でもアクセス可能
 
 	// メンバ関数
 	HRESULT Init(void);
-	HRESULT Init(const char *pFileName, TYPE type);
+	HRESULT Init(const char *pFileName, int type);
 	void Uninit(void);
 	void Update(void);
 
-	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, TYPE type, int nType = TYPE_NORMAL);
+	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType = TYPE_NORMAL);
 	static CItem *Collision(D3DXVECTOR3 &pos);
 
 	// メンバ関数(設定)
@@ -63,8 +63,8 @@ public:	// 誰でもアクセス可能
 	void SetOldPos(D3DXVECTOR3 posOld) { m_posOld = posOld; }
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(const D3DXVECTOR3 rot) { m_rot = rot; }
-	void SetType(STATE state) { m_nState = state; }
-	void SetItemType(TYPE type) { m_type = type; }
+	void SetState(STATE state) { m_nState = state; }
+	void SetType(int type) { m_type = type; }
 	CItem *GetNext(void) { return m_pNext; }
 	CItem *GetPrev(void) { return m_pPrev; }
 
@@ -74,7 +74,8 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXVECTOR3 GetOldPos(void) { return m_posOld; }
-	int GetType(void) { return m_nState; }
+	int GetState(void) { return m_nState; }
+	int GetType(void) { return m_type; }
 	int GetEachScore(void);
 	void SetNext(CItem *pNext) { m_pNext = pNext; }
 	void SetPrev(CItem *pPrev) { m_pPrev = pPrev; }
@@ -94,7 +95,7 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_posOld;	// 前回の座標
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
-	TYPE m_type;
+	int m_type;
 	int m_nBound;		// bound回数
 	float m_fCurve;
 	int m_nState;

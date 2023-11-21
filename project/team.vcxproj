@@ -258,6 +258,7 @@
     <ClInclude Include="code\object.h" />
     <ClInclude Include="code\object2D.h" />
     <ClInclude Include="code\object3D.h" />
+    <ClInclude Include="code\object3DFan.h" />
     <ClInclude Include="code\objectX.h" />
     <ClInclude Include="code\object_manager.h" />
     <ClInclude Include="code\gimmick_pitfall.h" />

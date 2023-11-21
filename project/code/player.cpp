@@ -61,10 +61,11 @@
 #define START_COIN	(10)
 #define CATCH_LIMIT	(90)
 #define CATCH_MOVE	(2.0f)
+#define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
 
 // 前方宣言
-CPlayer *CPlayer::m_pTop = NULL;	// 先頭のオブジェクトへのポインタ
-CPlayer *CPlayer::m_pCur = NULL;	// 最後尾のオブジェクトへのポインタ
+CPlayer *CPlayer::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
+CPlayer *CPlayer::m_pCur = nullptr;	// 最後尾のオブジェクトへのポインタ
 int CPlayer::m_nNumCount = 0;
 
 //===============================================
@@ -90,12 +91,12 @@ CPlayer::CPlayer()
 	m_fRotMove = 0.0f;
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
-	m_pBody = NULL;
-	m_pLeg = NULL;
-	m_pWaist = NULL;
-	m_Catch.pPlayer = NULL;
-	m_Catch.pGimmick = NULL;
-	m_pScore = NULL;
+	m_pBody = nullptr;
+	m_pLeg = nullptr;
+	m_pWaist = nullptr;
+	m_Catch.pPlayer = nullptr;
+	m_Catch.pGimmick = nullptr;
+	m_pScore = nullptr;
 	m_Catch.SetPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Catch.nMoveCnt = 0;
 	m_nLife = 0;
@@ -106,10 +107,14 @@ CPlayer::CPlayer()
 	m_bGoal = false;
 	m_nItemCnt = 0;
 	m_pMyCamera = nullptr;
-	
 
+	for (int i = 0; i < MAX_ITEM; i++)
+	{
+		m_aSaveType[i] = 0;
+	}
+	
 	// 自分自身をリストに追加
-	if (m_pTop != NULL)
+	if (m_pTop != nullptr)
 	{// 先頭が存在している場合
 		m_pCur->m_pNext = this;	// 現在最後尾のオブジェクトのポインタにつなげる
 		m_pPrev = m_pCur;
@@ -138,7 +143,7 @@ CPlayer::~CPlayer()
 HRESULT CPlayer::Init(void)
 {
 	// 腰の生成
-	if (m_pWaist == NULL)
+	if (m_pWaist == nullptr)
 	{
 		m_pWaist = new CWaist;
 		m_pWaist->SetParent(&m_Info.mtxWorld);
@@ -148,7 +153,7 @@ HRESULT CPlayer::Init(void)
 	m_pBody = CCharacter::Create("data\\TXT\\motion_ninjabody.txt");
 	m_pBody->SetParent(m_pWaist->GetMtxWorld());
 
-	if (m_pBody->GetMotion() != NULL)
+	if (m_pBody->GetMotion() != nullptr)
 	{
 		// 初期モーションの設定
 		m_pBody->GetMotion()->InitSet(m_action);
@@ -158,18 +163,18 @@ HRESULT CPlayer::Init(void)
 	m_pLeg = CCharacter::Create("data\\TXT\\motion_ninjaleg.txt");
 	m_pLeg->SetParent(m_pWaist->GetMtxWorld());
 
-	if (m_pLeg->GetMotion() != NULL)
+	if (m_pLeg->GetMotion() != nullptr)
 	{
 		// 初期モーションの設定
 		m_pLeg->GetMotion()->InitSet(m_action);
 	}
 
 	// 腰の高さを合わせる
-	if (m_pLeg != NULL)
+	if (m_pLeg != nullptr)
 	{// 脚が使用されている場合
 		CModel *pModel = m_pLeg->GetParts(0);	// 腰パーツを取得
 
-		if (pModel != NULL)
+		if (pModel != nullptr)
 		{// パーツが存在する場合
 			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
 
@@ -196,9 +201,9 @@ HRESULT CPlayer::Init(void)
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
 	m_bJump = false;
-	m_nItemCnt = START_COIN;
+	m_nItemCnt = 0;
 
-	m_pScore->AddScore(500 * m_nItemCnt);
+	//m_pScore->AddScore(500 * m_nItemCnt);
 
 	return S_OK;
 }
@@ -211,7 +216,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	SetMatrix();
 
 	// 腰の生成
-	if (m_pWaist == NULL)
+	if (m_pWaist == nullptr)
 	{
 		m_pWaist = new CWaist;
 		m_pWaist->SetParent(&m_Info.mtxWorld);
@@ -219,14 +224,14 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	}
 
 	// 胴体の設定
-	if (pBodyName != NULL)
+	if (pBodyName != nullptr)
 	{// ファイル名が存在している
 		m_pBody = CCharacter::Create(pBodyName);
 		m_pBody->SetParent(m_pWaist->GetMtxWorld());
 		m_pBody->SetShadow(true);
 		m_pBody->SetDraw();
 
-		if (m_pBody->GetMotion() != NULL)
+		if (m_pBody->GetMotion() != nullptr)
 		{
 			// 初期モーションの設定
 			m_pBody->GetMotion()->InitSet(m_action);
@@ -234,14 +239,14 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	}
 
 	// 下半身の設定
-	if (pLegName != NULL)
+	if (pLegName != nullptr)
 	{// ファイル名が存在している
 		m_pLeg = CCharacter::Create(pLegName);
 		m_pLeg->SetParent(m_pWaist->GetMtxWorld());
 		m_pLeg->SetShadow(true);
 		m_pLeg->SetDraw();
 
-		if (m_pLeg->GetMotion() != NULL)
+		if (m_pLeg->GetMotion() != nullptr)
 		{
 			// 初期モーションの設定
 			m_pLeg->GetMotion()->InitSet(m_action);
@@ -249,11 +254,11 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	}
 
 	// 腰の高さを合わせる
-	if (m_pLeg != NULL)
+	if (m_pLeg != nullptr)
 	{// 脚が使用されている場合
 		CModel *pModel = m_pLeg->GetParts(0);	// 腰パーツを取得
 
-		if (pModel != NULL)
+		if (pModel != nullptr)
 		{// パーツが存在する場合
 			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
 
@@ -279,9 +284,9 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
-	m_nItemCnt = START_COIN;
+	m_nItemCnt = 0;
 
-	m_pScore->AddScore(500 * m_nItemCnt);
+	//m_pScore->AddScore(500 * m_nItemCnt);
 
 	return S_OK;
 }
@@ -292,58 +297,63 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 void CPlayer::Uninit(void)
 {
 	// リストから自分自身を削除する
-	if (m_pTop == this)
-	{// 自身が先頭
-		if (m_pNext != NULL)
+	if (m_pTop == this) {// 自身が先頭
+		if (m_pNext != nullptr)
 		{// 次が存在している
 			m_pTop = m_pNext;	// 次を先頭にする
-			m_pNext->m_pPrev = NULL;	// 次の前のポインタを覚えていないようにする
+			m_pNext->m_pPrev = nullptr;	// 次の前のポインタを覚えていないようにする
 		}
 		else
 		{// 存在していない
-			m_pTop = NULL;	// 先頭がない状態にする
-			m_pCur = NULL;	// 最後尾がない状態にする
+			m_pTop = nullptr;	// 先頭がない状態にする
+			m_pCur = nullptr;	// 最後尾がない状態にする
 		}
 	}
-	else if (m_pCur == this)
-	{// 自身が最後尾
-		if (m_pPrev != NULL)
+	else if (m_pCur == this) {// 自身が最後尾
+		if (m_pPrev != nullptr)
 		{// 次が存在している
 			m_pCur = m_pPrev;			// 前を最後尾にする
-			m_pPrev->m_pNext = NULL;	// 前の次のポインタを覚えていないようにする
+			m_pPrev->m_pNext = nullptr;	// 前の次のポインタを覚えていないようにする
 		}
 		else
 		{// 存在していない
-			m_pTop = NULL;	// 先頭がない状態にする
-			m_pCur = NULL;	// 最後尾がない状態にする
+			m_pTop = nullptr;	// 先頭がない状態にする
+			m_pCur = nullptr;	// 最後尾がない状態にする
 		}
 	}
-	else
-	{
-		if (m_pNext != NULL)
+	else {
+		if (m_pNext != nullptr)
 		{
 			m_pNext->m_pPrev = m_pPrev;	// 自身の次に前のポインタを覚えさせる
 		}
-		if (m_pPrev != NULL)
+		if (m_pPrev != nullptr)
 		{
 			m_pPrev->m_pNext = m_pNext;	// 自身の前に次のポインタを覚えさせる
 		}
 	}
 
-	if (m_pBody != NULL) {
+	// 胴体の終了
+	if (m_pBody != nullptr) {
 		m_pBody->Uninit();
 		delete m_pBody;
-		m_pBody = NULL;
+		m_pBody = nullptr;
 	}
 
-	if (m_pLeg != NULL) {
+	// 下半身の終了
+	if (m_pLeg != nullptr) {
 		m_pLeg->Uninit();
 		delete m_pLeg;
-		m_pLeg = NULL;
+		m_pLeg = nullptr;
 	}
 
-	if (m_pScore != nullptr)
-	{// 使用されている場合
+	// 腰の廃棄
+	if (m_pWaist != nullptr){
+		delete m_pWaist;
+		m_pWaist = nullptr;
+	}
+
+	// スコアの終了
+	if (m_pScore != nullptr) {// 使用されている場合
 
 		// 終了処理
 		m_pScore->Uninit();
@@ -355,6 +365,7 @@ void CPlayer::Uninit(void)
 		m_pScore = nullptr;
 	}
 
+	// 人数を減らす
 	m_nNumCount--;
 
 	// 廃棄
@@ -410,10 +421,10 @@ void CPlayer::Update(void)
 	}
 
 	// 腰の設定
-	if (m_pWaist != NULL)
+	if (m_pWaist != nullptr)
 	{
 		// 腰の高さを補填
-		if (m_pLeg != NULL)
+		if (m_pLeg != nullptr)
 		{
 			CModel *pModel = m_pLeg->GetParts(0);
 			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
@@ -422,7 +433,7 @@ void CPlayer::Update(void)
 	}
 
 	// 下半身更新
-	if (m_pLeg != NULL)
+	if (m_pLeg != nullptr)
 	{// 使用されている場合
 
 		CModel *pModel = m_pLeg->GetParts(0);
@@ -437,7 +448,7 @@ void CPlayer::Update(void)
 	}
 
 	// 胴体更新
-	if (m_pBody != NULL)
+	if (m_pBody != nullptr)
 	{// 使用されている場合
 		m_pBody->Update();
 	}
@@ -452,7 +463,7 @@ void CPlayer::Update(void)
 //===============================================
 CPlayer *CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName)
 {
-	CPlayer *pPlayer = NULL;
+	CPlayer *pPlayer = nullptr;
 
 	// オブジェクト2Dの生成
 	pPlayer = new CPlayer();
@@ -475,7 +486,7 @@ CPlayer *CPlayer::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, con
 	}
 	else
 	{// 生成に失敗した場合
-		return NULL;
+		return nullptr;
 	}
 
 	return pPlayer;
@@ -544,6 +555,17 @@ void CPlayer::Controller(void)
 	if (pItem != nullptr) {
 		m_nItemCnt++;
 		m_pScore->AddScore(pItem->GetEachScore());
+
+		for (int i = 0; i < MAX_ITEM; i++)
+		{
+			if (m_aSaveType[i] == 0)
+			{
+				m_aSaveType[i] = pItem->GetType();
+
+				break;
+			}
+		}
+
 		pItem->Uninit();
 	}
 
@@ -698,19 +720,19 @@ void CPlayer::MoveController(void)
 	{
 		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
-			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.25f);
 		}
 		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
-			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.25f);
 		}
 		else
 		{
-			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed;
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed;
 			m_fRotDest = -CamRot.y;
 		}
@@ -722,21 +744,21 @@ void CPlayer::MoveController(void)
 	{
 		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
-			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.75f);
 		}
 		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
-			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 
 			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.75f);
 		}
 		else
 		{
-			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed;
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed;
 			m_fRotDest = (-CamRot.y + D3DX_PI * 1.0f);
 		}
@@ -747,7 +769,7 @@ void CPlayer::MoveController(void)
 	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
 	{
 		m_Info.move.x += -cosf(CamRot.y) * fSpeed;
-		m_Info.move.z += -sinf(CamRot.y) * fSpeed;
+		m_Info.move.z += -sinf(CamRot.y) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 		m_fRotDest = (-CamRot.y + D3DX_PI * 0.5f);
 
 		// 移動した状態にする
@@ -757,7 +779,7 @@ void CPlayer::MoveController(void)
 	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
 	{
 		m_Info.move.x += cosf(CamRot.y) * fSpeed;
-		m_Info.move.z += sinf(CamRot.y) * fSpeed;
+		m_Info.move.z += sinf(CamRot.y) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 		m_fRotDest = (-CamRot.y + -D3DX_PI * 0.5f);
 
 		// 移動した状態にする
@@ -995,8 +1017,8 @@ void CPlayer::Damage(int nDamage)
 
 	if (m_Catch.pPlayer != nullptr) {	// 他のプレイヤーを持っている
 		m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
-		m_Catch.pPlayer->m_Catch.pPlayer = NULL;
-		m_Catch.pPlayer = NULL;
+		m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+		m_Catch.pPlayer = nullptr;
 	}
 }
 
@@ -1225,8 +1247,8 @@ void CPlayer::Catch(void)
 	// 持った対象の判定
 	if (m_Catch.pPlayer != nullptr) {	// 他のプレイヤーを持っている
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// 相手の状態が変わった場合
-			m_Catch.pPlayer->m_Catch.pPlayer = NULL;
-			m_Catch.pPlayer = NULL;
+			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+			m_Catch.pPlayer = nullptr;
 		}
 		else
 		{
@@ -1256,8 +1278,8 @@ void CPlayer::Catch(void)
 			if (m_Catch.nMoveCnt >= CATCH_LIMIT							// カウント限界値
 				|| pInputPad->GetTrigger(CInputPad::BUTTON_X, m_nId)) {	// キー入力
 				m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
-				m_Catch.pPlayer->m_Catch.pPlayer = NULL;
-				m_Catch.pPlayer = NULL;
+				m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+				m_Catch.pPlayer = nullptr;
 			}
 		}
 	}
@@ -1284,6 +1306,154 @@ void CPlayer::GimmickRelease(void)
 {
 	m_Info.state = STATE_NORMAL;
 	m_Catch.pGimmick = nullptr;
+}
+
+//===============================================
+// アイテムのファイル設定
+//===============================================
+const char *CPlayer::ItemFileName(int type)
+{
+	char m_aString[64] = "\n";
+
+	switch (type)
+	{
+	case CItem::TYPE_NORMAL:
+	{
+		return &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_COIN:
+	{
+		strcpy(m_aString, "data\\MODEL\\coin.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_BRECELET:
+	{
+		strcpy(m_aString, "data\\MODEL\\bracelet00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_CUP:
+	{
+		strcpy(m_aString, "data\\MODEL\\cup00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_GEM00:
+	{
+		strcpy(m_aString, "data\\MODEL\\gem00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_GEM01:
+	{
+		strcpy(m_aString, "data\\MODEL\\gem01.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_GOLDBAR:
+	{
+		strcpy(m_aString, "data\\MODEL\\goldbar00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_JAR:
+	{
+		strcpy(m_aString, "data\\MODEL\\jar.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_KUNAI:
+	{
+		strcpy(m_aString, "data\\MODEL\\kunai.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_RING00:
+	{
+		strcpy(m_aString, "data\\MODEL\\ring00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_SCROLL:
+	{
+		strcpy(m_aString, "data\\MODEL\\scroll00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_SHURIKEN:
+	{
+		strcpy(m_aString, "data\\MODEL\\shuriken.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_MAX:
+	{
+		return  &m_aString[0];
+	}
+
+	break;
+
+	}
+
+	return  &m_aString[0];
+}
+
+//===============================================
+// アイテムのソート
+//===============================================
+void CPlayer::ItemSort(void)
+{
+	for (int nCount = 0; nCount < MAX_ITEM - 1; nCount++)
+	{
+		for (int nCntRank = 1 + nCount; nCntRank < MAX_ITEM; nCntRank++)
+		{
+			//大きかったら入れ替え
+			if (m_aSaveType[nCount] == 0)
+			{//入れ替え
+				m_aSaveType[nCount] = 0;
+				int nTmp = m_aSaveType[nCntRank];
+				m_aSaveType[nCntRank] = m_aSaveType[nCount];
+				m_aSaveType[nCount] = nTmp;
+			}
+		}
+	}
 }
 
 //===============================================
@@ -1383,10 +1553,16 @@ void CPlayer::Drop(int nDropCnt)
 	// 落とした分生成
 	for (int nCnt = 0; nCnt < nDiff; nCnt++)
 	{
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DROP);
+		char aString[258] = "\n";
+
+		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
+
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		// スコアへらすう
 		m_pScore->LowerScore(pItem->GetEachScore());
+
+		m_aSaveType[nCnt] = 0;
 
 		if (nullptr != pItem)
 		{
@@ -1399,6 +1575,8 @@ void CPlayer::Drop(int nDropCnt)
 			pItem->SetMove(move);
 		}
 	}
+
+	ItemSort();
 }
 
 //===============================================

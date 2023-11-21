@@ -374,6 +374,9 @@
     <ClInclude Include="code\camera_manager.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>
+    <ClInclude Include="code\object3DFan.h">
+      <Filter>ヘッダー ファイル</Filter>
+    </ClInclude>
     <ClInclude Include="code\minimap.h">
       <Filter>ヘッダー ファイル</Filter>
     </ClInclude>

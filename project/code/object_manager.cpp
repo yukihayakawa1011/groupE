@@ -67,8 +67,11 @@ void CObjectManager::Draw(void)
 		// 設定
 		pCamera->SetCamera();
 
-		// リストの全描画
-		DrawAll();
+		if (pCamera->GetDraw()) {	// 描画する場合
+
+			// リストの全描画
+			DrawAll();
+		}
 
 		pCamera = pCameraNext;
 	}
