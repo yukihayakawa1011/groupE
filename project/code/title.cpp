@@ -26,6 +26,7 @@
 #define AUTOMOVE_RANKING	(640)	// ランキング自動遷移
 #define TITLE_CAMLENGTH		(1000.0f)
 #define TITLE_CAMROTZ		(D3DX_PI * 0.35f)
+#define MOVE_TUTORIAL		(110)	//チュートリアルに遷移するまで
 
 //===============================================
 // コンストラクタ
@@ -66,6 +67,7 @@ HRESULT CTitle::Init(void)
 		}
 	}
 
+	//家モデルの設置
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\house.x", NULL);
 
 	//カメラ初期化
@@ -137,7 +139,7 @@ void CTitle::Update(void)
 			pItem = pItemNext;	// 次のオブジェクトに移動
 		}
 
-		m_bPush = true;
+		m_bPush = true;		//ボタンを押した
 
 		if (m_bClick == false)
 		{
@@ -151,7 +153,7 @@ void CTitle::Update(void)
 	{
 		m_nCounter++;
 
-		if (m_nCounter >= 110)
+		if (m_nCounter >= MOVE_TUTORIAL)
 		{
 			CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
 		}
