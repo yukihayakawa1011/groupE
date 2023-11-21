@@ -806,14 +806,29 @@ void CEnemy::MotionSet(void)
 		return;
 	}
 
+	if (m_pLeg == nullptr) {	// 下半身無し
+		return;
+	}
+
+	if(m_pLeg->GetMotion() == nullptr){	// モーション無し
+		return;
+	}
+
 	if (m_Info.state == STATE_DAMAGE) {	// ダメージ状態
 		m_pBody->GetMotion()->Set(MOTION_DAMAGE);
+		m_pLeg->GetMotion()->Set(MOTION_ATK);
 	}
 	else if (m_nCounterAttack > 0) {	// 攻撃中
 		m_pBody->GetMotion()->Set(MOTION_ATK);
+		m_pLeg->GetMotion()->Set(MOTION_ATK);
 	}
 	else if (m_bJump) {	// ジャンプ状態
 		m_pBody->GetMotion()->BlendSet(MOTION_JUMP);
+		m_pLeg->GetMotion()->BlendSet(MOTION_JUMP);
+	}
+	else if (m_bChace) {	// チェイス中
+		m_pBody->GetMotion()->BlendSet(MOTION_CHASEMOVE);
+		m_pLeg->GetMotion()->BlendSet(MOTION_CHASEMOVE);
 	}
 	else {	// 待機
 		if (m_pBody->GetMotion()->GetEnd()) {	// モーションが終了している

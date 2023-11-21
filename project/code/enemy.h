@@ -40,6 +40,7 @@ private:	// 自分だけがアクセス可能な定義
 	enum MOTION {
 		MOTION_NEUTRAL = 0,	// 待機
 		MOTION_MOVE,			// 移動
+		MOTION_CHASEMOVE,		// チェイス中の移動
 		MOTION_JUMP,			// ジャンプ状態
 		MOTION_ATK,			// 攻撃
 		MOTION_DAMAGE,		// ダメージ
