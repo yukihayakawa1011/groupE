@@ -106,8 +106,12 @@ CPlayer::CPlayer()
 	m_bGoal = false;
 	m_nItemCnt = 0;
 	m_pMyCamera = nullptr;
-	
 
+	for (int i = 0; i < MAX_ITEM; i++)
+	{
+		m_aSaveType[i] = 0;
+	}
+	
 	// 自分自身をリストに追加
 	if (m_pTop != nullptr)
 	{// 先頭が存在している場合
@@ -196,9 +200,9 @@ HRESULT CPlayer::Init(void)
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
 	m_bJump = false;
-	m_nItemCnt = START_COIN;
+	m_nItemCnt = 0;
 
-	m_pScore->AddScore(500 * m_nItemCnt);
+	//m_pScore->AddScore(500 * m_nItemCnt);
 
 	return S_OK;
 }
@@ -279,9 +283,9 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
-	m_nItemCnt = START_COIN;
+	m_nItemCnt = 0;
 
-	m_pScore->AddScore(500 * m_nItemCnt);
+	//m_pScore->AddScore(500 * m_nItemCnt);
 
 	return S_OK;
 }
@@ -550,6 +554,17 @@ void CPlayer::Controller(void)
 	if (pItem != nullptr) {
 		m_nItemCnt++;
 		m_pScore->AddScore(pItem->GetEachScore());
+
+		for (int i = 0; i < MAX_ITEM; i++)
+		{
+			if (m_aSaveType[i] == 0)
+			{
+				m_aSaveType[i] = pItem->GetType();
+
+				break;
+			}
+		}
+
 		pItem->Uninit();
 	}
 
@@ -1293,6 +1308,154 @@ void CPlayer::GimmickRelease(void)
 }
 
 //===============================================
+// アイテムのファイル設定
+//===============================================
+const char *CPlayer::ItemFileName(int type)
+{
+	char m_aString[64] = "\n";
+
+	switch (type)
+	{
+	case CItem::TYPE_NORMAL:
+	{
+		return &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_COIN:
+	{
+		strcpy(m_aString, "data\\MODEL\\coin.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_BRECELET:
+	{
+		strcpy(m_aString, "data\\MODEL\\bracelet00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_CUP:
+	{
+		strcpy(m_aString, "data\\MODEL\\cup00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_GEM00:
+	{
+		strcpy(m_aString, "data\\MODEL\\gem00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_GEM01:
+	{
+		strcpy(m_aString, "data\\MODEL\\gem01.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_GOLDBAR:
+	{
+		strcpy(m_aString, "data\\MODEL\\goldbar00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_JAR:
+	{
+		strcpy(m_aString, "data\\MODEL\\jar.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_KUNAI:
+	{
+		strcpy(m_aString, "data\\MODEL\\kunai.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_RING00:
+	{
+		strcpy(m_aString, "data\\MODEL\\ring00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_SCROLL:
+	{
+		strcpy(m_aString, "data\\MODEL\\scroll00.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_SHURIKEN:
+	{
+		strcpy(m_aString, "data\\MODEL\\shuriken.x");
+
+		return  &m_aString[0];
+	}
+
+	break;
+
+	case CItem::TYPE_MAX:
+	{
+		return  &m_aString[0];
+	}
+
+	break;
+
+	}
+
+	return  &m_aString[0];
+}
+
+//===============================================
+// アイテムのソート
+//===============================================
+void CPlayer::ItemSort(void)
+{
+	for (int nCount = 0; nCount < MAX_ITEM - 1; nCount++)
+	{
+		for (int nCntRank = 1 + nCount; nCntRank < MAX_ITEM; nCntRank++)
+		{
+			//大きかったら入れ替え
+			if (m_aSaveType[nCount] == 0)
+			{//入れ替え
+				m_aSaveType[nCount] = 0;
+				int nTmp = m_aSaveType[nCntRank];
+				m_aSaveType[nCntRank] = m_aSaveType[nCount];
+				m_aSaveType[nCount] = nTmp;
+			}
+		}
+	}
+}
+
+//===============================================
 // 物を投げる
 //===============================================
 void CPlayer::Throw(void)
@@ -1389,10 +1552,16 @@ void CPlayer::Drop(int nDropCnt)
 	// 落とした分生成
 	for (int nCnt = 0; nCnt < nDiff; nCnt++)
 	{
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DROP);
+		char aString[258] = "\n";
+
+		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
+
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		// スコアへらすう
 		m_pScore->LowerScore(pItem->GetEachScore());
+
+		m_aSaveType[nCnt] = 0;
 
 		if (nullptr != pItem)
 		{
@@ -1405,6 +1574,8 @@ void CPlayer::Drop(int nDropCnt)
 			pItem->SetMove(move);
 		}
 	}
+
+	ItemSort();
 }
 
 //===============================================

@@ -132,7 +132,7 @@ void CTitle::Update(void)
 			pItem->SetMove(move);
 
 			//タイプの変更											
-			pItem->SetType(CItem::STATE_CRASH);
+			pItem->SetState(CItem::STATE_CRASH);
 
 			pItem = pItemNext;	// 次のオブジェクトに移動
 		}

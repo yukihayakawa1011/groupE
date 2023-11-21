@@ -20,6 +20,9 @@ class CScore;
 class CCamera;
 class CItem;
 
+// マクロ定義
+#define MAX_ITEM  (1280)  // 所持できるアイテムの最大数
+
 //==========================================================
 // プレイヤーのクラス定義(派生クラス)
 //==========================================================
@@ -145,6 +148,8 @@ private:	// 自分だけがアクセス可能
 	void DamageCollision(D3DXVECTOR3 pos);
 	void AttackCheck(void);
 	void GimmickRelease(void);
+	const char *ItemFileName(int type);
+	void ItemSort(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -157,6 +162,7 @@ private:	// 自分だけがアクセス可能
 	CCharacter *m_pBody;	// 上半身
 	CCharacter *m_pLeg;	// 下半身
 	CScore *m_pScore;       // スコアへのポインタ
+	int m_aSaveType[MAX_ITEM];
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
