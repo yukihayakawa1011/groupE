@@ -61,6 +61,7 @@
 #define START_COIN	(10)
 #define CATCH_LIMIT	(90)
 #define CATCH_MOVE	(2.0f)
+#define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -719,19 +720,19 @@ void CPlayer::MoveController(void)
 	{
 		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed - (m_nItemCnt * 0.1f);
-			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * 0.1f);
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.25f);
 		}
 		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * 0.1f);
-			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * 0.1f);
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.25f);
 		}
 		else
 		{
-			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed - (m_nItemCnt * 0.1f);
+			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.5f)) * fSpeed;
 			m_fRotDest = -CamRot.y;
 		}
@@ -743,21 +744,21 @@ void CPlayer::MoveController(void)
 	{
 		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * 0.1f);
-			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * 0.1f);
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.75f);
 		}
 		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
 		{
-			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed + (m_nItemCnt * 0.1f);
-			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * 0.1f);
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
+			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 
 			m_fRotDest = (-CamRot.y + -D3DX_PI * 0.75f);
 		}
 		else
 		{
-			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed + (m_nItemCnt * 0.1f);
+			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.5f)) * fSpeed;
 			m_fRotDest = (-CamRot.y + D3DX_PI * 1.0f);
 		}
@@ -768,7 +769,7 @@ void CPlayer::MoveController(void)
 	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
 	{
 		m_Info.move.x += -cosf(CamRot.y) * fSpeed;
-		m_Info.move.z += -sinf(CamRot.y) * fSpeed + (m_nItemCnt * 0.1f);
+		m_Info.move.z += -sinf(CamRot.y) * fSpeed + (m_nItemCnt * SPEED_DECAY);
 		m_fRotDest = (-CamRot.y + D3DX_PI * 0.5f);
 
 		// 移動した状態にする
@@ -778,7 +779,7 @@ void CPlayer::MoveController(void)
 	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
 	{
 		m_Info.move.x += cosf(CamRot.y) * fSpeed;
-		m_Info.move.z += sinf(CamRot.y) * fSpeed - (m_nItemCnt * 0.1f);
+		m_Info.move.z += sinf(CamRot.y) * fSpeed - (m_nItemCnt * SPEED_DECAY);
 		m_fRotDest = (-CamRot.y + -D3DX_PI * 0.5f);
 
 		// 移動した状態にする
