@@ -32,6 +32,7 @@
 #include "gimmick.h"
 #include "model.h"
 #include "object3DFan.h"
+#include "waist.h"
 
 //===============================================
 // マクロ定義
@@ -57,6 +58,8 @@
 
 #define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//角度を-PI~PIに修正
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
+#define BODY_FILENAME	"data\\TXT\\enemy\\motion_ninjabody.txt"
+#define LEG_FILENAME	"data\\TXT\\enemy\\motion_ninjaleg.txt"
 
 // 前方宣言
 CEnemy *CEnemy::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -64,9 +67,9 @@ CEnemy *CEnemy::m_pCur = nullptr;	// 最後尾のオブジェクトへのポインタ
 int CEnemy::m_nNumCount = 0;
 
 //===============================================
-// コンストラクタ(オーバーロード)
+// コンストラクタ
 //===============================================
-CEnemy::CEnemy(const D3DXVECTOR3 pos)
+CEnemy::CEnemy()
 {
 	// 値をクリアする
 	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -76,44 +79,7 @@ CEnemy::CEnemy(const D3DXVECTOR3 pos)
 	m_fRotMove = 0.0f;
 	m_fRotDiff = 0.0f;
 	m_fRotDest = 0.0f;
-	m_pObject = nullptr;
-	m_nLife = 0;
-	m_nCounterAttack = ATTACK_COOLTIME;
-	m_bChace = false;
-	m_bJump = false;
-	m_type = TYPE_NONE;
-	m_nId = m_nNumCount;
-
-	// 自分自身をリストに追加
-	if (m_pTop != nullptr)
-	{// 先頭が存在している場合
-		m_pCur->m_pNext = this;	// 現在最後尾のオブジェクトのポインタにつなげる
-		m_pPrev = m_pCur;
-		m_pCur = this;	// 自分自身が最後尾になる
-	}
-	else
-	{// 存在しない場合
-		m_pTop = this;	// 自分自身が先頭になる
-		m_pCur = this;	// 自分自身が最後尾になる
-	}
-
-	m_nNumCount++;
-}
-
-//===============================================
-// コンストラクタ(オーバーロード)
-//===============================================
-CEnemy::CEnemy(int nPriOrity)
-{
-	// 値をクリアする
-	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_fRotMove = 0.0f;
-	m_fRotDiff = 0.0f;
-	m_fRotDest = 0.0f;
-	m_pObject = nullptr;
+	m_pBody = nullptr;
 	m_nLife = 0;
 	m_nCounterAttack = ATTACK_COOLTIME;
 	m_bChace = false;
@@ -150,10 +116,10 @@ CEnemy::~CEnemy()
 //===============================================
 HRESULT CEnemy::Init(void)
 {
-	if (nullptr == m_pObject)
+	if (nullptr == m_pBody)
 	{
-		m_pObject = CCharacter::Create(GetPosition(), GetRotation(), "data\\TXT\\motion_kidsboy.txt");
-		m_pObject->SetShadow(true);
+		m_pBody = CCharacter::Create(GetPosition(), GetRotation(), "data\\TXT\\motion_kidsboy.txt");
+		m_pBody->SetShadow(true);
 	}
 
 	if (nullptr == m_pFov)
@@ -174,12 +140,59 @@ HRESULT CEnemy::Init(void)
 //===============================================
 HRESULT CEnemy::Init(const char *pBodyName, const char *pLegName)
 {
-	if (nullptr == m_pObject)
+	// 腰の生成
+	if (m_pWaist == NULL)
 	{
-		m_pObject = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-		m_pObject->GetMotion()->InitSet(0);
-		m_pObject->SetShadow(true);
-		m_pObject->SetDraw();
+		m_pWaist = new CWaist;
+		m_pWaist->SetParent(&m_Info.mtxWorld);
+		m_pWaist->SetMatrix();
+	}
+
+	// 胴体の設定
+	//if (pBodyName != NULL)
+	{// ファイル名が存在している
+		m_pBody = CCharacter::Create(BODY_FILENAME);
+		m_pBody->SetParent(m_pWaist->GetMtxWorld());
+		m_pBody->SetShadow(true);
+		m_pBody->SetDraw();
+
+		if (m_pBody->GetMotion() != NULL)
+		{
+			// 初期モーションの設定
+			m_pBody->GetMotion()->InitSet(MOTION_NEUTRAL);
+		}
+	}
+
+	// 下半身の設定
+	//if (pLegName != NULL)
+	{// ファイル名が存在している
+		m_pLeg = CCharacter::Create(LEG_FILENAME);
+		m_pLeg->SetParent(m_pWaist->GetMtxWorld());
+		m_pLeg->SetShadow(true);
+		m_pLeg->SetDraw();
+
+		if (m_pLeg->GetMotion() != NULL)
+		{
+			// 初期モーションの設定
+			m_pLeg->GetMotion()->InitSet(MOTION_NEUTRAL);
+		}
+	}
+
+	// 腰の高さを合わせる
+	if (m_pLeg != NULL)
+	{// 脚が使用されている場合
+		CModel *pModel = m_pLeg->GetParts(0);	// 腰パーツを取得
+
+		if (pModel != NULL)
+		{// パーツが存在する場合
+			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
+
+														// 高さを設定
+			m_pWaist->SetHeight(pos);
+
+			// 腰のモデルの位置を変更
+			pModel->SetPosition(pos);
+		}
 	}
 
 	if (nullptr == m_pFov)
@@ -238,10 +251,26 @@ void CEnemy::Uninit(void)
 		}
 	}
 
-	if (nullptr != m_pObject){
-		m_pObject->Uninit();
-		m_pObject = nullptr;
+	// 胴体の終了
+	if (m_pBody != nullptr) {
+		m_pBody->Uninit();
+		delete m_pBody;
+		m_pBody = nullptr;
 	}
+
+	// 下半身の終了
+	if (m_pLeg != nullptr) {
+		m_pLeg->Uninit();
+		delete m_pLeg;
+		m_pLeg = nullptr;
+	}
+
+	// 腰の廃棄
+	if (m_pWaist != nullptr) {
+		delete m_pWaist;
+		m_pWaist = nullptr;
+	}
+
 	if (nullptr != m_pFov)
 	{
 		m_pFov->Uninit();
@@ -276,36 +305,31 @@ void CEnemy::Update(void)
 	// モーション設定
 	MotionSet();
 
-	//// カメラ追従
-	//CCamera* pCamera = CManager::GetInstance()->GetCamera();
-
-	//// 追従処理
-	//pCamera->Pursue(GetPosition(), GetRotation());
+	// マトリックス設定
+	SetMatrix();
 
 	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ]\n", m_nLife);
 
 	// 使用オブジェクト更新
-	if (nullptr != m_pObject) {
-		m_pObject->SetPosition(m_Info.pos);
-		m_pObject->SetRotation(m_Info.rot);
-		m_pObject->Update();
-	}
 	if (nullptr != m_pFov)
 	{
 		m_pFov->SetPosition(m_Info.pos);
 		m_pFov->SetRotation(m_Info.rot + D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
 	}
+
+	// 階層構造設定
+	BodySet();
 }
 
 //===============================================
 // 生成
 //===============================================
-CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName, const int nPriority)
+CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName)
 {
 	CEnemy *pPlayer = nullptr;
 
 	// 敵の生成
-	pPlayer = new CEnemy(nPriority);
+	pPlayer = new CEnemy();
 
 	if (nullptr != pPlayer)
 	{// 生成できた場合
@@ -742,14 +766,14 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 		return;
 	}
 
-	if (m_pObject == nullptr) {
+	if (m_pBody == nullptr) {
 		return;
 	}
 
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
 	D3DXVECTOR3 ObjPos = GetPosition();
 	D3DXVECTOR3 vtxMax = D3DXVECTOR3(0.0f, 
-		m_pObject->GetParts(1)->GetMtx()->_42 - ObjPos.y + pFile->GetMax(m_pObject->GetParts(1)->GetId()).y, 
+		m_pBody->GetParts(1)->GetMtx()->_42 - ObjPos.y + pFile->GetMax(m_pBody->GetParts(1)->GetId()).y, 
 		0.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, -10.0f, 0.0f);
 
@@ -774,26 +798,88 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 //===============================================
 void CEnemy::MotionSet(void)
 {
-	if (m_pObject == nullptr) {	// 胴体無し
+	if (m_pBody == nullptr) {	// 胴体無し
 		return;
 	}
 
-	if (m_pObject->GetMotion() == nullptr) {	// モーション無し
+	if (m_pBody->GetMotion() == nullptr) {	// モーション無し
 		return;
 	}
 
 	if (m_Info.state == STATE_DAMAGE) {	// ダメージ状態
-		m_pObject->GetMotion()->Set(MOTION_DAMAGE);
+		m_pBody->GetMotion()->Set(MOTION_DAMAGE);
 	}
 	else if (m_nCounterAttack > 0) {	// 攻撃中
-		m_pObject->GetMotion()->Set(MOTION_ATK);
+		m_pBody->GetMotion()->Set(MOTION_ATK);
 	}
 	else if (m_bJump) {	// ジャンプ状態
-		m_pObject->GetMotion()->BlendSet(MOTION_JUMP);
+		m_pBody->GetMotion()->BlendSet(MOTION_JUMP);
 	}
 	else {	// 待機
-		if (m_pObject->GetMotion()->GetEnd()) {	// モーションが終了している
-			m_pObject->GetMotion()->BlendSet(MOTION_NEUTRAL);
+		if (m_pBody->GetMotion()->GetEnd()) {	// モーションが終了している
+			m_pBody->GetMotion()->BlendSet(MOTION_NEUTRAL);
 		}
 	}
+}
+
+//===============================================
+// 使用階層構造の設定
+//===============================================
+void CEnemy::BodySet(void)
+{
+	// 腰の設定
+	if (m_pWaist != NULL)
+	{
+		// 腰の高さを補填
+		if (m_pLeg != NULL)
+		{
+			CModel *pModel = m_pLeg->GetParts(0);
+			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
+		}
+		m_pWaist->SetMatrix();
+	}
+
+	// 下半身更新
+	if (m_pLeg != NULL)
+	{// 使用されている場合
+
+		CModel *pModel = m_pLeg->GetParts(0);
+
+		D3DXVECTOR3 pos = pModel->GetCurrentPosition();
+
+		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+		m_pLeg->Update();
+
+		pModel->SetCurrentPosition(pos);
+	}
+
+	// 胴体更新
+	if (m_pBody != NULL)
+	{// 使用されている場合
+		m_pBody->Update();
+	}
+}
+
+//===============================================
+// マトリックス設定
+//===============================================
+void CEnemy::SetMatrix(void)
+{
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタを取得
+	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
+
+	//ワールドマトリックスの初期化
+	D3DXMatrixIdentity(&m_Info.mtxWorld);
+
+	//向きを反映
+	D3DXMatrixRotationYawPitchRoll(&mtxRot, m_Info.rot.y, m_Info.rot.x, m_Info.rot.z);
+	D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxRot);
+
+	//位置を反映
+	D3DXMatrixTranslation(&mtxTrans, m_Info.pos.x, m_Info.pos.y, m_Info.pos.z);
+	D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
+
+	//ワールドマトリックスの設定
+	pDevice->SetTransform(D3DTS_WORLD, &m_Info.mtxWorld);
 }

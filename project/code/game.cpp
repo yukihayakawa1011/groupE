@@ -82,10 +82,11 @@ int CGame::m_nNumPlayer = 0;
 CGame::CGame()
 {
 	// 値のクリア
-	m_ppPlayer = NULL;
-	m_pFileLoad = NULL;
-	m_pMeshDome = NULL;
-	m_pClient = NULL;
+	m_ppCamera = nullptr;
+	m_ppPlayer = nullptr;
+	m_pFileLoad = nullptr;
+	m_pMeshDome = nullptr;
+	m_pClient = nullptr;
 	m_nSledCnt = 0;
 	m_bEnd = false;
 	
@@ -145,9 +146,9 @@ HRESULT CGame::Init(void)
 	{
 	case STATE_LOCAL:
 	{// ローカルの場合
-		if (m_nNumPlayer == 0)
+		if (m_nNumPlayer <= 0)
 		{// 人数が指定されていない
-			m_nNumPlayer = PLAYER_MAX;
+			m_nNumPlayer = 1;
 		}
 
 		// 人数分ポインタ生成
@@ -274,13 +275,19 @@ HRESULT CGame::Init(void)
 
 	// 分割カメラ生成
 	{
+		// defaultカメラオフ
+		CManager::GetInstance()->GetCamera()->SetDraw(false);
+
+		// 人数分ポインタ生成
+		m_ppCamera = new CMultiCamera*[m_nNumPlayer];
+
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
-			CMultiCamera *pCamera = new CMultiCamera;
-			pCamera->Init();
-			pCamera->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
-			pCamera->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
-			pCamera->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
+			m_ppCamera[nCnt] = new CMultiCamera;
+			m_ppCamera[nCnt]->Init();
+			m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+			m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
 
 			D3DVIEWPORT9 viewport;
 			//プレイヤー追従カメラの画面位置設定
@@ -305,7 +312,7 @@ HRESULT CGame::Init(void)
 			
 			viewport.MinZ = 0.0f;
 			viewport.MaxZ = 1.0f;
-			pCamera->SetViewPort(viewport);
+			m_ppCamera[nCnt]->SetViewPort(viewport);
 
 			CPlayer *pPlayer = CPlayer::GetTop();
 
@@ -313,7 +320,7 @@ HRESULT CGame::Init(void)
 				CPlayer *pPlayerNext = pPlayer->GetNext();
 
 				if (pPlayer->GetId() == nCnt) {
-					pPlayer->SetCamera(pCamera);
+					pPlayer->SetCamera(m_ppCamera[nCnt]);
 					break;
 				}
 
@@ -347,33 +354,47 @@ void CGame::Uninit(void)
 		}
 	}
 
-	if (m_pFileLoad != NULL)
+	if (m_pFileLoad != nullptr)
 	{
 		m_pFileLoad->Uninit();
 
 		delete m_pFileLoad;		// メモリの開放
-		m_pFileLoad = NULL;
+		m_pFileLoad = nullptr;
 	}
 
-	if (m_pClient != NULL)
+	if (m_pClient != nullptr)
 	{
 		m_pClient->Uninit();
 		delete m_pClient;
-		m_pClient = NULL;
+		m_pClient = nullptr;
 	}
 
-	if (m_ppPlayer != NULL)
-	{// 使用していた場合
+	if (m_ppPlayer != nullptr) { // 使用していた場合
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
 			// 終了処理
 			m_ppPlayer[nCnt]->Uninit();
-			m_ppPlayer[nCnt] = NULL;	// 使用していない状態にする
+			m_ppPlayer[nCnt] = nullptr;	// 使用していない状態にする
 		}
 
 		delete[] m_ppPlayer;	// ポインタの開放
-		m_ppPlayer = NULL;	// 使用していない状態にする
+		m_ppPlayer = nullptr;	// 使用していない状態にする
 	}
+
+	if (m_ppCamera != nullptr) { // 使用していた場合
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			// 終了処理
+			m_ppCamera[nCnt]->Uninit();
+			m_ppCamera[nCnt] = nullptr;	// 使用していない状態にする
+		}
+
+		delete[] m_ppCamera;	// ポインタの開放
+		m_ppCamera = nullptr;	// 使用していない状態にする
+	}
+
+	// defaultカメラオン
+	CManager::GetInstance()->GetCamera()->SetDraw(true);
 
 	//Winsock終了処理
 	WSACleanup();	// WSACleanup関数 : winsockの終了処理
