@@ -28,6 +28,7 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 	void Draw(void);
+	void DrawAll(void);
 	void ListIn(CObject *pObject);
 	CObject *GetTop(const int nPriority) { return m_apTop[nPriority]; }
 	int GetNumAll(void) { return m_nNumAll; }
@@ -41,7 +42,6 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	void ReleaseAll(void);
-	void DrawAll(void);
 	void DeathCheck(void);
 
 	// メンバ変数

@@ -32,6 +32,7 @@ class CEditor;
 class CEnemyRoute;
 class CCarManager;
 class CEnemyManager;
+class CMiniMap;
 
 //===============================================
 // シーンクラスの定義
@@ -104,6 +105,7 @@ public:	// 誰でもアクセス可能
 	CXFile *GetModelFile(void);
 	CSlow *GetSlow(void);
 	CFade *GetFade(void);
+	CMiniMap* GetMiniMap(void) { return m_pMiniMap; }
 	void SetMode(CScene::MODE mode);
 	CScene::MODE GetMode(void) { return m_pScene->GetMode(); }
 	CScene *GetScene(void) { return m_pScene; }
@@ -129,6 +131,7 @@ private:	// 自分だけがアクセス可能
 	CSlow *m_pSlow;			// スローのポインタ
 	CScene *m_pScene;		// シーンのポインタ
 	CFade *m_pFade;			// フェードのポインタ
+	CMiniMap* m_pMiniMap;	// ミニマップ
 	static CManager *m_pManager;	// マネージャーのポインタ
 };
 

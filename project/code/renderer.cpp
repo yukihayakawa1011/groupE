@@ -11,6 +11,7 @@
 #include "task_manager.h"
 #include "object_manager.h"
 #include "object.h"
+#include "minimap.h"
 
 //===================================================
 // コンストラクタ
@@ -211,8 +212,15 @@ void CRenderer::Draw(void)
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{// 描画が成功した場合
 
-	 // オブジェクトの描画
-	 CObjectManager::GetInstance()->Draw();
+		// オブジェクトの描画
+		CObjectManager::GetInstance()->Draw();
+
+		//ゲーム時ミニマップ描画
+		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
+		{
+			//マップポリゴン描画
+			CManager::GetInstance()->GetMiniMap()->DrawMap();
+		}
 
 #if _DEBUG	// デバッグ時
 

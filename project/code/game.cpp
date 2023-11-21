@@ -38,6 +38,7 @@
 #include "gimmick_lever.h"
 #include "gimmick_spear.h"
 #include "goal.h"
+#include "minimap.h"
 
 // 無名名前空間を定義
 namespace {
@@ -407,6 +408,9 @@ void CGame::Update(void)
 //===============================================
 void CGame::Draw(void)
 {
+	//ミニマップテクスチャの描画
+	CManager::GetInstance()->GetMiniMap()->DrawTexture();
+
 	CScene::Draw();
 }
 

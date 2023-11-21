@@ -186,12 +186,14 @@
     <ClCompile Include="code\meshfield.cpp" />
     <ClCompile Include="code\meshorbit.cpp" />
     <ClCompile Include="code\meshwall.cpp" />
+    <ClCompile Include="code\minimap.cpp" />
     <ClCompile Include="code\model.cpp" />
     <ClCompile Include="code\motion.cpp" />
     <ClCompile Include="code\number.cpp" />
     <ClCompile Include="code\object.cpp" />
     <ClCompile Include="code\object2D.cpp" />
     <ClCompile Include="code\object3D.cpp" />
+    <ClCompile Include="code\object3DFan.cpp" />
     <ClCompile Include="code\objectX.cpp" />
     <ClCompile Include="code\object_manager.cpp" />
     <ClCompile Include="code\gimmick_pitfall.cpp" />
@@ -249,6 +251,7 @@
     <ClInclude Include="code\meshfield.h" />
     <ClInclude Include="code\meshorbit.h" />
     <ClInclude Include="code\meshwall.h" />
+    <ClInclude Include="code\minimap.h" />
     <ClInclude Include="code\model.h" />
     <ClInclude Include="code\motion.h" />
     <ClInclude Include="code\number.h" />
