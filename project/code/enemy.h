@@ -30,9 +30,9 @@ private:	// 自分だけがアクセス可能な定義
 	{
 		STATE_APPEAR = 0,	// 出現状態
 		STATE_NORMAL,		// 通常状態
+		STATE_SPAWN,		// 生成状態
 		STATE_DAMAGE,		// ダメージ状態
 		STATE_DEATH,		// 死亡状態
-		STATE_SPAWN,		// 生成状態
 		STATE_MAX
 	};
 
@@ -44,6 +44,7 @@ private:	// 自分だけがアクセス可能な定義
 		MOTION_JUMP,			// ジャンプ状態
 		MOTION_ATK,			// 攻撃
 		MOTION_DAMAGE,		// ダメージ
+		MOTION_DOWN,			// 吹っ飛びダウン
 		MOTION_DEATH,			// 死亡
 		MOTION_MAX
 	};

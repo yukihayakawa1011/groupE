@@ -187,7 +187,7 @@ HRESULT CEnemy::Init(const char *pBodyName, const char *pLegName)
 		{// パーツが存在する場合
 			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
 
-														// 高さを設定
+			// 高さを設定
 			m_pWaist->SetHeight(pos);
 
 			// 腰のモデルの位置を変更
@@ -289,14 +289,11 @@ void CEnemy::Uninit(void)
 void CEnemy::Update(void)
 {
 	// 前回の座標を取得
-	m_Info.posOld = GetPosition();
-
-	// 状態遷移
-	StateSet();
+	m_Info.posOld = GetPosition();	
 
 	m_nCounterAttack--;
 
-	if (m_Info.state != STATE_DAMAGE)
+	if (m_Info.state < STATE_DAMAGE)
 	{
 		// 敵操作
 		Controller();
@@ -319,6 +316,16 @@ void CEnemy::Update(void)
 
 	// 階層構造設定
 	BodySet();
+
+	// 状態遷移
+	StateSet();
+
+	if (m_pLeg != nullptr)
+	{// 使用されている場合
+		CModel *pModel = m_pLeg->GetParts(0);
+
+		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
 }
 
 //===============================================
@@ -715,8 +722,33 @@ void CEnemy::StateSet(void)
 
 	case STATE_DEATH:
 	{
+		if (m_pBody == nullptr) {
+			return;
+		}
 
+		if (m_pBody->GetMotion() == nullptr) {
+			return;
+		}
+
+		if (m_pLeg == nullptr) {
+			return;
+		}
+
+		if (m_pLeg->GetMotion() == nullptr) {
+			return;
+		}
+
+		if (m_pBody->GetMotion()->GetEnd() && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1
+			&& m_pBody->GetMotion()->GetNowMotion() == MOTION_DEATH) {	// モーション終了かつ死亡モーション
+			Death();
+		}
+		else if (m_pBody->GetMotion()->GetEnd() && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1
+			&& m_pBody->GetMotion()->GetNowMotion() == MOTION_DOWN) {	// モーション終了かつ死亡モーション
+			m_pBody->GetMotion()->BlendSet(MOTION_DEATH);
+			m_pLeg->GetMotion()->BlendSet(MOTION_DEATH);
+		}
 	}
+
 		break;
 
 	case STATE_SPAWN:
@@ -739,7 +771,30 @@ void CEnemy::Damage(int nDamage)
 
 	if (m_nLife <= 0)
 	{//死
-		Death();
+		m_Info.state = STATE_DEATH;
+
+		if (m_pBody == nullptr)
+		{
+			return;
+		}
+
+		if (m_pBody->GetMotion() == nullptr) {
+			return;
+		}
+
+		m_pBody->GetMotion()->Set(MOTION_DOWN);
+
+		if (m_pLeg == nullptr) {
+			return;
+		}
+
+		if(m_pLeg->GetMotion() == nullptr){
+			return;
+		}
+
+		m_pLeg->GetMotion()->Set(MOTION_DOWN);
+
+		return;
 	}
 
 	if (m_nLife != nOldLife)
@@ -798,6 +853,10 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 //===============================================
 void CEnemy::MotionSet(void)
 {
+	if (m_Info.state == STATE_DEATH) {	// 死亡状態
+		return;
+	}
+
 	if (m_pBody == nullptr) {	// 胴体無し
 		return;
 	}
@@ -816,7 +875,7 @@ void CEnemy::MotionSet(void)
 
 	if (m_Info.state == STATE_DAMAGE) {	// ダメージ状態
 		m_pBody->GetMotion()->Set(MOTION_DAMAGE);
-		m_pLeg->GetMotion()->Set(MOTION_ATK);
+		m_pLeg->GetMotion()->Set(MOTION_DAMAGE);
 	}
 	else if (m_nCounterAttack > 0) {	// 攻撃中
 		m_pBody->GetMotion()->Set(MOTION_ATK);
@@ -830,9 +889,13 @@ void CEnemy::MotionSet(void)
 		m_pBody->GetMotion()->BlendSet(MOTION_CHASEMOVE);
 		m_pLeg->GetMotion()->BlendSet(MOTION_CHASEMOVE);
 	}
-	else {	// 待機
+	else {	// 待機状態
 		if (m_pBody->GetMotion()->GetEnd()) {	// モーションが終了している
 			m_pBody->GetMotion()->BlendSet(MOTION_NEUTRAL);
+		}
+
+		if (m_pLeg->GetMotion()->GetEnd()) {	// モーションが終了している
+			m_pLeg->GetMotion()->BlendSet(MOTION_NEUTRAL);
 		}
 	}
 }
@@ -842,35 +905,24 @@ void CEnemy::MotionSet(void)
 //===============================================
 void CEnemy::BodySet(void)
 {
-	// 腰の設定
-	if (m_pWaist != NULL)
-	{
-		// 腰の高さを補填
-		if (m_pLeg != NULL)
-		{
-			CModel *pModel = m_pLeg->GetParts(0);
-			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
-		}
-		m_pWaist->SetMatrix();
-	}
-
 	// 下半身更新
-	if (m_pLeg != NULL)
+	if (m_pLeg != nullptr)
 	{// 使用されている場合
-
-		CModel *pModel = m_pLeg->GetParts(0);
-
-		D3DXVECTOR3 pos = pModel->GetCurrentPosition();
-
-		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
 		m_pLeg->Update();
 
-		pModel->SetCurrentPosition(pos);
+		// 腰の設定
+		if (m_pWaist != nullptr)
+		{
+			CModel *pModel = m_pLeg->GetParts(0);
+
+			// 腰の高さを補填
+			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
+			m_pWaist->SetMatrix();
+		}
 	}
 
 	// 胴体更新
-	if (m_pBody != NULL)
+	if (m_pBody != nullptr)
 	{// 使用されている場合
 		m_pBody->Update();
 	}
