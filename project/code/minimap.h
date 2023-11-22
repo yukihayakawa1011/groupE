@@ -7,6 +7,9 @@
 #ifndef _MINIMAP_H_
 #define _MINIMAP_H_
 
+#define TEST_WIDTH		(256)
+#define TEST_HEIGHT		(144)
+
 //前方宣言
 class CMultiCamera;
 
@@ -35,6 +38,7 @@ public:
 	void DrawTexture(void);
 	static void Load(void);		//デバイスロスト対策：ロスト解消したら呼び出してね。初期化にも使える。
 	static void UnLoad(void);	//デバイスロスト対策：ロストしたら呼び出してね
+	static void Reset(void);	//まっくろくろすけにして探索してないことにする。初期化にどうぞ
 
 	//マップポリゴンの設定・取得処理
 	void SetPosition(const D3DXVECTOR3 pos);
@@ -53,9 +57,11 @@ private:
 	void CulcDiagonal(void);
 
 	// メンバ変数
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;		// 頂点バッファへのポインタ
-	static LPDIRECT3DTEXTURE9 m_pTexture;	// テクスチャ
-	static LPDIRECT3DSURFACE9 m_pZSurface;	// テクスチャの深度バッファ
+	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;			// 頂点バッファへのポインタ
+	static LPDIRECT3DTEXTURE9 m_pTextureMap;	// テクスチャ
+	static LPDIRECT3DTEXTURE9 m_pTextureUnex;	// 未探索場所を黒くしたテクスチャ
+	static LPDIRECT3DSURFACE9 m_pZSurface;		// テクスチャの深度バッファ
+	static bool m_bExplored[TEST_WIDTH][TEST_HEIGHT];
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_rot;	// 向き
 	float m_fLength;	// 対角線の長さ
