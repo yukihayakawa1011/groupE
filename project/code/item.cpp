@@ -75,7 +75,6 @@ CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, in
 
 		// Œü‚«
 		pObjectX->SetRotation(rot);
-		
 
 		//// Ží—ÞÝ’è
 		//pObjectX->SetType(nType);

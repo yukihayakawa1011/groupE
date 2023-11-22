@@ -39,6 +39,7 @@
 #include "gimmick_spear.h"
 #include "goal.h"
 #include "minimap.h"
+#include "ui.h"
 
 // –³–¼–¼‘O‹óŠÔ‚ğ’è‹`
 namespace {
@@ -254,6 +255,9 @@ HRESULT CGame::Init(void)
 
 	//šâ
 	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
+	//UI‚Ì•`‰æ
+	CUI::Create();
 
 	//ƒJƒƒ‰‰Šú‰»
 	{
