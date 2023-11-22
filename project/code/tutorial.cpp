@@ -49,6 +49,7 @@ CTutorial::CTutorial()
 {
 	// 値のクリア
 	m_pFileLoad = NULL;
+	m_bEnd = false;
 }
 
 //===============================================
@@ -187,6 +188,13 @@ void CTutorial::Update(void)
 		}
 	}
 
+	if (EndCheck()) 
+	{// 全員ゴールしている
+
+		// ゲームに遷移
+		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
+	}
+
 	// 更新処理
 	CScene::Update();
 }
@@ -205,4 +213,32 @@ void CTutorial::Draw(void)
 CFileLoad *CTutorial::GetFileLoad(void)
 {
 	return m_pFileLoad;
+}
+
+//===================================================
+// ファイル読み込みの取得
+//===================================================
+bool CTutorial::EndCheck(void)
+{
+	CPlayer *pPl = CPlayer::GetTop();	// プレイヤー
+	int nNumGoal = 0;
+
+	// ゴールしている人数を判定
+	while (pPl != nullptr) {
+
+		CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
+
+		if (!pPl->GetGoal()) {	// ゴールしていない
+			break;
+		}
+
+		nNumGoal++;
+		pPl = pPlNext;	// 次に移動
+	}
+
+	if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
+		return true;
+	}
+
+	return false;
 }
