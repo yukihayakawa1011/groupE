@@ -117,7 +117,7 @@ void CTitle::Update(void)
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
 	// “ü—Í‘JˆÚ
-	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_A, 0))
+	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
 		CItem *pItem = CItem::GetTop();
 
