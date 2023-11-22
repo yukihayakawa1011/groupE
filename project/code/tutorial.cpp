@@ -99,7 +99,7 @@ HRESULT CTutorial::Init(void)
 	// ŠJn”à
 	CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + 10.0f));
 	l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
-	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(960.0f, 0.0f, -550.0f));
+	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(950.0f, 0.0f, -550.0f));
 	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 	p->SetLever(l);
 	
@@ -204,6 +204,7 @@ void CTutorial::Update(void)
 //===============================================
 void CTutorial::Draw(void)
 {
+	// •`‰æˆ—
 	CScene::Draw();
 }
 
