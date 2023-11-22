@@ -33,6 +33,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_PLAYER1,			//プレイヤーの顔1
 		TYPE_PLAYER2,			//プレイヤーの顔2
 		TYPE_PLAYER3,			//プレイヤーの顔3
+		TYPE_TIMER,			// タイム
 		TYPE_MAX
 	};
 
