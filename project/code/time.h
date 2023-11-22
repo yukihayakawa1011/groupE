@@ -61,7 +61,7 @@ public:	// ここから関数(誰でもアクセス可能)
 private:	// 自分だけがアクセス可能
 
 	// マクロ定義
-	const static int NUM_PLACE = 6;
+	const static int NUM_PLACE = 4;
 
 	// メンバ関数
 	void SetValue(void);

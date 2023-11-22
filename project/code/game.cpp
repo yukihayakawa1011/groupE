@@ -89,6 +89,7 @@ CGame::CGame()
 	m_pFileLoad = nullptr;
 	m_pMeshDome = nullptr;
 	m_pClient = nullptr;
+	m_pTimer = nullptr;
 	m_nSledCnt = 0;
 	m_bEnd = false;
 	
@@ -100,10 +101,12 @@ CGame::CGame()
 CGame::CGame(int nNumPlayer)
 {
 	// 値のクリア
-	m_ppPlayer = NULL;
-	m_pFileLoad = NULL;
-	m_pMeshDome = NULL;
-	m_pClient = NULL;
+	m_ppCamera = nullptr;
+	m_ppPlayer = nullptr;
+	m_pFileLoad = nullptr;
+	m_pMeshDome = nullptr;
+	m_pClient = nullptr;
+	m_pTimer = nullptr;
 	m_nSledCnt = 0;
 	m_bEnd = false;
 
@@ -256,8 +259,6 @@ HRESULT CGame::Init(void)
 	//壺
 	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-
-
 	//カメラ初期化
 	{
 		//CManager::GetInstance()->GetCamera()->Init();
@@ -338,6 +339,9 @@ HRESULT CGame::Init(void)
 	CUI::Create(D3DXVECTOR3(1105.0f, 60.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame1.png", "data\\TEXTURE\\player_icon1.png", CUI::TYPE_RIGHTUP);
 	CUI::Create(D3DXVECTOR3(175.0f, 660.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame2.png", "data\\TEXTURE\\player_icon2.png", CUI::TYPE_LEFTDOWN);
 	CUI::Create(D3DXVECTOR3(1105.0f, 660.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame3.png", "data\\TEXTURE\\player_icon3.png", CUI::TYPE_RIGHTDOWN);
+
+	// タイムの生成
+	m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
 
 	// スポットライトをオン
 	CManager::GetInstance()->GetLight()->EnablePointLight(true);
@@ -424,6 +428,12 @@ void CGame::Update(void)
 		if (EndCheck()) {	// 全員ゴールしている
 			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
 			m_state = STATE_END;
+		}
+		else
+		{
+			if (m_pTimer != nullptr) {
+				m_pTimer->Update();
+			}
 		}
 	}
 

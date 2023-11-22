@@ -75,6 +75,7 @@ private:
 	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
 	CMultiCamera **m_ppCamera;		// カメラのポインタ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
+	CTime *m_pTimer;
 	CClient *m_pClient;			// クライアントのポインタ
 	char m_aAddress[30];			// 接続先サーバーのアドレス
 	static STATE m_state;			// 状態
