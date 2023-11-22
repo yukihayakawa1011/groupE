@@ -56,12 +56,14 @@
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
 #define JUMP	(25.0f)
-#define ATK_RANGE	(20.0f)
+#define ATK_RANGE	(50.0f)
+#define CATCH_RANGE	(100.0f)
 #define DROP_CNT	(4)
 #define START_COIN	(10)
 #define CATCH_LIMIT	(90)
 #define CATCH_MOVE	(2.0f)
 #define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
+#define HAND_PARTS	(4)	// 手のモデル番号(後ろから
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -101,7 +103,7 @@ CPlayer::CPlayer()
 	m_Catch.nMoveCnt = 0;
 	m_nLife = 0;
 	m_type = TYPE_NONE;
-	m_nId = m_nNumCount = 0;
+	m_nId = m_nNumCount;
 	m_nNumItemCoin = 0;
 	m_nNumItemBrecetet = 0;
 	m_nNumItemCup = 0;
@@ -432,41 +434,17 @@ void CPlayer::Update(void)
 		SetMatrix();
 	}
 
-	// 腰の設定
-	if (m_pWaist != nullptr)
-	{
-		// 腰の高さを補填
-		if (m_pLeg != nullptr)
-		{
-			CModel *pModel = m_pLeg->GetParts(0);
-			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
-		}
-		m_pWaist->SetMatrix();
-	}
-
-	// 下半身更新
-	if (m_pLeg != nullptr)
-	{// 使用されている場合
-
-		CModel *pModel = m_pLeg->GetParts(0);
-
-		D3DXVECTOR3 pos = pModel->GetCurrentPosition();
-
-		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
-		m_pLeg->Update();
-
-		pModel->SetCurrentPosition(pos);
-	}
-
-	// 胴体更新
-	if (m_pBody != nullptr)
-	{// 使用されている場合
-		m_pBody->Update();
-	}
+	BodySet();
 
 	if (m_nLife <= 0) {	// 体力が0
 		m_Info.state = STATE_DEATH;
+	}
+
+	if (m_pLeg != nullptr)
+	{// 使用されている場合
+		CModel *pModel = m_pLeg->GetParts(0);
+
+		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	}
 }
 
@@ -1091,6 +1069,13 @@ void CPlayer::MotionSet(void)
 		}
 	}
 
+	if (m_Info.state == STATE_CATCH && m_Catch.pPlayer != nullptr) {
+		m_pBody->GetMotion()->Set(ACTION_FLUTTERING);
+		m_pLeg->GetMotion()->Set(ACTION_FLUTTERING);
+
+		return;
+	}
+
 	if (!m_bJump && !m_bMove && 
 		m_action >= ACTION_NEUTRAL && m_action <= ACTION_JUMP)
 	{// 何もしていない
@@ -1132,7 +1117,7 @@ void CPlayer::MotionSet(void)
 		else
 		{
 			if (m_Catch.pPlayer == nullptr){	// プレイヤーを掴んでいない
-				CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+				CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS);
 				D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
 				PlayerCatch(pos);
 			}
@@ -1228,7 +1213,7 @@ void CPlayer::Attack(void)
 	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK && 
 		m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 	{// 攻撃判定中
-		CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);	// パーツ
+		CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS);	// パーツ
 		D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
 		DamageCollision(pos);
 
@@ -1267,7 +1252,7 @@ void CPlayer::Catch(void)
 	}
 
 	// 持った対象の判定
-	if (m_Catch.pPlayer != nullptr) {	// 他のプレイヤーを持っている
+	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH) {	// 他のプレイヤーを持っている
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// 相手の状態が変わった場合
 			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
 			m_Catch.pPlayer = nullptr;
@@ -2001,8 +1986,8 @@ void CPlayer::PlayerCatch(D3DXVECTOR3 pos)
 		D3DXVECTOR3 vtxMax = pFile->GetMax(pPlayer->m_pBody->GetParts(0)->GetId());
 		D3DXVECTOR3 vtxMin = pFile->GetMin(pPlayer->m_pBody->GetParts(0)->GetId());
 
-		if (pos.x + -ATK_RANGE <= ObjPos.x + vtxMax.x && pos.x + ATK_RANGE >= ObjPos.x + vtxMin.x
-			&& pos.z + -ATK_RANGE <= ObjPos.z + vtxMax.z && pos.z + ATK_RANGE >= ObjPos.z + vtxMin.z)
+		if (pos.x + -CATCH_RANGE <= ObjPos.x + vtxMax.x && pos.x + CATCH_RANGE >= ObjPos.x + vtxMin.x
+			&& pos.z + -CATCH_RANGE <= ObjPos.z + vtxMax.z && pos.z + CATCH_RANGE >= ObjPos.z + vtxMin.z)
 		{// 左右判定内
 			if (pos.y >= ObjPos.y && pos.y <= ObjPos.y + HeadPos.y + HeadMax.y)
 			{// 高さ判定内
@@ -2092,7 +2077,7 @@ void CPlayer::AttackCheck(void)
 		return;
 	}
 
-	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);	// 手を取得する
+	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS);	// 手を取得する
 
 	if (pModel == nullptr) {	// モデルがない
 		return;
@@ -2106,5 +2091,33 @@ void CPlayer::AttackCheck(void)
 		CEnemy *pEnemNext = pEnem->GetNext();
 		pEnem->HitCheck(AtkPos, ATK_RANGE);	// 触れているかチェック
 		pEnem = pEnemNext;
+	}
+}
+
+//===============================================
+// 使用階層構造の設定
+//===============================================
+void CPlayer::BodySet(void)
+{
+	// 下半身更新
+	if (m_pLeg != nullptr)
+	{// 使用されている場合
+		m_pLeg->Update();
+
+		// 腰の設定
+		if (m_pWaist != nullptr)
+		{
+			CModel *pModel = m_pLeg->GetParts(0);
+
+			// 腰の高さを補填
+			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
+			m_pWaist->SetMatrix();
+		}
+	}
+
+	// 胴体更新
+	if (m_pBody != nullptr)
+	{// 使用されている場合
+		m_pBody->Update();
 	}
 }
