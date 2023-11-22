@@ -40,6 +40,7 @@
 #include "goal.h"
 #include "minimap.h"
 #include "ui.h"
+#include "score.h"
 
 // 無名名前空間を定義
 namespace {
@@ -48,6 +49,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+	const int START_TIMER = (100);	// 開始制限時間
 }
 
 //===============================================
@@ -170,6 +172,8 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+			CScore * pScore = CScore::Create(D3DXVECTOR3(50.0f + nCnt * 500.0f, 50.0f, 0.0f), 30.0f, 30.0f);
+			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
@@ -342,6 +346,8 @@ HRESULT CGame::Init(void)
 
 	// タイムの生成
 	m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
+	m_pTimer->Set(START_TIMER);
+	m_pTimer->SetActive(true);
 
 	// スポットライトをオン
 	CManager::GetInstance()->GetLight()->EnablePointLight(true);
@@ -407,6 +413,12 @@ void CGame::Uninit(void)
 		m_ppCamera = nullptr;	// 使用していない状態にする
 	}
 
+	if (m_pTimer != nullptr) {
+		m_pTimer->Uninit();
+		delete m_pTimer;
+		m_pTimer = nullptr;
+	}
+
 	// defaultカメラオン
 	CManager::GetInstance()->GetCamera()->SetDraw(true);
 
@@ -433,6 +445,11 @@ void CGame::Update(void)
 		{
 			if (m_pTimer != nullptr) {
 				m_pTimer->Update();
+
+				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+					m_state = STATE_END;
+				}
 			}
 		}
 	}
