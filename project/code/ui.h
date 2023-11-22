@@ -43,7 +43,7 @@ private:	// 自分だけがアクセス可能
 			// メンバ関数
 
 			// メンバ変数
-	CObject2D *m_pObject;
+	CObject2D *m_pObject[2];
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 

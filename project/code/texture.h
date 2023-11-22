@@ -25,6 +25,7 @@ public:	// 誰でもアクセス可能な定義
 	{
 		TYPE_EFFECT = 0,		// エフェクト
 		TYPE_FRAME,				//枠
+		TYPE_MONEY,				//スコアの単位
 		TYPE_MAX
 	};
 

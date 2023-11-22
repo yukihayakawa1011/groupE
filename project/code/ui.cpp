@@ -32,12 +32,20 @@ CUI::~CUI()
 //==========================================================
 HRESULT CUI::Init(void)
 {
-	m_pObject = CObject2D::Create();
+	for (int nCnt = 0; nCnt < 2; nCnt++)
+	{
+		m_pObject[nCnt] = CObject2D::Create();
+	}
 
-	m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\frame0.png"));
-	m_pObject->SetPosition(m_pos);
-	m_pObject->SetRotation(m_rot);
-	m_pObject->SetLength(300.0f, 150.0f);
+	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\frame0.png"));
+	m_pObject[0]->SetPosition(m_pos);
+	m_pObject[0]->SetRotation(m_rot);
+	m_pObject[0]->SetLength(300.0f, 150.0f);
+
+	m_pObject[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\money0.png"));
+	m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 50.0f,m_pos.y + 45.0f,m_pos.z));
+	m_pObject[1]->SetRotation(m_rot);
+	m_pObject[1]->SetLength(50.0f, 25.0f);
 
 	return S_OK;
 }
@@ -56,7 +64,10 @@ void CUI::Uninit(void)
 void CUI::Update(void)
 {
 	//ƒTƒCƒY‚ÌÝ’è
-	m_pObject->SetVtx();
+	for (int nCnt = 0; nCnt < 2; nCnt++)
+	{
+		m_pObject[nCnt]->SetVtx();
+	}
 }
 
 //==========================================================
