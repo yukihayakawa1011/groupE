@@ -145,6 +145,7 @@ private:	// 自分だけがアクセス可能
 	void SetCatchMatrix(void);
 	void Throw(void);
 	void Drop(int nDropCnt);
+	void DropAll(void);
 	void DamageCollision(D3DXVECTOR3 pos);
 	void AttackCheck(void);
 	void GimmickRelease(void);
