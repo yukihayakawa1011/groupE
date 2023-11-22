@@ -21,6 +21,10 @@
 #include "debugproc.h"
 #include "player.h"
 #include "game.h"
+#include "goal.h"
+#include "gimmick_rotatedoor.h"
+#include "gimmick_startdoor.h"
+#include "gimmick_lever.h"
 
 // 無名名前空間
 namespace
@@ -74,7 +78,12 @@ HRESULT CTutorial::Init(void)
 
 	//カメラ初期化
 	{
-		CManager::GetInstance()->GetCamera()->Init();
+		//CManager::GetInstance()->GetCamera()->Init();
+
+		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f)); 
+
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定
 		viewport.X = 0;
@@ -85,6 +94,20 @@ HRESULT CTutorial::Init(void)
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
+
+	// 開始扉
+	CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + 10.0f));
+	l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
+	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(860.0f, 0.0f, -550.0f));
+	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+	p->SetLever(l);
+	
+
+	// 回転扉
+	CGimmickRotateDoor::Create(D3DXVECTOR3(400.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+
+	// ゴール
+	CGoal::Create(D3DXVECTOR3(1025.0f, -299.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
 	// 人数分ポインタ生成
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];

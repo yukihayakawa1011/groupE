@@ -51,6 +51,7 @@ public:
 		ACTION_HOLD,			// 保持
 		ACTION_THROW,			// 投げる
 		ACTION_DAMAGE,		// 攻撃を受けた
+		ACTION_FLUTTERING,	// じたばた
 		ACTION_MAX
 	};
 
@@ -155,6 +156,7 @@ private:	// 自分だけがアクセス可能
 	void SubItemCount(int type);
 	void SelectItem(void);
 	int GetSelectItem(int type);
+	void BodySet(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ

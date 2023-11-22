@@ -14,14 +14,14 @@ NUM_MODEL = 8
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/ninja0/01_body.x		        # [1]体
+MODEL_FILENAME = data/MODEL/ninja0/01_body.x		    # [1]体
 MODEL_FILENAME = data/MODEL/ninja0/02_hed.x		        # [2]頭
 MODEL_FILENAME = data/MODEL/ninja0/03_rightshoulder.x	# [3]右上腕
 MODEL_FILENAME = data/MODEL/ninja0/07_leftforearm.x	    # [4]右前腕
 MODEL_FILENAME = data/MODEL/ninja0/05_righthand.x		# [5]右手
-MODEL_FILENAME = data/MODEL/ninja0/06_leftshoulder.x     # [6]左上腕
-MODEL_FILENAME = data/MODEL/ninja0/04_rightforearm.x      # [7]左前腕
-MODEL_FILENAME = data/MODEL/ninja0/08_lefthand.x	        # [8]左手
+MODEL_FILENAME = data/MODEL/ninja0/06_leftshoulder.x    # [6]左上腕
+MODEL_FILENAME = data/MODEL/ninja0/04_rightforearm.x    # [7]左前腕
+MODEL_FILENAME = data/MODEL/ninja0/08_lefthand.x	    # [8]左手
 
 #------------------------------------------------------------------------------
 # キャラクター情報
