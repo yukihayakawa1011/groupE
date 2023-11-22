@@ -256,9 +256,7 @@ HRESULT CGame::Init(void)
 	//壺
 	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//UIの生成
-	CUI::Create(D3DXVECTOR3(150.0f, 75.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	CUI::Create(D3DXVECTOR3(1100.0f, 75.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 1.0f));
+
 
 	//カメラ初期化
 	{
@@ -334,6 +332,12 @@ HRESULT CGame::Init(void)
 			}
 		}
 	}
+
+	//UIの生成
+	CUI::Create(D3DXVECTOR3(175.0f, 60.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame0.png", "data\\TEXTURE\\player_icon0.png", CUI::TYPE_LEFTUP);
+	CUI::Create(D3DXVECTOR3(1105.0f, 60.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame1.png", "data\\TEXTURE\\player_icon1.png", CUI::TYPE_RIGHTUP);
+	CUI::Create(D3DXVECTOR3(175.0f, 660.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame2.png", "data\\TEXTURE\\player_icon2.png", CUI::TYPE_LEFTDOWN);
+	CUI::Create(D3DXVECTOR3(1105.0f, 660.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame3.png", "data\\TEXTURE\\player_icon3.png", CUI::TYPE_RIGHTDOWN);
 
 	// スポットライトをオン
 	CManager::GetInstance()->GetLight()->EnablePointLight(true);

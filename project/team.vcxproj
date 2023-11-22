@@ -215,6 +215,7 @@
     <ClCompile Include="code\task_manager.cpp" />
     <ClCompile Include="code\tcp_client.cpp" />
     <ClCompile Include="code\texture.cpp" />
+    <ClCompile Include="code\time.cpp" />
     <ClCompile Include="code\title.cpp" />
     <ClCompile Include="code\title_enter.cpp" />
     <ClCompile Include="code\tutorial.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="code\task_manager.h" />
     <ClInclude Include="code\tcp_client.h" />
     <ClInclude Include="code\texture.h" />
+    <ClInclude Include="code\time.h" />
     <ClInclude Include="code\title.h" />
     <ClInclude Include="code\title_enter.h" />
     <ClInclude Include="code\tutorial.h" />

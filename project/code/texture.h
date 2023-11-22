@@ -24,8 +24,16 @@ public:	// 誰でもアクセス可能な定義
 	enum TYPE
 	{
 		TYPE_EFFECT = 0,		// エフェクト
-		TYPE_FRAME,				//枠
 		TYPE_MONEY,				//スコアの単位
+		TYPE_FRAME0,			//枠0
+		TYPE_FRAME1,			//枠1
+		TYPE_FRAME2,			//枠2
+		TYPE_FRAME3,			//枠3
+		TYPE_PLAYER0,			//プレイヤーの顔0
+		TYPE_PLAYER1,			//プレイヤーの顔1
+		TYPE_PLAYER2,			//プレイヤーの顔2
+		TYPE_PLAYER3,			//プレイヤーの顔3
+		TYPE_TIMER,			// タイム
 		TYPE_MAX
 	};
 
