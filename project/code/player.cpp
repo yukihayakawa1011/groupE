@@ -101,7 +101,19 @@ CPlayer::CPlayer()
 	m_Catch.nMoveCnt = 0;
 	m_nLife = 0;
 	m_type = TYPE_NONE;
-	m_nId = m_nNumCount;
+	m_nId = m_nNumCount = 0;
+	m_nNumItemCoin = 0;
+	m_nNumItemBrecetet = 0;
+	m_nNumItemCup = 0;
+	m_nNumItemEmerald = 0;
+	m_nNumItemDiamond = 0;
+	m_nNumItemGold = 0;
+	m_nNumItemJar = 0;
+	m_nNumItemKunai = 0;
+	m_nNumItemRing = 0;
+	m_nNumItemScroll = 0;
+	m_nNumItemShuriken = 0;
+	m_nItemId = CItem::TYPE_COIN;
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
 	m_bGoal = false;
@@ -410,7 +422,7 @@ void CPlayer::Update(void)
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ] : アイテム所持数 [ %d ]\n", m_nLife, m_Info.state, m_nItemCnt);
+	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ] : アイテム所持数 [ %d ] : 選択中のアイテム [ %d ]\n", m_nLife, m_Info.state, m_nItemCnt, m_nItemId);
 
 	// マトリックス設定
 	if (m_Info.state == STATE_CATCH) {	// キャッチされている場合!!!!
@@ -510,6 +522,7 @@ void CPlayer::Controller(void)
 			Attack();	// 攻撃
 			Catch();		// 掴む
 			Throw();		// 投げる
+			SelectItem();   // 捨てるアイテム選択
 		}
 	}
 
@@ -565,6 +578,8 @@ void CPlayer::Controller(void)
 				break;
 			}
 		}
+
+		AddItemCount(pItem->GetType());
 
 		pItem->Uninit();
 	}
@@ -1246,6 +1261,11 @@ void CPlayer::Catch(void)
 		}
 	}
 
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId))
+	{
+		int n = 0;
+	}
+
 	// 持った対象の判定
 	if (m_Catch.pPlayer != nullptr) {	// 他のプレイヤーを持っている
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// 相手の状態が変わった場合
@@ -1321,120 +1341,98 @@ const char *CPlayer::ItemFileName(int type)
 	{
 	case CItem::TYPE_NORMAL:
 	{
-		return &m_aString[0];
+		return "\0";
 	}
 
 	break;
 
 	case CItem::TYPE_COIN:
 	{
-		strcpy(m_aString, "data\\MODEL\\coin.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\coin.x";
 	}
 
 	break;
 
 	case CItem::TYPE_BRECELET:
 	{
-		strcpy(m_aString, "data\\MODEL\\bracelet00.x");
-
-		return  &m_aString[0];
+		return   "data\\MODEL\\bracelet00.x";
 	}
 
 	break;
 
 	case CItem::TYPE_CUP:
 	{
-		strcpy(m_aString, "data\\MODEL\\cup00.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\cup00.x";
 	}
 
 	break;
 
 	case CItem::TYPE_GEM00:
 	{
-		strcpy(m_aString, "data\\MODEL\\gem00.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\gem00.x";
 	}
 
 	break;
 
 	case CItem::TYPE_GEM01:
 	{
-		strcpy(m_aString, "data\\MODEL\\gem01.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\gem01.x";
 	}
 
 	break;
 
 	case CItem::TYPE_GOLDBAR:
 	{
-		strcpy(m_aString, "data\\MODEL\\goldbar00.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\goldbar00.x";
 	}
 
 	break;
 
 	case CItem::TYPE_JAR:
 	{
-		strcpy(m_aString, "data\\MODEL\\jar.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\jar.x";
 	}
 
 	break;
 
 	case CItem::TYPE_KUNAI:
 	{
-		strcpy(m_aString, "data\\MODEL\\kunai.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\kunai.x";
 	}
 
 	break;
 
 	case CItem::TYPE_RING00:
 	{
-		strcpy(m_aString, "data\\MODEL\\ring00.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\ring00.x";
 	}
 
 	break;
 
 	case CItem::TYPE_SCROLL:
 	{
-		strcpy(m_aString, "data\\MODEL\\scroll00.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\scroll00.x";
 	}
 
 	break;
 
 	case CItem::TYPE_SHURIKEN:
 	{
-		strcpy(m_aString, "data\\MODEL\\shuriken.x");
-
-		return  &m_aString[0];
+		return  "data\\MODEL\\shuriken.x";
 	}
 
 	break;
 
 	case CItem::TYPE_MAX:
 	{
-		return  &m_aString[0];
+		return  "";
 	}
 
 	break;
 
 	}
 
-	return  &m_aString[0];
+	return  "";
 }
 
 //===============================================
@@ -1456,6 +1454,369 @@ void CPlayer::ItemSort(void)
 			}
 		}
 	}
+}
+
+//===============================================
+// それぞれのアイテム加算
+//===============================================
+void CPlayer::AddItemCount(int type)
+{
+	switch (type)
+	{
+	case CItem::TYPE_NORMAL:  // なんもない
+	{
+		
+	}
+
+	break;
+
+	case CItem::TYPE_COIN:  // コイン
+	{
+		m_nNumItemCoin++;
+	}
+
+	break;
+
+	case CItem::TYPE_BRECELET:  // ブレスレット
+	{
+		m_nNumItemBrecetet++;
+	}
+
+	break;
+
+	case CItem::TYPE_CUP:       // 盃
+	{
+		m_nNumItemCup++;
+	}
+
+	break;
+
+	case CItem::TYPE_GEM00:     // エメラルド
+	{
+		m_nNumItemEmerald++;
+	}
+
+	break;
+
+	case CItem::TYPE_GEM01:     // ダイヤモンド
+	{
+		m_nNumItemDiamond++;
+	}
+
+	break;
+
+	case CItem::TYPE_GOLDBAR:   // 金塊
+	{
+		m_nNumItemGold++;
+	}
+
+	break;
+
+	case CItem::TYPE_JAR:       // 瓶
+	{
+		m_nNumItemJar++;
+	}
+
+	break;
+
+	case CItem::TYPE_KUNAI:     // クナイ
+	{
+		m_nNumItemKunai++;
+	}
+
+	break;
+
+	case CItem::TYPE_RING00:    // リング
+	{
+		m_nNumItemRing++;
+	}
+
+	break;
+
+	case CItem::TYPE_SCROLL:    // 巻物
+	{
+		m_nNumItemScroll++;
+	}
+
+	break;
+
+	case CItem::TYPE_SHURIKEN:  // 手裏剣
+	{
+		m_nNumItemShuriken++;
+	}
+
+	break;
+
+	case CItem::TYPE_MAX:
+	{
+		
+	}
+
+	break;
+
+	}
+}
+
+//===============================================
+// それぞれのアイテム減算
+//===============================================
+void CPlayer::SubItemCount(int type)
+{
+	switch (type)
+	{
+	case CItem::TYPE_NORMAL:  // なんもない
+	{
+
+	}
+
+	break;
+
+	case CItem::TYPE_COIN:  // コイン
+	{
+		m_nNumItemCoin--;
+	}
+
+	break;
+
+	case CItem::TYPE_BRECELET:  // ブレスレット
+	{
+		m_nNumItemBrecetet--;
+	}
+
+	break;
+
+	case CItem::TYPE_CUP:       // 盃
+	{
+		m_nNumItemCup--;
+	}
+
+	break;
+
+	case CItem::TYPE_GEM00:     // エメラルド
+	{
+		m_nNumItemEmerald--;
+	}
+
+	break;
+
+	case CItem::TYPE_GEM01:     // ダイヤモンド
+	{
+		m_nNumItemDiamond--;
+	}
+
+	break;
+
+	case CItem::TYPE_GOLDBAR:   // 金塊
+	{
+		m_nNumItemGold--;
+	}
+
+	break;
+
+	case CItem::TYPE_JAR:       // 瓶
+	{
+		m_nNumItemJar--;
+	}
+
+	break;
+
+	case CItem::TYPE_KUNAI:     // クナイ
+	{
+		m_nNumItemKunai--;
+	}
+
+	break;
+
+	case CItem::TYPE_RING00:    // リング
+	{
+		m_nNumItemRing--;
+	}
+
+	break;
+
+	case CItem::TYPE_SCROLL:    // 巻物
+	{
+		m_nNumItemScroll--;
+	}
+
+	break;
+
+	case CItem::TYPE_SHURIKEN:  // 手裏剣
+	{
+		m_nNumItemShuriken--;
+	}
+
+	break;
+
+	case CItem::TYPE_MAX:
+	{
+		
+	}
+
+	break;
+
+	}
+}
+
+//===============================================
+// 捨てるアイテム選択
+//===============================================
+void CPlayer::SelectItem(void)
+{
+	// ゲームパッドの情報を取得
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId))
+	{
+		m_nItemId++;
+	}
+
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFTBUTTON, m_nId))
+	{
+		m_nItemId--;
+	}
+
+	if (m_nItemId >= 12)
+	{
+		m_nItemId = 1;
+	}
+	else if(m_nItemId <= 0)
+	{
+		m_nItemId = 11;
+	}
+
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId))
+	{
+		if (m_nItemCnt > 0 && GetSelectItem(m_nItemId) > 0)
+		{
+			CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), ItemFileName(m_nItemId), m_nItemId, CItem::STATE_DROP);
+
+			// スコアへらすう
+			m_pScore->LowerScore(pItem->GetEachScore());
+
+			m_aSaveType[m_nItemId] = 0;
+
+			if (nullptr != pItem)
+			{
+				D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+				//移動量の設定
+				move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+				move.y = 18.0f;
+				move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+				pItem->SetMove(move);
+			}
+
+			m_nItemCnt--;
+
+			SubItemCount(m_nItemId);
+
+			ItemSort();
+		}
+	}
+}
+
+//===============================================
+// それぞれのアイテムの総数取得
+//===============================================
+int CPlayer::GetSelectItem(int type)
+{
+	switch (type)
+	{
+	case CItem::TYPE_NORMAL:  // なんもない
+	{
+
+	}
+
+	break;
+
+	case CItem::TYPE_COIN:  // コイン
+	{
+		return m_nNumItemCoin;
+	}
+
+	break;
+
+	case CItem::TYPE_BRECELET:  // ブレスレット
+	{
+		return m_nNumItemBrecetet;
+	}
+
+	break;
+
+	case CItem::TYPE_CUP:       // 盃
+	{
+		return m_nNumItemCup;
+	}
+
+	break;
+
+	case CItem::TYPE_GEM00:     // エメラルド
+	{
+		return m_nNumItemEmerald;
+	}
+
+	break;
+
+	case CItem::TYPE_GEM01:     // ダイヤモンド
+	{
+		return m_nNumItemDiamond;
+	}
+
+	break;
+
+	case CItem::TYPE_GOLDBAR:   // 金塊
+	{
+		return m_nNumItemGold;
+	}
+
+	break;
+
+	case CItem::TYPE_JAR:       // 瓶
+	{
+		return m_nNumItemJar;
+	}
+
+	break;
+
+	case CItem::TYPE_KUNAI:     // クナイ
+	{
+		return m_nNumItemKunai;
+	}
+
+	break;
+
+	case CItem::TYPE_RING00:    // リング
+	{
+		return m_nNumItemRing;
+	}
+
+	break;
+
+	case CItem::TYPE_SCROLL:    // 巻物
+	{
+		return m_nNumItemScroll;
+	}
+
+	break;
+
+	case CItem::TYPE_SHURIKEN:  // 手裏剣
+	{
+		return m_nNumItemShuriken;
+	}
+
+	break;
+
+	case CItem::TYPE_MAX:
+	{
+		return 0;
+	}
+
+	break;
+
+	}
+
+	return 0;
 }
 
 //===============================================

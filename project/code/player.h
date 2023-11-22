@@ -151,6 +151,10 @@ private:	// 自分だけがアクセス可能
 	void GimmickRelease(void);
 	const char *ItemFileName(int type);
 	void ItemSort(void);
+	void AddItemCount(int type);
+	void SubItemCount(int type);
+	void SelectItem(void);
+	int GetSelectItem(int type);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -158,10 +162,10 @@ private:	// 自分だけがアクセス可能
 	CPlayer *m_pPrev;		// 前のオブジェクトへのポインタ
 	CPlayer *m_pNext;		// 次のオブジェクトへのポインタ
 	SInfo m_Info;			// 自分自身の情報
-	SCatch m_Catch;		// 掴みに関する情報
+	SCatch m_Catch;			// 掴みに関する情報
 	CWaist *m_pWaist;		// 腰
 	CCharacter *m_pBody;	// 上半身
-	CCharacter *m_pLeg;	// 下半身
+	CCharacter *m_pLeg;		// 下半身
 	CScore *m_pScore;       // スコアへのポインタ
 	int m_aSaveType[MAX_ITEM];
 	float m_fRotMove;		// 現在の角度
@@ -171,7 +175,19 @@ private:	// 自分だけがアクセス可能
 	bool m_bJump;			// ジャンプ
 	bool m_bGoal;			// ゴールフラグ
 	int m_nLife;			// 体力
-	int m_nId;			// ID
+	int m_nId;				// ID
+	int m_nNumItemCoin;
+	int m_nNumItemBrecetet;
+	int m_nNumItemCup;
+	int m_nNumItemEmerald;
+	int m_nNumItemDiamond;
+	int m_nNumItemGold;
+	int m_nNumItemJar;
+	int m_nNumItemKunai;
+	int m_nNumItemRing;
+	int m_nNumItemScroll;
+	int m_nNumItemShuriken;
+	int m_nItemId;
 	TYPE m_type;			// 種類
 	ACTION m_action;		// アクション
 	int m_nItemCnt;		// 
