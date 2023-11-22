@@ -1012,6 +1012,8 @@ void CPlayer::Damage(int nDamage)
 			if (m_pLeg != nullptr){
 				m_pLeg->SetDraw(false);
 			}
+
+			DropAll();
 		}
 	}
 
@@ -1577,6 +1579,41 @@ void CPlayer::Drop(int nDropCnt)
 	}
 
 	ItemSort();
+}
+
+//===============================================
+// アイテム全部落とす
+//===============================================
+void CPlayer::DropAll(void)
+{
+	// 落とした分生成
+	for (int nCnt = 0; nCnt < m_nItemCnt; nCnt++)
+	{
+		char aString[258] = "\n";
+
+		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
+
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
+
+		// スコアへらすう
+		m_pScore->LowerScore(pItem->GetEachScore());
+
+		m_aSaveType[nCnt] = 0;
+
+		if (nullptr != pItem)
+		{
+			D3DXVECTOR3 move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+			move.y = 18.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.08f;
+			pItem->SetMove(move);
+		}
+	}
+
+	// 所持しているアイテムの総数をゼロにする
+	m_nItemCnt = 0;
 }
 
 //===============================================
