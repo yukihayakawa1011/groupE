@@ -410,7 +410,7 @@ void CPlayer::Update(void)
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ]\n", m_nLife, m_Info.state);
+	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ] : アイテム所持数 [ %d ]\n", m_nLife, m_Info.state, m_nItemCnt);
 
 	// マトリックス設定
 	if (m_Info.state == STATE_CATCH) {	// キャッチされている場合!!!!
