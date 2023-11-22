@@ -256,8 +256,9 @@ HRESULT CGame::Init(void)
 	//ö‚
 	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//UIÇÃï`âÊ
-	CUI::Create();
+	//UIÇÃê∂ê¨
+	CUI::Create(D3DXVECTOR3(150.0f, 75.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CUI::Create(D3DXVECTOR3(1100.0f, 75.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, D3DX_PI * 1.0f));
 
 	//ÉJÉÅÉâèâä˙âª
 	{

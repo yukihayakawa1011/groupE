@@ -28,13 +28,15 @@ public:	// 誰でもアクセス可能
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
-	static CUI *Create(void);
+	static CUI *Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
+	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 
 	// メンバ関数(設定)
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
+	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
 
 private:	// 自分だけがアクセス可能
 

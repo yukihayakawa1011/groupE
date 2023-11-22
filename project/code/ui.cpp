@@ -35,8 +35,9 @@ HRESULT CUI::Init(void)
 	m_pObject = CObject2D::Create();
 
 	m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\frame0.png"));
-	m_pObject->SetPosition(D3DXVECTOR3(200.0f, 100.0f, 0.0f));
-	m_pObject->SetSize(200.0f, 100.0f);
+	m_pObject->SetPosition(m_pos);
+	m_pObject->SetRotation(m_rot);
+	m_pObject->SetLength(300.0f, 150.0f);
 
 	return S_OK;
 }
@@ -54,15 +55,14 @@ void CUI::Uninit(void)
 //==========================================================
 void CUI::Update(void)
 {
-
-
-
+	//ƒTƒCƒY‚ÌÝ’è
+	m_pObject->SetVtx();
 }
 
 //==========================================================
 // ¶¬
 //==========================================================
-CUI *CUI::Create(void)
+CUI *CUI::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
 	CUI *pUI = nullptr;
 
@@ -70,6 +70,9 @@ CUI *CUI::Create(void)
 
 	if (pUI != nullptr)
 	{
+		pUI->SetPosition(pos);
+		pUI->SetRotation(rot);
+
 		// ‰Šú‰»ˆ—
 		pUI->Init();
 	}	
