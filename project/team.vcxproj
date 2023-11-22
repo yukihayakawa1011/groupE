@@ -217,6 +217,7 @@
     <ClCompile Include="code\texture.cpp" />
     <ClCompile Include="code\title.cpp" />
     <ClCompile Include="code\tutorial.cpp" />
+    <ClCompile Include="code\ui.cpp" />
     <ClCompile Include="code\waist.cpp" />
     <ClCompile Include="code\Xfile.cpp" />
   </ItemGroup>
@@ -280,6 +281,7 @@
     <ClInclude Include="code\texture.h" />
     <ClInclude Include="code\title.h" />
     <ClInclude Include="code\tutorial.h" />
+    <ClInclude Include="code\ui.h" />
     <ClInclude Include="code\waist.h" />
     <ClInclude Include="code\Xfile.h" />
   </ItemGroup>
