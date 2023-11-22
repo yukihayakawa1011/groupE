@@ -10,7 +10,7 @@
 #include "task.h"
 
 // 前方宣言
-class CObjectX;
+class CModel;
 
 //==========================================================
 // アイテムクラスの定義(派生クラス)
@@ -65,8 +65,8 @@ public:	// 誰でもアクセス可能
 	void SetRotation(const D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetState(STATE state) { m_nState = state; }
 	void SetType(int type) { m_type = type; }
-	CItem *GetNext(void) { return m_pNext; }
-	CItem *GetPrev(void) { return m_pPrev; }
+	void SetNext(CItem *pNext) { m_pNext = pNext; }
+	void SetPrev(CItem *pPrev) { m_pPrev = pPrev; }
 
 	// メンバ関数(取得)
 	static CItem *GetTop(void) { return m_pTop; }
@@ -77,8 +77,9 @@ public:	// 誰でもアクセス可能
 	int GetState(void) { return m_nState; }
 	int GetType(void) { return m_type; }
 	int GetEachScore(void);
-	void SetNext(CItem *pNext) { m_pNext = pNext; }
-	void SetPrev(CItem *pPrev) { m_pPrev = pPrev; }
+	CItem *GetNext(void) { return m_pNext; }
+	CItem *GetPrev(void) { return m_pPrev; }
+	CModel *GetModel(void) { return m_pObject; }
 
 private:	// 自分だけがアクセス可能
 
@@ -90,7 +91,7 @@ private:	// 自分だけがアクセス可能
 	static CItem *m_pCur;	// 最後尾のオブジェクトへのポインタ
 	CItem *m_pPrev;	// 前のオブジェクトへのポインタ
 	CItem *m_pNext;	// 次のオブジェクトへのポインタ
-	CObjectX *m_pObject;
+	CModel *m_pObject;
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_posOld;	// 前回の座標
 	D3DXVECTOR3 m_pos;

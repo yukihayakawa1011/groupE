@@ -9,6 +9,9 @@
 
 #include "main.h"	//main.hで定義しているものが必要なためinclude
 
+// 前方宣言
+class CTitleEnter;
+
 //**********************************************************
 // 外部ファイル読み込みクラスの定義
 //**********************************************************
@@ -41,6 +44,9 @@ public:		// 誰でもアクセス可能
 	int GetTexNumAll(void) { return m_nTexNumAll; }
 	int GetModelNumAll(void) { return m_nModelNumAll; }
 
+	// メンバ関数(設定)
+	void SetTitleEnter(CTitleEnter *pEnter) { m_pEnter = pEnter; }
+
 private:	// 自分だけがアクセス可能
 
 	// メンバ関数
@@ -64,6 +70,7 @@ private:	// 自分だけがアクセス可能
 	File *m_pTextureFile;	// テクスチャファイル情報
 	int m_nTexNumAll;	// テクスチャ総数
 	int m_nModelNumAll;	// モデル総数
+	CTitleEnter *m_pEnter;
 };
 
 #endif

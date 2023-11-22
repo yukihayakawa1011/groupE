@@ -9,7 +9,7 @@
 #include "manager.h"
 #include "debugproc.h"
 #include "texture.h"
-#include "objectX.h"
+#include "model.h"
 
 // ƒ}ƒNƒ’è‹`
 #define COLLISION_SIZE	(50.0f)
@@ -98,12 +98,6 @@ CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, in
 //==========================================================
 HRESULT CItem::Init(void)
 {
-	m_pObject = CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
-
-	if (m_pObject != nullptr)
-	{
-		m_pObject->ListOut();
-	}
 
 	return S_OK;
 }
@@ -113,13 +107,7 @@ HRESULT CItem::Init(void)
 //==========================================================
 HRESULT CItem::Init(const char *pFileName, int type)
 {
-	m_pObject = CObjectX::Create(m_pos, m_rot, pFileName);
-
-	if (m_pObject != nullptr)
-	{
-		m_pObject->ListOut();
-	}
-
+	m_pObject = CModel::Create(pFileName);
 	m_type = type;
 
 	return S_OK;
@@ -244,8 +232,6 @@ void CItem::Update(void)
 			m_pos.x = -900.0f;
 			m_move *= 0.8f;
 			m_move.x *= -1.0f;
-
-
 			m_nState = TYPE_NORMAL;
 
 			Uninit();
@@ -280,7 +266,6 @@ void CItem::Update(void)
 	if (nullptr != m_pObject) {
 		m_pObject->SetPosition(m_pos);
 		m_pObject->SetRotation(m_rot);
-		m_pObject->Update();
 	}
 }
 

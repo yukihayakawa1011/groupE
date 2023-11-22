@@ -216,6 +216,7 @@
     <ClCompile Include="code\tcp_client.cpp" />
     <ClCompile Include="code\texture.cpp" />
     <ClCompile Include="code\title.cpp" />
+    <ClCompile Include="code\title_enter.cpp" />
     <ClCompile Include="code\tutorial.cpp" />
     <ClCompile Include="code\ui.cpp" />
     <ClCompile Include="code\waist.cpp" />
@@ -280,6 +281,7 @@
     <ClInclude Include="code\tcp_client.h" />
     <ClInclude Include="code\texture.h" />
     <ClInclude Include="code\title.h" />
+    <ClInclude Include="code\title_enter.h" />
     <ClInclude Include="code\tutorial.h" />
     <ClInclude Include="code\ui.h" />
     <ClInclude Include="code\waist.h" />
