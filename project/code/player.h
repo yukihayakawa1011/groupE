@@ -112,6 +112,7 @@ public:	// 誰でもアクセス可能
 	void BindId(int nId) { m_nId = nId; }
 	void SetType(TYPE type);
 	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
+	void BindScore(CScore *pScore) { m_pScore = pScore; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -195,7 +196,6 @@ private:	// 自分だけがアクセス可能
 	int m_nItemCnt;		// 
 	static int m_nNumCount;
 	CCamera *m_pMyCamera;	// 自分用のカメラ
-	
 };
 
 #endif
