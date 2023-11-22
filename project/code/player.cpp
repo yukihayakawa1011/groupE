@@ -284,10 +284,10 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 		}
 	}
 
-	if (m_pScore == nullptr)
+	/*if (m_pScore == nullptr)
 	{
 		m_pScore = CScore::Create(D3DXVECTOR3(50.0f + (m_nNumCount - 1) * 500.0f, 50.0f, 0.0f), 30.0f, 30.0f);
-	}
+	}*/
 
 	if (m_pScore != nullptr)
 	{
@@ -545,7 +545,10 @@ void CPlayer::Controller(void)
 
 	if (pItem != nullptr) {
 		m_nItemCnt++;
-		m_pScore->AddScore(pItem->GetEachScore());
+		if (m_pScore != nullptr)
+		{
+			m_pScore->AddScore(pItem->GetEachScore());
+		}
 
 		for (int i = 0; i < MAX_ITEM; i++)
 		{
@@ -1675,8 +1678,11 @@ void CPlayer::SelectItem(void)
 		{
 			CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), ItemFileName(m_nItemId), m_nItemId, CItem::STATE_DROP);
 
-			// スコアへらすう
-			m_pScore->LowerScore(pItem->GetEachScore());
+			if (m_pScore != nullptr)
+			{
+				// スコアへらすう
+				m_pScore->LowerScore(pItem->GetEachScore());
+			}
 
 			m_aSaveType[m_nItemId] = 0;
 
@@ -1906,8 +1912,11 @@ void CPlayer::Drop(int nDropCnt)
 
 		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
 
-		// スコアへらすう
-		m_pScore->LowerScore(pItem->GetEachScore());
+		if (m_pScore != nullptr)
+		{
+			// スコアへらすう
+			m_pScore->LowerScore(pItem->GetEachScore());
+		}
 
 		m_aSaveType[nCnt] = 0;
 
@@ -1940,8 +1949,11 @@ void CPlayer::DropAll(void)
 
 		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
 
-		// スコアへらすう
-		m_pScore->LowerScore(pItem->GetEachScore());
+		if (m_pScore != nullptr)
+		{
+			// スコアへらすう
+			m_pScore->LowerScore(pItem->GetEachScore());
+		}
 
 		m_aSaveType[nCnt] = 0;
 

@@ -40,6 +40,7 @@
 #include "goal.h"
 #include "minimap.h"
 #include "ui.h"
+#include "score.h"
 
 // –³–¼–¼‘O‹óŠÔ‚ð’è‹`
 namespace {
@@ -171,6 +172,8 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+			CScore * pScore = CScore::Create(D3DXVECTOR3(50.0f + nCnt * 500.0f, 50.0f, 0.0f), 30.0f, 30.0f);
+			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
