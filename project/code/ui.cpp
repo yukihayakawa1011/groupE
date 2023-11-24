@@ -8,6 +8,7 @@
 #include "object2D.h"
 #include "manager.h"
 #include "texture.h"
+#include "life.h"
 
 // マクロ定義
 #define TEXTURE_MONEY	("data\\TEXTURE\\money0.png")	//お金の単位のテクスチャ
@@ -89,22 +90,28 @@ HRESULT CUI::Init(const char *pFileFrameName, const char *pFilePIconName)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y - MONEY_POSY, m_pos.z));	//単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 135.0f, m_pos.y + 15.0f, m_pos.z));	//顔
+		CLife::Create(m_pos, m_rot);
 	}
 	else if (m_type == TYPE_RIGHTUP)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + 20.0f, m_pos.z));	//顔
+		CLife::Create(m_pos, m_rot);
 	}
 	else if (m_type == TYPE_LEFTDOWN)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
+		CLife::Create(m_pos, m_rot);
 	}
 	else if (m_type == TYPE_RIGHTDOWN)
 	{	
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
+		CLife::Create(m_pos, m_rot);
 	}
+
+	//CLife::Create(m_pos,m_rot);
 
 	return S_OK;
 }

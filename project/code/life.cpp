@@ -5,6 +5,9 @@
 //
 //==========================================================
 #include "life.h"
+#include "object2D.h"
+#include "manager.h"
+#include "texture.h"
 
 // É}ÉNÉçíËã`
 
@@ -29,6 +32,18 @@ CLife::~CLife()
 //==========================================================
 HRESULT CLife::Init(void)
 {
+	for (int nCnt = 0; nCnt < NUM_LIFE; nCnt++)
+	{
+		m_pObject[nCnt] = CObject2D::Create(7);
+	}
+
+	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartL_0.png"));
+	m_pObject[0]->SetPosition(D3DXVECTOR3(m_pos.x - 10.0f,m_pos.y,m_pos.z));
+	m_pObject[0]->SetLength(25.0f, 50.0f);
+	m_pObject[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartR_0.png"));
+	m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 10.0f, m_pos.y, m_pos.z));
+	m_pObject[1]->SetLength(25.0f, 50.0f);
+
 	return S_OK;
 }
 
@@ -51,17 +66,21 @@ void CLife::Update(void)
 //==========================================================
 // ê∂ê¨
 //==========================================================
-CLife *CLife::Create(void)
+CLife *CLife::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot)
 {
-	CLife *pSample = nullptr;
+	CLife *pLife = nullptr;
 
-	pSample = new CLife;
+	pLife = new CLife;
 
-	if (pSample != nullptr)
+	if (pLife != nullptr)
 	{
+		pLife->SetPosition(pos);
+
+		pLife->SetRotation(rot);
+
 		// èâä˙âªèàóù
-		pSample->Init();
+		pLife->Init();
 	}
 
-	return pSample;
+	return pLife;
 }

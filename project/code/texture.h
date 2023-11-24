@@ -33,7 +33,9 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_PLAYER1,			//プレイヤーの顔1
 		TYPE_PLAYER2,			//プレイヤーの顔2
 		TYPE_PLAYER3,			//プレイヤーの顔3
-		TYPE_TIMER,			// タイム
+		TYPE_TIMER,				// タイム
+		TYPE_LIFE0,				//体力0
+		TYPE_LIFE1,				//体力1
 		TYPE_MAX
 	};
 
