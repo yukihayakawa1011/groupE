@@ -49,6 +49,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+	const int START_TIMER = (100);	// 開始制限時間
 }
 
 //===============================================
@@ -345,6 +346,8 @@ HRESULT CGame::Init(void)
 
 	// タイムの生成
 	m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
+	m_pTimer->Set(START_TIMER);
+	m_pTimer->SetActive(true);
 
 	// スポットライトをオン
 	CManager::GetInstance()->GetLight()->EnablePointLight(true);
@@ -410,6 +413,12 @@ void CGame::Uninit(void)
 		m_ppCamera = nullptr;	// 使用していない状態にする
 	}
 
+	if (m_pTimer != nullptr) {
+		m_pTimer->Uninit();
+		delete m_pTimer;
+		m_pTimer = nullptr;
+	}
+
 	// defaultカメラオン
 	CManager::GetInstance()->GetCamera()->SetDraw(true);
 
@@ -436,6 +445,11 @@ void CGame::Update(void)
 		{
 			if (m_pTimer != nullptr) {
 				m_pTimer->Update();
+
+				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+					m_state = STATE_END;
+				}
 			}
 		}
 	}

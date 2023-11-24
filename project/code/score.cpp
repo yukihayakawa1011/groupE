@@ -8,9 +8,12 @@
 #include "object2D.h"
 #include "number.h"
 
-// マクロ定義
-#define MAX_WIDTHPATTERN	(10)	// パターン数
-#define SIZE                (50.0f) // ポリゴンのサイズ	
+// 定数定義
+namespace
+{
+	const int MAX_WIDTHPATTERN = 10;	// パターン数
+	const float SIZE = 50.0f;	// ポリゴンのサイズ
+}
 
 //===============================================
 // コンストラクタ

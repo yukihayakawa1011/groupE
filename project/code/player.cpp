@@ -971,7 +971,6 @@ void CPlayer::StateSet(void)
 //===============================================
 void CPlayer::Damage(int nDamage) 
 { 
-
 	if (m_Info.state != STATE_NORMAL)
 	{// ダメージを食らわない
 		if (m_Info.state != STATE_CATCH)
