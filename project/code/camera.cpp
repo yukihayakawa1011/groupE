@@ -41,6 +41,7 @@ CCamera::CCamera()
 	m_pNext = nullptr;
 	m_pPrev = nullptr;
 	m_bDraw = true;
+	m_nId = 0;
 
 	// リストに挿入
 	CCameraManager::GetInstance()->ListIn(this);
@@ -227,19 +228,24 @@ void CCamera::MoveV(void)
 	CInputKeyboard *pKey = CManager::GetInstance()->GetInputKeyboard();
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();	// キーボードのポインタ
 	float fMultiSlow = 1.0f;
+	int nId = m_nId;
+
+	if (nId < 0 && nId >= PLAYER_MAX) {
+		nId = 0;
+	}
 
 	//x軸の移動
-	if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_PLUS) == true)
+	if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_PLUS) == true)
 	{//Qキー入力
-		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_PLUS) * fMultiSlow;
+		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_PLUS) * fMultiSlow;
 		if (m_rot.y < -D3DX_PI)
 		{//角度がΠを超えた場合
 			m_rot.y += D3DX_PI * 2;
 		}
 	}
-	else if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) == true)
+	else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) == true)
 	{//Eキー入力
-		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) * fMultiSlow;
+		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) * fMultiSlow;
 	}
 
 	//x軸の移動
@@ -261,20 +267,20 @@ void CCamera::MoveV(void)
 	}
 
 	//z軸の移動
-	if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_PLUS) == true)
+	if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_PLUS) == true)
 	{//Yキー入力
 		//角度の変更
-		m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
+		m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
 		if (m_rot.z < MIN_CAMERA_ROTZ)
 		{//角度が限界を超えた場合
 			m_rot.z = MIN_CAMERA_ROTZ;
 		}
 		
 	}
-	else if (pInputPad->GetStickPress(0, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
+	else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
 	{//Nキー入力
 		//角度の変更
-		m_rot.z += PAD_ROTATE * 2 * pInputPad->GetStickAdd(0, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_MINUS) * fMultiSlow;
+		m_rot.z += PAD_ROTATE * 2 * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_MINUS) * fMultiSlow;
 
 		if (m_rot.z > MAX_CAMERA_ROTZ)
 		{//角度が限界を超えた場合
