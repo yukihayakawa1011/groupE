@@ -105,7 +105,7 @@ void CObjectManager::ReleaseAll(void)
 //===============================================
 // 全てのオブジェクトの描画
 //===============================================
-void CObjectManager::DrawAll(void)
+void CObjectManager::DrawAll(TYPE type)
 {
 	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
 	{
@@ -117,7 +117,10 @@ void CObjectManager::DrawAll(void)
 			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
 
 			// 描画処理
-			pObject->Draw();
+			if (type == TYPE_ALL || pObject->GetObject2D() == nullptr)
+			{
+				pObject->Draw();
+			}
 
 			pObject = pObjectNext;	// 次のオブジェクトに移動
 		}

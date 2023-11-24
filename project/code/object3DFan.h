@@ -20,11 +20,11 @@ public:	// 誰でもアクセス可能
 	//頂点変更種類列挙（複数使用時AND演算して入れて）
 	enum CHANGE
 	{
-		CHANGE_POS = 0x0001,
-		CHANGE_NOR = 0x0010,
-		CHANGE_COL = 0x0100,
-		CHANGE_TEX = 0x1000,
-		CHANGE_ALL = 0x1111
+		CHANGE_POS = 0b0001,
+		CHANGE_NOR = 0b0010,
+		CHANGE_COL = 0b0100,
+		CHANGE_TEX = 0b1000,
+		CHANGE_ALL = 0b1111
 	};
 
 	CObject3DFan(int nPriority = 6);	// コンストラクタ

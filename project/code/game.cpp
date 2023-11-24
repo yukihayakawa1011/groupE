@@ -176,6 +176,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 
+		
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
 		// ƒMƒ~ƒbƒN‚Ì¶¬
@@ -302,6 +303,7 @@ HRESULT CGame::Init(void)
 			m_ppCamera[nCnt]->Init();
 			m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 			m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+			m_ppCamera[nCnt]->SetLength(400.0f);
 			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
 
 			D3DVIEWPORT9 viewport;
@@ -336,6 +338,7 @@ HRESULT CGame::Init(void)
 
 				if (pPlayer->GetId() == nCnt) {
 					pPlayer->SetCamera(m_ppCamera[nCnt]);
+					m_ppCamera[nCnt]->BindId(pPlayer->GetId());
 					break;
 				}
 

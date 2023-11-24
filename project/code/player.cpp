@@ -63,7 +63,7 @@
 #define CATCH_LIMIT	(90)
 #define CATCH_MOVE	(2.0f)
 #define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
-#define HAND_PARTS	(4)	// 手のモデル番号(後ろから
+#define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
