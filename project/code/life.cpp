@@ -17,6 +17,9 @@
 CLife::CLife()
 {
 	// ’l‚ÌƒNƒŠƒA
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_life = 6;
 }
 
 //==========================================================
@@ -32,17 +35,26 @@ CLife::~CLife()
 //==========================================================
 HRESULT CLife::Init(void)
 {
-	for (int nCnt = 0; nCnt < NUM_LIFE; nCnt++)
+	for (int nCnt = 0; nCnt < m_life; nCnt++)
 	{
-		m_pObject[nCnt] = CObject2D::Create(7);
-	}
+		if (m_pObject[nCnt] == NULL)
+		{
+			m_pObject[nCnt] = CObject2D::Create(7);
 
-	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartL_0.png"));
-	m_pObject[0]->SetPosition(D3DXVECTOR3(m_pos.x - 10.0f,m_pos.y,m_pos.z));
-	m_pObject[0]->SetLength(25.0f, 50.0f);
-	m_pObject[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartR_0.png"));
-	m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 10.0f, m_pos.y, m_pos.z));
-	m_pObject[1]->SetLength(25.0f, 50.0f);
+			if (nCnt % 2 == 0)
+			{
+				m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartL_0.png"));
+				m_pObject[nCnt]->SetPosition(D3DXVECTOR3(m_pos.x + (20.0f * nCnt), m_pos.y, m_pos.z));
+				m_pObject[nCnt]->SetLength(25.0f, 50.0f);
+			}
+			else if (nCnt % 2 != 0)
+			{
+				m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartR_0.png"));
+				m_pObject[nCnt]->SetPosition(D3DXVECTOR3(m_pos.x + (20.0f * nCnt), m_pos.y, m_pos.z));
+				m_pObject[nCnt]->SetLength(25.0f, 50.0f);
+			}
+		}
+	}
 
 	return S_OK;
 }
@@ -52,6 +64,14 @@ HRESULT CLife::Init(void)
 //==========================================================
 void CLife::Uninit(void)
 {
+	for (int nCnt = 0; nCnt < NUM_LIFE; nCnt++)
+	{
+		if (nullptr != m_pObject[nCnt]) {
+			m_pObject[nCnt]->Uninit();
+			m_pObject[nCnt] = NULL;
+		}
+	}
+
 	Release();
 }
 
