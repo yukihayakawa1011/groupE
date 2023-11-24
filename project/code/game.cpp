@@ -45,11 +45,11 @@
 // 無名名前空間を定義
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { 860.0f, 0.0f, -550.0f };	// スタート地点ドア基本座標
-	const float DOOR_SPACE = (20.0f);	// 各スタート地点ドアの間
+	const float DOOR_SPACE = (20.0f);			// 各スタート地点ドアの間
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
-	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
-	const int START_TIMER = (100);	// 開始制限時間
+	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
+	const int START_TIMER = (100);				// 開始制限時間
 }
 
 //===============================================

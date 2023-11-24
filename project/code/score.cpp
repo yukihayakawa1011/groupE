@@ -12,7 +12,7 @@
 namespace
 {
 	const int MAX_WIDTHPATTERN = 10;	// パターン数
-	const float SIZE = 50.0f;	// ポリゴンのサイズ
+	const float POLYSIZE = (50.0f);	// ポリゴンのサイズ
 }
 
 //===============================================
@@ -49,7 +49,7 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 		{// 使用されていない場合
 
 			// 生成
-			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * SIZE, pos.y, pos.z), fWidth, fHeight);
+			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * POLYSIZE, pos.y, pos.z), fWidth, fHeight);
 
 			if (m_apNumber[nCount] != nullptr)
 			{// 使用されている場合

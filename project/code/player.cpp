@@ -408,6 +408,7 @@ void CPlayer::Update(void)
 		// カメラ追従
 		if (m_pMyCamera != nullptr) {
 			// 追従処理
+			m_pMyCamera->Update();
 			m_pMyCamera->Pursue(GetPosition(), GetRotation());
 		}
 
@@ -609,7 +610,12 @@ void CPlayer::Move(void)
 //===============================================
 void CPlayer::Rotation(void)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
+	CCamera *pCamera = m_pMyCamera;		// カメラのポインタ
+
+	if (m_pMyCamera == nullptr) {
+		pCamera = CManager::GetInstance()->GetCamera();
+	}
+
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
@@ -701,7 +707,12 @@ void CPlayer::MoveController(void)
 		return;
 	}
 
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();		// カメラのポインタ
+	CCamera *pCamera = m_pMyCamera;		// カメラのポインタ
+
+	if (m_pMyCamera == nullptr) {
+		pCamera = CManager::GetInstance()->GetCamera();
+	}
+
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量

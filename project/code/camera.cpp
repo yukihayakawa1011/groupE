@@ -89,6 +89,9 @@ void CCamera::Uninit(void)
 //==========================================================
 void CCamera::Update(void)
 {
+	if (!m_bDraw) {	// 使用しない場合
+		return;
+	}
 
 	//{
 	//	//マウスでの視点移動
