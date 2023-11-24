@@ -90,25 +90,25 @@ HRESULT CUI::Init(const char *pFileFrameName, const char *pFilePIconName)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y - MONEY_POSY, m_pos.z));	//単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 135.0f, m_pos.y + 15.0f, m_pos.z));	//顔
-		CLife::Create(m_pos, m_rot);
+		CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 	}
 	else if (m_type == TYPE_RIGHTUP)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + 20.0f, m_pos.z));	//顔
-		CLife::Create(m_pos, m_rot);
+		CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 	}
 	else if (m_type == TYPE_LEFTDOWN)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
-		CLife::Create(m_pos, m_rot);
+		CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
 	}
 	else if (m_type == TYPE_RIGHTDOWN)
 	{	
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
-		CLife::Create(m_pos, m_rot);
+		CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f , m_pos.z), m_rot);
 	}
 
 	//CLife::Create(m_pos,m_rot);
