@@ -304,7 +304,7 @@ HRESULT CGame::Init(void)
 			m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 			m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
 			m_ppCamera[nCnt]->SetLength(400.0f);
-			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
+			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.375f));
 
 			D3DVIEWPORT9 viewport;
 			//プレイヤー追従カメラの画面位置設定
