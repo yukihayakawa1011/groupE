@@ -215,14 +215,6 @@ void CRenderer::Draw(void)
 		// オブジェクトの描画
 		CObjectManager::GetInstance()->Draw();
 
-		//ゲーム時ミニマップ描画
-		CMiniMap* pMiniMap = CManager::GetInstance()->GetScene()->GetMiniMap();
-		if (pMiniMap != nullptr)
-		{//ミニマップがある
-			//マップポリゴン描画
-			pMiniMap->DrawMap();
-		}
-
 #if _DEBUG	// デバッグ時
 
 	 // エディターの描画

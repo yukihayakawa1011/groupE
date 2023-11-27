@@ -68,6 +68,7 @@ public:	// 誰でもアクセス可能
 	void SetCol(const D3DXCOLOR col);
 
 protected:	// 派生クラスからもアクセス可能
+	LPDIRECT3DVERTEXBUFFER9 GetVtx(void) { return m_pVtxBuff; }
 
 private:	// 自分だけがアクセス可能
 

@@ -8,11 +8,13 @@
 #define _MINIMAP_H_
 
 #include "task.h"
+#include "object2DMap.h"
 #include "input.h"
 
 //前方宣言
 class CMultiCamera;
 class CObject2D;
+class CObject2DMap;
 
 //ミニマップクラス
 class CMiniMap : public CTask
@@ -36,7 +38,6 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void){}
-	void DrawMap(void);
 	void DrawTexture(void);
 	void Load(void);		//デバイスロスト対策：ロスト解消したら呼び出してね。初期化にも使える。
 	void UnLoad(void);	//デバイスロスト対策：ロストしたら呼び出してね。終了にも使える。
@@ -46,31 +47,22 @@ public:
 		const int elaseWidth,const int elaseHeight);
 
 	//マップポリゴンの設定・取得処理
-	void SetPosition(const D3DXVECTOR3 pos);
-	void SetRotation(const D3DXVECTOR3 rot);
+	void SetPosition(const D3DXVECTOR3 pos){ m_pos = pos; }
 
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
-	D3DXVECTOR3 GetRotation(void) { return m_rot; }
+	D3DXVECTOR3 GetRotation(void) { return m_pObjMap->GetRotation(); }
 	float GetWidth(void) { return m_fWidth; }
 	float GetHeight(void) { return m_fHeight; }
 
-	void SetpVtx(const int nChangeVtx);
-
 private:
-	//メンバ関数
-	void CulcDiagonal(void);
-
 	// メンバ変数
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	// 頂点バッファへのポインタ
 	LPDIRECT3DTEXTURE9 m_pTextureMap;	// テクスチャ
 	LPDIRECT3DTEXTURE9 m_pTextureUnex;	// 未探索場所を黒くしたテクスチャ
 	LPDIRECT3DSURFACE9 m_pZSurface;		// テクスチャの深度バッファ
+	CObject2DMap* m_pObjMap;			//マップオブジェ
 	CObject2D** m_ppPlayerIcon;
 	bool** m_ppExplored;//探索済みドット
 	D3DXVECTOR3 m_pos;	// 位置
-	D3DXVECTOR3 m_rot;	// 向き
-	float m_fLength;	// 対角線の長さ
-	float m_fAngle;		// 対角線の角度
 	float m_fWidth;		// 幅
 	float m_fHeight;	// 高さ
 	int m_nElaseWidth;	//探索済みにする幅
