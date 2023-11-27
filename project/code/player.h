@@ -130,6 +130,7 @@ public:	// 誰でもアクセス可能
 	int GetLife(void) { return m_nLife; }
 	STATE GetState(void) { return m_Info.state; }
 	bool GetGoal(void) { return m_bGoal; }
+	CScore *GetScore(void) { return m_pScore; }
 
 private:	// 自分だけがアクセス可能
 
