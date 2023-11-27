@@ -19,6 +19,8 @@ class CGimmick;
 class CScore;
 class CCamera;
 class CItem;
+class CLife;
+class CUI;
 
 // マクロ定義
 #define MAX_ITEM  (1280)  // 所持できるアイテムの最大数
@@ -113,6 +115,7 @@ public:	// 誰でもアクセス可能
 	void SetType(TYPE type);
 	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
 	void BindScore(CScore *pScore) { m_pScore = pScore; }
+	void BindUI(CUI *pUI) { m_pUI = pUI; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -196,6 +199,7 @@ private:	// 自分だけがアクセス可能
 	int m_nItemCnt;		// 
 	static int m_nNumCount;
 	CCamera *m_pMyCamera;	// 自分用のカメラ
+	CUI *m_pUI;
 };
 
 #endif

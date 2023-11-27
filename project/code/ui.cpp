@@ -14,6 +14,24 @@
 #define TEXTURE_MONEY	("data\\TEXTURE\\money0.png")	//お金の単位のテクスチャ
 #define MONEY_POSY	(38.0f)		//単位の場所
 
+// ファイル名
+const char *CUI::m_apFrameFileName[FRAME_MAX] =
+{
+	"data\\TEXTURE\\frame0.png",
+	"data\\TEXTURE\\frame1.png",
+	"data\\TEXTURE\\frame2.png",
+	"data\\TEXTURE\\frame3.png",
+};
+
+// ファイル名
+const char *CUI::m_apIconFileName[ICON_MAX] =
+{
+	"data\\TEXTURE\\player_icon0.png",
+	"data\\TEXTURE\\player_icon1.png",
+	"data\\TEXTURE\\player_icon2.png",
+	"data\\TEXTURE\\player_icon3.png",
+};
+
 //==========================================================
 // コンストラクタ
 //==========================================================
@@ -65,7 +83,7 @@ HRESULT CUI::Init(void)
 //==========================================================
 // 初期化処理
 //==========================================================
-HRESULT CUI::Init(const char *pFileFrameName, const char *pFilePIconName)
+HRESULT CUI::Init(int nFrame, int nIcon)
 {
 	for (int nCnt = 0; nCnt < NUM_OBJ; nCnt++)
 	{
@@ -73,7 +91,7 @@ HRESULT CUI::Init(const char *pFileFrameName, const char *pFilePIconName)
 	}
 
 	//フレーム
-	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(pFileFrameName));
+	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(m_apFrameFileName[nFrame]));
 	m_pObject[0]->SetPosition(m_pos);
 	m_pObject[0]->SetLength(350.0f, 125.0f);
 
@@ -82,36 +100,34 @@ HRESULT CUI::Init(const char *pFileFrameName, const char *pFilePIconName)
 	m_pObject[1]->SetLength(50.0f, 25.0f);
 
 	//顔
-	m_pObject[2]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(pFilePIconName));
+	m_pObject[2]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(m_apIconFileName[nIcon]));
 	m_pObject[2]->SetLength(70.0f, 70.0f);
 
 	//タイプごとの位置設定
-	if (m_type == TYPE_LEFTUP)
+	if (nFrame == 0)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y - MONEY_POSY, m_pos.z));	//単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 135.0f, m_pos.y + 15.0f, m_pos.z));	//顔
 		CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 	}
-	else if (m_type == TYPE_RIGHTUP)
+	else if (nFrame == 1)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + 20.0f, m_pos.z));	//顔
 		CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 	}
-	else if (m_type == TYPE_LEFTDOWN)
+	else if (nFrame == 2)
 	{
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
 		CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
 	}
-	else if (m_type == TYPE_RIGHTDOWN)
+	else if (nFrame == 3)
 	{	
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
 		CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f , m_pos.z), m_rot);
 	}
-
-	//CLife::Create(m_pos,m_rot);
 
 	return S_OK;
 }
@@ -130,8 +146,6 @@ void CUI::Uninit(void)
 			m_pObject[nCnt] = NULL;
 		}
 	}
-
-	
 }
 
 //==========================================================
@@ -149,7 +163,7 @@ void CUI::Update(void)
 //==========================================================
 // 生成
 //==========================================================
-CUI *CUI::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileFrameName, const char *pFilePIconName, TYPE type)
+CUI *CUI::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nFrame, int nIcon, TYPE type)
 {
 	CUI *pUI = nullptr;
 
@@ -161,7 +175,7 @@ CUI *CUI::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileFrameName, c
 		pUI->SetRotation(rot);
 		pUI->SetType(type);
 		// 初期化処理
-		pUI->Init(pFileFrameName,pFilePIconName);
+		pUI->Init(nFrame, nIcon);
 	}	
 
 	return pUI;

@@ -35,6 +35,8 @@
 #include "enemy.h"
 #include "goal.h"
 #include "score.h"
+#include "life.h"
+#include "ui.h"
 
 //===============================================
 // マクロ定義
@@ -311,7 +313,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 void CPlayer::Uninit(void)
 {
 	// リストから自分自身を削除する
-	if (m_pTop == this) {// 自身が先頭
+	if (m_pTop == this) {	// 自身が先頭
 		if (m_pNext != nullptr)
 		{// 次が存在している
 			m_pTop = m_pNext;	// 次を先頭にする
@@ -323,19 +325,19 @@ void CPlayer::Uninit(void)
 			m_pCur = nullptr;	// 最後尾がない状態にする
 		}
 	}
-	else if (m_pCur == this) {// 自身が最後尾
+	else if (m_pCur == this) {	// 自身が最後尾
 		if (m_pPrev != nullptr)
-		{// 次が存在している
+		{	// 次が存在している
 			m_pCur = m_pPrev;			// 前を最後尾にする
 			m_pPrev->m_pNext = nullptr;	// 前の次のポインタを覚えていないようにする
 		}
 		else
-		{// 存在していない
+		{	// 存在していない
 			m_pTop = nullptr;	// 先頭がない状態にする
 			m_pCur = nullptr;	// 最後尾がない状態にする
 		}
 	}
-	else {
+	else { // それ以外
 		if (m_pNext != nullptr)
 		{
 			m_pNext->m_pPrev = m_pPrev;	// 自身の次に前のポインタを覚えさせる
@@ -378,6 +380,8 @@ void CPlayer::Uninit(void)
 		// 使用されていない状態にする
 		m_pScore = nullptr;
 	}
+
+	
 
 	// 人数を減らす
 	m_nNumCount--;

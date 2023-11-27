@@ -31,15 +31,34 @@ public:	// 誰でもアクセス可能
 		TYPE_MAX
 	};
 
+	// フレームの種類
+	enum FRAME
+	{
+		FRAME_GREEN = 0,		// 1P
+		FRAME_BLUE,				// 2P
+		FRAME_RED,				// 3P
+		FRAME_YELLOW,			// 4P
+		FRAME_MAX
+	};
+	// アイコンの種類
+	enum ICON
+	{
+		ICON_GREEN = 0,		// 1P
+		ICON_BLUE,			// 2P
+		ICON_RED,			// 3P
+		ICON_YELLOW,		// 4P
+		ICON_MAX
+	};
+
 	CUI();	// コンストラクタ(オーバーロード)
 	~CUI();	// デストラクタ
 
 					// メンバ関数
 	HRESULT Init(void);
-	HRESULT Init(const char *pFileFrameName, const char *pFilePIconName);
+	HRESULT Init(int nFrame, int nIcon);
 	void Uninit(void);
 	void Update(void);
-	static CUI *Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot, const char *pFileFrameName, const char *pFilePIconName,TYPE type);
+	static CUI *Create(D3DXVECTOR3 pos,D3DXVECTOR3 rot, int nFrame, int nIcon,TYPE type);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
@@ -62,6 +81,8 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
 	TYPE m_type;
+	const static char *m_apFrameFileName[FRAME_MAX];	// 初期読み込みファイル名
+	const static char *m_apIconFileName[ICON_MAX];	// 初期読み込みファイル名
 
 };
 
