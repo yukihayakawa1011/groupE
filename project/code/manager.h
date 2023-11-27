@@ -65,6 +65,7 @@ public:
 	virtual CPlayer *GetPlayer(void) { return NULL; }
 	virtual CFileLoad *GetFileLoad(void) { return NULL; }
 	virtual CEditor *GetEditor(void) { return NULL; }
+	virtual CMiniMap* GetMiniMap(void) { return nullptr; }
 	virtual void SendPosition(D3DXVECTOR3&) {  }
 	virtual void SendRotation(D3DXVECTOR3&) {  }
 	virtual void SendDamage(int) {  }
@@ -105,7 +106,6 @@ public:	// 誰でもアクセス可能
 	CXFile *GetModelFile(void);
 	CSlow *GetSlow(void);
 	CFade *GetFade(void);
-	CMiniMap* GetMiniMap(void) { return m_pMiniMap; }
 	void SetMode(CScene::MODE mode);
 	CScene::MODE GetMode(void) { return m_pScene->GetMode(); }
 	CScene *GetScene(void) { return m_pScene; }
@@ -131,7 +131,6 @@ private:	// 自分だけがアクセス可能
 	CSlow *m_pSlow;			// スローのポインタ
 	CScene *m_pScene;		// シーンのポインタ
 	CFade *m_pFade;			// フェードのポインタ
-	CMiniMap* m_pMiniMap;	// ミニマップ
 	static CManager *m_pManager;	// マネージャーのポインタ
 };
 
