@@ -200,8 +200,8 @@ HRESULT CGame::Init(void)
 
 			//UIの生成
 			CUI *pUI = CUI::Create(D3DXVECTOR3(175.0f + fData, 60.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
+			m_ppPlayer[nCnt]->BindUI(pUI);
 		}
-
 		
 		CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
@@ -492,6 +492,7 @@ void CGame::Update(void)
 
 				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
 					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+					CResult::SetScore(m_ppPlayer);
 					m_state = STATE_END;
 				}
 			}
@@ -553,6 +554,9 @@ bool CGame::EndCheck(void)
 	}
 
 	if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
+
+		CResult::SetScore(m_ppPlayer);
+
 		return true;
 	}
 

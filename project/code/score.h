@@ -43,9 +43,11 @@ public:	// 誰でもアクセス可能
 
 	// メンバ関数(設定)
 	void SetIdx(const int nIdx);
+	void SetScore(int nScore);
 
 	// メンバ関数(取得)
 	int GetIdx(void) { return m_nIdx; }
+	int GetScore(void) { return m_nNumScore; }
 
 private:	// 自分だけがアクセス可能
 

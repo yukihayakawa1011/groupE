@@ -20,13 +20,19 @@
 #include "character.h"
 #include "motion.h"
 #include "camera.h"
+#include "score.h"
+#include "player.h"
 
 // マクロ定義
 #define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
 #define MOVE_TIMER	(660)
 
-int CResult::m_nScore = 0;
+// 静的メンバ変数
+int *CResult::m_nScore = 0;
 CResult::TYPE CResult::m_type = CResult::TYPE_MAX;
+int CResult::m_nNumPlayer = 0;
+CPlayer **CResult::m_ppPlayer = nullptr;
+CScore **CResult::m_apScore = nullptr;
 
 //===============================================
 // コンストラクタ
@@ -71,83 +77,108 @@ HRESULT CResult::Init(void)
 		}
 	}
 
-	// 種類ごとに描画
-	switch (m_type)
+	//// 種類ごとに描画
+	//switch (m_type)
+	//{
+
+	//case TYPE_MULTI_WIN:
+	//{
+	//	m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
+	//	m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
+	//	m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
+	//	m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+	//	m_apCharacter[TYPE_MULTI_LOSE] = CCharacter::Create("data\\TXT\\motion_kidsgirl.txt");
+	//	m_apCharacter[TYPE_MULTI_LOSE]->GetMotion()->InitSet(5);
+	//	m_apCharacter[TYPE_MULTI_LOSE]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
+	//	m_apCharacter[TYPE_MULTI_LOSE]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+
+	//	CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
+	//	CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, 100.0f));
+
+	//	CObject2D *pObj = CObject2D::Create();
+	//	pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.8f, 0.0f));
+	//	pObj->SetSize(SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.2f);
+	//	pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\result_win.png"));
+	//}
+	//	break;
+
+	//case TYPE_MULTI_LOSE:
+	//{
+	//	m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsgirl.txt");
+	//	m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
+	//	m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
+	//	m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+	//	m_apCharacter[TYPE_MULTI_LOSE] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
+	//	m_apCharacter[TYPE_MULTI_LOSE]->GetMotion()->InitSet(5);
+	//	m_apCharacter[TYPE_MULTI_LOSE]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
+	//	m_apCharacter[TYPE_MULTI_LOSE]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+
+	//	CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
+	//	CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, -100.0f));
+
+	//	CObject2D *pObj = CObject2D::Create();
+	//	pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.8f, 0.0f));
+	//	pObj->SetSize(SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.2f);
+	//	pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\result_lose.png"));
+	//}
+	//	break;
+
+	//case TYPE_MAX:
+	//{
+	//	m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
+	//	if (m_nScore != 0)
+	//	{
+	//		m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
+	//	}
+	//	else
+	//	{
+	//		m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(5);
+	//	}
+
+	//	m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
+	//	m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+
+	//	CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
+	//	CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, 0.0f));
+
+	//	int aScore[NUM_RANK] = {};	// スコア格納用
+	//	m_nRank = -1;	//ランクインしてない状態
+
+	//	// データの読み込み
+	//	Load(&aScore[0]);
+
+	//	// データのソート
+	//	Sort(&aScore[0]);
+
+	//	// ランクイン確認
+	//	RankIn(&aScore[0], m_nScore);
+	//}
+	//	break;
+	//}
+
+	// 人数分ポインタ生成
+	m_ppPlayer = new CPlayer*[m_nNumPlayer];
+
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 	{
+		char aBodyPass[200] = "";		// 胴体パス
+		char aLegPass[200] = "";		// 下半身パス
 
-	case TYPE_MULTI_WIN:
-	{
-		m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-		m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
-		m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
-		m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		m_apCharacter[TYPE_MULTI_LOSE] = CCharacter::Create("data\\TXT\\motion_kidsgirl.txt");
-		m_apCharacter[TYPE_MULTI_LOSE]->GetMotion()->InitSet(5);
-		m_apCharacter[TYPE_MULTI_LOSE]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
-		m_apCharacter[TYPE_MULTI_LOSE]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		sprintf(&aBodyPass[0], "data\\TXT\\Player%d\\motion_ninjabody.txt", nCnt);
+		sprintf(&aLegPass[0], "data\\TXT\\Player%d\\motion_ninjaleg.txt", nCnt);
 
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, 100.0f));
-
-		CObject2D *pObj = CObject2D::Create();
-		pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.8f, 0.0f));
-		pObj->SetSize(SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.2f);
-		pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\result_win.png"));
+		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
+		m_ppPlayer[nCnt]->BindId(nCnt);
+		m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_NONE);
 	}
-		break;
 
-	case TYPE_MULTI_LOSE:
+	m_apScore = new CScore*[m_nNumPlayer];
+
+	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
-		m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsgirl.txt");
-		m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
-		m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
-		m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		m_apCharacter[TYPE_MULTI_LOSE] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-		m_apCharacter[TYPE_MULTI_LOSE]->GetMotion()->InitSet(5);
-		m_apCharacter[TYPE_MULTI_LOSE]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
-		m_apCharacter[TYPE_MULTI_LOSE]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(50.0f + nCount * 300.0f, 180.0f, 0.0f), 15.0f, 15.0f);
 
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, -100.0f));
-
-		CObject2D *pObj = CObject2D::Create();
-		pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.8f, 0.0f));
-		pObj->SetSize(SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.2f);
-		pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\result_lose.png"));
-	}
-		break;
-
-	case TYPE_MAX:
-	{
-		m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-		if (m_nScore != 0)
-		{
-			m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
-		}
-		else
-		{
-			m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(5);
-		}
-
-		m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
-		m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, 0.0f));
-
-		int aScore[NUM_RANK] = {};	// スコア格納用
-		m_nRank = -1;	//ランクインしてない状態
-
-		// データの読み込み
-		Load(&aScore[0]);
-
-		// データのソート
-		Sort(&aScore[0]);
-
-		// ランクイン確認
-		RankIn(&aScore[0], m_nScore);
-	}
-		break;
+		m_apScore[nCount]->SetScore(m_nScore[nCount]);
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
@@ -160,7 +191,6 @@ HRESULT CResult::Init(void)
 //===============================================
 void CResult::Uninit(void)
 {
-
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
 	{
 		if (m_apCharacter[nCnt] != NULL)
@@ -171,8 +201,25 @@ void CResult::Uninit(void)
 		}
 	}
 
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	{
+		if (m_apScore[nCnt] != nullptr)
+		{// 使用されている場合
+
+			// 終了処理
+			m_apScore[nCnt]->Uninit();
+
+			// 破棄
+			delete m_apScore[nCnt];
+
+			// 使用していない状態にする
+			m_apScore[nCnt] = nullptr;
+		}
+	}
+
 	m_type = TYPE_MAX;
 	m_nScore = 0;
+	m_nNumPlayer = 0;
 }
 
 //===============================================
@@ -205,6 +252,35 @@ void CResult::Update(void)
 void CResult::Draw(void)
 {
 	CScene::Draw();
+}
+
+//===============================================
+// スコア設定処理
+//===============================================
+void CResult::SetScore(CPlayer **ppPlayer)
+{
+	CPlayer *pPlayer = CPlayer::GetTop();
+	int nNumGoal = 0;
+
+	// ゴールしている人数を判定
+	while (pPlayer != nullptr) {
+
+		CPlayer *pPlNext = pPlayer->GetNext();	// 次を覚える
+
+		if (pPlayer->GetGoal()) {	// ゴールしている
+
+			nNumGoal++;
+		}
+
+		pPlayer = pPlNext;	// 次に移動
+	}
+
+	m_nScore = new int [nNumGoal];
+
+	for (int i = 0; i < nNumGoal; i++)
+	{
+		m_nScore[i] = ppPlayer[i]->GetScore()->GetScore();
+	}
 }
 
 //===============================================
