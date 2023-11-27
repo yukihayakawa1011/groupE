@@ -174,6 +174,30 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 			CScore * pScore = CScore::Create(D3DXVECTOR3(50.0f + nCnt * 500.0f, 50.0f, 0.0f), 30.0f, 30.0f);
 			m_ppPlayer[nCnt]->BindScore(pScore);
+
+			float fData = 0.0f;
+			float fData1 = 0.0f;
+
+			if (nCnt == 1 || nCnt == 3)
+			{
+				fData = 930.0f;		
+			}
+			else
+			{
+				fData = 0.0f;		
+			}
+
+			if (nCnt == 2 || nCnt == 3)
+			{
+				fData1 = 600.0f;
+			}
+			else
+			{
+				fData1 = 0.0f;
+			}
+
+			//UIÇÃê∂ê¨
+			CUI *pUI = CUI::Create(D3DXVECTOR3(175.0f + fData, 60.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
 		}
 
 		
@@ -264,11 +288,7 @@ HRESULT CGame::Init(void)
 	//ö‚
 	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//UIÇÃê∂ê¨
-	CUI::Create(D3DXVECTOR3(175.0f, 60.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame0.png", "data\\TEXTURE\\player_icon0.png", CUI::TYPE_LEFTUP);
-	CUI::Create(D3DXVECTOR3(1105.0f, 60.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame1.png", "data\\TEXTURE\\player_icon1.png", CUI::TYPE_RIGHTUP);
-	CUI::Create(D3DXVECTOR3(175.0f, 660.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame2.png", "data\\TEXTURE\\player_icon2.png", CUI::TYPE_LEFTDOWN);
-	CUI::Create(D3DXVECTOR3(1105.0f, 660.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\TEXTURE\\frame3.png", "data\\TEXTURE\\player_icon3.png", CUI::TYPE_RIGHTDOWN);
+
 
 	//ÉJÉÅÉâèâä˙âª
 	{
