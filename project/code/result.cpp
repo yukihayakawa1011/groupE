@@ -177,7 +177,7 @@ HRESULT CResult::Init(void)
 	{
 		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(50.0f + nCount * 300.0f, 180.0f, 0.0f), 15.0f, 15.0f);
 
-		m_apScore[nCount]->SetScore(m_pPlayer->GetScore()->GetScore());
+		//m_apScore[nCount]->SetScore(m_pPlayer->GetScore()->GetScore());
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
