@@ -357,6 +357,14 @@ HRESULT CGame::Init(void)
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
+	//ミニマップリセット
+	CMiniMap* pMiniMap = CManager::GetInstance()->GetMiniMap();
+	if (pMiniMap != nullptr)
+	{
+		pMiniMap->Load();
+		pMiniMap->Reset();
+	}
+
 	return S_OK;
 }
 
@@ -375,6 +383,12 @@ void CGame::Uninit(void)
 		{
 			break;
 		}
+	}
+
+	CMiniMap* pMiniMap = CManager::GetInstance()->GetMiniMap();
+	if (pMiniMap != nullptr)
+	{
+		pMiniMap->UnLoad();
 	}
 
 	if (m_pFileLoad != nullptr)
