@@ -36,6 +36,7 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(設定)
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
+	void SetLife(int nlife) { m_life = nlife; }
 
 private:	// 自分だけがアクセス可能
 

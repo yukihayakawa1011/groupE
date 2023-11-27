@@ -68,7 +68,7 @@ HRESULT CRanking::Init(void)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
-			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(50.0f + nCntRanking * 800.0f, 180.0f + nCntRank * 70.0f, 0.0f), 30.0f, 30.0f);
+			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(50.0f + nCntRanking * 800.0f, 180.0f + nCntRank * 70.0f, 0.0f), 15.0f, 15.0f);
 		}
 	}
 

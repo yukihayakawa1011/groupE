@@ -7,14 +7,15 @@
 #ifndef _MINIMAP_H_
 #define _MINIMAP_H_
 
-#define TEST_WIDTH		(256)
-#define TEST_HEIGHT		(144)
+#include "task.h"
+#include "input.h"
 
 //前方宣言
 class CMultiCamera;
+class CObject2D;
 
-//ミニマップクラス（結構特殊のためいったん継承なし）
-class CMiniMap
+//ミニマップクラス
+class CMiniMap : public CTask
 {
 public:
 	//頂点変更種類列挙（複数使用時AND演算して入れて）
@@ -34,16 +35,19 @@ public:
 	//基本処理
 	HRESULT Init(void);
 	void Uninit(void);
+	void Update(void){}
 	void DrawMap(void);
 	void DrawTexture(void);
-	static void Load(void);		//デバイスロスト対策：ロスト解消したら呼び出してね。初期化にも使える。
-	static void UnLoad(void);	//デバイスロスト対策：ロストしたら呼び出してね
-	static void Reset(void);	//まっくろくろすけにして探索してないことにする。初期化にどうぞ
+	void Load(void);		//デバイスロスト対策：ロスト解消したら呼び出してね。初期化にも使える。
+	void UnLoad(void);	//デバイスロスト対策：ロストしたら呼び出してね。終了にも使える。
+	void Reset(void);	//まっくろくろすけにして探索してないことにする。初期化にどうぞ
+
+	static CMiniMap* Create(const D3DXVECTOR3 posMap, const D3DXVECTOR3 rotMap, const float width, const float height, const int playerNum, 
+		const int elaseWidth,const int elaseHeight);
 
 	//マップポリゴンの設定・取得処理
 	void SetPosition(const D3DXVECTOR3 pos);
 	void SetRotation(const D3DXVECTOR3 rot);
-	void SetSize(float fWidth, float fHeight);
 
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
@@ -57,17 +61,21 @@ private:
 	void CulcDiagonal(void);
 
 	// メンバ変数
-	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;			// 頂点バッファへのポインタ
-	static LPDIRECT3DTEXTURE9 m_pTextureMap;	// テクスチャ
-	static LPDIRECT3DTEXTURE9 m_pTextureUnex;	// 未探索場所を黒くしたテクスチャ
-	static LPDIRECT3DSURFACE9 m_pZSurface;		// テクスチャの深度バッファ
-	static bool m_bExplored[TEST_WIDTH][TEST_HEIGHT];
+	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	// 頂点バッファへのポインタ
+	LPDIRECT3DTEXTURE9 m_pTextureMap;	// テクスチャ
+	LPDIRECT3DTEXTURE9 m_pTextureUnex;	// 未探索場所を黒くしたテクスチャ
+	LPDIRECT3DSURFACE9 m_pZSurface;		// テクスチャの深度バッファ
+	CObject2D** m_ppPlayerIcon;
+	bool** m_ppExplored;//探索済みドット
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_rot;	// 向き
 	float m_fLength;	// 対角線の長さ
 	float m_fAngle;		// 対角線の角度
 	float m_fWidth;		// 幅
 	float m_fHeight;	// 高さ
+	int m_nElaseWidth;	//探索済みにする幅
+	int m_nElaseHeight;	//探索済みにする高さ
+	int m_nPlayerNum;	//プレイヤー人数分
 };
 
 #endif // !_MINIMAP_H_

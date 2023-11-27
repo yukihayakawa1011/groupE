@@ -10,23 +10,29 @@
 #include "object_manager.h"
 #include "camera.h"
 #include "player.h"
+#include "object2D.h"
 #include <assert.h>
-
-//テストマクロ
-#define ELASE_WIDTH		(10)
-#define ELASE_HEIGHT	(10)
-
-//静的メンバ変数
-LPDIRECT3DTEXTURE9 CMiniMap::m_pTextureMap = nullptr;
-LPDIRECT3DTEXTURE9 CMiniMap::m_pTextureUnex = nullptr;
-LPDIRECT3DSURFACE9 CMiniMap::m_pZSurface = nullptr;
-bool CMiniMap::m_bExplored[TEST_WIDTH][TEST_HEIGHT] = {};
 
 //===================================================
 // コンストラクタ
 //===================================================
 CMiniMap::CMiniMap()
 {
+	m_pVtxBuff = nullptr;
+	m_pTextureMap = nullptr;
+	m_pTextureUnex = nullptr;
+	m_pZSurface = nullptr;
+	m_ppPlayerIcon = nullptr;
+	m_ppExplored = nullptr;
+	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_fLength = 0.0f;
+	m_fAngle = 0.0f;
+	m_fWidth = 0.0f;
+	m_fHeight = 0.0f;
+	m_nElaseWidth = 0;
+	m_nElaseHeight = 0;
+	m_nPlayerNum = 0;
 }
 
 //===================================================
@@ -45,6 +51,23 @@ HRESULT CMiniMap::Init(void)
 
 	//デバイスの取得
 	pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+
+	//探索済みドット用フラグ生成
+	if (m_ppExplored == nullptr)
+	{
+		int x = static_cast<int>(m_fWidth);
+		int y = static_cast<int>(m_fHeight);
+
+		m_ppExplored = new bool*[x];
+		for (int cntX = 0; cntX < x; cntX++)
+		{
+			m_ppExplored[cntX] = new bool[y];
+			for (int cntY = 0; cntY < y; cntY++)
+			{
+				m_ppExplored[cntX][cntY] = false;
+			}
+		}
+	}
 
 	// テクスチャの生成
 	Load();
@@ -70,6 +93,20 @@ HRESULT CMiniMap::Init(void)
 	// 頂点情報設定
 	SetpVtx(CHANGE_ALL);
 
+	//プレイヤー人数分アイコン用2Dオブジェ生成
+	if (m_nPlayerNum > 0)
+	{//1人以上いる
+		m_ppPlayerIcon = new CObject2D*[m_nPlayerNum];
+		for (int cnt = 0; cnt < m_nPlayerNum; cnt++)
+		{
+			m_ppPlayerIcon[cnt] = CObject2D::Create();
+		}
+	}
+	else
+	{//不正
+		assert(false);
+	}
+
 	return S_OK;
 }
 
@@ -85,8 +122,37 @@ void CMiniMap::Uninit(void)
 		m_pVtxBuff = nullptr;
 	}
 
+	//アイコンオブジェ破棄
+	if (m_ppPlayerIcon != nullptr)
+	{
+		for (int cnt = 0; cnt < m_nPlayerNum; cnt++)
+		{
+			m_ppPlayerIcon[cnt]->Uninit();
+		}
+		//入れ物破棄
+		delete m_ppPlayerIcon;
+	}
+
+	//探索済みドット用フラグ破棄
+	if (m_ppExplored != nullptr)
+	{
+		int x = static_cast<int>(m_fWidth);
+		int y = static_cast<int>(m_fHeight);
+
+		for (int cntX = 0; cntX < x; cntX++)
+		{//bool*の部分破棄
+			delete[] m_ppExplored[cntX];
+		}
+
+		//2次元配列みたいなポインタ破棄
+		delete[] m_ppExplored;
+	}
+
 	// テクスチャ破棄
 	UnLoad();
+
+	//タスク破棄
+	Release();
 }
 
 //===============================================
@@ -144,6 +210,10 @@ void CMiniMap::DrawTexture(void)
 	LPDIRECT3DSURFACE9 pOrgZBuffer;
 
 	LPDIRECT3DSURFACE9 pTexSurface;
+
+	//int型サイズ
+	int nWidth = static_cast<int>(m_fWidth);
+	int nHeight = static_cast<int>(m_fHeight);
 
 	//専用カメラ
 	D3DXMATRIX mtxViewCamera;	// ビューマトリックス
@@ -225,10 +295,10 @@ void CMiniMap::DrawTexture(void)
 
 		//ビューポートマトリ設定
 		D3DXMatrixIdentity(&mtxViewPort);
-		mtxViewPort._11 = TEST_WIDTH * 0.5;
-		mtxViewPort._22 = -TEST_HEIGHT * 0.5;
-		mtxViewPort._41 = TEST_WIDTH * 0.5;
-		mtxViewPort._42 = TEST_HEIGHT * 0.5;
+		mtxViewPort._11 = m_fWidth * 0.5f;
+		mtxViewPort._22 = -m_fHeight * 0.5f;
+		mtxViewPort._41 = m_fWidth * 0.5f;
+		mtxViewPort._42 = m_fHeight * 0.5f;
 
 		//全部掛ける
 		mtx = mtxView * mtxProj * mtxViewPort;	//内部でD3DXMatrixMultiplyやってるみたい
@@ -246,17 +316,17 @@ void CMiniMap::DrawTexture(void)
 		D3DXVec3TransformCoord(&posWorld, &posPlayer, &mtx);
 		int posX = (int)posWorld.x;
 		int posY = (int)posWorld.y;
-		int posElaseMinX = ((posX - ELASE_WIDTH) > 0) ? posX - ELASE_WIDTH : 0;
-		int posElaseMaxX = ((posX + ELASE_WIDTH) < TEST_WIDTH) ? posX + ELASE_WIDTH : TEST_WIDTH;
-		int posElaseMinY = ((posY - ELASE_HEIGHT) > 0) ? posY - ELASE_HEIGHT : 0;
-		int posElaseMaxY = ((posY + ELASE_HEIGHT) < TEST_HEIGHT) ? posY + ELASE_HEIGHT : TEST_HEIGHT;
+		int posElaseMinX = ((posX - m_nElaseWidth) > 0) ? posX - m_nElaseWidth : 0;
+		int posElaseMaxX = ((posX + m_nElaseWidth) < nWidth) ? posX + m_nElaseWidth : nWidth;
+		int posElaseMinY = ((posY - m_nElaseHeight) > 0) ? posY - m_nElaseHeight : 0;
+		int posElaseMaxY = ((posY + m_nElaseHeight) < nHeight) ? posY + m_nElaseHeight : nHeight;
 
 		//一定範囲消す
 		for (int y = posElaseMinY; y < posElaseMaxY; y++)
 		{
 			for (int x = posElaseMinX; x < posElaseMaxX; x++)
 			{
-				m_bExplored[x][y] = true;
+				m_ppExplored[x][y] = true;
 			}
 		}
 
@@ -266,12 +336,12 @@ void CMiniMap::DrawTexture(void)
 	D3DLOCKED_RECT lockrect;
 	m_pTextureUnex->LockRect(0, &lockrect, nullptr, 0);
 	BYTE* pBitByte = (BYTE*)lockrect.pBits;
-	for (int y = 0; y < TEST_HEIGHT; y++)
+	for (int y = 0; y < nHeight; y++)
 	{
 		DWORD* pBitColor = (DWORD*)(pBitByte + y * lockrect.Pitch);
-		for (int x = 0; x < TEST_WIDTH; x++)
+		for (int x = 0; x < nWidth; x++)
 		{
-			if (m_bExplored[x][y] == true)
+			if (m_ppExplored[x][y] == true)
 			{
 				pBitColor[x] = 0x00000000;
 			}
@@ -295,10 +365,14 @@ void CMiniMap::Load(void)
 {
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタ
 
+	//int型サイズ
+	int nWidth = static_cast<int>(m_fWidth);
+	int nHeight = static_cast<int>(m_fHeight);
+
 	//各テクスチャ生成
 	if (m_pTextureMap == nullptr)
 	{
-		D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
+		D3DXCreateTexture(pDevice, nWidth, nHeight,
 			1,
 			D3DUSAGE_RENDERTARGET,
 			D3DFMT_A8R8G8B8,
@@ -308,7 +382,7 @@ void CMiniMap::Load(void)
 	
 	if (m_pTextureUnex == nullptr)
 	{
-		D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
+		D3DXCreateTexture(pDevice, nWidth, nHeight,
 			1,
 			D3DUSAGE_DYNAMIC,
 			D3DFMT_A8R8G8B8,
@@ -319,10 +393,10 @@ void CMiniMap::Load(void)
 		D3DLOCKED_RECT lockrect;
 		m_pTextureUnex->LockRect(0, &lockrect, nullptr, 0);
 		BYTE* pBitByte = (BYTE*)lockrect.pBits;
-		for (int y = 0; y < TEST_HEIGHT; y++)
+		for (int y = 0; y < nHeight; y++)
 		{
 			DWORD* pBitColor = (DWORD*)(pBitByte + y * lockrect.Pitch);
-			for (int x = 0; x < TEST_WIDTH; x++)
+			for (int x = 0; x < nWidth; x++)
 			{
 				pBitColor[x] = 0xff000000;
 			}
@@ -335,7 +409,7 @@ void CMiniMap::Load(void)
 	{
 		//共通Zバッファ生成
 		pDevice->CreateDepthStencilSurface(
-			TEST_WIDTH, TEST_HEIGHT,
+			nWidth, nHeight,
 			D3DFMT_D16,
 			D3DMULTISAMPLE_NONE,
 			0, false,
@@ -373,22 +447,50 @@ void CMiniMap::Reset(void)
 {
 	if (m_pTextureUnex != nullptr)
 	{
+		//int型サイズ
+		int nWidth = static_cast<int>(m_fWidth);
+		int nHeight = static_cast<int>(m_fHeight);
+
 		//あらかじめ黒く塗りつぶす
 		D3DLOCKED_RECT lockrect;
 		m_pTextureUnex->LockRect(0, &lockrect, nullptr, 0);
 		BYTE* pBitByte = (BYTE*)lockrect.pBits;
-		for (int y = 0; y < TEST_HEIGHT; y++)
+		for (int y = 0; y < nHeight; y++)
 		{
 			DWORD* pBitColor = (DWORD*)(pBitByte + y * lockrect.Pitch);
-			for (int x = 0; x < TEST_WIDTH; x++)
+			for (int x = 0; x < nWidth; x++)
 			{
 				pBitColor[x] = 0xffffffff;
-				m_bExplored[x][y] = false;
+				m_ppExplored[x][y] = false;
 			}
 		}
 
 		m_pTextureUnex->UnlockRect(0);
 	}
+}
+
+//===============================================
+// 生成処理
+//===============================================
+CMiniMap* CMiniMap::Create(const D3DXVECTOR3 posMap, const D3DXVECTOR3 rotMap, const float width, const float height, const int playerNum,
+	const int elaseWidth, const int elaseHeight)
+{
+	CMiniMap* pMiniMap = nullptr;
+
+	if (pMiniMap == nullptr)
+	{//ちゃんとぬるぽだから生成
+		pMiniMap = new CMiniMap;
+		pMiniMap->m_nPlayerNum = playerNum;
+		pMiniMap->m_fWidth = width;
+		pMiniMap->m_fHeight = height;
+		pMiniMap->m_nElaseWidth = elaseWidth;
+		pMiniMap->m_nElaseHeight = elaseHeight;
+		pMiniMap->Init();
+		pMiniMap->SetPosition(posMap);
+		pMiniMap->SetRotation(rotMap);
+	}
+
+	return pMiniMap;
 }
 
 //===============================================
@@ -408,21 +510,6 @@ void CMiniMap::SetPosition(const D3DXVECTOR3 pos)
 void CMiniMap::SetRotation(const D3DXVECTOR3 rot)
 {
 	m_rot = rot;
-
-	//頂点再設定
-	SetpVtx(CHANGE_POS);
-}
-
-//===============================================
-// ポリゴンサイズ設定処理
-//===============================================
-void CMiniMap::SetSize(float fWidth, float fHeight)
-{
-	m_fWidth = fWidth;
-	m_fHeight = fHeight;
-
-	//角度計算
-	CulcDiagonal();
 
 	//頂点再設定
 	SetpVtx(CHANGE_POS);

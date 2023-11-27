@@ -12,7 +12,7 @@
 namespace
 {
 	const int MAX_WIDTHPATTERN = 10;	// パターン数
-	const float POLYSIZE = (50.0f);	// ポリゴンのサイズ
+	const float POLYSIZE = (25.0f);	// ポリゴンのサイズ
 }
 
 //===============================================
@@ -209,6 +209,23 @@ void CScore::AddScore(int nScore)
 void CScore::LowerScore(int nScore)
 {
 	m_nNumScore -= nScore;
+
+	m_apNumber[0]->SetIdx(m_nNumScore % 100000000 / 10000000);
+	m_apNumber[1]->SetIdx(m_nNumScore % 10000000 / 1000000);
+	m_apNumber[2]->SetIdx(m_nNumScore % 1000000 / 100000);
+	m_apNumber[3]->SetIdx(m_nNumScore % 100000 / 10000);
+	m_apNumber[4]->SetIdx(m_nNumScore % 10000 / 1000);
+	m_apNumber[5]->SetIdx(m_nNumScore % 1000 / 100);
+	m_apNumber[6]->SetIdx(m_nNumScore % 100 / 10);
+	m_apNumber[7]->SetIdx(m_nNumScore % 10 / 1);
+}
+
+//===============================================
+//スコア設定処理
+//===============================================
+void CScore::SetScore(const int nScore)
+{
+	m_nNumScore = nScore;
 
 	m_apNumber[0]->SetIdx(m_nNumScore % 100000000 / 10000000);
 	m_apNumber[1]->SetIdx(m_nNumScore % 10000000 / 1000000);

@@ -35,6 +35,8 @@
 #include "enemy.h"
 #include "goal.h"
 #include "score.h"
+#include "life.h"
+#include "ui.h"
 
 //===============================================
 // マクロ定義
@@ -378,6 +380,8 @@ void CPlayer::Uninit(void)
 		// 使用されていない状態にする
 		m_pScore = nullptr;
 	}
+
+	
 
 	// 人数を減らす
 	m_nNumCount--;

@@ -236,13 +236,24 @@ bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DX
 		}
 	}
 
-	//下に落ちたらワープ処理
-	if (pos.y <= -1000.0f)
+	//今ある落とし穴から落ちたらワープ
+	for (int cnt = 0; cnt < FLOOR_MAX; cnt++)
 	{
-		move.y = 0.0f;
-		pos.x = POS_WARP_X;
-		pos.y = POS_WARP_Y;
-		pos.z = POS_WARP_Z;
+		D3DXVECTOR3 posObj = m_apModel[cnt]->GetPosition();
+		//下に落ちたらワープ処理
+		if (pos.x + vtxMax.x > posObj.x + vtxObjMin.x
+			&& pos.x + vtxMin.x < posObj.x + vtxObjMax.x
+			&& pos.z + vtxMax.z > posObj.z + vtxObjMin.z
+			&& pos.z + vtxMin.z < posObj.z + vtxObjMax.z)
+		{
+			if (pos.y <= -1000.0f)
+			{
+				move.y = 0.0f;
+				pos.x = POS_WARP_X;
+				pos.y = POS_WARP_Y;
+				pos.z = POS_WARP_Z;
+			}
+		}
 	}
 
 	return bLand;
