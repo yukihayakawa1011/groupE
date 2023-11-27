@@ -31,6 +31,8 @@ CGimmickMultiDoor::CGimmickMultiDoor()
 	// 値のクリア
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 		m_aObject[nCnt].pModel = nullptr;
+		m_aObject[nCnt].posDest = { 0.0f, 0.0f, 0.0f };
+		m_aObject[nCnt].posOld = { 0.0f, 0.0f, 0.0f };
 	}
 
 	m_state = STATE_NEUTRAL;
@@ -198,9 +200,77 @@ void CGimmickMultiDoor::StateSet(void)
 //==========================================================
 bool CGimmickMultiDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
 {
-	D3DXVECTOR3 ObjPos = GetPosition();
-	D3DXVECTOR3 ObjRot = GetRotation();
 	bool bValue = false;
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		if (m_aObject[nCnt].pModel != nullptr) {	// モデルを使用されている場合
+			D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			D3DXVECTOR3 ObjPos = D3DXVECTOR3(m_aObject[nCnt].pModel->GetMtx()->_41, m_aObject[nCnt].pModel->GetMtx()->_42, m_aObject[nCnt].pModel->GetMtx()->_43);
+			D3DXVECTOR3 ObjRot = GetRotation();
+
+			// 向きを反映
+			m_aObject[nCnt].pModel->SetRotSize(vtxObjMax,
+				vtxObjMin,
+				pFile->GetMax(m_aObject[nCnt].pModel->GetId()),
+				pFile->GetMin(m_aObject[nCnt].pModel->GetId()),
+				m_aObject[nCnt].pModel->GetRotation().y);
+
+			if (pos.y + vtxMax.y > ObjPos.y + vtxObjMin.y
+				&& pos.y + vtxMin.y <= ObjPos.y + vtxObjMax.y)
+			{//プレイヤーとモデルが同じ高さにある
+				if (posOld.x + vtxMin.x >= m_aObject[nCnt].posOld.x + vtxObjMax.x
+					&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x
+					&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
+					&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
+				{//右から左にめり込んだ
+					//位置を戻す
+					pos.x = ObjPos.x + vtxObjMax.x - vtxMin.x + 0.1f;
+				}
+				else if (posOld.x + vtxMax.x <= m_aObject[nCnt].posOld.x + vtxObjMin.x
+					&& pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
+					&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
+					&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
+				{//左から右にめり込んだ
+					//位置を戻す
+					pos.x = ObjPos.x + vtxObjMin.x - vtxMax.x - 0.1f;
+				}
+				else if (posOld.z + vtxMin.z >= m_aObject[nCnt].posOld.z + vtxObjMax.z
+					&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z
+					&& pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
+					&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x)
+				{//奥から手前にめり込んだ
+					//位置を戻す
+					pos.z = ObjPos.z + vtxObjMax.z - vtxMin.z + 0.1f;
+				}
+				else if (posOld.z + vtxMax.z <= m_aObject[nCnt].posOld.z + vtxObjMin.z
+					&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
+					&& pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
+					&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x)
+				{//手前から奥にめり込んだt
+				 //位置を戻す
+					pos.z = ObjPos.z + vtxObjMin.z - vtxMax.z - 0.1f;
+				}
+			}
+
+			//Y
+			if (pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
+				&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x
+				&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
+				&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
+			{//範囲内にある
+			 //上からの判定
+				if (posOld.y + vtxMin.y >= ObjPos.y + vtxObjMax.y
+					&& pos.y + vtxMin.y < ObjPos.y + vtxObjMax.y)
+				{//上からめり込んだ
+				 //上にのせる
+					pos.y = ObjPos.y + vtxObjMax.y - vtxMin.y;
+					move.y = 0.0f;
+				}
+			}
+		}
+	}
 
 	return bValue;
 }
@@ -241,6 +311,7 @@ void CGimmickMultiDoor::ObjIner(void)
 {
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 		if (m_aObject[nCnt].pModel != nullptr) {	// モデルを使用されている場合
+			m_aObject[nCnt].posOld = { m_aObject[nCnt].pModel->GetMtx()->_41 , m_aObject[nCnt].pModel->GetMtx()->_42, m_aObject[nCnt].pModel->GetMtx()->_43};
 			D3DXVECTOR3 pos = m_aObject[nCnt].pModel->GetCurrentPosition();
 			D3DXVECTOR3 posDiff = m_aObject[nCnt].posDest - pos;
 			pos += posDiff * m_fInerMulti;
