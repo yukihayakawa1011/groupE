@@ -169,6 +169,7 @@
     <ClCompile Include="code\gimmick.cpp" />
     <ClCompile Include="code\gimmick_button.cpp" />
     <ClCompile Include="code\gimmick_lever.cpp" />
+    <ClCompile Include="code\gimmick_multidoor.cpp" />
     <ClCompile Include="code\gimmick_rotatedoor.cpp" />
     <ClCompile Include="code\gimmick_spear.cpp" />
     <ClCompile Include="code\gimmick_startdoor.cpp" />
@@ -238,6 +239,7 @@
     <ClInclude Include="code\gimmick.h" />
     <ClInclude Include="code\gimmick_button.h" />
     <ClInclude Include="code\gimmick_lever.h" />
+    <ClInclude Include="code\gimmick_multidoor.h" />
     <ClInclude Include="code\gimmick_rotatedoor.h" />
     <ClInclude Include="code\gimmick_spear.h" />
     <ClInclude Include="code\gimmick_startdoor.h" />

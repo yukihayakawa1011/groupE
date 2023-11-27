@@ -23,7 +23,6 @@
 #include "slow.h"
 #include "task_manager.h"
 #include "object_manager.h"
-#include "minimap.h"
 
 //===============================================
 // 静的メンバ変数
@@ -208,15 +207,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		m_pSlow->Init();
 	}
 
-	//ミニマップ生成
-	if (m_pMiniMap == nullptr)
-	{
-		m_pMiniMap = new CMiniMap;
-		m_pMiniMap->Init();
-		m_pMiniMap->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f));
-		m_pMiniMap->SetSize(256.0f, 144.0f);
-	}
-
 	// モードの生成
 	SetMode(CScene::MODE_TITLE);
 
@@ -230,14 +220,6 @@ void CManager::Uninit(void)
 {
 	// サウンドの停止
 	m_pSound->Stop();
-
-	//ミニマップ終了
-	if (m_pMiniMap != nullptr)
-	{
-		m_pMiniMap->Uninit();
-		delete m_pMiniMap;
-		m_pMiniMap = nullptr;
-	}
 
 	if (m_pScene != NULL)
 	{

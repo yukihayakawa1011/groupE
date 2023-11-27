@@ -17,6 +17,7 @@ class CPlayer;
 class CFileLoad;
 class CClient;
 class CMeshDome;
+class CMiniMap;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -57,6 +58,7 @@ public:
 	void SendGoal(void);
 	static void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
 	static int GetNumPlayer(void) { return m_nNumPlayer; }
+	CMiniMap* GetMiniMap(void) { return m_pMiniMap; }
 
 	// メンバ関数(ポインタ)
 	CPlayer *GetPlayer(void);
@@ -76,6 +78,7 @@ private:
 	CMultiCamera **m_ppCamera;		// カメラのポインタ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
 	CTime *m_pTimer;
+	CMiniMap* m_pMiniMap;	// ミニマップ
 	CClient *m_pClient;			// クライアントのポインタ
 	char m_aAddress[30];			// 接続先サーバーのアドレス
 	static STATE m_state;			// 状態
