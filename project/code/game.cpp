@@ -41,6 +41,8 @@
 #include "minimap.h"
 #include "ui.h"
 #include "score.h"
+#include "gimmick_multidoor.h"
+#include "minimap.h"
 
 // 無名名前空間を定義
 namespace {
@@ -218,6 +220,14 @@ HRESULT CGame::Init(void)
 		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
 		pFall->BindButton(pButton);
 
+		// 協力扉
+		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		pMultiDoor->SetNumButton(2);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, 0.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
+		pMultiDoor->BindButton(pButton);
+		
 		// ゴール
 		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
@@ -357,12 +367,10 @@ HRESULT CGame::Init(void)
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
-	//ミニマップリセット
-	CMiniMap* pMiniMap = CManager::GetInstance()->GetMiniMap();
-	if (pMiniMap != nullptr)
+	//ミニマップ生成
+	if (m_pMiniMap == nullptr)
 	{
-		pMiniMap->Load();
-		pMiniMap->Reset();
+		m_pMiniMap = CMiniMap::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 256.0f, 144.0f, m_nNumPlayer, 10, 10);
 	}
 
 	return S_OK;
@@ -385,10 +393,9 @@ void CGame::Uninit(void)
 		}
 	}
 
-	CMiniMap* pMiniMap = CManager::GetInstance()->GetMiniMap();
-	if (pMiniMap != nullptr)
+	if (m_pMiniMap != nullptr)
 	{
-		pMiniMap->UnLoad();
+		m_pMiniMap->Uninit();
 	}
 
 	if (m_pFileLoad != nullptr)
@@ -483,7 +490,7 @@ void CGame::Update(void)
 void CGame::Draw(void)
 {
 	//ミニマップテクスチャの描画
-	CManager::GetInstance()->GetMiniMap()->DrawTexture();
+	m_pMiniMap->DrawTexture();
 
 	CScene::Draw();
 }
