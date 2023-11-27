@@ -41,6 +41,7 @@
 #include "minimap.h"
 #include "ui.h"
 #include "score.h"
+#include "gimmick_multidoor.h"
 
 // ñ≥ñºñºëOãÛä‘ÇíËã`
 namespace {
@@ -218,6 +219,14 @@ HRESULT CGame::Init(void)
 		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
 		pFall->BindButton(pButton);
 
+		// ã¶óÕî‡
+		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		pMultiDoor->SetNumButton(2);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, 0.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
+		pMultiDoor->BindButton(pButton);
+		
 		// ÉSÅ[Éã
 		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
