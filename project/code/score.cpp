@@ -223,7 +223,7 @@ void CScore::LowerScore(int nScore)
 //===============================================
 //ÉXÉRÉAê›íËèàóù
 //===============================================
-void CScore::SetScore(const int nScore)
+void CScore::SetScore(int nScore)
 {
 	m_nNumScore = nScore;
 

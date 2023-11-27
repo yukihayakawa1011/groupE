@@ -43,12 +43,10 @@ public:
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
-	static void SetScore(int nNum) { m_nScore = nNum; }
+	static void SetScore(CPlayer **ppPlayer);
 	static void SetType(TYPE type) { m_type = type; }
 	static TYPE GetType(void) { return m_type; }
 	static void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
-	static void SetPlayer(CPlayer *player) { m_pPlayer = player; }
-	static CPlayer *GetPlayer(void) { return m_pPlayer; }
 
 private:
 
@@ -62,12 +60,12 @@ private:
 	CFileLoad *m_pFileLoad;	// ファイル読み込みのポインタ
 	CMeshDome *m_pMeshSky;		// 空用
 	CTime *m_pTime;			// タイマー
-	CScore **m_apScore;	// スコアのポインタ(順位分)
+	static CScore **m_apScore;	// スコアのポインタ(順位分)
 	CCharacter *m_apCharacter[TYPE_MAX];
-	static CPlayer *m_pPlayer;		// プレイヤーのポインタ
+	static CPlayer **m_ppPlayer;		// プレイヤーのポインタ
 	int m_nRank;				// 今回のランク
 	int m_nTimer;				// 遷移タイマー
-	static int m_nScore;		// 今回のスコア
+	static int *m_nScore;			// 今回のスコア
 	static TYPE m_type;		    // 種類
 	static int m_nNumPlayer;    // ゴールしたプレイヤーの人数
 };
