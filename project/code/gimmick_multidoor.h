@@ -41,6 +41,7 @@ private:
 	struct SObj {
 		CModel *pModel;		// オブジェクトのポインタ
 		D3DXVECTOR3 posDest;	// 目標の座標
+		D3DXVECTOR3 posOld;	// 前回の座標
 	};
 
 public:	// 誰でもアクセス可能

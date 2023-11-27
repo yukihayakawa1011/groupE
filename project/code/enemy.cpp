@@ -891,11 +891,11 @@ void CEnemy::MotionSet(void)
 	}
 	else {	// 待機状態
 		if (m_pBody->GetMotion()->GetEnd()) {	// モーションが終了している
-			m_pBody->GetMotion()->BlendSet(MOTION_NEUTRAL);
+			m_pBody->GetMotion()->BlendSet(MOTION_MOVE);
 		}
 
 		if (m_pLeg->GetMotion()->GetEnd()) {	// モーションが終了している
-			m_pLeg->GetMotion()->BlendSet(MOTION_NEUTRAL);
+			m_pLeg->GetMotion()->BlendSet(MOTION_MOVE);
 		}
 	}
 }
