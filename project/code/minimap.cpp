@@ -296,43 +296,52 @@ void CMiniMap::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタ
 
 	//各テクスチャ生成
-	D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
-		1,
-		D3DUSAGE_RENDERTARGET,
-		D3DFMT_A8R8G8B8,
-		D3DPOOL_DEFAULT, //こいつのためデバイスロスト時は破棄が必要
-		&m_pTextureMap);
-
-	D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
-		1,
-		D3DUSAGE_DYNAMIC,
-		D3DFMT_A8R8G8B8,
-		D3DPOOL_DEFAULT, //こいつのためデバイスロスト時は破棄が必要
-		&m_pTextureUnex);
-
-	//あらかじめ黒く塗りつぶす
-	D3DLOCKED_RECT lockrect;
-	m_pTextureUnex->LockRect(0, &lockrect, nullptr, 0);
-	BYTE* pBitByte = (BYTE*)lockrect.pBits;
-	for (int y = 0; y < TEST_HEIGHT; y++)
+	if (m_pTextureMap == nullptr)
 	{
-		DWORD* pBitColor = (DWORD*)(pBitByte + y * lockrect.Pitch);
-		for (int x = 0; x < TEST_WIDTH; x++)
+		D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
+			1,
+			D3DUSAGE_RENDERTARGET,
+			D3DFMT_A8R8G8B8,
+			D3DPOOL_DEFAULT, //こいつのためデバイスロスト時は破棄が必要
+			&m_pTextureMap);
+	}
+	
+	if (m_pTextureUnex == nullptr)
+	{
+		D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
+			1,
+			D3DUSAGE_DYNAMIC,
+			D3DFMT_A8R8G8B8,
+			D3DPOOL_DEFAULT, //こいつのためデバイスロスト時は破棄が必要
+			&m_pTextureUnex);
+
+		//あらかじめ黒く塗りつぶす
+		D3DLOCKED_RECT lockrect;
+		m_pTextureUnex->LockRect(0, &lockrect, nullptr, 0);
+		BYTE* pBitByte = (BYTE*)lockrect.pBits;
+		for (int y = 0; y < TEST_HEIGHT; y++)
 		{
-			pBitColor[x] = 0xff000000;
+			DWORD* pBitColor = (DWORD*)(pBitByte + y * lockrect.Pitch);
+			for (int x = 0; x < TEST_WIDTH; x++)
+			{
+				pBitColor[x] = 0xff000000;
+			}
 		}
+
+		m_pTextureUnex->UnlockRect(0);
 	}
 
-	m_pTextureUnex->UnlockRect(0);
-
-	//共通Zバッファ生成
-	pDevice->CreateDepthStencilSurface(
-		TEST_WIDTH, TEST_HEIGHT,
-		D3DFMT_D16,
-		D3DMULTISAMPLE_NONE,
-		0, false ,
-		&m_pZSurface,
-		nullptr);
+	if (m_pZSurface == nullptr)
+	{
+		//共通Zバッファ生成
+		pDevice->CreateDepthStencilSurface(
+			TEST_WIDTH, TEST_HEIGHT,
+			D3DFMT_D16,
+			D3DMULTISAMPLE_NONE,
+			0, false,
+			&m_pZSurface,
+			nullptr);
+	}
 }
 
 //===============================================

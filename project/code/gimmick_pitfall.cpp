@@ -13,6 +13,9 @@
 
 // マクロ定義
 #define ROTATE_ANGLE	(0.05f * D3DX_PI)	//床の開く角度
+#define POS_WARP_X		(760.0f)					//ワープ位置のX
+#define POS_WARP_Y		(1000.0f)					//ワープ位置のY
+#define POS_WARP_Z		(-500.0f)					//ワープ位置のZ
 
 //==========================================================
 // コンストラクタ
@@ -231,6 +234,15 @@ bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DX
 				pos.z = posObj.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
 			}
 		}
+	}
+
+	//下に落ちたらワープ処理
+	if (pos.y <= -1000.0f)
+	{
+		move.y = 0.0f;
+		pos.x = POS_WARP_X;
+		pos.y = POS_WARP_Y;
+		pos.z = POS_WARP_Z;
 	}
 
 	return bLand;
