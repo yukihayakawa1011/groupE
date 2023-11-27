@@ -492,6 +492,7 @@ void CGame::Update(void)
 
 				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
 					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+					CResult::SetScore(m_ppPlayer);
 					m_state = STATE_END;
 				}
 			}
@@ -553,6 +554,9 @@ bool CGame::EndCheck(void)
 	}
 
 	if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
+
+		CResult::SetScore(m_ppPlayer);
+
 		return true;
 	}
 
