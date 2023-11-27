@@ -296,7 +296,7 @@ void CMiniMap::Load(void)
 	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタ
 
 	//各テクスチャ生成
-	if (m_pTextureMap != nullptr)
+	if (m_pTextureMap == nullptr)
 	{
 		D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
 			1,
@@ -306,7 +306,7 @@ void CMiniMap::Load(void)
 			&m_pTextureMap);
 	}
 	
-	if (m_pTextureUnex != nullptr)
+	if (m_pTextureUnex == nullptr)
 	{
 		D3DXCreateTexture(pDevice, TEST_WIDTH, TEST_HEIGHT,
 			1,
@@ -331,7 +331,7 @@ void CMiniMap::Load(void)
 		m_pTextureUnex->UnlockRect(0);
 	}
 
-	if (m_pZSurface != nullptr)
+	if (m_pZSurface == nullptr)
 	{
 		//共通Zバッファ生成
 		pDevice->CreateDepthStencilSurface(
