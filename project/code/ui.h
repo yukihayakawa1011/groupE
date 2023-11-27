@@ -64,11 +64,13 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	TYPE GetType(void) { return m_type; }
+	int GetLife(void) { return m_nLife; }
 
 	// メンバ関数(設定)
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetType(TYPE type) { m_type = type; }
+	void SetLife(int nLife) { m_nLife = nLife; }
 
 private:	// 自分だけがアクセス可能
 
@@ -83,6 +85,7 @@ private:	// 自分だけがアクセス可能
 	TYPE m_type;
 	const static char *m_apFrameFileName[FRAME_MAX];	// 初期読み込みファイル名
 	const static char *m_apIconFileName[ICON_MAX];	// 初期読み込みファイル名
+	int m_nLife;
 
 };
 
