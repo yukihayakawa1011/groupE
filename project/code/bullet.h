@@ -47,6 +47,7 @@ public:	// 誰でもアクセス可能
 	void SetPosition(const D3DXVECTOR3 &pos) { m_Info.pos = pos; }
 	void SetRotation(const D3DXVECTOR3 &rot) { m_Info.rot = rot; }
 	void SetMove(const D3DXVECTOR3 &move) { m_Info.move = move; }
+	void Hit(void);
 
 private:	// 自分だけがアクセス可能
 

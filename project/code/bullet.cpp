@@ -6,11 +6,13 @@
 //==========================================================
 #include "bullet.h"
 #include "model.h"
+#include "enemy.h"
 
 // 無名名前空間
 namespace {
 	const char* FILENAME = "data\\MODEL\\bullet.x";	// ファイル名
 	const int SETLIFE = (240);	// 弾の設定寿命
+	const float COLLRANGE = (25.0f);
 }
 
 //==========================================================
@@ -79,8 +81,12 @@ void CBullet::Update(void)
 	if (m_nLife <= 0) {	// 寿命がなくなった
 		Uninit();	// 終了
 	}
-	else {
+	else
+	{
 		m_nLife--;
+
+		// 当たり判定
+		Hit();
 	}
 }
 
@@ -137,4 +143,28 @@ void CBullet::Controller(void)
 {
 	// 移動
 	m_Info.pos += m_Info.move;
+}
+
+//==========================================================
+// ヒット処理
+//==========================================================
+void CBullet::Hit(void)
+{
+	bool bHit = false;
+	CEnemy *pEnem = CEnemy::GetTop();
+
+	// 敵との判定
+	while (pEnem != nullptr) {
+		CEnemy *pEnemNext = pEnem->GetNext();
+
+		if (pEnem->HitCheck(m_Info.pos, COLLRANGE)) {	// 当たっている
+			bHit = true;
+		}
+
+		pEnem = pEnemNext;
+	}
+
+	if (bHit) {
+		Uninit();
+	}
 }
