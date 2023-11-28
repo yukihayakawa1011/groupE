@@ -86,6 +86,7 @@ CEnemy::CEnemy()
 	m_bJump = false;
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
+	m_pChase = nullptr;
 
 	// 自分自身をリストに追加
 	if (m_pTop != nullptr)
@@ -420,6 +421,7 @@ void CEnemy::Controller(void)
 	{
 		m_bJump = false;
 	}
+
 	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, D3DXVECTOR3(0.0f,0.0f,0.0f), vtxMin, vtxMax,0);
 
 	//追跡モードでかつxzどちらか処理前から変化している
@@ -465,8 +467,8 @@ void CEnemy::Search(void)
 	float fLengthNear = FLT_MAX;
 	CPlayer* pPlayerNear = SearchNearPlayer(SEARCH_RADIUS, &fLengthNear);
 
-	if (pPlayerNear != nullptr && fLengthNear <= SEARCH_LENGTH)
-	{//プレイヤー見つけた
+	if (pPlayerNear != nullptr && fLengthNear <= SEARCH_LENGTH && pPlayerNear->GetAction() != CPlayer::ACTION_HENGE)
+	{//プレイヤー見つけてかつ相手が隠れ身の術
 		m_bChace = true;
 		if (nullptr != m_pFov)
 		{
@@ -658,6 +660,7 @@ CPlayer* CEnemy::SearchNearPlayer(float fRadiusRest, float* pLength)
 			float fRadius = D3DXVec3Dot(&vecGaze, &vecPos) / (D3DXVec3Length(&vecGaze) * D3DXVec3Length(&vecPos));
 			if (fLengthNear > fLength && fRadius >= 1.0f - fRadiusRest)
 			{//一番近いやつ
+
 				pPlayerNear = pPlayer;
 				fLengthNear = fLength;
 			}
