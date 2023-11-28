@@ -5,12 +5,14 @@
 //
 //===============================================
 #include "minimap.h"
+#include "texture.h"
 #include "manager.h"
 #include "renderer.h"
 #include "object_manager.h"
 #include "camera.h"
 #include "player.h"
 #include "object2D.h"
+#include "object2DMap.h"
 #include <assert.h>
 
 //===================================================
@@ -18,16 +20,13 @@
 //===================================================
 CMiniMap::CMiniMap()
 {
-	m_pVtxBuff = nullptr;
+	m_pObjMap = nullptr;
 	m_pTextureMap = nullptr;
 	m_pTextureUnex = nullptr;
 	m_pZSurface = nullptr;
 	m_ppPlayerIcon = nullptr;
 	m_ppExplored = nullptr;
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_fLength = 0.0f;
-	m_fAngle = 0.0f;
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nElaseWidth = 0;
@@ -47,10 +46,8 @@ CMiniMap::~CMiniMap()
 //===============================================
 HRESULT CMiniMap::Init(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;		//デバイスへのポインタ
-
-	//デバイスの取得
-	pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
+	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタ
+	CTexture* pTexture = CManager::GetInstance()->GetTexture();
 
 	//探索済みドット用フラグ生成
 	if (m_ppExplored == nullptr)
@@ -73,38 +70,31 @@ HRESULT CMiniMap::Init(void)
 	Load();
 	Reset();
 
-	//頂点バッファの生成
-	pDevice->CreateVertexBuffer(
-		sizeof(VERTEX_2D) * 4,
-		D3DUSAGE_WRITEONLY,
-		FVF_VERTEX_2D,
-		D3DPOOL_MANAGED,
-		&m_pVtxBuff,
-		nullptr);
-
-	if (m_pVtxBuff == nullptr)
-	{// 生成に失敗した場合
-		return E_FAIL;
-	}
-
-	//角度計算
-	CulcDiagonal();
-
-	// 頂点情報設定
-	SetpVtx(CHANGE_ALL);
-
 	//プレイヤー人数分アイコン用2Dオブジェ生成
 	if (m_nPlayerNum > 0)
 	{//1人以上いる
 		m_ppPlayerIcon = new CObject2D*[m_nPlayerNum];
 		for (int cnt = 0; cnt < m_nPlayerNum; cnt++)
 		{
-			m_ppPlayerIcon[cnt] = CObject2D::Create();
+			char path[128];
+			sprintf(&path[0], "data\\TEXTURE\\player_icon%d.png", cnt);
+
+			m_ppPlayerIcon[cnt] = CObject2D::Create(4);
+			m_ppPlayerIcon[cnt]->BindTexture(pTexture->Regist(&path[0]));
+			m_ppPlayerIcon[cnt]->SetLength(12.0f, 12.0f);
+			m_ppPlayerIcon[cnt]->SetVtx();
 		}
 	}
 	else
 	{//不正
 		assert(false);
+	}
+
+	//マップオブジェ生成
+	if (m_pObjMap == nullptr)
+	{
+		m_pObjMap = CObject2DMap::Create(m_pos, D3DXVECTOR3(0.0f,0.0f,0.0f), m_fWidth * 0.5f, m_fHeight * 0.5f);
+		m_pObjMap->SetTexture(m_pTextureMap, m_pTextureUnex);
 	}
 
 	return S_OK;
@@ -115,13 +105,6 @@ HRESULT CMiniMap::Init(void)
 //===============================================
 void CMiniMap::Uninit(void)
 {
-	// 頂点バッファの廃棄
-	if (m_pVtxBuff != nullptr)
-	{
-		m_pVtxBuff->Release();
-		m_pVtxBuff = nullptr;
-	}
-
 	//アイコンオブジェ破棄
 	if (m_ppPlayerIcon != nullptr)
 	{
@@ -148,50 +131,18 @@ void CMiniMap::Uninit(void)
 		delete[] m_ppExplored;
 	}
 
+	//マップオブジェ破棄
+	if (m_pObjMap != nullptr)
+	{
+		m_pObjMap->Uninit();
+		m_pObjMap = nullptr;
+	}
+
 	// テクスチャ破棄
 	UnLoad();
 
 	//タスク破棄
 	Release();
-}
-
-//===============================================
-// ポリゴン描画処理
-//===============================================
-void CMiniMap::DrawMap(void)
-{
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();		//デバイスへのポインタ
-	CTexture *pTexture = CManager::GetInstance()->GetTexture();
-
-	//頂点バッファをデータストリームに設定
-	pDevice->SetStreamSource(
-		0,
-		m_pVtxBuff,
-		0,
-		sizeof(VERTEX_2D));
-
-	// 頂点フォーマットの設定
-	pDevice->SetFVF(FVF_VERTEX_2D);
-
-	// マップテクスチャの設定
-	pDevice->SetTexture(0, m_pTextureMap);
-
-	// 描画
-	pDevice->DrawPrimitive(
-		D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-		0,
-		2	//頂点情報構造体のサイズ
-	);
-
-	// まっくろくろすけテクスチャの設定
-	pDevice->SetTexture(0, m_pTextureUnex);
-
-	// 描画
-	pDevice->DrawPrimitive(
-		D3DPT_TRIANGLESTRIP,	//プリミティブの種類
-		0,
-		2	//頂点情報構造体のサイズ
-	);
 }
 
 //===============================================
@@ -305,6 +256,7 @@ void CMiniMap::DrawTexture(void)
 	}
 	
 	//プレイヤーすべて見る
+	int nPlaceIcon = 0;
 	CPlayer* pPlayer = CPlayer::GetTop();
 	while (pPlayer != nullptr)
 	{
@@ -330,6 +282,18 @@ void CMiniMap::DrawTexture(void)
 			}
 		}
 
+		//アイコン置く
+		if (nPlaceIcon < m_nPlayerNum)
+		{
+			D3DXVECTOR3 posIcon = m_pos;
+			posIcon.x += -m_fWidth * 0.5f + static_cast<float>(posX);
+			posIcon.y += -m_fHeight * 0.5f + static_cast<float>(posY);
+			m_ppPlayerIcon[nPlaceIcon]->SetPosition(posIcon);
+			m_ppPlayerIcon[nPlaceIcon]->SetVtx();
+			nPlaceIcon++;
+		}
+
+		//次
 		pPlayer = pPlayer->GetNext();
 	}
 
@@ -485,110 +449,9 @@ CMiniMap* CMiniMap::Create(const D3DXVECTOR3 posMap, const D3DXVECTOR3 rotMap, c
 		pMiniMap->m_fHeight = height;
 		pMiniMap->m_nElaseWidth = elaseWidth;
 		pMiniMap->m_nElaseHeight = elaseHeight;
+		pMiniMap->m_pos = posMap;
 		pMiniMap->Init();
-		pMiniMap->SetPosition(posMap);
-		pMiniMap->SetRotation(rotMap);
 	}
 
 	return pMiniMap;
-}
-
-//===============================================
-// ポリゴン位置設定処理
-//===============================================
-void CMiniMap::SetPosition(const D3DXVECTOR3 pos)
-{
-	m_pos = pos;
-
-	//頂点再設定
-	SetpVtx(CHANGE_POS);
-}
-
-//===============================================
-// ポリゴン角度設定処理
-//===============================================
-void CMiniMap::SetRotation(const D3DXVECTOR3 rot)
-{
-	m_rot = rot;
-
-	//頂点再設定
-	SetpVtx(CHANGE_POS);
-}
-
-//===============================================
-// ポリゴン頂点設定処理
-//===============================================
-void CMiniMap::SetpVtx(const int nChangeVtx)
-{
-	VERTEX_2D *pVtx;
-
-	//頂点バッファをロックし頂点情報へのポインタを取得
-	m_pVtxBuff->Lock(
-		0,
-		0,
-		(void**)&pVtx,
-		0);
-
-	//頂点座標の設定
-	if ((nChangeVtx & CHANGE_POS) == CHANGE_POS)
-	{
-		//入れる
-		pVtx[0].pos.x = m_pos.x + sinf(m_rot.z + (-D3DX_PI + m_fAngle)) * m_fLength;
-		pVtx[0].pos.y = m_pos.y + cosf(m_rot.z + (-D3DX_PI + m_fAngle)) * m_fLength;
-		pVtx[0].pos.z = 0.0f;
-		pVtx[1].pos.x = m_pos.x + sinf(m_rot.z + (D3DX_PI - m_fAngle)) * m_fLength;
-		pVtx[1].pos.y = m_pos.y + cosf(m_rot.z + (D3DX_PI - m_fAngle)) * m_fLength;
-		pVtx[1].pos.z = 0.0f;
-		pVtx[2].pos.x = m_pos.x + sinf(m_rot.z + -m_fAngle) * m_fLength;
-		pVtx[2].pos.y = m_pos.y + cosf(m_rot.z + -m_fAngle) * m_fLength;
-		pVtx[2].pos.z = 0.0f;
-		pVtx[3].pos.x = m_pos.x + sinf(m_rot.z + m_fAngle) * m_fLength;
-		pVtx[3].pos.y = m_pos.y + cosf(m_rot.z + m_fAngle) * m_fLength;
-		pVtx[3].pos.z = 0.0f;
-	}
-
-	//法線ベクトルの設定
-	if ((nChangeVtx & CHANGE_RHW) == CHANGE_RHW)
-	{
-		//入れる
-		pVtx[0].rhw = 1.0f;
-		pVtx[1].rhw = 1.0f;
-		pVtx[2].rhw = 1.0f;
-		pVtx[3].rhw = 1.0f;
-	}
-
-	//頂点カラーの設定
-	if ((nChangeVtx & CHANGE_COL) == CHANGE_COL)
-	{
-		//入れる
-		pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-		pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	}
-
-	//テクスチャ座標の設定
-	if ((nChangeVtx & CHANGE_TEX) == CHANGE_TEX)
-	{
-		//入れる
-		pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
-		pVtx[1].tex = D3DXVECTOR2(1.0f, 0.0f);
-		pVtx[2].tex = D3DXVECTOR2(0.0f, 1.0f);
-		pVtx[3].tex = D3DXVECTOR2(1.0f, 1.0f);
-	}
-
-	//頂点バッファをアンロックする
-	m_pVtxBuff->Unlock();
-}
-
-//===============================================
-// ポリゴン角度計算処理
-//===============================================
-void CMiniMap::CulcDiagonal(void)
-{
-	//対角線の長さを算出する
-	m_fLength = sqrtf(m_fWidth * m_fWidth + m_fHeight * m_fHeight) * 0.5f;
-
-	//対角線の角度を算出する
-	m_fAngle = atan2f(m_fWidth, m_fHeight);
 }

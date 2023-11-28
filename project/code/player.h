@@ -54,6 +54,7 @@ public:
 		ACTION_THROW,			// 投げる
 		ACTION_DAMAGE,		// 攻撃を受けた
 		ACTION_FLUTTERING,	// じたばた
+		ACTION_KAKUREMI,		// 隠れ身
 		ACTION_MAX
 	};
 
@@ -116,6 +117,7 @@ public:	// 誰でもアクセス可能
 	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
 	void BindScore(CScore *pScore) { m_pScore = pScore; }
 	void BindUI(CUI *pUI) { m_pUI = pUI; }
+	void Ninjutsu(void);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -131,6 +133,7 @@ public:	// 誰でもアクセス可能
 	STATE GetState(void) { return m_Info.state; }
 	bool GetGoal(void) { return m_bGoal; }
 	CScore *GetScore(void) { return m_pScore; }
+	ACTION GetAction(void) const { return m_action; }
 
 private:	// 自分だけがアクセス可能
 

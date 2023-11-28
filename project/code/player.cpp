@@ -505,6 +505,7 @@ void CPlayer::Controller(void)
 			Attack();	// 攻撃
 			Catch();		// 掴む
 			Throw();		// 投げる
+			Ninjutsu();	// 術の使用
 			SelectItem();   // 捨てるアイテム選択
 		}
 	}
@@ -1129,7 +1130,6 @@ void CPlayer::MotionSet(void)
 		{// モーション終了
 			if (m_Catch.pPlayer == nullptr)
 			{
-				//m_action = ACTION_HOLD;	// 保持状態に変更
 				m_action = ACTION_NEUTRAL;
 			}
 		}
@@ -2147,5 +2147,33 @@ void CPlayer::BodySet(void)
 	if (m_pBody != nullptr)
 	{// 使用されている場合
 		m_pBody->Update();
+	}
+}
+
+//===============================================
+// 忍術設定
+//===============================================
+void CPlayer::Ninjutsu(void)
+{
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	// 入力装置確認
+	if (nullptr == pInputPad) {
+		return;
+	}
+
+	if (m_nId < 0 || m_nId >= PLAYER_MAX)
+	{// コントローラー数オーバー
+		return;
+	}
+
+	if (pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId)) {
+		m_action = ACTION_KAKUREMI;
+	}
+	else
+	{
+		if (m_action == ACTION_KAKUREMI) {
+			m_action = ACTION_NEUTRAL;
+		}
 	}
 }
