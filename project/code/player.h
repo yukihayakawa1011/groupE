@@ -133,6 +133,7 @@ public:	// 誰でもアクセス可能
 	STATE GetState(void) { return m_Info.state; }
 	bool GetGoal(void) { return m_bGoal; }
 	CScore *GetScore(void) { return m_pScore; }
+	ACTION GetAction(void) const { return m_action; }
 
 private:	// 自分だけがアクセス可能
 
