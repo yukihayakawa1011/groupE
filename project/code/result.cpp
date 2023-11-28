@@ -275,9 +275,11 @@ void CResult::SetScore(CPlayer **ppPlayer)
 		pPlayer = pPlNext;	// ŽŸ‚ÉˆÚ“®
 	}
 
-	m_nScore = new int [nNumGoal];
+	m_nNumPlayer = nNumGoal;
 
-	for (int i = 0; i < nNumGoal; i++)
+	m_nScore = new int [m_nNumPlayer];
+
+	for (int i = 0; i < m_nNumPlayer; i++)
 	{
 		m_nScore[i] = ppPlayer[i]->GetScore()->GetScore();
 	}
