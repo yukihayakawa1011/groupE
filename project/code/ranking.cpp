@@ -26,7 +26,7 @@
 //===============================================
 // 静的メンバ変数
 //===============================================
-CScore *CRanking::m_apScore[NUM_RANK] = {};	// ランキングのポインタ
+CScore *CRanking::m_apScore[NUM_RANKING][NUM_RANK] = {};	// ランキングのポインタ
 int CRanking::m_nScore = 0;					// スコア
 
 //===============================================
@@ -64,9 +64,12 @@ HRESULT CRanking::Init(void)
 	// ランクイン確認
 	RankIn(&aScore[0], m_nScore);
 
-	for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
-		m_apScore[nCntRank] = CScore::Create(D3DXVECTOR3(500.0f, 180.0f + nCntRank * 70.0f, 0.0f), 30.0f, 30.0f);
+		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+		{
+			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(50.0f + nCntRanking * 800.0f, 180.0f + nCntRank * 70.0f, 0.0f), 15.0f, 15.0f);
+		}
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
@@ -81,10 +84,14 @@ void CRanking::Uninit(void)
 {
 	m_nScore = 0;
 
-	for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
-		m_apScore[nCntRank]->Uninit();
+		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+		{
+			m_apScore[nCntRanking][nCntRank]->Uninit();
+		}
 	}
+
 }
 
 //===============================================

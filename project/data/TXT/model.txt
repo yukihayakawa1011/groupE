@@ -15,7 +15,7 @@ NUM_TEXTURE = 8
 # テクスチャファイル名
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/river000.jpg		# [0]川水(下)
-TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [1]川水(上)
+TEXTURE_FILENAME = data/TEXTURE/field001.jpg		# [1]川水(上)
 TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [2]監視カメラ
 TEXTURE_FILENAME = data/TEXTURE/WoodDesign.jpg		# [3]ちゃぶ台
 TEXTURE_FILENAME = data/TEXTURE/WoodDesign001.jpg	# [4]ちゃぶ台(脚)

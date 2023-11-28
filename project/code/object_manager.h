@@ -23,11 +23,17 @@ private:
 	~CObjectManager();	// デストラクタ
 
 public:
+	enum TYPE
+	{
+		TYPE_ALL = 0,
+		TYPE_3DONLY,
+	};
 
 	// リスト管理メンバ関数
 	HRESULT Init(void);
 	void Uninit(void);
 	void Draw(void);
+	void DrawAll(TYPE type = TYPE_ALL);
 	void ListIn(CObject *pObject);
 	CObject *GetTop(const int nPriority) { return m_apTop[nPriority]; }
 	int GetNumAll(void) { return m_nNumAll; }
@@ -41,7 +47,6 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	void ReleaseAll(void);
-	void DrawAll(void);
 	void DeathCheck(void);
 
 	// メンバ変数

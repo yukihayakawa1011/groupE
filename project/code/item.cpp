@@ -9,7 +9,7 @@
 #include "manager.h"
 #include "debugproc.h"
 #include "texture.h"
-#include "objectX.h"
+#include "model.h"
 
 // マクロ定義
 #define COLLISION_SIZE	(50.0f)
@@ -30,6 +30,7 @@ CItem::CItem()
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_type = TYPE_NORMAL;
 	m_pPrev = nullptr;
 	m_pNext = nullptr;
 
@@ -58,7 +59,7 @@ CItem::~CItem()
 //==========================================================
 // 生成
 //==========================================================
-CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int nType)
+CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType)
 {
 	CItem *pObjectX = nullptr;
 
@@ -74,16 +75,14 @@ CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, in
 
 		// 向き
 		pObjectX->SetRotation(rot);
-		
 
 		//// 種類設定
 		//pObjectX->SetType(nType);
 
 		// 種類
-		pObjectX->m_nType = nType;
+		pObjectX->m_nState = nType;
 		// 初期化処理
-		pObjectX->Init(pFileName);
-
+		pObjectX->Init(pFileName, type);
 	}
 	else
 	{// 生成に失敗した場合
@@ -99,12 +98,6 @@ CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, in
 //==========================================================
 HRESULT CItem::Init(void)
 {
-	m_pObject = CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
-
-	if (m_pObject != nullptr)
-	{
-		m_pObject->ListOut();
-	}
 
 	return S_OK;
 }
@@ -112,14 +105,10 @@ HRESULT CItem::Init(void)
 //==========================================================
 // 初期化処理
 //==========================================================
-HRESULT CItem::Init(const char *pFileName)
+HRESULT CItem::Init(const char *pFileName, int type)
 {
-	m_pObject = CObjectX::Create(m_pos, m_rot, pFileName);
-
-	if (m_pObject != nullptr)
-	{
-		m_pObject->ListOut();
-	}
+	m_pObject = CModel::Create(pFileName);
+	m_type = type;
 
 	return S_OK;
 }
@@ -186,7 +175,7 @@ void CItem::Update(void)
 		return;
 	}
 
-	switch (m_nType)
+	switch (m_nState)
 	{
 	case TYPE_NORMAL:
 	{
@@ -206,7 +195,7 @@ void CItem::Update(void)
 	}
 		break;
 
-	case TYPE_DROP:
+	case STATE_DROP:
 	{
 		m_posOld = m_pos;
 
@@ -224,13 +213,13 @@ void CItem::Update(void)
 
 			if (m_nBound >= BOUND_COUNT)
 			{
-				m_nType = TYPE_NORMAL;
+				m_nState = TYPE_NORMAL;
 			}
 		}
 	}
 		break;
 
-	case TYPE_CRASH:
+	case STATE_CRASH:
 	{
 		m_posOld = m_pos;
 
@@ -243,9 +232,7 @@ void CItem::Update(void)
 			m_pos.x = -900.0f;
 			m_move *= 0.8f;
 			m_move.x *= -1.0f;
-
-
-			m_nType = TYPE_NORMAL;
+			m_nState = TYPE_NORMAL;
 
 			Uninit();
 		}
@@ -279,7 +266,6 @@ void CItem::Update(void)
 	if (nullptr != m_pObject) {
 		m_pObject->SetPosition(m_pos);
 		m_pObject->SetRotation(m_rot);
-		m_pObject->Update();
 	}
 }
 
@@ -320,6 +306,101 @@ CItem *CItem::Collision(D3DXVECTOR3 &pos)
 }
 
 //==========================================================
+// それぞれのスコア設定
+//==========================================================
+int CItem::GetEachScore(void)
+{
+	switch (m_type)
+	{
+	case TYPE_COIN:
+	{
+		return 500;
+	}
+
+	break;
+
+	case TYPE_BRECELET:
+	{
+		return 1500;
+	}
+
+	break;
+
+	case TYPE_CUP:
+	{
+		return 1000;
+	}
+
+	break;
+
+	case TYPE_GEM00:
+	{
+		return 2000;
+	}
+
+	break;
+
+	case TYPE_GEM01:
+	{
+		return 2000;
+	}
+
+	break;
+
+	case TYPE_GOLDBAR:
+	{
+		return 3000;
+	}
+
+	break;
+
+	case TYPE_JAR:
+	{
+		return 700;
+	}
+
+	break;
+
+	case TYPE_KUNAI:
+	{
+		return 1300;
+	}
+
+	break;
+
+	case TYPE_RING00:
+	{
+		return 5000;
+	}
+
+	break;
+
+	case TYPE_SCROLL:
+	{
+		return 2500;
+	}
+
+	break;
+
+	case TYPE_SHURIKEN:
+	{
+		return 1000;
+	}
+
+	break;
+
+	case TYPE_MAX:
+	{
+
+	}
+
+	break;
+
+	}
+	return 0;
+}
+
+//==========================================================
 // 個別判定チェック
 //==========================================================
 bool CItem::CollisionCheck(D3DXVECTOR3 &pos)
@@ -334,7 +415,7 @@ bool CItem::CollisionCheck(D3DXVECTOR3 &pos)
 		return false;
 	}
 
-	if (m_nType == TYPE_DROP)
+	if (m_nState == STATE_DROP)
 	{
 		return false;
 	}

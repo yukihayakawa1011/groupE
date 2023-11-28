@@ -35,8 +35,12 @@ public:
 
 private:
 
+
+	bool EndCheck(void);
+
 	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
 	CFileLoad *m_pFileLoad;			// ファイル読み込みのポインタ
+	bool m_bEnd;
 };
 
 #endif

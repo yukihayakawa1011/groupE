@@ -1,6 +1,6 @@
 //==========================================================
 //
-// オブジェクト管理の処理 [task_manager.cpp]
+// オブジェクト管理の処理 [object_manager.cpp]
 // Author : Ibuki Okusada
 //
 //==========================================================
@@ -8,6 +8,7 @@
 #include "object.h"
 #include "camera.h"
 #include "manager.h"
+#include "camera_manager.h"
 
 CObjectManager *CObjectManager::m_pInstance = NULL;
 
@@ -57,8 +58,23 @@ void CObjectManager::Uninit(void)
 //==========================================================
 void CObjectManager::Draw(void)
 {
-	// リストの全描画
-	DrawAll();
+	CCamera *pCamera = CCameraManager::GetInstance()->GetCur();
+
+	while (pCamera != nullptr) {
+
+		CCamera *pCameraNext = pCamera->GetPrev();
+
+		// 設定
+		pCamera->SetCamera();
+
+		if (pCamera->GetDraw()) {	// 描画する場合
+
+			// リストの全描画
+			DrawAll();
+		}
+
+		pCamera = pCameraNext;
+	}
 }
 
 //===============================================
@@ -89,21 +105,8 @@ void CObjectManager::ReleaseAll(void)
 //===============================================
 // 全てのオブジェクトの描画
 //===============================================
-void CObjectManager::DrawAll(void)
+void CObjectManager::DrawAll(TYPE type)
 {
-	CCamera *pCamera = CManager::GetInstance()->GetCamera();
-	CCamera *pMapCamera = CManager::GetInstance()->GetScene()->GetMapCamera();
-
-	if (pMapCamera != NULL)
-	{
-		pMapCamera->SetCamera();
-	}
-
-	if (pCamera != NULL)
-	{// 使用されている場合
-		pCamera->SetCamera();
-	}
-
 	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
 	{
 		CObject *pObject = m_apTop[nCntPri];	// 先頭を取得
@@ -114,7 +117,10 @@ void CObjectManager::DrawAll(void)
 			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
 
 			// 描画処理
-			pObject->Draw();
+			if (type == TYPE_ALL || pObject->GetObject2D() == nullptr)
+			{
+				pObject->Draw();
+			}
 
 			pObject = pObjectNext;	// 次のオブジェクトに移動
 		}

@@ -60,9 +60,9 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	CMotion *m_pMotion;		// モーション情報のポインタ
 	CModel **m_ppParts;		// パーツの情報
-	int m_nNumParts;		// パーツ数
-	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
-	D3DXMATRIX *m_ParentMtx;// 親のマトリックス
+	int m_nNumParts;			// パーツ数
+	D3DXMATRIX m_mtxWorld;		// ワールドマトリックス
+	D3DXMATRIX *m_ParentMtx;	// 親のマトリックス
 	D3DXVECTOR3 m_pos;		// 座標
 	D3DXVECTOR3 m_rot;		// 向き
 };

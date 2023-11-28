@@ -10,7 +10,7 @@
 #include "task.h"
 
 // 前方宣言
-class CObjectX;
+class CModel;
 
 //==========================================================
 // アイテムクラスの定義(派生クラス)
@@ -19,11 +19,28 @@ class CItem : public CTask
 {
 public:
 
+	enum STATE
+	{
+		STATE_NORMAL = 0,	// 通常
+		STATE_DROP,		// ドロップしたもの
+		STATE_CRASH,			//崩れる
+		STATE_MAX
+	};
+
 	enum TYPE
 	{
-		TYPE_NORMAL = 0,	// 通常
-		TYPE_DROP,		// ドロップしたもの
-		TYPE_CRASH,			//崩れる
+		TYPE_NORMAL = 0,   // なんもない
+		TYPE_COIN,         // コイン
+		TYPE_BRECELET,     // ブレスレット
+		TYPE_CUP,          // 盃
+		TYPE_GEM00,        // エメラルド
+		TYPE_GEM01,        // ダイヤモンド
+		TYPE_GOLDBAR,      // 金塊
+		TYPE_JAR,          // 瓶
+		TYPE_KUNAI,        // クナイ
+		TYPE_RING00,       // 腕輪
+		TYPE_SCROLL,       // 巻物
+		TYPE_SHURIKEN,     //手裏剣
 		TYPE_MAX
 	};
 
@@ -34,11 +51,11 @@ public:	// 誰でもアクセス可能
 
 	// メンバ関数
 	HRESULT Init(void);
-	HRESULT Init(const char *pFileName);
+	HRESULT Init(const char *pFileName, int type);
 	void Uninit(void);
 	void Update(void);
 
-	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int nType = TYPE_NORMAL);
+	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType = TYPE_NORMAL);
 	static CItem *Collision(D3DXVECTOR3 &pos);
 
 	// メンバ関数(設定)
@@ -46,9 +63,10 @@ public:	// 誰でもアクセス可能
 	void SetOldPos(D3DXVECTOR3 posOld) { m_posOld = posOld; }
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(const D3DXVECTOR3 rot) { m_rot = rot; }
-	void SetType(TYPE type) { m_nType = type; }
-	CItem *GetNext(void) { return m_pNext; }
-	CItem *GetPrev(void) { return m_pPrev; }
+	void SetState(STATE state) { m_nState = state; }
+	void SetType(int type) { m_type = type; }
+	void SetNext(CItem *pNext) { m_pNext = pNext; }
+	void SetPrev(CItem *pPrev) { m_pPrev = pPrev; }
 
 	// メンバ関数(取得)
 	static CItem *GetTop(void) { return m_pTop; }
@@ -56,9 +74,12 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXVECTOR3 GetOldPos(void) { return m_posOld; }
-	int GetType(void) { return m_nType; }
-	void SetNext(CItem *pNext) { m_pNext = pNext; }
-	void SetPrev(CItem *pPrev) { m_pPrev = pPrev; }
+	int GetState(void) { return m_nState; }
+	int GetType(void) { return m_type; }
+	int GetEachScore(void);
+	CItem *GetNext(void) { return m_pNext; }
+	CItem *GetPrev(void) { return m_pPrev; }
+	CModel *GetModel(void) { return m_pObject; }
 
 private:	// 自分だけがアクセス可能
 
@@ -70,14 +91,15 @@ private:	// 自分だけがアクセス可能
 	static CItem *m_pCur;	// 最後尾のオブジェクトへのポインタ
 	CItem *m_pPrev;	// 前のオブジェクトへのポインタ
 	CItem *m_pNext;	// 次のオブジェクトへのポインタ
-	CObjectX *m_pObject;
+	CModel *m_pObject;
 	D3DXVECTOR3 m_move;	// 移動量
 	D3DXVECTOR3 m_posOld;	// 前回の座標
 	D3DXVECTOR3 m_pos;
 	D3DXVECTOR3 m_rot;
+	int m_type;
 	int m_nBound;		// bound回数
 	float m_fCurve;
-	int m_nType;
+	int m_nState;
 };
 
 #endif

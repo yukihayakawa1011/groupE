@@ -16,6 +16,14 @@
 class CWaist;
 class CCharacter;
 class CGimmick;
+class CScore;
+class CCamera;
+class CItem;
+class CLife;
+class CUI;
+
+// マクロ定義
+#define MAX_ITEM  (1280)  // 所持できるアイテムの最大数
 
 //==========================================================
 // プレイヤーのクラス定義(派生クラス)
@@ -45,6 +53,10 @@ public:
 		ACTION_HOLD,			// 保持
 		ACTION_THROW,			// 投げる
 		ACTION_DAMAGE,		// 攻撃を受けた
+		ACTION_FLUTTERING,	// じたばた
+		ACTION_HENGE,			// 変化の術
+		ACTION_KUNAI,			// クナイの術
+		ACTION_THUNDER,		// 雷の術
 		ACTION_MAX
 	};
 
@@ -96,6 +108,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CPlayer *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move,
 		const char *pBodyName, const char *pLegName);
+	bool HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage = 1);
 
 	// メンバ関数(設定)
 	void SetMove(const D3DXVECTOR3 move) { m_Info.move = move; }
@@ -104,6 +117,10 @@ public:	// 誰でもアクセス可能
 	void SetRotation(const D3DXVECTOR3 rot) { m_Info.rot = rot; }
 	void BindId(int nId) { m_nId = nId; }
 	void SetType(TYPE type);
+	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
+	void BindScore(CScore *pScore) { m_pScore = pScore; }
+	void BindUI(CUI *pUI) { m_pUI = pUI; }
+	void Ninjutsu(void);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -118,6 +135,8 @@ public:	// 誰でもアクセス可能
 	int GetLife(void) { return m_nLife; }
 	STATE GetState(void) { return m_Info.state; }
 	bool GetGoal(void) { return m_bGoal; }
+	CScore *GetScore(void) { return m_pScore; }
+	ACTION GetAction(void) const { return m_action; }
 
 private:	// 自分だけがアクセス可能
 
@@ -138,9 +157,19 @@ private:	// 自分だけがアクセス可能
 	void SetCatchMatrix(void);
 	void Throw(void);
 	void Drop(int nDropCnt);
+	void DropAll(void);
 	void DamageCollision(D3DXVECTOR3 pos);
 	void AttackCheck(void);
 	void GimmickRelease(void);
+	const char *ItemFileName(int type);
+	void ItemSort(void);
+	void AddItemCount(int type);
+	void SubItemCount(int type);
+	void SelectItem(void);
+	int GetSelectItem(int type);
+	void BodySet(void);
+	void ChangeBody(void);
+	void BulletSet(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -151,7 +180,9 @@ private:	// 自分だけがアクセス可能
 	SCatch m_Catch;		// 掴みに関する情報
 	CWaist *m_pWaist;		// 腰
 	CCharacter *m_pBody;	// 上半身
-	CCharacter *m_pLeg;	// 下半身
+	CCharacter *m_pLeg;		// 下半身
+	CScore *m_pScore;       // スコアへのポインタ
+	int m_aSaveType[MAX_ITEM];
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
@@ -159,12 +190,25 @@ private:	// 自分だけがアクセス可能
 	bool m_bJump;			// ジャンプ
 	bool m_bGoal;			// ゴールフラグ
 	int m_nLife;			// 体力
-	int m_nId;			// ID
+	int m_nId;				// ID
+	int m_nNumItemCoin;
+	int m_nNumItemBrecetet;
+	int m_nNumItemCup;
+	int m_nNumItemEmerald;
+	int m_nNumItemDiamond;
+	int m_nNumItemGold;
+	int m_nNumItemJar;
+	int m_nNumItemKunai;
+	int m_nNumItemRing;
+	int m_nNumItemScroll;
+	int m_nNumItemShuriken;
+	int m_nItemId;
 	TYPE m_type;			// 種類
 	ACTION m_action;		// アクション
 	int m_nItemCnt;		// 
 	static int m_nNumCount;
-	
+	CCamera *m_pMyCamera;	// 自分用のカメラ
+	CUI *m_pUI;
 };
 
 #endif

@@ -15,6 +15,7 @@
 #include "objectX.h"
 #include "game.h"
 #include "item.h"
+#include "title_enter.h"
 
 //==========================================================
 // マクロ定義
@@ -561,7 +562,11 @@ void CFileLoad::LoadItemData(FILE *pFile)
 	}
 
 	//フィールドの配置
-	CItem::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx), CItem::TYPE_NORMAL);
+	CItem *pItem = CItem::Create(pos, D3DXToRadian(rot), GetModelFileName(nIdx), CItem::TYPE_COIN, CItem::TYPE_NORMAL);
+
+	if(m_pEnter != nullptr){
+		m_pEnter->SetItemParent(pItem);
+	}
 }
 
 

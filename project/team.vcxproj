@@ -157,7 +157,9 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="code\billboard.cpp" />
+    <ClCompile Include="code\bullet.cpp" />
     <ClCompile Include="code\camera.cpp" />
+    <ClCompile Include="code\camera_manager.cpp" />
     <ClCompile Include="code\character.cpp" />
     <ClCompile Include="code\debugproc.cpp" />
     <ClCompile Include="code\enemy.cpp" />
@@ -168,6 +170,7 @@
     <ClCompile Include="code\gimmick.cpp" />
     <ClCompile Include="code\gimmick_button.cpp" />
     <ClCompile Include="code\gimmick_lever.cpp" />
+    <ClCompile Include="code\gimmick_multidoor.cpp" />
     <ClCompile Include="code\gimmick_rotatedoor.cpp" />
     <ClCompile Include="code\gimmick_spear.cpp" />
     <ClCompile Include="code\gimmick_startdoor.cpp" />
@@ -175,6 +178,7 @@
     <ClCompile Include="code\input.cpp" />
     <ClCompile Include="code\item.cpp" />
     <ClCompile Include="code\itembox.cpp" />
+    <ClCompile Include="code\life.cpp" />
     <ClCompile Include="code\light.cpp" />
     <ClCompile Include="code\main.cpp" />
     <ClCompile Include="code\manager.cpp" />
@@ -185,12 +189,15 @@
     <ClCompile Include="code\meshfield.cpp" />
     <ClCompile Include="code\meshorbit.cpp" />
     <ClCompile Include="code\meshwall.cpp" />
+    <ClCompile Include="code\minimap.cpp" />
     <ClCompile Include="code\model.cpp" />
     <ClCompile Include="code\motion.cpp" />
     <ClCompile Include="code\number.cpp" />
     <ClCompile Include="code\object.cpp" />
     <ClCompile Include="code\object2D.cpp" />
+    <ClCompile Include="code\object2DMap.cpp" />
     <ClCompile Include="code\object3D.cpp" />
+    <ClCompile Include="code\object3DFan.cpp" />
     <ClCompile Include="code\objectX.cpp" />
     <ClCompile Include="code\object_manager.cpp" />
     <ClCompile Include="code\gimmick_pitfall.cpp" />
@@ -212,14 +219,19 @@
     <ClCompile Include="code\task_manager.cpp" />
     <ClCompile Include="code\tcp_client.cpp" />
     <ClCompile Include="code\texture.cpp" />
+    <ClCompile Include="code\time.cpp" />
     <ClCompile Include="code\title.cpp" />
+    <ClCompile Include="code\title_enter.cpp" />
     <ClCompile Include="code\tutorial.cpp" />
+    <ClCompile Include="code\ui.cpp" />
     <ClCompile Include="code\waist.cpp" />
     <ClCompile Include="code\Xfile.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="code\billboard.h" />
+    <ClInclude Include="code\bullet.h" />
     <ClInclude Include="code\camera.h" />
+    <ClInclude Include="code\camera_manager.h" />
     <ClInclude Include="code\character.h" />
     <ClInclude Include="code\debugproc.h" />
     <ClInclude Include="code\enemy.h" />
@@ -230,6 +242,7 @@
     <ClInclude Include="code\gimmick.h" />
     <ClInclude Include="code\gimmick_button.h" />
     <ClInclude Include="code\gimmick_lever.h" />
+    <ClInclude Include="code\gimmick_multidoor.h" />
     <ClInclude Include="code\gimmick_rotatedoor.h" />
     <ClInclude Include="code\gimmick_spear.h" />
     <ClInclude Include="code\gimmick_startdoor.h" />
@@ -237,6 +250,7 @@
     <ClInclude Include="code\input.h" />
     <ClInclude Include="code\item.h" />
     <ClInclude Include="code\itembox.h" />
+    <ClInclude Include="code\life.h" />
     <ClInclude Include="code\light.h" />
     <ClInclude Include="code\main.h" />
     <ClInclude Include="code\manager.h" />
@@ -247,12 +261,15 @@
     <ClInclude Include="code\meshfield.h" />
     <ClInclude Include="code\meshorbit.h" />
     <ClInclude Include="code\meshwall.h" />
+    <ClInclude Include="code\minimap.h" />
     <ClInclude Include="code\model.h" />
     <ClInclude Include="code\motion.h" />
     <ClInclude Include="code\number.h" />
     <ClInclude Include="code\object.h" />
     <ClInclude Include="code\object2D.h" />
+    <ClInclude Include="code\object2DMap.h" />
     <ClInclude Include="code\object3D.h" />
+    <ClInclude Include="code\object3DFan.h" />
     <ClInclude Include="code\objectX.h" />
     <ClInclude Include="code\object_manager.h" />
     <ClInclude Include="code\gimmick_pitfall.h" />
@@ -272,8 +289,11 @@
     <ClInclude Include="code\task_manager.h" />
     <ClInclude Include="code\tcp_client.h" />
     <ClInclude Include="code\texture.h" />
+    <ClInclude Include="code\time.h" />
     <ClInclude Include="code\title.h" />
+    <ClInclude Include="code\title_enter.h" />
     <ClInclude Include="code\tutorial.h" />
+    <ClInclude Include="code\ui.h" />
     <ClInclude Include="code\waist.h" />
     <ClInclude Include="code\Xfile.h" />
   </ItemGroup>

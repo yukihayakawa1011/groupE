@@ -207,7 +207,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 		m_pSlow->Init();
 	}
 
-
 	// ƒ‚[ƒh‚Ì¶¬
 	SetMode(CScene::MODE_TITLE);
 

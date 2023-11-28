@@ -14,10 +14,10 @@
 class CScore;
 class CTime;
 class CPlayer;
-class CMapCamera;
 class CFileLoad;
 class CClient;
 class CMeshDome;
+class CMiniMap;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -58,6 +58,7 @@ public:
 	void SendGoal(void);
 	static void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
 	static int GetNumPlayer(void) { return m_nNumPlayer; }
+	CMiniMap* GetMiniMap(void) { return m_pMiniMap; }
 
 	// メンバ関数(ポインタ)
 	CPlayer *GetPlayer(void);
@@ -74,12 +75,15 @@ private:
 
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
 	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
+	CMultiCamera **m_ppCamera;		// カメラのポインタ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
+	CTime *m_pTimer;
+	CMiniMap* m_pMiniMap;	// ミニマップ
 	CClient *m_pClient;			// クライアントのポインタ
 	char m_aAddress[30];			// 接続先サーバーのアドレス
 	static STATE m_state;			// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
-	static int m_nNumPlayer;				// プレイ人数
+	static int m_nNumPlayer;		// プレイ人数
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;

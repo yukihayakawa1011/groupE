@@ -19,6 +19,7 @@
 #include "camera.h"
 #include "item.h"
 #include "objectX.h"
+#include "title_enter.h"
 
 //===============================================
 // マクロ定義
@@ -26,6 +27,13 @@
 #define AUTOMOVE_RANKING	(640)	// ランキング自動遷移
 #define TITLE_CAMLENGTH		(1000.0f)
 #define TITLE_CAMROTZ		(D3DX_PI * 0.35f)
+#define MOVE_TUTORIAL		(110)	//チュートリアルに遷移するまで
+
+// 無名名前空間
+namespace {
+	const D3DXVECTOR3 ENTERPOS = { 0.0f, 0.0f, 0.0f };	// ENTER 座標
+	const D3DXVECTOR3 ENTERROT = { 0.0f, 0.0f, 0.0f };	// ENTER 向き
+}
 
 //===============================================
 // コンストラクタ
@@ -39,6 +47,7 @@ CTitle::CTitle()
 	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	m_nCounter = 0;
 	m_bPush = false;
+	m_pEnter = nullptr;
 }
 
 //===============================================
@@ -54,6 +63,11 @@ CTitle::~CTitle()
 //===============================================
 HRESULT CTitle::Init(void)
 {
+	// enterインスタンスを生成
+	m_pEnter = new CTitleEnter;
+	m_pEnter->SetPosition(D3DXVECTOR3(0.0f, 700.0f, -700.0f));
+	m_pEnter->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, D3DX_PI * 0.4f));
+
 	//外部ファイル読み込みの生成
 	if (m_pFileLoad == NULL)
 	{// 使用していない場合
@@ -62,10 +76,12 @@ HRESULT CTitle::Init(void)
 		if (m_pFileLoad != NULL)
 		{
 			m_pFileLoad->Init();
+			m_pFileLoad->SetTitleEnter(m_pEnter);
 			m_pFileLoad->OpenFile("data\\TXT\\title_model.txt");
 		}
 	}
 
+	//家モデルの設置
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\house.x", NULL);
 
 	//カメラ初期化
@@ -104,6 +120,12 @@ void CTitle::Uninit(void)
 		delete m_pFileLoad;		// メモリの開放
 		m_pFileLoad = NULL;
 	}
+
+	if (m_pEnter != nullptr) {
+		m_pEnter->Uninit();
+		delete m_pEnter;
+		m_pEnter = nullptr;
+	}
 }
 
 //===============================================
@@ -114,8 +136,12 @@ void CTitle::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
+	if (m_pEnter != nullptr) {
+		m_pEnter->Update();
+	}
+
 	// 入力遷移
-	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_A, 0))
+	if (pInputKey->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
 		CItem *pItem = CItem::GetTop();
 
@@ -132,12 +158,12 @@ void CTitle::Update(void)
 			pItem->SetMove(move);
 
 			//タイプの変更											
-			pItem->SetType(CItem::TYPE_CRASH);
+			pItem->SetState(CItem::STATE_CRASH);
 
 			pItem = pItemNext;	// 次のオブジェクトに移動
 		}
 
-		m_bPush = true;
+		m_bPush = true;		//ボタンを押した
 
 		if (m_bClick == false)
 		{
@@ -151,7 +177,7 @@ void CTitle::Update(void)
 	{
 		m_nCounter++;
 
-		if (m_nCounter >= 110)
+		if (m_nCounter >= MOVE_TUTORIAL)
 		{
 			CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
 		}

@@ -11,6 +11,7 @@
 #include "task_manager.h"
 #include "object_manager.h"
 #include "object.h"
+#include "minimap.h"
 
 //===================================================
 // コンストラクタ
@@ -211,14 +212,13 @@ void CRenderer::Draw(void)
 	if (SUCCEEDED(m_pD3DDevice->BeginScene()))
 	{// 描画が成功した場合
 
-	 // オブジェクトの描画
-	 CObjectManager::GetInstance()->Draw();
+		// オブジェクトの描画
+		CObjectManager::GetInstance()->Draw();
 
 #if _DEBUG	// デバッグ時
 
 	 // エディターの描画
 #endif
-
 		// デバッグ表示
 		if (pDebugProc != NULL)
 		{

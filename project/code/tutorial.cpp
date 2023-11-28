@@ -21,6 +21,10 @@
 #include "debugproc.h"
 #include "player.h"
 #include "game.h"
+#include "goal.h"
+#include "gimmick_rotatedoor.h"
+#include "gimmick_startdoor.h"
+#include "gimmick_lever.h"
 
 // 無名名前空間
 namespace
@@ -45,6 +49,7 @@ CTutorial::CTutorial()
 {
 	// 値のクリア
 	m_pFileLoad = NULL;
+	m_bEnd = false;
 }
 
 //===============================================
@@ -74,7 +79,12 @@ HRESULT CTutorial::Init(void)
 
 	//カメラ初期化
 	{
-		CManager::GetInstance()->GetCamera()->Init();
+		//CManager::GetInstance()->GetCamera()->Init();
+
+		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f)); 
+
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定
 		viewport.X = 0;
@@ -85,6 +95,19 @@ HRESULT CTutorial::Init(void)
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
+
+	// 開始扉
+	CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + 10.0f));
+	l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
+	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(950.0f, 0.0f, -550.0f));
+	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+	p->SetLever(l);
+	
+	// 回転扉
+	CGimmickRotateDoor::Create(D3DXVECTOR3(-700.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+
+	// ゴール
+	CGoal::Create(D3DXVECTOR3(1025.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
 	// 人数分ポインタ生成
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];
@@ -165,6 +188,13 @@ void CTutorial::Update(void)
 		}
 	}
 
+	if (EndCheck()) 
+	{// 全員ゴールしている
+
+		// ゲームに遷移
+		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
+	}
+
 	// 更新処理
 	CScene::Update();
 }
@@ -174,6 +204,7 @@ void CTutorial::Update(void)
 //===============================================
 void CTutorial::Draw(void)
 {
+	// 描画処理
 	CScene::Draw();
 }
 
@@ -183,4 +214,32 @@ void CTutorial::Draw(void)
 CFileLoad *CTutorial::GetFileLoad(void)
 {
 	return m_pFileLoad;
+}
+
+//===================================================
+// ファイル読み込みの取得
+//===================================================
+bool CTutorial::EndCheck(void)
+{
+	CPlayer *pPl = CPlayer::GetTop();	// プレイヤー
+	int nNumGoal = 0;
+
+	// ゴールしている人数を判定
+	while (pPl != nullptr) {
+
+		CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
+
+		if (!pPl->GetGoal()) {	// ゴールしていない
+			break;
+		}
+
+		nNumGoal++;
+		pPl = pPlNext;	// 次に移動
+	}
+
+	if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
+		return true;
+	}
+
+	return false;
 }
