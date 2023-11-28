@@ -369,6 +369,14 @@ void CPlayer::Uninit(void)
 	}
 
 	// スコアの終了
+	if (m_pUI != nullptr) {// 使用されている場合
+		 // 終了処理
+		m_pUI->Uninit();
+		// 使用されていない状態にする
+		m_pUI = nullptr;
+	}
+
+	// スコアの終了
 	if (m_pScore != nullptr) {// 使用されている場合
 
 		// 終了処理
@@ -399,6 +407,8 @@ void CPlayer::Update(void)
 	m_Info.posOld = GetPosition();
 
 	StateSet();
+
+	
 
 	if (m_type == TYPE_ACTIVE)
 	{
@@ -569,6 +579,11 @@ void CPlayer::Controller(void)
 		AddItemCount(pItem->GetType());
 
 		pItem->Uninit();
+	}
+
+	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
+	{
+		m_pUI->SetLife(m_nLife);
 	}
 
 	// ギミックとの判定
