@@ -55,6 +55,8 @@ public:
 		ACTION_DAMAGE,		// 攻撃を受けた
 		ACTION_FLUTTERING,	// じたばた
 		ACTION_HENGE,			// 変化の術
+		ACTION_KUNAI,			// クナイの術
+		ACTION_THUNDER,		// 雷の術
 		ACTION_MAX
 	};
 
@@ -166,6 +168,7 @@ private:	// 自分だけがアクセス可能
 	int GetSelectItem(int type);
 	void BodySet(void);
 	void ChangeBody(void);
+	void BulletSet(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ

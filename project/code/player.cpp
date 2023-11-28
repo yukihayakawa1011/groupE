@@ -37,6 +37,7 @@
 #include "score.h"
 #include "life.h"
 #include "ui.h"
+#include "bullet.h"
 
 //===============================================
 // マクロ定義
@@ -66,6 +67,10 @@
 #define CATCH_MOVE	(2.0f)
 #define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
 #define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
+
+namespace {
+	const float BULLET_MOVE = (22.0f);
+}
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -1174,7 +1179,7 @@ void CPlayer::MotionSet(void)
 		}
 	}
 	else if (m_action == ACTION_DAMAGE)
-	{// 投げる
+	{// ダメージ
 		m_pBody->GetMotion()->BlendSet(m_action);
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
@@ -1184,7 +1189,7 @@ void CPlayer::MotionSet(void)
 		return;
 	}
 	else if (m_action == ACTION_HENGE)
-	{
+	{// 変化中
 		if (!m_bJump && !m_bMove)
 		{// 何もしていない
 			m_pBody->GetMotion()->BlendSet(ACTION_NEUTRAL);
@@ -1196,6 +1201,20 @@ void CPlayer::MotionSet(void)
 		else if (m_bMove)
 		{// 移動した
 			m_pBody->GetMotion()->BlendSet(ACTION_WALK);
+		}
+	}
+	else if (m_action == ACTION_KUNAI) 
+	{// クナイ投げ
+		m_pBody->GetMotion()->Set(ACTION_ATK);
+
+		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
+		{
+			BulletSet();
+		}
+
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
 		}
 	}
 
@@ -2203,12 +2222,12 @@ void CPlayer::Ninjutsu(void)
 
 		m_action = ACTION_HENGE;
 	}
-	else if (pInputPad->GetPress(CInputPad::BUTTON_RIGHTBUTTON, m_nId)) {	// 隠れ身
-		//m_action = ACTION_KAKUREMI;
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId)) {	// クナイ
+		m_action = ACTION_KUNAI;
 	}
 	else
 	{
-		if (m_action == ACTION_HENGE) {	// 変化もしくは隠れ身だった
+		if (m_action == ACTION_HENGE) {	// 変化だった
 			m_action = ACTION_NEUTRAL;
 			ChangeBody();
 		}
@@ -2287,4 +2306,24 @@ void CPlayer::ChangeBody(void)
 			pModel->SetPosition(pos);
 		}
 	}
+}
+
+//===============================================
+// 弾の設定
+//===============================================
+void CPlayer::BulletSet(void)
+{
+	if (m_pBody == nullptr) {	// 体がない
+		return;
+	}
+
+	if (m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS) == nullptr) {	// 手がない
+		return;
+	}
+
+	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS);	//　手のパーツ
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
+	D3DXVECTOR3 move = D3DXVECTOR3(-sinf(m_Info.rot.y) * BULLET_MOVE, 0.0f, -cosf(m_Info.rot.y) * BULLET_MOVE);
+	CBullet::Create(pos, m_Info.rot, move);
 }
