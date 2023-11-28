@@ -159,6 +159,7 @@ void CTutorial::Update(void)
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
 		CGame::SetNumPlayer(CPlayer::GetNum());
+
 	}
 
 	bool bCreate = false;

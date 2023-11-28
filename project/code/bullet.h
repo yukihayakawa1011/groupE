@@ -22,6 +22,7 @@ private:
 	// 情報構造体
 	struct SInfo {
 		D3DXVECTOR3 pos;	// 位置
+		D3DXVECTOR3 posOld;	// 
 		D3DXVECTOR3 rot;	// 向き
 		D3DXVECTOR3 move;	// 移動量
 		D3DXMATRIX mtxWorld;	// ワールドマトリックス
@@ -61,6 +62,7 @@ private:	// 自分だけがアクセス可能
 	int m_nId;			// ID
 	CModel *m_pObject;	// モデルのポインタ
 	int m_nLife;			// 寿命
+	bool m_bMove;			// 壁にぶつかったかどうか
 };
 
 #endif
