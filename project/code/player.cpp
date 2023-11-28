@@ -37,6 +37,7 @@
 #include "score.h"
 #include "life.h"
 #include "ui.h"
+#include "bullet.h"
 
 //===============================================
 // マクロ定義
@@ -66,6 +67,10 @@
 #define CATCH_MOVE	(2.0f)
 #define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
 #define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
+
+namespace {
+	const float BULLET_MOVE = (22.0f);
+}
 
 // 前方宣言
 CPlayer *CPlayer::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -1174,7 +1179,7 @@ void CPlayer::MotionSet(void)
 		}
 	}
 	else if (m_action == ACTION_DAMAGE)
-	{// 投げる
+	{// ダメージ
 		m_pBody->GetMotion()->BlendSet(m_action);
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
@@ -1183,9 +1188,34 @@ void CPlayer::MotionSet(void)
 
 		return;
 	}
-	else
-	{
+	else if (m_action == ACTION_HENGE)
+	{// 変化中
+		if (!m_bJump && !m_bMove)
+		{// 何もしていない
+			m_pBody->GetMotion()->BlendSet(ACTION_NEUTRAL);
+		}
+		else if (m_bJump)
+		{// ジャンプした
+			m_pBody->GetMotion()->BlendSet(ACTION_JUMP);
+		}
+		else if (m_bMove)
+		{// 移動した
+			m_pBody->GetMotion()->BlendSet(ACTION_WALK);
+		}
+	}
+	else if (m_action == ACTION_KUNAI) 
+	{// クナイ投げ
+		m_pBody->GetMotion()->Set(ACTION_ATK);
 
+		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
+		{
+			BulletSet();
+		}
+
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
 	}
 
 	if (nullptr == m_pLeg){	// 脚がない
@@ -2182,13 +2212,118 @@ void CPlayer::Ninjutsu(void)
 		return;
 	}
 
-	if (pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId)) {
-		m_action = ACTION_KAKUREMI;
+	if (pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId)) {	// 変化
+
+		if (m_action != ACTION_HENGE)
+		{
+			m_action = ACTION_HENGE;
+			ChangeBody();
+		}
+
+		m_action = ACTION_HENGE;
+	}
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId)) {	// クナイ
+		m_action = ACTION_KUNAI;
 	}
 	else
 	{
-		if (m_action == ACTION_KAKUREMI) {
+		if (m_action == ACTION_HENGE) {	// 変化だった
 			m_action = ACTION_NEUTRAL;
+			ChangeBody();
 		}
 	}
+}
+
+//===============================================
+// 見た目変更
+//===============================================
+void CPlayer::ChangeBody(void)
+{
+	// 胴体の終了
+	if (m_pBody != nullptr) {
+		m_pBody->Uninit();
+		delete m_pBody;
+		m_pBody = nullptr;
+	}
+
+	// 下半身の終了
+	if (m_pLeg != nullptr) {
+		m_pLeg->Uninit();
+		delete m_pLeg;
+		m_pLeg = nullptr;
+	}
+
+	char aBodyPass[256] = "";
+	char aLegPass[256] = "";
+
+	if (m_action == ACTION_HENGE) {
+		sprintf(&aBodyPass[0], "data\\TXT\\playerkakuremi\\motion_ninjabody.txt");
+		sprintf(&aLegPass[0], "data\\TXT\\playerkakuremi\\motion_ninjaleg.txt");	
+	}
+	else
+	{
+		sprintf(&aBodyPass[0], "data\\TXT\\player%d\\motion_ninjabody.txt", m_nId);
+		sprintf(&aLegPass[0], "data\\TXT\\player%d\\motion_ninjaleg.txt", m_nId);
+	}
+
+	// 胴体の設定
+	m_pBody = CCharacter::Create(&aBodyPass[0]);
+	m_pBody->SetParent(m_pWaist->GetMtxWorld());
+	m_pBody->SetShadow(true);
+	m_pBody->SetDraw();
+
+	if (m_pBody->GetMotion() != nullptr)
+	{
+		// 初期モーションの設定
+		m_pBody->GetMotion()->InitSet(ACTION_NEUTRAL);
+	}
+
+	// 下半身の設定
+	m_pLeg = CCharacter::Create(&aLegPass[0]);
+	m_pLeg->SetParent(m_pWaist->GetMtxWorld());
+	m_pLeg->SetShadow(true);
+	m_pLeg->SetDraw();
+
+	if (m_pLeg->GetMotion() != nullptr)
+	{
+		// 初期モーションの設定
+		m_pLeg->GetMotion()->InitSet(ACTION_NEUTRAL);
+	}
+
+	// 腰の高さを合わせる
+	if (m_pLeg != nullptr)
+	{// 脚が使用されている場合
+		CModel *pModel = m_pLeg->GetParts(0);	// 腰パーツを取得
+
+		if (pModel != nullptr)
+		{// パーツが存在する場合
+			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
+
+			// 高さを設定
+			m_pWaist->SetHeight(pos);
+
+			// 腰のモデルの位置を変更
+			pModel->SetPosition(pos);
+		}
+	}
+}
+
+//===============================================
+// 弾の設定
+//===============================================
+void CPlayer::BulletSet(void)
+{
+	if (m_pBody == nullptr) {	// 体がない
+		return;
+	}
+
+	if (m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS) == nullptr) {	// 手がない
+		return;
+	}
+
+	CModel *pModel = m_pBody->GetParts(m_pBody->GetNumParts() - HAND_PARTS);	//　手のパーツ
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
+	D3DXVECTOR3 move = D3DXVECTOR3(-sinf(m_Info.rot.y) * BULLET_MOVE, 0.0f, -cosf(m_Info.rot.y) * BULLET_MOVE);
+	CBullet::Create(pos, m_Info.rot, move);
 }

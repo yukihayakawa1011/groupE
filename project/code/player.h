@@ -54,7 +54,9 @@ public:
 		ACTION_THROW,			// 投げる
 		ACTION_DAMAGE,		// 攻撃を受けた
 		ACTION_FLUTTERING,	// じたばた
-		ACTION_KAKUREMI,		// 隠れ身
+		ACTION_HENGE,			// 変化の術
+		ACTION_KUNAI,			// クナイの術
+		ACTION_THUNDER,		// 雷の術
 		ACTION_MAX
 	};
 
@@ -165,6 +167,8 @@ private:	// 自分だけがアクセス可能
 	void SelectItem(void);
 	int GetSelectItem(int type);
 	void BodySet(void);
+	void ChangeBody(void);
+	void BulletSet(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -172,7 +176,7 @@ private:	// 自分だけがアクセス可能
 	CPlayer *m_pPrev;		// 前のオブジェクトへのポインタ
 	CPlayer *m_pNext;		// 次のオブジェクトへのポインタ
 	SInfo m_Info;			// 自分自身の情報
-	SCatch m_Catch;			// 掴みに関する情報
+	SCatch m_Catch;		// 掴みに関する情報
 	CWaist *m_pWaist;		// 腰
 	CCharacter *m_pBody;	// 上半身
 	CCharacter *m_pLeg;		// 下半身

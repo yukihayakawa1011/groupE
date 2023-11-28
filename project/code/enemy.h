@@ -57,9 +57,9 @@ private:	// 自分だけがアクセス可能な定義
 		D3DXVECTOR3 move;		// 移動量
 		D3DXVECTOR3 posOld;	// 設定位置
 		D3DXMATRIX mtxWorld;	// ワールドマトリックス
-		D3DXVECTOR3 posDiff;	
+		D3DXVECTOR3 posDiff;	// 目標の座標
 		STATE state;			// 状態
-		int nStateCounter;		// 状態管理カウンター
+		int nStateCounter;	// 状態管理カウンター
 	};
 
 public:	// 誰でもアクセス可能
@@ -74,7 +74,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CEnemy *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move,
 		const char *pBodyName, const char *pLegName);
-	void HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage = 1);
+	bool HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage = 1);
 
 	// メンバ関数(設定)
 	void SetMove(const D3DXVECTOR3 move) { m_Info.move = move; }
@@ -125,6 +125,7 @@ private:	// 自分だけがアクセス可能
 	CCharacter *m_pBody;	// 上半身
 	CCharacter *m_pLeg;	// 下半身
 	CObject3DFan* m_pFov;	// 視野オブジェクト
+	CPlayer *m_pChase;	// 追跡相手
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
