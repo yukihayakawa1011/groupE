@@ -95,7 +95,6 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 	m_nLife = GetLife();
 	m_nNumPlayer = nFrame;
 
-
 	//ƒtƒŒ[ƒ€
 	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(m_apFrameFileName[nFrame]));
 	m_pObject[0]->SetPosition(m_pos);

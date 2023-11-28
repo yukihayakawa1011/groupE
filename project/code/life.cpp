@@ -81,9 +81,6 @@ void CLife::Uninit(void)
 //==========================================================
 void CLife::Update(void)
 {
-
-
-
 }
 
 //==========================================================
@@ -139,9 +136,10 @@ void CLife::SetLife(int nLife)
 		}
 		else if (m_life < NUM_LIFE)
 		{
-			if (nullptr != m_pObject[nCnt]) {
-				m_pObject[nCnt]->Uninit();
-				m_pObject[nCnt] = NULL;
+			if (nullptr != m_pObject[NUM_LIFE - (NUM_LIFE - m_life)]) 
+			{
+				m_pObject[NUM_LIFE - (NUM_LIFE - m_life)]->Uninit();
+				m_pObject[NUM_LIFE - (NUM_LIFE - m_life)] = NULL;
 			}
 		}
 	}
