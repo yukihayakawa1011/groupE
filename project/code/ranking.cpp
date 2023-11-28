@@ -101,7 +101,7 @@ void CRanking::Update(void)
 {
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
-	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_A, 0))
+	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_TITLE);
 	}

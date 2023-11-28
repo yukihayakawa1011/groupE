@@ -262,26 +262,18 @@ void CResult::SetScore(CPlayer **ppPlayer)
 	CPlayer *pPlayer = CPlayer::GetTop();
 	int nNumGoal = 0;
 
-	// ゴールしている人数を判定
-	while (pPlayer != nullptr) {
-
-		CPlayer *pPlNext = pPlayer->GetNext();	// 次を覚える
-
-		if (pPlayer->GetGoal()) {	// ゴールしている
-
-			nNumGoal++;
-		}
-
-		pPlayer = pPlNext;	// 次に移動
-	}
-
-	m_nNumPlayer = nNumGoal;
-
 	m_nScore = new int [m_nNumPlayer];
 
 	for (int i = 0; i < m_nNumPlayer; i++)
 	{
-		m_nScore[i] = ppPlayer[i]->GetScore()->GetScore();
+		if (ppPlayer[i]->GetGoal())
+		{
+			m_nScore[i] = ppPlayer[i]->GetScore()->GetScore();
+		}
+		else
+		{
+			m_nScore[i] = 0;
+		}
 	}
 }
 
