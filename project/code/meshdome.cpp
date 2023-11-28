@@ -10,7 +10,7 @@
 #include "renderer.h"
 
 // マクロ定義
-#define TEXTUREFILE_DATA	"data\\TEXTURE\\sky000.jpg"		//テクスチャデータ
+#define TEXTUREFILE_DATA	"data\\TEXTURE\\sky001.png"		//テクスチャデータ
 
 //==========================================================
 // コンストラクタ
