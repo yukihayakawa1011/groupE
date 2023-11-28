@@ -7,6 +7,7 @@
 #include "bullet.h"
 #include "model.h"
 #include "enemy.h"
+#include "player.h"
 
 // 無名名前空間
 namespace {
@@ -26,6 +27,7 @@ CBullet::CBullet()
 	m_Info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
+	m_nId = -1;
 }
 
 //==========================================================
@@ -151,20 +153,39 @@ void CBullet::Controller(void)
 void CBullet::Hit(void)
 {
 	bool bHit = false;
-	CEnemy *pEnem = CEnemy::GetTop();
 
 	// 敵との判定
-	while (pEnem != nullptr) {
-		CEnemy *pEnemNext = pEnem->GetNext();
+	{
+		CEnemy *pEnem = CEnemy::GetTop();
+		while (pEnem != nullptr) {
+			CEnemy *pEnemNext = pEnem->GetNext();
 
-		if (pEnem->HitCheck(m_Info.pos, COLLRANGE)) {	// 当たっている
-			bHit = true;
+			if (pEnem->HitCheck(m_Info.pos, COLLRANGE)) {	// 当たっている
+				bHit = true;
+			}
+
+			pEnem = pEnemNext;
 		}
-
-		pEnem = pEnemNext;
 	}
 
-	if (bHit) {
+	// プレイヤーとの判定
+	{
+		CPlayer *pPlay = CPlayer::GetTop();
+
+		while (pPlay != nullptr) {
+			CPlayer *pPlayNext = pPlay->GetNext();
+
+			if (m_nId != pPlay->GetId()) {	// 自分のではない
+				if (pPlay->HitCheck(m_Info.pos, COLLRANGE)) {	// 当たっている
+					bHit = true;
+				}
+			}
+
+			pPlay = pPlayNext;
+		}
+	}
+
+	if (bHit) {	// 当たった
 		Uninit();
 	}
 }

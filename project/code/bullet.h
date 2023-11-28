@@ -47,6 +47,7 @@ public:	// 誰でもアクセス可能
 	void SetPosition(const D3DXVECTOR3 &pos) { m_Info.pos = pos; }
 	void SetRotation(const D3DXVECTOR3 &rot) { m_Info.rot = rot; }
 	void SetMove(const D3DXVECTOR3 &move) { m_Info.move = move; }
+	void BindId(const int nId) { m_nId = nId; }
 	void Hit(void);
 
 private:	// 自分だけがアクセス可能
@@ -57,6 +58,7 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	SInfo m_Info;			// 基本情報
+	int m_nId;			// ID
 	CModel *m_pObject;	// モデルのポインタ
 	int m_nLife;			// 寿命
 };
