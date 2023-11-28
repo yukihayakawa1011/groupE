@@ -45,6 +45,8 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	CObject2D *GetObject2D(void) { return NULL; }
+	static CObjectX *GetTop(void) { return m_pTop; }
+	CObjectX *GetNext(void) { return m_pNext; }
 	virtual D3DXMATRIX *GetMtx(void) { return &m_mtxWorld; }
 	int GetIdx(void) { return m_nIdxModel; }
 	void ListOut(void);

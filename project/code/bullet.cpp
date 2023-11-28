@@ -8,6 +8,7 @@
 #include "model.h"
 #include "enemy.h"
 #include "player.h"
+#include "objectX.h"
 
 // 無名名前空間
 namespace {
@@ -23,6 +24,7 @@ CBullet::CBullet()
 {
 	// 値のクリア
 	m_pObject = nullptr;
+	m_bMove = true;
 	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -73,6 +75,8 @@ void CBullet::Uninit(void)
 //==========================================================
 void CBullet::Update(void)
 {
+	m_Info.posOld = m_Info.posOld;
+
 	// 操作関連
 	Controller();
 
@@ -182,6 +186,21 @@ void CBullet::Hit(void)
 			}
 
 			pPlay = pPlayNext;
+		}
+	}
+
+	// オブジェクトとの判定
+	if (m_bMove) {
+		D3DXVECTOR3 vtxMax = D3DXVECTOR3(COLLRANGE * 0.5f, COLLRANGE * 0.15f, COLLRANGE * 0.5f);
+		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-COLLRANGE * 0.5f, -COLLRANGE * 0.15f, -COLLRANGE * 0.5f);
+		D3DXVECTOR3 moveOld = m_Info.move;
+		D3DXVECTOR3 posOld = m_Info.pos;
+		CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
+
+		if (m_Info.move.x != moveOld.x || m_Info.move.z != moveOld.z) {	// 当たって移動量がなくなった
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			m_Info.pos = posOld;
+			m_bMove = false;
 		}
 	}
 
