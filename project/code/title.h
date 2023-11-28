@@ -31,14 +31,11 @@ public:
 
 private:
 
-	CFileLoad *m_pFileLoad;			// ファイル読み込みのポインタ
-	int m_nTimer;	// 自動遷移タイマー
-	bool m_bClick;
-	D3DXCOLOR m_col;
+	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
 	CTitleEnter *m_pEnter;
-	float m_fMoveCol;
-	int m_nCounter;
-	bool m_bPush;
+	int m_nCounterTutorial;		// チュートリアル及び人数選択画面遷移タイマー
+	int m_nCounterRanking;		// ランキング自動遷移タイマー
+	bool m_bPush;				// チュートリアル遷移に必要なボタンが押されているか
 };
 
 #endif

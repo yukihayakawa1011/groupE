@@ -5,34 +5,25 @@
 //
 //===============================================
 #include "title.h"
-#include "object2D.h"
-#include "texture.h"
 #include "manager.h"
-#include "main.h"
 #include "input.h"
 #include "fade.h"
 #include "fileload.h"
-#include "meshcylinder.h"
-#include "meshdome.h"
-#include "light.h"
 #include "sound.h"
 #include "camera.h"
 #include "item.h"
 #include "objectX.h"
 #include "title_enter.h"
+#include "meshdome.h"
 
 //===============================================
-// マクロ定義
-//===============================================
-#define AUTOMOVE_RANKING	(640)	// ランキング自動遷移
-#define TITLE_CAMLENGTH		(1000.0f)
-#define TITLE_CAMROTZ		(D3DX_PI * 0.35f)
-#define MOVE_TUTORIAL		(110)	//チュートリアルに遷移するまで
-
 // 無名名前空間
+//===============================================
 namespace {
 	const D3DXVECTOR3 ENTERPOS = { 0.0f, 0.0f, 0.0f };	// ENTER 座標
 	const D3DXVECTOR3 ENTERROT = { 0.0f, 0.0f, 0.0f };	// ENTER 向き
+	const int AUTOMOVE_RANKING = 640;	// ランキング自動遷移時間
+	const int MOVE_TUTORIAL = 110;		// チュートリアルに遷移するまでの時間
 }
 
 //===============================================
@@ -40,13 +31,11 @@ namespace {
 //===============================================
 CTitle::CTitle()
 {
-	m_nTimer = 0;
-	m_pFileLoad = NULL;
-	m_bClick = false;
-	m_fMoveCol = 0.01f;
-	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	m_nCounter = 0;
+	m_nCounterRanking = 0;
+	m_nCounterTutorial = 0;
+	m_nCounterRanking = 0;
 	m_bPush = false;
+	m_pFileLoad = nullptr;
 	m_pEnter = nullptr;
 }
 
@@ -69,11 +58,11 @@ HRESULT CTitle::Init(void)
 	m_pEnter->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, D3DX_PI * 0.4f));
 
 	//外部ファイル読み込みの生成
-	if (m_pFileLoad == NULL)
+	if (m_pFileLoad == nullptr)
 	{// 使用していない場合
 		m_pFileLoad = new CFileLoad;
 
-		if (m_pFileLoad != NULL)
+		if (m_pFileLoad != nullptr)
 		{
 			m_pFileLoad->Init();
 			m_pFileLoad->SetTitleEnter(m_pEnter);
@@ -86,11 +75,9 @@ HRESULT CTitle::Init(void)
 
 	//カメラ初期化
 	{
-		/*CManager::GetInstance()->GetCamera()->Init();*/
-
-		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-0.0f, 0.0f, 0.0f));
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(75.0f, 300.0f, -0.0f));
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -1.6f, 1.35f));
+		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(387.0f, 793.0f, -2328.0f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-400.0f, 441.0f, -304.0f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -1.20f, 1.41f));
 
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定
@@ -103,6 +90,9 @@ HRESULT CTitle::Init(void)
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
 
+	//ドーム追加
+	CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 3000.0f, 3000.0f,3,8,8);
+
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TITLE);
 
 	return S_OK;
@@ -113,15 +103,16 @@ HRESULT CTitle::Init(void)
 //===============================================
 void CTitle::Uninit(void)
 {
-	if (m_pFileLoad != NULL)
+	if (m_pFileLoad != nullptr)
 	{
 		m_pFileLoad->Uninit();
 
 		delete m_pFileLoad;		// メモリの開放
-		m_pFileLoad = NULL;
+		m_pFileLoad = nullptr;
 	}
 
-	if (m_pEnter != nullptr) {
+	if (m_pEnter != nullptr) 
+	{
 		m_pEnter->Uninit();
 		delete m_pEnter;
 		m_pEnter = nullptr;
@@ -145,7 +136,7 @@ void CTitle::Update(void)
 	{
 		CItem *pItem = CItem::GetTop();
 
-		while (pItem != NULL)
+		while (pItem != nullptr)
 		{// 使用されていない状態まで
 
 			CItem *pItemNext = pItem->GetNext();	// 次のオブジェクトへのポインタを取得
@@ -154,6 +145,7 @@ void CTitle::Update(void)
 
 			//移動量の設定
 			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
+			move.y = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.3f;
 			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.6f;
 			pItem->SetMove(move);
 
@@ -163,38 +155,30 @@ void CTitle::Update(void)
 			pItem = pItemNext;	// 次のオブジェクトに移動
 		}
 
-		m_bPush = true;		//ボタンを押した
-
-		if (m_bClick == false)
-		{
-			m_col.a = 1.0f;
-			m_bClick = true;
+		if (m_bPush == false)
+		{//1回だけ音鳴らす
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
 		}
+
+		m_bPush = true;		//ボタンを押した
 	}
 
 	if (m_bPush == true)
-	{
-		m_nCounter++;
+	{//スタートに対応するボタンが押された（チュートリアル画面遷移準備）
+		m_nCounterTutorial++;		//チュートリアル遷移カウンター加算
 
-		if (m_nCounter >= MOVE_TUTORIAL)
-		{
+		if (m_nCounterTutorial >= MOVE_TUTORIAL)
+		{//チュートリアル画面遷移
 			CManager::GetInstance()->GetFade()->Set(CScene::MODE_TUTORIAL);
 		}
 	}
+	else
+	{//スタートに対応するボタンが押されてない（ランキング遷移準備）
+		m_nCounterRanking++;		//ランキング遷移カウンター加算
 
-	if (CManager::GetInstance()->GetCamera() != NULL)
-	{
-		//CManager::GetInstance()->GetCamera()->TitleRotateCamera();
-	}
-
-	//ランキング画面自動遷移
-	if (m_bClick == false && m_bPush == false)
-	{
-		m_nTimer++;
-
-		if (m_nTimer >= AUTOMOVE_RANKING)
-		{
+		//ランキング画面自動遷移
+		if (m_nCounterRanking >= AUTOMOVE_RANKING)
+		{//ランキング遷移
 			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
 		}
 	}
