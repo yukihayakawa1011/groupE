@@ -12,6 +12,7 @@
 
 //前方宣言
 class CObject2D;
+class CLife;
 
 //==========================================================
 // UIのクラス定義
@@ -70,7 +71,7 @@ public:	// 誰でもアクセス可能
 	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
 	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
 	void SetType(TYPE type) { m_type = type; }
-	void SetLife(int nLife) { m_nLife = nLife; }
+	void SetLife(int nLife);
 
 private:	// 自分だけがアクセス可能
 
@@ -86,6 +87,8 @@ private:	// 自分だけがアクセス可能
 	const static char *m_apFrameFileName[FRAME_MAX];	// 初期読み込みファイル名
 	const static char *m_apIconFileName[ICON_MAX];	// 初期読み込みファイル名
 	int m_nLife;
+	int m_nNumPlayer;
+	CLife *m_pLife;
 
 };
 

@@ -42,6 +42,7 @@ CUI::CUI()
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);;
 	m_type = TYPE_NORMAL;
 	m_nLife = 0;
+	m_nNumPlayer = 0;
 
 }
 
@@ -90,6 +91,9 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 	{
 		m_pObject[nCnt] = CObject2D::Create(7);
 	}
+
+	m_nLife = GetLife();
+	m_nNumPlayer = nFrame;
 
 	//フレーム
 	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(m_apFrameFileName[nFrame]));
@@ -152,6 +156,11 @@ void CUI::Uninit(void)
 			m_pObject[nCnt] = NULL;
 		}
 	}
+
+	if (nullptr != m_pLife) {
+		m_pLife->Uninit();
+		m_pLife = NULL;
+	}
 }
 
 //==========================================================
@@ -164,6 +173,8 @@ void CUI::Update(void)
 	{
 		m_pObject[nCnt]->SetVtx();
 	}
+
+	m_pLife->SetLife(m_nLife);
 }
 
 //==========================================================
@@ -185,4 +196,48 @@ CUI *CUI::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int nFrame, int nIcon, TYPE t
 	}	
 
 	return pUI;
+}
+
+//==========================================================
+// 設定処理
+//==========================================================
+void CUI::SetLife(int nLife) 
+{ 
+	m_nLife = nLife;
+
+	//タイプごとの位置設定
+	if (m_nNumPlayer == 0)
+	{
+
+		if (m_pLife == NULL)
+		{
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
+			m_pLife->SetLife(m_nLife);
+		}
+
+	}
+	else if (m_nNumPlayer == 1)
+	{
+		if (m_pLife == NULL)
+		{
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
+			m_pLife->SetLife(m_nLife);
+		}
+	}
+	else if (m_nNumPlayer == 2)
+	{
+		if (m_pLife == NULL)
+		{
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
+			m_pLife->SetLife(m_nLife);
+		}
+	}
+	else if (m_nNumPlayer == 3)
+	{
+		if (m_pLife == NULL)
+		{
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
+			m_pLife->SetLife(m_nLife);
+		}
+	}
 }
