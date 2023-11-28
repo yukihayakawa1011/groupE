@@ -70,6 +70,7 @@
 
 namespace {
 	const float BULLET_MOVE = (22.0f);
+	const float HIT_RANGE = (100.0f);
 }
 
 // 前方宣言
@@ -546,19 +547,24 @@ void CPlayer::Controller(void)
 	m_bJump = true;	// ジャンプ状態リセット
 
 	// 起伏との当たり判定
-	float fHeight = CMeshField::GetHeight(m_Info.pos);
-	if (m_Info.pos.y <= fHeight)
-	{
-		m_Info.pos.y = fHeight;
-		m_bJump = false;
-	}
 
 	// オブジェクトとの当たり判定
-	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 10.0f, 50.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
 		m_bJump = false;
+	}
+
+	// メッシュフィールドとの判定
+	{
+		float fHeight = CMeshField::GetHeight(m_Info.pos);
+		if (m_Info.pos.y < fHeight)
+		{
+			m_Info.pos.y = fHeight;
+			m_Info.move.y = 0.0f;
+			m_bJump = false;
+		}
 	}
 
 	// アイテムとの当たり判定
@@ -2325,5 +2331,46 @@ void CPlayer::BulletSet(void)
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
 	D3DXVECTOR3 move = D3DXVECTOR3(-sinf(m_Info.rot.y) * BULLET_MOVE, 0.0f, -cosf(m_Info.rot.y) * BULLET_MOVE);
-	CBullet::Create(pos, m_Info.rot, move);
+	CBullet *pBullet = CBullet::Create(pos, m_Info.rot, move);
+	pBullet->BindId(m_nId);
+}
+
+//===============================================
+// 攻撃のヒット確認
+//===============================================
+bool CPlayer::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
+{
+	bool m_bValue = false;
+	if (m_Info.state != STATE_NORMAL) {
+		return m_bValue;
+	}
+
+	if (m_pBody == nullptr) {
+		return m_bValue;
+	}
+
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 ObjPos = GetPosition();
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(0.0f,
+		m_pBody->GetParts(1)->GetMtx()->_42 - ObjPos.y + pFile->GetMax(m_pBody->GetParts(1)->GetId()).y,
+		0.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, -10.0f, 0.0f);
+
+	if (pos.y >= ObjPos.y + vtxMax.y || pos.y <= ObjPos.y - vtxMin.y) {	// 高さ範囲外
+		return m_bValue;
+	}
+
+	// 範囲内チェック
+	float fLength =
+		sqrtf((pos.x - ObjPos.x) * (pos.x - ObjPos.x)
+			+ (pos.z - ObjPos.z) * (pos.z - ObjPos.z));
+
+	if (fLength > HIT_RANGE + fRange) {		// 範囲外
+		return m_bValue;
+	}
+
+	m_bValue = true;
+	Damage(nDamage);
+
+	return m_bValue;
 }

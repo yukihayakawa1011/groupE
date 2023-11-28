@@ -6,11 +6,15 @@
 //==========================================================
 #include "bullet.h"
 #include "model.h"
+#include "enemy.h"
+#include "player.h"
+#include "objectX.h"
 
 // 無名名前空間
 namespace {
 	const char* FILENAME = "data\\MODEL\\bullet.x";	// ファイル名
 	const int SETLIFE = (240);	// 弾の設定寿命
+	const float COLLRANGE = (25.0f);
 }
 
 //==========================================================
@@ -20,10 +24,12 @@ CBullet::CBullet()
 {
 	// 値のクリア
 	m_pObject = nullptr;
+	m_bMove = true;
 	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_nLife = 0;
+	m_nId = -1;
 }
 
 //==========================================================
@@ -69,6 +75,8 @@ void CBullet::Uninit(void)
 //==========================================================
 void CBullet::Update(void)
 {
+	m_Info.posOld = m_Info.posOld;
+
 	// 操作関連
 	Controller();
 
@@ -79,8 +87,12 @@ void CBullet::Update(void)
 	if (m_nLife <= 0) {	// 寿命がなくなった
 		Uninit();	// 終了
 	}
-	else {
+	else
+	{
 		m_nLife--;
+
+		// 当たり判定
+		Hit();
 	}
 }
 
@@ -137,4 +149,62 @@ void CBullet::Controller(void)
 {
 	// 移動
 	m_Info.pos += m_Info.move;
+}
+
+//==========================================================
+// ヒット処理
+//==========================================================
+void CBullet::Hit(void)
+{
+	bool bHit = false;
+
+	// 敵との判定
+	{
+		CEnemy *pEnem = CEnemy::GetTop();
+		while (pEnem != nullptr) {
+			CEnemy *pEnemNext = pEnem->GetNext();
+
+			if (pEnem->HitCheck(m_Info.pos, COLLRANGE)) {	// 当たっている
+				bHit = true;
+			}
+
+			pEnem = pEnemNext;
+		}
+	}
+
+	// プレイヤーとの判定
+	{
+		CPlayer *pPlay = CPlayer::GetTop();
+
+		while (pPlay != nullptr) {
+			CPlayer *pPlayNext = pPlay->GetNext();
+
+			if (m_nId != pPlay->GetId()) {	// 自分のではない
+				if (pPlay->HitCheck(m_Info.pos, COLLRANGE)) {	// 当たっている
+					bHit = true;
+				}
+			}
+
+			pPlay = pPlayNext;
+		}
+	}
+
+	// オブジェクトとの判定
+	if (m_bMove) {
+		D3DXVECTOR3 vtxMax = D3DXVECTOR3(COLLRANGE * 0.5f, COLLRANGE * 0.15f, COLLRANGE * 0.5f);
+		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-COLLRANGE * 0.5f, -COLLRANGE * 0.15f, -COLLRANGE * 0.5f);
+		D3DXVECTOR3 moveOld = m_Info.move;
+		D3DXVECTOR3 posOld = m_Info.pos;
+		CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
+
+		if (m_Info.move.x != moveOld.x || m_Info.move.z != moveOld.z) {	// 当たって移動量がなくなった
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			m_Info.pos = posOld;
+			m_bMove = false;
+		}
+	}
+
+	if (bHit) {	// 当たった
+		Uninit();
+	}
 }

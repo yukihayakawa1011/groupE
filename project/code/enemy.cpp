@@ -818,14 +818,15 @@ void CEnemy::SetLife(int nLife)
 //===============================================
 // 攻撃のヒット確認
 //===============================================
-void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
+bool CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 {
+	bool m_bValue = false;
 	if (m_Info.state != STATE_NORMAL) {
-		return;
+		return m_bValue;
 	}
 
 	if (m_pBody == nullptr) {
-		return;
+		return m_bValue;
 	}
 
 	CXFile *pFile = CManager::GetInstance()->GetModelFile();
@@ -836,7 +837,7 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, -10.0f, 0.0f);
 
 	if (pos.y >= ObjPos.y + vtxMax.y || pos.y <= ObjPos.y - vtxMin.y) {	// 高さ範囲外
-		return;
+		return m_bValue;
 	}
 
 	// 範囲内チェック
@@ -845,10 +846,13 @@ void CEnemy::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 			+ (pos.z - ObjPos.z) * (pos.z - ObjPos.z));
 
 	if (fLength > HIT_RANGE + fRange) {		// 範囲外
-		return;
+		return m_bValue;
 	}
 
+	m_bValue = true;
 	Damage(nDamage);
+
+	return m_bValue;
 }
 
 //===============================================

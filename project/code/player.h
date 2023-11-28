@@ -108,6 +108,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CPlayer *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move,
 		const char *pBodyName, const char *pLegName);
+	bool HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage = 1);
 
 	// メンバ関数(設定)
 	void SetMove(const D3DXVECTOR3 move) { m_Info.move = move; }
