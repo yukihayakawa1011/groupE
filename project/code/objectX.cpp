@@ -294,11 +294,29 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 		pObj = pObjNext;
 	}
 
-	if (pos == posTemp) {
-		move = moveOld;
-	}
-
 	pos = posTemp;
+
+	return bLand;
+}
+
+//==========================================================
+// “–‚½‚è”»’è(G‚ê‚½‚©‚Ç‚¤‚©)
+//==========================================================
+bool CObjectX::Touch(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+{
+	CObjectX *pObj = m_pTop;	// æ“ªŽæ“¾
+	bool bLand = false;	// ’…’n‚µ‚½‚©”Û‚©
+
+	while (pObj != NULL)
+	{
+		CObjectX *pObjNext = pObj->m_pNext;
+		if (pObj->m_bEnableCollision == true)
+		{
+			pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax);
+		}
+
+		pObj = pObjNext;
+	}
 
 	return bLand;
 }
