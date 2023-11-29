@@ -2313,7 +2313,7 @@ void CPlayer::ChangeBody(void)
 	if (m_pBody->GetMotion() != nullptr)
 	{
 		// 初期モーションの設定
-		m_pBody->GetMotion()->InitSet(ACTION_NEUTRAL);
+		m_pBody->GetMotion()->InitSet(ACTION_WALK);
 	}
 
 	// 下半身の設定
@@ -2322,12 +2322,6 @@ void CPlayer::ChangeBody(void)
 	m_pLeg->SetShadow(true);
 	m_pLeg->SetDraw();
 
-	if (m_pLeg->GetMotion() != nullptr)
-	{
-		// 初期モーションの設定
-		m_pLeg->GetMotion()->InitSet(ACTION_NEUTRAL);
-	}
-
 	// 腰の高さを合わせる
 	if (m_pLeg != nullptr)
 	{// 脚が使用されている場合
@@ -2335,13 +2329,16 @@ void CPlayer::ChangeBody(void)
 
 		if (pModel != nullptr)
 		{// パーツが存在する場合
-			D3DXVECTOR3 pos = pModel->GetPosition();	// モデルの相対位置を取得
-
-			// 高さを設定
-			m_pWaist->SetHeight(pos);
+			D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// モデルの相対位置を取得
 
 			// 腰のモデルの位置を変更
 			pModel->SetPosition(pos);
+
+			if (m_pLeg->GetMotion() != nullptr)
+			{
+				// 初期モーションの設定
+				m_pLeg->GetMotion()->InitSet(ACTION_WALK);
+			}
 		}
 	}
 

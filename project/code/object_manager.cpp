@@ -107,6 +107,9 @@ void CObjectManager::ReleaseAll(void)
 //===============================================
 void CObjectManager::DrawAll(TYPE type)
 {
+	// 死亡フラグをチェック
+	DeathCheck();
+
 	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
 	{
 		CObject *pObject = m_apTop[nCntPri];	// 先頭を取得
@@ -125,9 +128,6 @@ void CObjectManager::DrawAll(TYPE type)
 			pObject = pObjectNext;	// 次のオブジェクトに移動
 		}
 	}
-
-	// 死亡フラグをチェック
-	DeathCheck();
 }
 
 //===============================================
