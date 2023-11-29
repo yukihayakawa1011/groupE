@@ -15,6 +15,17 @@
 //**********************************************************
 class CObjectBillboard : public CObject
 {
+public:
+
+	// 合成方法列挙型
+	enum FUSION
+	{
+		FUSION_ADD = 0,	// 加算合成
+		FUSION_MINUS,		// 減算合成
+		FUSION_NORMAL,	// 合成しない
+		FUSION_MAX
+	};
+
 public:	// 誰でもアクセス可能
 
 	CObjectBillboard(int nPriority = 3);	// コンストラクタ
@@ -41,6 +52,10 @@ public:	// 誰でもアクセス可能
 	float GetHeight(void) { return m_fHeight; }
 	float GetWidth(void) { return m_fWidth; }
 	virtual CEnemy *GetEnemy(void) { return NULL; }
+	void SetFusion(FUSION fusion) { m_fusion = fusion; }
+	void SetAlphaText(bool bTest) { m_bAlphatest = bTest; }
+	void SetZTest(bool bTest) { m_bZtest = bTest; }
+	void SetLighting(bool bTest) { m_bLighting = bTest; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
@@ -60,6 +75,10 @@ private:	// 自分だけがアクセス可能
 	int m_nIdexTexture;	// テクスチャ番号
 	float m_fWidth;		// 幅
 	float m_fHeight;	// 高さ
+	FUSION m_fusion;	// 合成方法
+	bool m_bZtest;	// Zテストをオンにするか
+	bool m_bLighting;	// ライティングをオフにするか
+	bool m_bAlphatest;	// αテストをオンにするか
 };
 
 

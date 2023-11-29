@@ -19,6 +19,10 @@ CObjectBillboard::CObjectBillboard(int nPriority) : CObject(nPriority)
 	// 値のクリア
 	m_nIdexTexture = -1;
 	m_pVtxBuff = NULL;
+	m_fusion = FUSION_ADD;
+	m_bLighting = true;
+	m_bAlphatest = true;
+	m_bZtest = true;
 }
 
 //==========================================================
@@ -126,12 +130,78 @@ void CObjectBillboard::Draw(void)
 	//テクスチャの設定
 	pDevice->SetTexture(0, pTexture->SetAddress(m_nIdexTexture));
 
+	if (m_bLighting) {
+		//ライティングをオフにする
+		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	}
+
+	if (m_bZtest) {
+		//Zテストを無効化する
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	}
+
+	if (m_bAlphatest) {
+		//アルファテストを有効にする
+		pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+		pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	}
+
+	if (m_fusion == FUSION_ADD)
+	{
+		//αブレンディングを加算合成に設定
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+	else if (m_fusion == FUSION_MINUS)
+	{
+		//減算合成の設定
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(
 		D3DPT_TRIANGLESTRIP,	//プリミティブの種類
 		0,
 		2	//頂点情報構造体のサイズ
 	);
+
+	if (m_bLighting) {
+		//ライティングをオンにする
+		pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	}
+
+	if (m_bZtest) {
+		//Zテストを有効にする
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	}
+
+	if (m_bAlphatest) {
+		//アルファテストを無効にする
+		pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_ALWAYS);
+		pDevice->SetRenderState(D3DRS_ALPHAREF, 255);
+	}
+
+	if (m_fusion == FUSION_ADD)
+	{
+		//αブレンディングを元に戻す
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
+	else if (m_fusion == FUSION_MINUS)
+	{
+		//αブレンディングを元に戻す
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
 }
 
 //==========================================================
@@ -143,6 +213,39 @@ void CObjectBillboard::RotFusionDraw(void)
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();	// テクスチャへのポインタ
 	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
 	D3DXMATRIX mtxView;		//ビューマトリックス取得用
+
+	if (m_bLighting) {
+		//ライティングをオフにする
+		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	}
+
+	if (m_bZtest) {
+		//Zテストを無効化する
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_ALWAYS);
+		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, FALSE);
+	}
+
+	if (m_bAlphatest) {
+		//アルファテストを有効にする
+		pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, TRUE);
+		pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_GREATER);
+		pDevice->SetRenderState(D3DRS_ALPHAREF, 0);
+	}
+
+	if (m_fusion == FUSION_ADD)
+	{
+		//αブレンディングを加算合成に設定
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
+	else if (m_fusion == FUSION_MINUS)
+	{
+		//減算合成の設定
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_REVSUBTRACT);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
+	}
 
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
@@ -182,6 +285,39 @@ void CObjectBillboard::RotFusionDraw(void)
 		0,
 		2	//頂点情報構造体のサイズ
 	);
+
+	if (m_bLighting) {
+		//ライティングをオンにする
+		pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	}
+
+	if (m_bZtest) {
+		//Zテストを有効にする
+		pDevice->SetRenderState(D3DRS_ZFUNC, D3DCMP_LESSEQUAL);
+		pDevice->SetRenderState(D3DRS_ZWRITEENABLE, TRUE);
+	}
+
+	if (m_bAlphatest) {
+		//アルファテストを無効にする
+		pDevice->SetRenderState(D3DRS_ALPHATESTENABLE, FALSE);
+		pDevice->SetRenderState(D3DRS_ALPHAFUNC, D3DCMP_ALWAYS);
+		pDevice->SetRenderState(D3DRS_ALPHAREF, 255);
+	}
+
+	if (m_fusion == FUSION_ADD)
+	{
+		//αブレンディングを元に戻す
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
+	else if (m_fusion == FUSION_MINUS)
+	{
+		//αブレンディングを元に戻す
+		pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
+		pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
+		pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
+	}
 }
 
 //==========================================================
