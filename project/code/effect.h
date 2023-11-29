@@ -23,19 +23,7 @@ public:	// 誰でもアクセス可能な定義
 	typedef enum
 	{
 		TYPE_NONE = 0,	// 通常
-		TYPE_BULLET,		// 弾
-		TYPE_EXPLOSION,	// 爆発
-		TYPE_DUST,		// 土煙
-		TYPE_SHWBULLET,	// シャワー弾
-		TYPE_SHWREF,		// 地面反射シャワー
-		TYPE_SWEAT,		// 汗
-		TYPE_HEAT,		// 熱中症状態
-		TYPE_JUMP,		// ジャンプ
-		TYPE_SWAP,		// 軌跡っぽいの
-		TYPE_BALEXPLOSION,	// 風船爆発
 		TYPE_SMAKE,		// 煙
-		TYPE_HEATHAZE,	// 陽炎
-		TYPE_BUBBLE,		// シャボン玉
 		TYPE_MAX
 	}TYPE;
 

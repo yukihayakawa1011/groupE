@@ -116,91 +116,10 @@ void CEffect::Update(void)
 		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 		break;
 
-	case TYPE_BULLET:
-		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
-		break;
-
-	case TYPE_DUST:
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
-
-		m_Info.move -= m_Info.move * 0.035f * CManager::GetInstance()->GetSlow()->Get();
-
-		break;
-	case TYPE_EXPLOSION:
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.y += 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		break;
-
-	case TYPE_SHWBULLET:
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= (rand() % 100 - 50) * 0.01f;
-		m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
-
-		break;
-
-	case TYPE_SHWREF:
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= (rand() % 100 - 50) * 0.01f;
-		m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
-
-		if (GetPosition().y < fHeight)
-		{
-			m_Info.move.y *= -1.0f;
-		}
-
-		break;
-
-	case TYPE_SWEAT:
-		m_Info.col.a -= 0.04f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= 0.005f * CManager::GetInstance()->GetSlow()->Get();
-		//m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
-		break;
-
-	case TYPE_HEAT:
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= (rand() % 100 - 50) * 0.01f;
-		//m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
-		break;
-
-	case TYPE_SWAP:
-
-		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x -= m_Info.move.x * 0.5f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.z -= m_Info.move.z * 0.5f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.y -= m_Info.move.y * 0.05f * CManager::GetInstance()->GetSlow()->Get();
-
-		break;
-	case TYPE_BALEXPLOSION:	// ”š”­
-
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= 1.2f * CManager::GetInstance()->GetSlow()->Get();
-
-		break;
-
-	case TYPE_SMAKE:	// ”š”­
+	case TYPE_SMAKE:	// ‰Œ
 
 		m_Info.col.a -= 0.035f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y -= m_Info.move.y * 0.005f * CManager::GetInstance()->GetSlow()->Get();
-
-		break;
-
-	case TYPE_HEATHAZE:	// ”š”­
-
-		m_Info.col.a -= 0.0001f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= (rand() % 100 - 50) * 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x += (rand() % 100 - 50) * 0.01f;
-		m_Info.move.z += (rand() % 100 - 50) * 0.01f;
-
-		break;
-
-	case TYPE_BUBBLE:	// ”š”­
-
-		m_Info.col.a -= 0.0001f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius -= (rand() % 100 - 50) * 0.05f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x += (rand() % 100 - 50) * 0.005f;
-		m_Info.move.z += (rand() % 100 - 50) * 0.005f;
 
 		break;
 	}
