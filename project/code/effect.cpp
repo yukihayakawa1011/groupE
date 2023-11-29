@@ -119,7 +119,9 @@ void CEffect::Update(void)
 	case TYPE_SMAKE:	// ‰Œ
 
 		m_Info.col.a -= 0.035f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.07f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y -= m_Info.move.y * 0.01f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.07f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
 	}

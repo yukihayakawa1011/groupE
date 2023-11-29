@@ -82,15 +82,15 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			pos = Defpos;
 
 			//ˆÚ“®—Ê‚Ìİ’è
-			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.06f;
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.09f;
 			move.y = ((float)(rand() % 50)) * 0.15f;
-			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.06f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.09f;
 
 			//F‚Ìİ’è
 			col = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
 
 			//”¼Œa‚Ìİ’è
-			fRadius = 55.0f;
+			fRadius = 100.0f;
 
 			//õ–½‚Ìİ’è
 			fLife = 500.0f;
