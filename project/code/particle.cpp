@@ -76,15 +76,15 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_SMAKE:	// ‰Œ
 
-		for (int nCnt = 0; nCnt < 10; nCnt++)
+		for (int nCnt = 0; nCnt < 30; nCnt++)
 		{
 			// À•W‚ÌÝ’è
 			pos = Defpos;
 
 			//ˆÚ“®—Ê‚ÌÝ’è
-			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.04f;
-			move.y = ((float)(rand() % 50)) * 0.1f;
-			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.04f;
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.06f;
+			move.y = ((float)(rand() % 50)) * 0.15f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.06f;
 
 			//F‚ÌÝ’è
 			col = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
@@ -93,7 +93,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			fRadius = 55.0f;
 
 			//Žõ–½‚ÌÝ’è
-			fLife = 75.0f;
+			fLife = 500.0f;
 
 			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
 		}
