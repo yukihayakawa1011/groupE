@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "objectX.h"
+#include "particle.h"
 
 // 無名名前空間
 namespace {
@@ -82,6 +83,8 @@ void CBullet::Update(void)
 
 	// マトリックス反映
 	SetMatrix();
+
+	CParticle::Create(m_Info.pos, CEffect::TYPE_DUST);
 
 	// 寿命確認
 	if (m_nLife <= 0) {	// 寿命がなくなった
@@ -198,7 +201,7 @@ void CBullet::Hit(void)
 		CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
 
 		if (m_Info.move.x != moveOld.x || m_Info.move.z != moveOld.z) {	// 当たって移動量がなくなった
-			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+			//m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			m_Info.pos = posOld;
 			m_bMove = false;
 		}
