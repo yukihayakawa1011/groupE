@@ -39,6 +39,8 @@
 #include "ui.h"
 #include "bullet.h"
 #include "air.h"
+#include "particle.h"
+#include "effect.h"
 
 //===============================================
 // マクロ定義
@@ -2238,6 +2240,12 @@ void CPlayer::Ninjutsu(void)
 		if (m_action != ACTION_HENGE)
 		{
 			m_action = ACTION_HENGE;
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+
 			ChangeBody();
 		}
 
@@ -2253,6 +2261,12 @@ void CPlayer::Ninjutsu(void)
 	{
 		if (m_action == ACTION_HENGE) {	// 変化だった
 			m_action = ACTION_NEUTRAL;
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+
 			ChangeBody();
 		}
 	}
@@ -2330,6 +2344,9 @@ void CPlayer::ChangeBody(void)
 			pModel->SetPosition(pos);
 		}
 	}
+
+	SetMatrix();
+	BodySet();
 }
 
 //===============================================
