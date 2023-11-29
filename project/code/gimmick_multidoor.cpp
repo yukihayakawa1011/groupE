@@ -17,7 +17,7 @@
 // 無名名前空間
 namespace {
 	const char* FILENAME = "data\\MODEL\\multidoor.x";	// 使用するモデルファイル名
-	const D3DXVECTOR3 SETPOS = { 100.0f, 0.0f, 0.0f };		// 初期設定座標
+	const D3DXVECTOR3 SETPOS = { 150.0f, 0.0f, 0.0f };		// 初期設定座標
 	const float INERMULTI[CGimmickMultiDoor::STATE_MAX] = {0.75f, 0.15f, 0.01f};	// 補正倍率
 	const D3DXVECTOR3 OPENPOS = { 300.0f, 0.0f, 0.0f };
 	const int CLOSECOUNTER = (300);
@@ -61,6 +61,7 @@ HRESULT CGimmickMultiDoor::Init(void)
 		m_aObject[nCnt].pModel = CModel::Create(FILENAME);
 		m_aObject[nCnt].pModel->SetParent(GetMtxWorld());
 		m_aObject[nCnt].pModel->SetPosition({ SETPOS.x - (SETPOS.x * nCnt * 2), SETPOS.y, SETPOS.z});
+		m_aObject[nCnt].pModel->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * nCnt, 0.0f));
 	}
 
 	StateSet();
