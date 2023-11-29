@@ -38,6 +38,7 @@
 #include "life.h"
 #include "ui.h"
 #include "bullet.h"
+#include "air.h"
 #include "particle.h"
 #include "effect.h"
 
@@ -1225,6 +1226,20 @@ void CPlayer::MotionSet(void)
 			m_action = ACTION_NEUTRAL;
 		}
 	}
+	else if (m_action == ACTION_AIR)
+	{// 風の術
+		m_pBody->GetMotion()->Set(ACTION_ATK);
+
+		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
+		{
+			CAir::Create(m_Info.pos, m_nId);
+		}
+
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
+	}
 
 	if (nullptr == m_pLeg){	// 脚がない
 		return;
@@ -2238,6 +2253,9 @@ void CPlayer::Ninjutsu(void)
 	}
 	else if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId)) {	// クナイ
 		m_action = ACTION_KUNAI;
+	}
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId)) {	// クナイ
+		m_action = ACTION_AIR;
 	}
 	else
 	{
