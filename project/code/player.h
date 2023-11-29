@@ -56,7 +56,7 @@ public:
 		ACTION_FLUTTERING,	// じたばた
 		ACTION_HENGE,			// 変化の術
 		ACTION_KUNAI,			// クナイの術
-		ACTION_THUNDER,		// 雷の術
+		ACTION_AIR,			// 風神の術
 		ACTION_MAX
 	};
 

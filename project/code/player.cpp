@@ -38,6 +38,9 @@
 #include "life.h"
 #include "ui.h"
 #include "bullet.h"
+#include "air.h"
+#include "particle.h"
+#include "effect.h"
 
 //===============================================
 // マクロ定義
@@ -1223,6 +1226,20 @@ void CPlayer::MotionSet(void)
 			m_action = ACTION_NEUTRAL;
 		}
 	}
+	else if (m_action == ACTION_AIR)
+	{// 風の術
+		m_pBody->GetMotion()->Set(ACTION_ATK);
+
+		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
+		{
+			CAir::Create(m_Info.pos, m_nId);
+		}
+
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;
+		}
+	}
 
 	if (nullptr == m_pLeg){	// 脚がない
 		return;
@@ -2223,6 +2240,12 @@ void CPlayer::Ninjutsu(void)
 		if (m_action != ACTION_HENGE)
 		{
 			m_action = ACTION_HENGE;
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+
 			ChangeBody();
 		}
 
@@ -2231,10 +2254,19 @@ void CPlayer::Ninjutsu(void)
 	else if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId)) {	// クナイ
 		m_action = ACTION_KUNAI;
 	}
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId)) {	// クナイ
+		m_action = ACTION_AIR;
+	}
 	else
 	{
 		if (m_action == ACTION_HENGE) {	// 変化だった
 			m_action = ACTION_NEUTRAL;
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+
 			ChangeBody();
 		}
 	}
@@ -2312,6 +2344,9 @@ void CPlayer::ChangeBody(void)
 			pModel->SetPosition(pos);
 		}
 	}
+
+	SetMatrix();
+	BodySet();
 }
 
 //===============================================

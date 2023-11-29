@@ -9,6 +9,7 @@
 #include "enemy.h"
 #include "player.h"
 #include "objectX.h"
+#include "particle.h"
 
 // –³–¼–¼‘O‹óŠÔ
 namespace {
@@ -195,9 +196,9 @@ void CBullet::Hit(void)
 		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-COLLRANGE * 0.5f, -COLLRANGE * 0.15f, -COLLRANGE * 0.5f);
 		D3DXVECTOR3 moveOld = m_Info.move;
 		D3DXVECTOR3 posOld = m_Info.pos;
-		CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
+		CObjectX::Touch(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
 
-		if (m_Info.move.x != moveOld.x || m_Info.move.z != moveOld.z) {	// “–‚½‚Á‚ÄˆÚ“®—Ê‚ª‚È‚­‚È‚Á‚½
+		if (m_Info.pos.x != posOld.x || m_Info.pos.z != posOld.z) {	// “–‚½‚Á‚ÄˆÚ“®—Ê‚ª‚È‚­‚È‚Á‚½
 			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 			m_Info.pos = posOld;
 			m_bMove = false;

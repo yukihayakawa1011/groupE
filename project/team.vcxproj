@@ -156,12 +156,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="code\air.cpp" />
     <ClCompile Include="code\billboard.cpp" />
     <ClCompile Include="code\bullet.cpp" />
     <ClCompile Include="code\camera.cpp" />
     <ClCompile Include="code\camera_manager.cpp" />
     <ClCompile Include="code\character.cpp" />
     <ClCompile Include="code\debugproc.cpp" />
+    <ClCompile Include="code\effect.cpp" />
     <ClCompile Include="code\enemy.cpp" />
     <ClCompile Include="code\enemymanager.cpp" />
     <ClCompile Include="code\fade.cpp" />
@@ -201,6 +203,7 @@
     <ClCompile Include="code\objectX.cpp" />
     <ClCompile Include="code\object_manager.cpp" />
     <ClCompile Include="code\gimmick_pitfall.cpp" />
+    <ClCompile Include="code\particle.cpp" />
     <ClCompile Include="code\player.cpp" />
     <ClCompile Include="code\precompile.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
@@ -228,12 +231,14 @@
     <ClCompile Include="code\Xfile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="code\air.h" />
     <ClInclude Include="code\billboard.h" />
     <ClInclude Include="code\bullet.h" />
     <ClInclude Include="code\camera.h" />
     <ClInclude Include="code\camera_manager.h" />
     <ClInclude Include="code\character.h" />
     <ClInclude Include="code\debugproc.h" />
+    <ClInclude Include="code\effect.h" />
     <ClInclude Include="code\enemy.h" />
     <ClInclude Include="code\enemymanager.h" />
     <ClInclude Include="code\fade.h" />
@@ -273,6 +278,7 @@
     <ClInclude Include="code\objectX.h" />
     <ClInclude Include="code\object_manager.h" />
     <ClInclude Include="code\gimmick_pitfall.h" />
+    <ClInclude Include="code\particle.h" />
     <ClInclude Include="code\player.h" />
     <ClInclude Include="code\precompile.h" />
     <ClInclude Include="code\protocol_online.h" />

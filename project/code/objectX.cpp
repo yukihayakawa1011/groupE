@@ -241,6 +241,7 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 {
 	CObjectX *pObj = m_pTop;	// 先頭取得
 	bool bLand = false;	// 着地したか否か
+	D3DXVECTOR3 moveOld = move;
 
 	//仮置き
 	D3DXVECTOR3 posTemp = posOld;
@@ -294,6 +295,28 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 	}
 
 	pos = posTemp;
+
+	return bLand;
+}
+
+//==========================================================
+// 当たり判定(触れたかどうか)
+//==========================================================
+bool CObjectX::Touch(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax)
+{
+	CObjectX *pObj = m_pTop;	// 先頭取得
+	bool bLand = false;	// 着地したか否か
+
+	while (pObj != NULL)
+	{
+		CObjectX *pObjNext = pObj->m_pNext;
+		if (pObj->m_bEnableCollision == true)
+		{
+			pObj->CollisionCheck(pos, posOld, move, vtxMin, vtxMax);
+		}
+
+		pObj = pObjNext;
+	}
 
 	return bLand;
 }
@@ -413,7 +436,7 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 		if (posOld.x + vtxMin.x >= m_pos.x + vtxObjMax.x
 			&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x)
 		{//右から左にめり込んだ
-			move.x *= -1.0f;
+			move.x *= -0.0f;
 			move.x *= fRefMulti;
 			pos.x = m_pos.x + vtxObjMax.x - vtxMin.x + 0.1f + move.x;
 		}
@@ -421,7 +444,7 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.x + vtxMax.x > m_pos.x + vtxObjMin.x)
 		{//左から右にめり込んだ
 		 //位置を戻す
-			move.x *= -1.0f;
+			move.x *= -0.0f;
 			move.x *= fRefMulti;
 			pos.x = m_pos.x + vtxObjMin.x - vtxMax.x - 0.1f + move.x;
 			//move.x = 0.0f;
@@ -438,7 +461,7 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
 		{//奥から手前にめり込んだ
 		 //位置を戻す
-			move.z *= -1.0f;
+			move.z *= -0.0f;
 			move.z *= fRefMulti;
 			pos.z = m_pos.z + vtxObjMax.z - vtxMin.z + 0.1f + move.z;
 			//move.z = 0.0f;
@@ -447,7 +470,7 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z)
 		{//手前から奥にめり込んだ
 		 //位置を戻す
-			move.z *= -1.0f;
+			move.z *= -0.0f;
 			move.z *= fRefMulti;
 			pos.z = m_pos.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
 			//move.z = 0.0f;

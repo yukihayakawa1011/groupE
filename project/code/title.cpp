@@ -15,6 +15,8 @@
 #include "objectX.h"
 #include "title_enter.h"
 #include "meshdome.h"
+#include "object3D.h"
+#include "texture.h"
 
 //===============================================
 // 無名名前空間
@@ -72,6 +74,12 @@ HRESULT CTitle::Init(void)
 
 	//家モデルの設置
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\house.x", NULL);
+
+	//タイトル生成
+	CObject3D* pObj3D = CObject3D::Create(D3DXVECTOR3(-1000.0f, 900.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	pObj3D->SetRotation(D3DXVECTOR3(0.0f, -0.8f, 0.1f));
+	pObj3D->SetSize(624.0f, 288.0f);
+	pObj3D->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\title00.png"));
 
 	//カメラ初期化
 	{
