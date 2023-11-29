@@ -36,6 +36,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_TIMER,				// タイム
 		TYPE_LIFE0,				//体力0
 		TYPE_LIFE1,				//体力1
+		TYPE_SMOOK,             //煙
 		TYPE_MAX
 	};
 

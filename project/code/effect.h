@@ -8,6 +8,7 @@
 #define _EFFECT_H_
 
 #include "task.h"
+#include "texture.h"
 
 // 前方宣言
 class CObjectBillboard;
@@ -64,6 +65,7 @@ private:	// 自分だけがアクセス可能
 	void RadiusSet(void);
 	void ColorSet(void);
 	void InfoSet(void);
+	CTexture::TYPE SetTex(TYPE type);
 
 	// メンバ変数
 	INFO m_Info;	// 情報の構造体

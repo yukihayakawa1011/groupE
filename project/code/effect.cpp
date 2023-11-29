@@ -58,7 +58,7 @@ HRESULT CEffect::Init(void)
 {
 	// オブジェクトの初期化処理
 	m_pObjectBilBoard = CObjectBillboard::Create(m_Info.pos, 6);
-	m_pObjectBilBoard->BindTexture(CManager::GetInstance()->GetTexture()->Regist(CManager::GetInstance()->GetTexture()->GetFileName(CTexture::TYPE_EFFECT)));
+	m_pObjectBilBoard->BindTexture(CManager::GetInstance()->GetTexture()->Regist(CManager::GetInstance()->GetTexture()->GetFileName(SetTex(m_Info.Type))));
 	m_pObjectBilBoard->SetAlphaText(true);
 	m_pObjectBilBoard->SetZTest(true);
 	m_pObjectBilBoard->SetLighting(true);
@@ -153,9 +153,6 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, TYPE type)
 		// 座標設定
 		pEffect->SetPosition(pos);
 
-		// 初期化処理
-		pEffect->Init();
-
 		// オブジェクトの種類の設定
 
 		// 種類の設定
@@ -168,6 +165,9 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, TYPE type)
 		pEffect->ColorSet();
 
 		pEffect->InfoSet();
+
+		// 初期化処理
+		pEffect->Init();
 
 		// テクスチャの割り当て
 	}
@@ -196,9 +196,6 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float
 		// 座標設定
 		pEffect->SetPosition(pos);
 
-		// 初期化処理
-		pEffect->Init();
-
 		// エフェクトの設定
 		pEffect->SetType(type);
 
@@ -216,6 +213,9 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float
 
 		// 色の設定
 		pEffect->m_Info.col = col;
+
+		// 初期化処理
+		pEffect->Init();
 
 		pEffect->InfoSet();
 	}
@@ -278,4 +278,29 @@ void CEffect::InfoSet(void)
 	m_pObjectBilBoard->SetPosition(m_Info.pos);
 	m_pObjectBilBoard->SetCol(m_Info.col);
 	m_pObjectBilBoard->SetSize(m_Info.fRadius, m_Info.fRadius);
+}
+
+//===============================================
+// タイプ別テクスチャ
+//===============================================
+CTexture::TYPE CEffect::SetTex(TYPE type)
+{
+	switch (type)
+	{
+	case TYPE_NONE:
+	{
+
+	}
+		break;
+
+	case TYPE_SMAKE:
+	{
+		return CTexture::TYPE_SMOOK;
+	}
+
+	break;
+		
+	}
+
+	return CTexture::TYPE();
 }
