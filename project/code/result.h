@@ -55,6 +55,8 @@ private:
 	void Load(int *pScore);
 	void Sort(int *pScore);
 	void RankIn(int *pScore, int nResult);
+	bool SumScore(void);
+	void SetTopScore(int *pScore);
 
 	// メンバ変数
 	CFileLoad *m_pFileLoad;	// ファイル読み込みのポインタ
@@ -66,6 +68,7 @@ private:
 	int m_nRank;				// 今回のランク
 	int m_nTimer;				// 遷移タイマー
 	static int *m_nScore;			// 今回のスコア
+	static int m_nTopScore;     // 一位のスコア
 	static TYPE m_type;		    // 種類
 	static int m_nNumPlayer;    // ゴールしたプレイヤーの人数
 };

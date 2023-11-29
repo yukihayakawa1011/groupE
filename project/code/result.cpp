@@ -29,6 +29,7 @@
 
 // 静的メンバ変数
 int *CResult::m_nScore = 0;
+int CResult::m_nTopScore = 0;
 CResult::TYPE CResult::m_type = CResult::TYPE_MAX;
 int CResult::m_nNumPlayer = 0;
 CPlayer **CResult::m_ppPlayer = nullptr;
@@ -167,7 +168,7 @@ HRESULT CResult::Init(void)
 		sprintf(&aBodyPass[0], "data\\TXT\\Player%d\\motion_ninjabody.txt", nCnt);
 		sprintf(&aLegPass[0], "data\\TXT\\Player%d\\motion_ninjaleg.txt", nCnt);
 
-		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
+		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 100.0f, 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
 		m_ppPlayer[nCnt]->BindId(nCnt);
 		m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_NONE);
 	}
@@ -180,6 +181,10 @@ HRESULT CResult::Init(void)
 
 		m_apScore[nCount]->SetScore(m_nScore[nCount]);
 	}
+
+	SetTopScore(m_nScore);
+
+	//CObject2D::Create(D3DXVECTOR3(m_apScore[m_nTopScore]->), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
@@ -237,8 +242,8 @@ void CResult::Update(void)
 		}
 	}
 
-	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 
-		|| CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
+	if (/*CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 
+		||*/ CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
 	}
@@ -375,6 +380,35 @@ void CResult::RankIn(int *pScore, int nResult)
 				m_nRank = nCntRank;	// ランクインした順位を保存			
 				break;
 			}
+		}
+	}
+}
+
+//===============================================
+// 全員のスコア足す
+//===============================================
+bool CResult::SumScore(void)
+{
+	int nSumScore = 0;
+
+	for (int i = 0; i < m_nNumPlayer; i++)
+	{
+		nSumScore += m_nScore[i];
+	}
+
+	return false;
+}
+
+//===============================================
+// 誰が一位なのか決める
+//===============================================
+void CResult::SetTopScore(int * pScore)
+{
+	for (int nCount = 0; nCount < MAX_RANK; nCount++)
+	{
+		if(m_nTopScore < pScore[nCount])
+		{
+			m_nTopScore = nCount;
 		}
 	}
 }
