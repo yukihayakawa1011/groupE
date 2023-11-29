@@ -84,8 +84,6 @@ void CBullet::Update(void)
 	// マトリックス反映
 	SetMatrix();
 
-	CParticle::Create(m_Info.pos, CEffect::TYPE_DUST);
-
 	// 寿命確認
 	if (m_nLife <= 0) {	// 寿命がなくなった
 		Uninit();	// 終了
