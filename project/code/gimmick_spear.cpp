@@ -236,7 +236,7 @@ bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 		&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
 		&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z) {	// ”ÍˆÍ“à
 
-		if (pos.y + vtxMin.y >= ObjPos.y + vtxObjMin.y && pos.y <= ObjPos.y + vtxObjMax.y) {	// ‚‚³‚à”ÍˆÍ“à
+		if (pos.y + vtxMin.y >= ObjPos.y + vtxObjMin.y + vtxMin.y && pos.y <= ObjPos.y + vtxObjMax.y) {	// ‚‚³‚à”ÍˆÍ“à
 			bValue = true;
 		}
 	}
