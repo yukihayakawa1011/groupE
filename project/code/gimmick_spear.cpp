@@ -195,7 +195,7 @@ void CGimmickSpear::StateSet(void)
 //==========================================================
 // ”»’èŠm”F
 //==========================================================
-bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
+bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick, bool* bLand)
 {
 	D3DXVECTOR3 ObjPos = GetPosition();
 	D3DXVECTOR3 ObjRot = GetRotation();

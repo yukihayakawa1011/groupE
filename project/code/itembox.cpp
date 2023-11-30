@@ -172,7 +172,7 @@ void CItemBox::Emission(void)
 //==========================================================
 // “–‚½‚è”»’è
 //==========================================================
-bool CItemBox::CollisionCheck(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 & move, D3DXVECTOR3 & SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick ** ppGimmick)
+bool CItemBox::CollisionCheck(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 & move, D3DXVECTOR3 & SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick ** ppGimmick, bool* bLand)
 {
 	D3DXVECTOR3 ObjPos = GetPosition();
 

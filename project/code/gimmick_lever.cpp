@@ -144,7 +144,7 @@ CGimmickLever *CGimmickLever::Create(const D3DXVECTOR3 pos)
 //==========================================================
 // ”»’èŠm”F
 //==========================================================
-bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
+bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick, bool* bLand)
 {
 	bool bValue = false;
 	D3DXVECTOR3 ObjPos = GetPosition();
