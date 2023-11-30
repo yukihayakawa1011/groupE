@@ -16,9 +16,10 @@
 namespace {
 	const float MAX_LENGTH = (500.0f);	// 最大の範囲
 	const float RANGE_UPSPEED = (5.0f);	// 1フレーム間の範囲増加量
-	const float FLYAWAY_SPEED = (300.0f);	// 吹っ飛ぶ速度(かっけえ変数名)
+	const float FLYAWAY_SPEED = (100.0f);	// 吹っ飛ぶ速度(かっけえ変数名)
 	const float AIROBJ_HEIGHT = (40.0f);	// オブジェクトの高さ
-	const int OBJ_NUMWIDTH = (10);		// 画像
+	const int OBJ_NUMWIDTH = (10);		// 横枚数
+	const float FLYAWAY_JUMP = (20.0f);	// 吹っ飛ぶ高さ
 	const char* FILENAME[CAir::TYPE_MAX] = {	// テクスチャファイル名
 		"data\\TEXTURE\\wind000.png",
 		"data\\TEXTURE\\wind001.png"
@@ -206,10 +207,12 @@ void CAir::Collision(void)
 
 			// 移動方向を設定
 			move.x = sinf(fRot) * FLYAWAY_SPEED;
+			move.y = FLYAWAY_JUMP;
 			move.z = cosf(fRot) * FLYAWAY_SPEED;
 
 			// 移動量を反映
 			pEnemy->SetMove(move);
+			pEnemy->Blow();
 
 			pEnemy = pEnemyNext;	// 次に移動
 		}
