@@ -59,7 +59,7 @@ void CMeshCylinder::Update(void)
 //==========================================================
 void CMeshCylinder::Draw(void)
 {
-	LPDIRECT3DDEVICE9 pDevice;		//デバイスへのポインタ
+	LPDIRECT3DDEVICE9 pDevice;	//デバイスへのポインタ
 
 	//デバイスの取得
 	pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();
@@ -67,11 +67,15 @@ void CMeshCylinder::Draw(void)
 	//ライティングをオフにする
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_FORCE_DWORD);
+
 	// 描画
 	CObjectMesh::Draw();
 
 	//ライティングをオンにする
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
 //==========================================================
@@ -135,7 +139,7 @@ CMeshCylinder *CMeshCylinder::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 ro
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();	// テクスチャへのポインタ
 
 	// メモリの確保
-	pMeshWall = new CMeshCylinder(3);
+	pMeshWall = new CMeshCylinder(nPriority);
 
 	if (pMeshWall != NULL)
 	{// 確保できた場合
@@ -176,6 +180,36 @@ void CMeshCylinder::SetSize(float fLength, float fHeight)
 
 	// 頂点情報設定
 	SetVtxInfo();
+}
+
+//==========================================================
+// 距離を設定
+//==========================================================
+void CMeshCylinder::SetLength(const float fLength)
+{
+	// 距離を設定
+	m_fLength = fLength;
+
+	// 頂点情報設定
+	SetVtxInfo();
+}
+
+//==========================================================
+// 色設定
+//==========================================================
+void CMeshCylinder::SetCol(D3DXCOLOR col)
+{
+	int nVertex = GetVertex();			// 頂点数を取得
+
+	//頂点座標の設定(左奥から右手前に向かって頂点情報を設定する
+	for (int nCntVtx = 0; nCntVtx < nVertex; nCntVtx++)
+	{
+		//色
+		m_pVtx[nCntVtx].col = col;
+	}
+
+	// 頂点設定
+	SetVtx();
 }
 
 //==========================================================
@@ -262,7 +296,7 @@ void CMeshSmake::Draw(void)
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CW);
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 
 	// 描画
 	CMeshCylinder::Draw();
@@ -339,8 +373,6 @@ void CMeshSmake::SetSize(float fLength, float fHeight)
 void CMeshSmake::SetCol(D3DXCOLOR col)
 {
 	int nVertex = GetVertex();			// 頂点数を取得
-	D3DXVECTOR3 pos = GetPosition();	// 座標
-	D3DXVECTOR3 vecDir;	//設定変更用ベクトル
 
 	//頂点座標の設定(左奥から右手前に向かって頂点情報を設定する
 	for (int nCntVtx = 0; nCntVtx < nVertex; nCntVtx++)

@@ -70,6 +70,9 @@
 #define CATCH_MOVE	(2.0f)
 #define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
 #define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
+#define POS_WARP_X		(760.0f)					//ワープ位置のX
+#define POS_WARP_Y		(1000.0f)					//ワープ位置のY
+#define POS_WARP_Z		(-500.0f)					//ワープ位置のZ
 
 namespace {
 	const float BULLET_MOVE = (22.0f);
@@ -601,8 +604,22 @@ void CPlayer::Controller(void)
 	}
 
 	// ギミックとの判定
-	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick)) {
+	bool bLand = false;
+	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick,&bLand)) {
 		Damage(1);
+	}
+	if (bLand == true)
+	{
+		m_bJump = false;
+	}
+
+	//落ちたら戻る
+	if (pos.y <= -1000.0f)
+	{
+		m_Info.move.y = 0.0f;
+		m_Info.pos.x = POS_WARP_X;
+		m_Info.pos.y = POS_WARP_Y;
+		m_Info.pos.z = POS_WARP_Z;
 	}
 
 	// ゴールとの判定
