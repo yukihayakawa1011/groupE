@@ -10,6 +10,9 @@
 #include "main.h"
 #include "object.h"
 
+// 前方宣言
+class CPlayer;
+
 //**********************************************************
 // オブジェクト3Dクラスの定義
 //**********************************************************
@@ -29,6 +32,7 @@ public:	// 誰でもアクセス可能
 	void SetpVtx(float fWidth, float fHeight);
 	void SetTextureVtx(float fWidth, float fHeight);
 	void BindTexture(int nIdx);
+	void ZoomSize(CPlayer **ppPlayer, float fRadius);
 
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }

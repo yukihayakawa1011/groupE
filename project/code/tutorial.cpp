@@ -25,6 +25,7 @@
 #include "gimmick_rotatedoor.h"
 #include "gimmick_startdoor.h"
 #include "gimmick_lever.h"
+#include "object3D.h"
 
 // 無名名前空間
 namespace
@@ -49,6 +50,7 @@ CTutorial::CTutorial()
 {
 	// 値のクリア
 	m_pFileLoad = NULL;
+	m_pObject3D = nullptr;
 	m_bEnd = false;
 }
 
@@ -116,6 +118,17 @@ HRESULT CTutorial::Init(void)
 		"data\\TXT\\player0\\motion_ninjabody.txt", "data\\TXT\\player0\\motion_ninjaleg.txt");
 	m_ppPlayer[0]->BindId(0);
 	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
+
+	// 説明説明
+
+	if (m_pObject3D == nullptr)
+	{
+		m_pObject3D = CObject3D::Create(D3DXVECTOR3(-200.0f, 10.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+		m_pObject3D->SetSize(100.0f, 100.0f);
+		m_pObject3D->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\title00.png"));
+	}
+	
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 
@@ -187,6 +200,11 @@ void CTutorial::Update(void)
 			m_ppPlayer[nId]->Uninit();
 			m_ppPlayer[nId] = 0;
 		}
+	}
+
+	if (m_pObject3D != nullptr)
+	{
+		m_pObject3D->ZoomSize(m_ppPlayer, 100.0f);
 	}
 
 	if (EndCheck()) 

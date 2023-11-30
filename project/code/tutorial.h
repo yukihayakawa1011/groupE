@@ -12,6 +12,7 @@
 // 前方宣言
 class CFileLoad;
 class CPlayer;
+class CObject3D;
 
 //===============================================
 // ゲームクラスの定義(派生クラス)
@@ -35,11 +36,11 @@ public:
 
 private:
 
-
 	bool EndCheck(void);
 
 	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
 	CFileLoad *m_pFileLoad;			// ファイル読み込みのポインタ
+	CObject3D *m_pObject3D;         // オブジェクト3Dのポインタ
 	bool m_bEnd;
 };
 

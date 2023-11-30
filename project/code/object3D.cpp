@@ -11,6 +11,7 @@
 #include "renderer.h"
 #include "texture.h"
 #include "debugproc.h"
+#include "player.h"
 
 //==========================================================
 //マクロ定義
@@ -260,9 +261,52 @@ void CObject3D::SetpVtx(float fWidth, float fHeight)
 	m_pVtxBuff->Unlock();
 }
 
+//==========================================================
+// テクスチャ設定
+//==========================================================
 void CObject3D::BindTexture(int nIdx)
 {
 	m_nIdxTexture = nIdx;
+}
+
+//==========================================================
+// 近づくと大きなる
+//==========================================================
+void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
+{
+	bool bNear = false;  // 誰かが判定内にいたらとゅるーになる
+
+	int nNumPlayer = CPlayer::GetNum(); // プレイヤーの人数
+
+	for (int i = 0; i < nNumPlayer; i++)
+	{
+		D3DXVECTOR3 pos = ppPlayer[i]->GetPosition();
+
+		float PlayerfRadius = 100.0f;
+
+		float circleX = m_pos.x - pos.x;
+		float circleZ = m_pos.z - pos.z;
+		float c = 0.0f;
+
+		c = (float)sqrt(circleX * circleX + circleZ * circleZ);
+
+		if (c <= fRadius + PlayerfRadius)
+		{// 判定内
+
+			bNear = true;
+		}
+	}
+
+	if (bNear == true)
+	{
+		SetSize(300.0f, 300.0f);
+
+
+	}
+	else
+	{
+		SetSize(100.0f, 100.0f);
+	}
 }
 
 //==========================================================
