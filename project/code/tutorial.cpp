@@ -50,7 +50,12 @@ CTutorial::CTutorial()
 {
 	// ’l‚ÌƒNƒŠƒA
 	m_pFileLoad = NULL;
-	m_pObject3D = nullptr;
+
+	for (int i = 0; i < NUM_PORI; i++)
+	{
+		m_pObject3D[i] = nullptr;
+	}
+	
 	m_bEnd = false;
 }
 
@@ -120,15 +125,50 @@ HRESULT CTutorial::Init(void)
 	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
 
 	// à–¾à–¾
-
-	if (m_pObject3D == nullptr)
+	if (m_pObject3D[0] == nullptr)
 	{
-		m_pObject3D = CObject3D::Create(D3DXVECTOR3(-200.0f, 10.0f, -250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		m_pObject3D->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
-		m_pObject3D->SetSize(100.0f, 100.0f);
-		m_pObject3D->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\title00.png"));
+		m_pObject3D[0] = CObject3D::Create(D3DXVECTOR3(400.0f, 10.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[0]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+		m_pObject3D[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
+		m_pObject3D[0]->SetSize(100.0f, 100.0f);
+		m_pObject3D[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial000.png"));
 	}
 	
+	if (m_pObject3D[1] == nullptr)
+	{
+		m_pObject3D[1] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[1]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+		m_pObject3D[1]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject3D[1]->SetSize(100.0f, 100.0f);
+		m_pObject3D[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\arrow0.png"));
+	}
+
+	if (m_pObject3D[2] == nullptr)
+	{
+		m_pObject3D[2] = CObject3D::Create(D3DXVECTOR3(600.0f, 10.0f, 360.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[2]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+		m_pObject3D[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject3D[2]->SetSize(100.0f, 100.0f);
+		m_pObject3D[2]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\money0.png"));
+	}
+
+	if (m_pObject3D[3] == nullptr)
+	{
+		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[3]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+		m_pObject3D[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject3D[3]->SetSize(100.0f, 100.0f);
+		m_pObject3D[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\money1.png"));
+	}
+
+	if (m_pObject3D[4] == nullptr)
+	{
+		m_pObject3D[4] = CObject3D::Create(D3DXVECTOR3(-500.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[4]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+		m_pObject3D[4]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject3D[4]->SetSize(100.0f, 100.0f);
+		m_pObject3D[4]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\money2.png"));
+	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 
@@ -202,9 +242,12 @@ void CTutorial::Update(void)
 		}
 	}
 
-	if (m_pObject3D != nullptr)
+	for (int i = 0; i < NUM_PORI; i++)
 	{
-		m_pObject3D->ZoomSize(m_ppPlayer, 100.0f);
+		if (m_pObject3D[i] != nullptr)
+		{
+			m_pObject3D[i]->ZoomSize(m_ppPlayer, 100.0f);
+		}
 	}
 
 	if (EndCheck()) 
