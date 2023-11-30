@@ -174,19 +174,17 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 0.0f, nCnt * 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
-			CScore * pScore = CScore::Create(D3DXVECTOR3(50.0f + nCnt * 500.0f, 50.0f, 0.0f), 30.0f, 30.0f);
-			m_ppPlayer[nCnt]->BindScore(pScore);
 
 			float fData = 0.0f;
 			float fData1 = 0.0f;
 
 			if (nCnt == 1 || nCnt == 3)
 			{
-				fData = 930.0f;		
+				fData = 930.0f;
 			}
 			else
 			{
-				fData = 0.0f;		
+				fData = 0.0f;
 			}
 
 			if (nCnt == 2 || nCnt == 3)
@@ -201,6 +199,9 @@ HRESULT CGame::Init(void)
 			//UI‚Ì¶¬
 			CUI *pUI = CUI::Create(D3DXVECTOR3(175.0f + fData, 60.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
 			m_ppPlayer[nCnt]->BindUI(pUI);
+
+			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + nCnt * 500.0f, 25.0f, 0.0f), 16.0f, 20.0f);
+			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 		
 		//CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
