@@ -42,6 +42,7 @@
 #define ENEMY_JUMP		(25.0f)		//敵ジャンプ力
 #define ROT_MULTI	(0.1f)	// 向き補正倍率
 #define INER	(0.3f)		// 慣性
+#define BLOW_INER (0.1f)	// 吹き飛ばし中慣性
 #define START_LIFE	(4)	// 初期体力
 #define DAMAGE_INTERVAL	(80)
 #define APPEAR_INTERVAL	(120)
@@ -294,7 +295,7 @@ void CEnemy::Update(void)
 
 	m_nCounterAttack--;
 
-	if (m_Info.state < STATE_DAMAGE)
+	if (m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW)
 	{
 		// 敵操作
 		Controller();
@@ -371,10 +372,16 @@ void CEnemy::Controller(void)
 	D3DXVECTOR3 pos = GetPosition();	// 座標を取得
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	m_fRotMove = rot.y;	//現在の向きを取得
+	float fIner = INER;
 
 	// 操作処理
 	{
-		Move();		// 移動
+		if (m_Info.state != STATE_BLOW) {	// 吹き飛ばし以外
+			Move();		// 移動
+		}
+		else {
+			fIner = BLOW_INER;
+		}
 
 		if (m_bChace == false)
 		{
@@ -392,8 +399,8 @@ void CEnemy::Controller(void)
 	m_Info.move.y += fGravity;
 	pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
-	m_Info.move.x += (0.0f - m_Info.move.x) * INER;	//x座標
-	m_Info.move.z += (0.0f - m_Info.move.z) * INER;	//x座標
+	m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
+	m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
 
 	pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
 	pos.z += m_Info.move.z * CManager::GetInstance()->GetSlow()->Get();
@@ -760,7 +767,13 @@ void CEnemy::StateSet(void)
 		m_Info.nStateCounter = APPEAR_INTERVAL;
 	}
 		break;
-
+		
+	case STATE_BLOW:
+	{
+		m_Info.state = STATE_APPEAR;
+		m_Info.nStateCounter = APPEAR_INTERVAL;
+	}
+		break;
 	}
 }
 
@@ -884,6 +897,10 @@ void CEnemy::MotionSet(void)
 		m_pBody->GetMotion()->Set(MOTION_DAMAGE);
 		m_pLeg->GetMotion()->Set(MOTION_DAMAGE);
 	}
+	else if (m_Info.state == STATE_BLOW) {	// ダメージ状態
+		m_pBody->GetMotion()->Set(MOTION_DAMAGE);
+		m_pLeg->GetMotion()->Set(MOTION_DAMAGE);
+	}
 	else if (m_nCounterAttack > 0) {	// 攻撃中
 		m_pBody->GetMotion()->Set(MOTION_ATK);
 		m_pLeg->GetMotion()->Set(MOTION_ATK);
@@ -956,4 +973,12 @@ void CEnemy::SetMatrix(void)
 
 	//ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_Info.mtxWorld);
+}
+
+//===============================================
+// 吹き飛ばされる
+//===============================================
+void CEnemy::Blow(void) {
+	m_Info.nStateCounter = DAMAGE_INTERVAL;
+	m_Info.state = STATE_BLOW;
 }

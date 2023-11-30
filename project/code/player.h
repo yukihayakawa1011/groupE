@@ -71,6 +71,7 @@ private:	// 自分だけがアクセス可能な定義
 		STATE_DEATH,		// 死亡状態
 		STATE_SPAWN,		// 復活中状態
 		STATE_CATCH,		// 掴まれている状態
+		STATE_BLOW,		// 吹き飛ばされ状態
 		STATE_MAX
 	};
 
@@ -121,6 +122,7 @@ public:	// 誰でもアクセス可能
 	void BindScore(CScore *pScore) { m_pScore = pScore; }
 	void BindUI(CUI *pUI) { m_pUI = pUI; }
 	void Ninjutsu(void);
+	void Blow(void);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }

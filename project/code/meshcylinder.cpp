@@ -67,6 +67,7 @@ void CMeshCylinder::Draw(void)
 	//ライティングをオフにする
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
+	// カリング設定
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_FORCE_DWORD);
 
 	// 描画
@@ -75,6 +76,7 @@ void CMeshCylinder::Draw(void)
 	//ライティングをオンにする
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
+	// カリング設定直す
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
@@ -310,7 +312,6 @@ void CMeshSmake::Draw(void)
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-
 	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 }
 
