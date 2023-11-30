@@ -9,12 +9,20 @@
 #include "enemy.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "meshcylinder.h"
+#include "texture.h"
 
 // 無名名前空間
 namespace {
 	const float MAX_LENGTH = (500.0f);	// 最大の範囲
 	const float RANGE_UPSPEED = (5.0f);	// 1フレーム間の範囲増加量
 	const float FLYAWAY_SPEED = (300.0f);	// 吹っ飛ぶ速度(かっけえ変数名)
+	const float AIROBJ_HEIGHT = (40.0f);	// オブジェクトの高さ
+	const int OBJ_NUMWIDTH = (10);		// 画像
+	const char* FILENAME[CAir::TYPE_MAX] = {	// テクスチャファイル名
+		"data\\TEXTURE\\wind000.png",
+		"data\\TEXTURE\\wind001.png"
+	};
 }
 
 //==========================================================
@@ -23,6 +31,13 @@ namespace {
 CAir::CAir()
 {
 	// 値のクリア
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		m_apObject[nCnt] = nullptr;
+	}
+	m_Info.fRange = 0.0f;
+	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_Info.rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXMatrixIdentity(&m_Info.mtxWorld);
 }
 
 //==========================================================
@@ -38,6 +53,12 @@ CAir::~CAir()
 //==========================================================
 HRESULT CAir::Init(void)
 {
+	// オブジェクトの生成
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		m_apObject[nCnt] = CMeshCylinder::Create(m_Info.pos, m_Info.rot, m_Info.fRange, AIROBJ_HEIGHT, 5, OBJ_NUMWIDTH);
+		m_apObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(FILENAME[nCnt]));
+	}
+
 	return S_OK;
 }
 
@@ -46,6 +67,13 @@ HRESULT CAir::Init(void)
 //==========================================================
 void CAir::Uninit(void)
 {
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		if (m_apObject[nCnt] != nullptr) {
+			m_apObject[nCnt]->Uninit();
+			m_apObject[nCnt] = nullptr;
+		}
+	}
+
 	Release();
 }
 
@@ -61,9 +89,31 @@ void CAir::Update(void)
 	}
 	else
 	{
-		CManager::GetInstance()->GetDebugProc()->Print("範囲[%f]\n", m_Info.fRange);
+
 		// 当たり判定を取る
 		Collision();
+	}
+
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		if (m_apObject[nCnt] != nullptr) {
+			m_apObject[nCnt]->SetLength(m_Info.fRange);
+			m_apObject[nCnt]->SetPosition(m_Info.pos);
+
+			// 現在の割合を求める
+			float fRate = m_Info.fRange / MAX_LENGTH;
+			float fAdd = 0.1f;
+			float fMulti = 0.15f;
+
+			if (nCnt == TYPE_ANOTHER) {
+				fAdd *= -1.0f;
+				fMulti *= -1.0f;
+			}
+
+			D3DXVECTOR3 rot = m_apObject[nCnt]->GetRotation();
+			rot.y += fAdd + (fRate * fMulti);
+			m_apObject[nCnt]->SetRotation(rot);
+			m_apObject[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f - (fRate * 0.75f)));
+		}
 	}
 }
 

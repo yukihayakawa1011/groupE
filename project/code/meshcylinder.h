@@ -29,6 +29,9 @@ public:		// 誰でもアクセス可能
 	void SetVtxInfo(void);
 	static CMeshCylinder *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, float fLength,
 		float fHeight, const int nPriority = 3, const int nWidth = 1, const int nHeight = 1);
+	void SetLength(const float fLength);
+	float GetLength(void) { return m_fLength; }
+	void SetCol(D3DXCOLOR col);
 
 protected:
 

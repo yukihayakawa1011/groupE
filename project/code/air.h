@@ -9,11 +9,23 @@
 
 #include "task.h"	// これでファイルインクルードできます
 
+// 前方宣言
+class CMeshCylinder;
+
 //==========================================================
 // サンプルのクラス定義
 //==========================================================
 class CAir : public CTask
 {
+public:
+
+	// 使用オブジェクト列挙型
+	enum TYPE {
+		TYPE_NORMAL = 0,	// 通常
+		TYPE_ANOTHER,	// 判定
+		TYPE_MAX
+	};
+
 private:
 
 	// 情報構造体
@@ -52,6 +64,7 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	int m_nId;	// 使用者ID
 	SInfo m_Info;	// 情報
+	CMeshCylinder *m_apObject[TYPE_MAX];	// オブジェクト
 };
 
 #endif

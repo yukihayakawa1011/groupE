@@ -11,6 +11,7 @@
 
 class CModel;
 class CGimmickButton;
+class CMeshCylinder;
 
 //==========================================================
 // ¶‚¦‚é‘„‚ÌƒNƒ‰ƒX’è‹`
