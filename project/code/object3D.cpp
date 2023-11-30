@@ -299,13 +299,31 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 
 	if (bNear == true)
 	{
-		SetSize(300.0f, 300.0f);
+		float fDestWidth, fDestHeight;
 
+		fDestWidth = 200.0f - (m_fWidth * 0.5f);
 
+		fDestHeight = 200.0f - (m_fHeight * 0.5f);
+
+		m_fWidth += fDestWidth;
+
+		m_fHeight += fDestHeight;
+
+		SetSize(m_fWidth, m_fHeight);
 	}
 	else
 	{
-		SetSize(100.0f, 100.0f);
+		float fDestWidth, fDestHeight;
+
+		fDestWidth = 50.0f - (m_fWidth * 0.5f);
+
+		fDestHeight = 50.0f - (m_fHeight * 0.5f);
+
+		m_fWidth += fDestWidth;
+
+		m_fHeight += fDestHeight;
+
+		SetSize(m_fWidth, m_fHeight);
 	}
 }
 
