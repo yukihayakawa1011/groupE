@@ -42,7 +42,7 @@
 #define ENEMY_JUMP		(25.0f)		//“GƒWƒƒƒ“ƒv—Í
 #define ROT_MULTI	(0.1f)	// Œü‚«•â³”{—¦
 #define INER	(0.3f)		// Šµ«
-#define BLOW_INER (0.1f)	// ‚«”ò‚Î‚µ’†Š®¬
+#define BLOW_INER (0.1f)	// ‚«”ò‚Î‚µ’†Šµ«
 #define START_LIFE	(4)	// ‰Šú‘Ì—Í
 #define DAMAGE_INTERVAL	(80)
 #define APPEAR_INTERVAL	(120)

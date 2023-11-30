@@ -51,6 +51,7 @@
 #define WIDTH	(20.0f)		// 幅
 #define HEIGHT	(80.0f)	// 高さ
 #define INER	(0.3f)		// 慣性
+#define BLOW_INER (0.1f)	// 吹き飛ばし中慣性
 #define STEP_SPEED	(50.0f)
 #define STEP_COOLTIME	(90.0f)
 #define START_LIFE	(6)	// 初期体力
@@ -418,9 +419,7 @@ void CPlayer::Update(void)
 	// 前回の座標を取得
 	m_Info.posOld = GetPosition();
 
-	StateSet();
-
-	
+	StateSet();	
 
 	if (m_type == TYPE_ACTIVE)
 	{
@@ -516,12 +515,19 @@ void CPlayer::Controller(void)
 {
 	D3DXVECTOR3 pos = GetPosition();	// 座標を取得
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
+	float fIner = INER;
 	m_fRotMove = rot.y;	//現在の向きを取得
 
 	// 操作処理
 	if(m_action != ACTION_DAMAGE){	// ダメージリアクションをしていない
 		if (m_Info.state != STATE_DEATH) {	// 死亡していない
-			Move();		// 移動
+			if (m_Info.state != STATE_BLOW) {	// 吹き飛ばし以外
+				Move();		// 移動
+			}
+			else {
+				fIner = BLOW_INER;
+			}
+
 			Rotation();	// 回転
 			Jump();		// ジャンプ
 			Attack();	// 攻撃
@@ -533,15 +539,14 @@ void CPlayer::Controller(void)
 	}
 
 	MotionSet();	// モーション設定
-
 	pos = GetPosition();	// 座標を取得
 
 	float fGravity = GRAVITY * CManager::GetInstance()->GetSlow()->Get();
 	m_Info.move.y += fGravity;
 	pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
-	m_Info.move.x += (0.0f - m_Info.move.x) * INER;	//x座標
-	m_Info.move.z += (0.0f - m_Info.move.z) * INER;	//x座標
+	m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
+	m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
 
 	pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
 	pos.z += m_Info.move.z * CManager::GetInstance()->GetSlow()->Get();
@@ -1027,6 +1032,19 @@ void CPlayer::StateSet(void)
 
 	}
 		break;
+
+	case STATE_BLOW:
+	{
+		m_Info.fStateCounter -= fSlawMul;
+
+		if (m_Info.fStateCounter <= 0.0f)
+		{
+			m_Info.fStateCounter = SPAWN_INTERVAL;
+			m_Info.state = STATE_APPEAR;
+		}
+	}
+	break;
+
 	}
 }
 
@@ -1134,8 +1152,23 @@ void CPlayer::MotionSet(void)
 			return;
 		}
 	}
+	else if (m_Info.state == STATE_BLOW)
+	{// ダメージ状態
+		m_pBody->GetMotion()->Set(ACTION_DAMAGE);
+		m_pLeg->GetMotion()->Set(ACTION_DAMAGE);
 
-	if (m_Info.state == STATE_CATCH && m_Catch.pPlayer != nullptr) {
+		if (m_pBody->GetMotion()->GetEnd())
+		{// モーション終了
+			m_action = ACTION_NEUTRAL;	// 保持状態に変更
+			m_Info.state = STATE_NORMAL;
+		}
+		else
+		{
+			return;
+		}
+	}
+
+	if (m_Info.state == STATE_CATCH && m_Catch.pPlayer != nullptr) {	// 掴まれている
 		m_pBody->GetMotion()->Set(ACTION_FLUTTERING);
 		m_pLeg->GetMotion()->Set(ACTION_FLUTTERING);
 
@@ -2240,6 +2273,13 @@ void CPlayer::BodySet(void)
 //===============================================
 void CPlayer::Ninjutsu(void)
 {
+	if (m_action < ACTION_NEUTRAL || m_action > ACTION_JUMP || m_Info.state == STATE_CATCH)
+	{// 待機か移動中
+		if (m_action < ACTION_HENGE) {
+			return;
+		}
+	}
+
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
 	// 入力装置確認
@@ -2422,4 +2462,12 @@ bool CPlayer::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 	Damage(nDamage);
 
 	return m_bValue;
+}
+
+//===============================================
+// 吹き飛ばされる
+//===============================================
+void CPlayer::Blow(void) {
+	m_Info.fStateCounter = DAMAGE_APPEAR;
+	m_Info.state = STATE_BLOW;
 }

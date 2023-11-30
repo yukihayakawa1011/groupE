@@ -175,10 +175,12 @@ void CAir::Collision(void)
 
 			// ˆÚ“®•ûŒü‚ðÝ’è
 			move.x = sinf(fRot) * FLYAWAY_SPEED;
+			move.y = FLYAWAY_JUMP;
 			move.z = cosf(fRot) * FLYAWAY_SPEED;
 
 			// ˆÚ“®—Ê‚ð”½‰f
 			pPlayer->SetMove(move);
+			pPlayer->Blow();
 
 			pPlayer = pPlayerNext;	// ŽŸ‚ÉˆÚ“®
 		}
