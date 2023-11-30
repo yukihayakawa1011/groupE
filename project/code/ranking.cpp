@@ -16,6 +16,7 @@
 #include "camera.h"
 #include "number.h"
 #include "score.h"
+#include "objectX.h"
 
 //===============================================
 // マクロ定義
@@ -54,6 +55,8 @@ HRESULT CRanking::Init(void)
 {
 	int aScore[NUM_RANK] = {};	// スコア格納用
 	m_nRank = -1;	//ランクインしてない状態
+
+	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
 
 	// データの読み込み
 	Load(&aScore[0]);
