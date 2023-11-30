@@ -82,12 +82,20 @@ int CXFile::Regist(const char *pFileName)
 					nIdx = nCnt;
 					return nIdx;	// ファイル情報を返す
 				}
+				else {
+					// 値をクリアする
+					memset(m_apModelFileData[nCnt]->aFileName, '\0', sizeof(m_apModelFileData[nCnt]->aFileName));
+
+					delete m_apModelFileData[nCnt];
+					m_apModelFileData[nCnt] = nullptr;
+				}
+
 				break;
 			}
 		}
 	}
 
-	return NULL;
+	return -1;
 }
 
 //==========================================================

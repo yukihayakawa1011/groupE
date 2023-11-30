@@ -276,7 +276,7 @@ void CFileLoad::LoadModelFile(FILE *pFile)
 			if (m_pModelFile[nCntModel].aFileName[0] == '\0')
 			{//ファイル名を入れる場所が使われていない場合
 				fscanf(pFile, "%s", &m_pModelFile[nCntModel].aFileName[0]);	//(=)読み込み
-																			// ファイル読み込み確認
+				// ファイル読み込み確認
 				m_pModelFile[nCntModel].nIdx = pModel->Regist(&m_pModelFile[nCntModel].aFileName[0]);
 				break;
 			}
