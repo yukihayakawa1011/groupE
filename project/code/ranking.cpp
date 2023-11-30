@@ -17,6 +17,7 @@
 #include "number.h"
 #include "score.h"
 #include "objectX.h"
+#include "item.h"
 
 //===============================================
 // ƒ}ƒNƒ’è‹`
@@ -103,6 +104,14 @@ void CRanking::Uninit(void)
 void CRanking::Update(void)
 {
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	CItem *pItem = CItem::GetTop();
+
+	
+	if (m_nTimer % 10 == 0)
+	{
+		CItem::Create(D3DXVECTOR3(0.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
+	}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
