@@ -144,7 +144,7 @@ CGimmickRotateDoor *CGimmickRotateDoor::Create(const D3DXVECTOR3 pos, const D3DX
 //==========================================================
 // ”»’èŠm”F
 //==========================================================
-bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick)
+bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick, bool* bLand)
 {
 	if (m_state == STATE_ROTATE) {	// ŠJ‚­”à
 		return false;
