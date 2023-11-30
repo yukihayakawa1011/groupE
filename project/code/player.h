@@ -188,6 +188,7 @@ private:	// 自分だけがアクセス可能
 	float m_fRotMove;		// 現在の角度
 	float m_fRotDiff;		// 目的の角度
 	float m_fRotDest;		// 角度計算
+	float m_fGage;	// 忍術ゲージ
 	bool m_bMove;			// 移動したかどうか
 	bool m_bJump;			// ジャンプ
 	bool m_bGoal;			// ゴールフラグ

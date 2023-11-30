@@ -74,10 +74,14 @@
 #define POS_WARP_X		(760.0f)					//ワープ位置のX
 #define POS_WARP_Y		(1000.0f)					//ワープ位置のY
 #define POS_WARP_Z		(-500.0f)					//ワープ位置のZ
+#define MAX_GAGE		(100.0f)		// ゲージ最大
 
 namespace {
 	const float BULLET_MOVE = (22.0f);
 	const float HIT_RANGE = (100.0f);
+	const float KUNAI_GAGE = (20.0f);
+	const float AIR_GAGE = (100.0f);
+	const float KAKUREMI_GAGE = (1.0f);
 }
 
 // 前方宣言
@@ -135,6 +139,7 @@ CPlayer::CPlayer()
 	m_bJump = false;
 	m_bGoal = false;
 	m_nItemCnt = 0;
+	m_fGage = 0.0f;
 	m_pMyCamera = nullptr;
 
 	for (int i = 0; i < MAX_ITEM; i++)
@@ -225,6 +230,7 @@ HRESULT CPlayer::Init(void)
 		m_pScore->Init();
 	}
 
+	m_fGage = MAX_GAGE;
 	m_Info.state = STATE_APPEAR;
 	m_action = ACTION_NEUTRAL;
 	m_type = TYPE_NONE;
@@ -309,6 +315,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 		m_pScore->Init();
 	}
 
+	m_fGage = MAX_GAGE;
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
 	m_action = ACTION_NEUTRAL;
@@ -450,7 +457,7 @@ void CPlayer::Update(void)
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
-	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ] : アイテム所持数 [ %d ] : 選択中のアイテム [ %d ]\n", m_nLife, m_Info.state, m_nItemCnt, m_nItemId);
+	CManager::GetInstance()->GetDebugProc()->Print("体力 [ %d ] : 状態 [ %d ] : アイテム所持数 [ %d ] : 選択中のアイテム [ %d ] : 忍術ゲージ [ %f ]\n", m_nLife, m_Info.state, m_nItemCnt, m_nItemId, m_fGage);
 
 	// マトリックス設定
 	if (m_Info.state == STATE_CATCH) {	// キャッチされている場合!!!!
@@ -2294,25 +2301,50 @@ void CPlayer::Ninjutsu(void)
 
 	if (pInputPad->GetPress(CInputPad::BUTTON_LEFTBUTTON, m_nId)) {	// 変化
 
-		if (m_action != ACTION_HENGE)
+		if (m_fGage >= KAKUREMI_GAGE)
 		{
+			if (m_action != ACTION_HENGE)
+			{
+				m_action = ACTION_HENGE;
+
+				CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+				// 煙のパーティクル生成
+				CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+
+				ChangeBody();
+			}
+
+			m_fGage -= KAKUREMI_GAGE;
 			m_action = ACTION_HENGE;
 
-			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+			if (m_fGage <= 0.0f)
+			{
+				if (m_action == ACTION_HENGE) {
+					m_action = ACTION_NEUTRAL;
 
-			// 煙のパーティクル生成
-			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+					CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
 
-			ChangeBody();
+					// 煙のパーティクル生成
+					CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+					ChangeBody();
+				}
+			}
 		}
-
-		m_action = ACTION_HENGE;
 	}
 	else if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId)) {	// クナイ
-		m_action = ACTION_KUNAI;
+		if (m_fGage >= KUNAI_GAGE && m_action != ACTION_KUNAI)
+		{
+			m_fGage -= KUNAI_GAGE;
+			m_action = ACTION_KUNAI;
+		}
 	}
 	else if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId)) {	// クナイ
-		m_action = ACTION_AIR;
+		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR)
+		{
+			m_fGage -= AIR_GAGE;
+			m_action = ACTION_AIR;
+		}
 	}
 	else
 	{
@@ -2326,6 +2358,22 @@ void CPlayer::Ninjutsu(void)
 
 			ChangeBody();
 		}
+
+		if (m_action < ACTION_HENGE) {	// 術を使用していない
+
+			if (m_fGage < MAX_GAGE) {
+				m_fGage += CManager::GetInstance()->GetSlow()->Get();
+
+				if (m_fGage > MAX_GAGE) {
+					m_fGage = MAX_GAGE;
+				}
+			}
+		}
+	}
+
+	if (m_fGage < 0.0f)
+	{
+		m_fGage = 0.0f;
 	}
 }
 
