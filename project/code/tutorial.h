@@ -14,6 +14,9 @@ class CFileLoad;
 class CPlayer;
 class CObject3D;
 
+// マクロ定義
+#define NUM_PORI  (5)
+
 //===============================================
 // ゲームクラスの定義(派生クラス)
 //===============================================
@@ -38,9 +41,9 @@ private:
 
 	bool EndCheck(void);
 
-	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
-	CFileLoad *m_pFileLoad;			// ファイル読み込みのポインタ
-	CObject3D *m_pObject3D;         // オブジェクト3Dのポインタ
+	CPlayer **m_ppPlayer;			  // プレイヤーのポインタ
+	CFileLoad *m_pFileLoad;			  // ファイル読み込みのポインタ
+	CObject3D *m_pObject3D[NUM_PORI];  // オブジェクト3Dのポインタ
 	bool m_bEnd;
 };
 
