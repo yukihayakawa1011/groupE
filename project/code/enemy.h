@@ -33,6 +33,7 @@ private:	// 自分だけがアクセス可能な定義
 		STATE_SPAWN,		// 生成状態
 		STATE_DAMAGE,		// ダメージ状態
 		STATE_DEATH,		// 死亡状態
+		STATE_BLOW,		// 吹き飛ばされ状態
 		STATE_MAX
 	};
 
@@ -93,6 +94,7 @@ public:	// 誰でもアクセス可能
 	CEnemy *GetNext(void) { return m_pNext; }
 	void Damage(int nDamage);
 	void SetLife(int nLife);
+	void Blow(void);
 	static int GetNum(void) { return m_nNumCount; }
 	int GetLife(void) { return m_nLife; }
 

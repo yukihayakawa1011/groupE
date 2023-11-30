@@ -24,6 +24,7 @@ public:
 		STATE_NORMAL = 0,	// ’Êí
 		STATE_DROP,		// ƒhƒƒbƒv‚µ‚½‚à‚Ì
 		STATE_CRASH,			//•ö‚ê‚é
+		STATE_DOWN,			//—Ž‰º
 		STATE_MAX
 	};
 
