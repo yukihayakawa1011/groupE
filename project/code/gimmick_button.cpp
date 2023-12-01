@@ -148,3 +148,21 @@ bool CGimmickButton::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXV
 
 	return bValue;
 }
+
+//==========================================================
+// スイッチ切り替え
+//==========================================================
+void CGimmickButton::Switch(bool bUse)
+{
+	// 状態に合わせてボタンの色を変更
+	switch (bUse)
+	{
+	case false:	// 何もない
+		m_state = STATE_NONE;
+		break;
+
+	case true:	// 押されている
+		m_state = STATE_PRESS;
+		break;
+	}
+}

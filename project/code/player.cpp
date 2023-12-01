@@ -448,13 +448,6 @@ void CPlayer::Update(void)
 			Controller();
 		}
 
-		// ƒJƒƒ‰’Ç]
-		if (m_pMyCamera != nullptr) {
-			// ’Ç]ˆ—
-			m_pMyCamera->Update();
-			m_pMyCamera->Pursue(GetPosition(), GetRotation());
-		}
-
 		// ƒIƒ“ƒ‰ƒCƒ“‘—M
 		CManager::GetInstance()->GetScene()->SendPosition(m_Info.pos);
 		CManager::GetInstance()->GetScene()->SendRotation(m_Info.rot);
@@ -464,6 +457,13 @@ void CPlayer::Update(void)
 	{// ‘€ìƒLƒƒƒ‰‚Å‚Í‚È‚¢
 		D3DXVECTOR3 posDest = m_Info.posDiff - m_Info.pos;
 		m_Info.pos += posDest * 0.95f;
+	}
+
+	// ƒJƒƒ‰’Ç]
+	if (m_pMyCamera != nullptr) {
+		// ’Ç]ˆ—
+		m_pMyCamera->Update();
+		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
 
 	CManager::GetInstance()->GetDebugProc()->Print("Œü‚« [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
@@ -2538,4 +2538,12 @@ bool CPlayer::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 void CPlayer::Blow(void) {
 	m_Info.fStateCounter = DAMAGE_APPEAR;
 	m_Info.state = STATE_BLOW;
+}
+
+//===============================================
+// ‚«”ò‚Î‚³‚ê‚é
+//===============================================
+void CPlayer::BindUI(CUI *pUI) 
+{ 
+	m_pUI = pUI; m_pUI->SetLife(m_nLife); 
 }

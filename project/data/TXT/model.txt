@@ -7942,4 +7942,36 @@ MODELSET
 	SHADOW = 1
 END_MODELSET
 
+MODELSET
+	TYPE = 0
+	POS = -1200.0 200.0 900.0
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200.0 200.0 1000.0
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200.0 150.0 900.0
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200.0 150.0 1000.0
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
 END_SCRIPT		# この行は絶対消さないこと！

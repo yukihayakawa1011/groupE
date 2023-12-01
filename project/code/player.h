@@ -121,7 +121,7 @@ public:	// 誰でもアクセス可能
 	void SetType(TYPE type);
 	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
 	void BindScore(CScore *pScore) { m_pScore = pScore; }
-	void BindUI(CUI *pUI) { m_pUI = pUI; }
+	void BindUI(CUI *pUI);
 	void Ninjutsu(void);
 	void Blow(void);
 
