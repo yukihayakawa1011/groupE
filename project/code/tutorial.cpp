@@ -122,9 +122,9 @@ HRESULT CTutorial::Init(void)
 	CGoal::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 200.0f);
 
 	// ‹¦—Í”à
-	CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-1350.0f, 0.0f, -950.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	pMultiDoor->SetNumButton(1);
-	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-1700.0f, 0.0f, -300.0f));
+	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-1700.0f, 0.0f, -600.0f));
 	pMultiDoor->BindButton(pButton);
 	/*pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
 	pMultiDoor->BindButton(pButton);*/
@@ -165,7 +165,7 @@ HRESULT CTutorial::Init(void)
 	{
 		m_pObject3D[0] = CObject3D::Create(D3DXVECTOR3(600.0f, 10.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[0]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
-		m_pObject3D[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
+		m_pObject3D[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[0]->SetSize(100.0f, 100.0f);
 		m_pObject3D[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial000.png"));
 	}
@@ -209,6 +209,16 @@ HRESULT CTutorial::Init(void)
 		m_pObject3D[4]->SetSize(100.0f, 100.0f);
 		m_pObject3D[4]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial002.png"));
 	}
+
+	////	‰ñ“]”à
+	//if (m_pObject3D[5] == nullptr)
+	//{
+	//	m_pObject3D[5] = CObject3D::Create(D3DXVECTOR3(650.0f, 10.0f, 450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//	m_pObject3D[5]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
+	//	m_pObject3D[5]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	//	m_pObject3D[5]->SetSize(100.0f, 100.0f);
+	//	m_pObject3D[5]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial002.png"));
+	//}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 
