@@ -171,6 +171,18 @@ void CRenderer::Uninit(void)
 		m_pZSurface->Release();
 		m_pZSurface = NULL;
 	}
+
+	if (m_pOrgSurface != nullptr)
+	{
+		m_pOrgSurface->Release();
+		m_pOrgSurface = nullptr;
+	}
+
+	if (m_pOrgZBuffer != nullptr)
+	{
+		m_pOrgZBuffer->Release();
+		m_pOrgZBuffer = nullptr;
+	}
 }
 
 //===================================================

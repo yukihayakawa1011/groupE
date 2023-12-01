@@ -78,7 +78,17 @@ void CFileLoad::Init(void)
 //==========================================================
 void CFileLoad::Uninit(void)
 {
+	if (m_pTextureFile != nullptr)
+	{
+		delete m_pTextureFile;
+		m_pTextureFile = nullptr;
+	}
 
+	if (m_pModelFile != nullptr)
+	{
+		delete m_pModelFile;
+		m_pModelFile = nullptr;
+	}
 }
 
 //==========================================================
