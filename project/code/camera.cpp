@@ -111,6 +111,7 @@ void CCamera::Update(void)
 	MoveV();
 	MouseCamera();
 
+	CManager::GetInstance()->GetDebugProc()->Print("Œü‚«[%f, %f, %f]\n", m_rot.x, m_rot.y, m_rot.z);
 }
 
 //==========================================================

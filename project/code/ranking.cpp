@@ -18,6 +18,7 @@
 #include "score.h"
 #include "objectX.h"
 #include "item.h"
+#include "object2D.h"
 
 //===============================================
 // マクロ定義
@@ -59,6 +60,11 @@ HRESULT CRanking::Init(void)
 	m_nRank = -1;	//ランクインしてない状態
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
+
+	//CObject2D *pObject = CObject2D::Create();
+	//pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\frame0.png"));
+	//pObject->SetPosition(D3DXVECTOR3(500.0f,-100.0f,0.0f));
+
 
 	// データの読み込み
 	Load(&aScore[0]);
@@ -105,8 +111,6 @@ void CRanking::Update(void)
 {
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
-	CItem *pItem = CItem::GetTop();
-
 	//m_nCounter++;
 	
 	if (m_nCounter % 5 == 0)
@@ -114,11 +118,14 @@ void CRanking::Update(void)
 		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 pos1 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		
-		pos.x = ((float)(rand() % 9000 - 4500) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
-		pos1.x = ((float)(rand() % 9000 - 4500) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
+		pos.x = ((float)(rand() % 8000 - 4000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
+		pos1.x = ((float)(rand() % 8000 - 4000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
 
-		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, -500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
-		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, -500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
+		pos.z = ((float)(rand() % 2000 - 1000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
+		pos1.z = ((float)(rand() % 2000 - 1000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
+
+		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
+		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, pos1.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
 	}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
