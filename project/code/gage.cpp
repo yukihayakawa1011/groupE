@@ -1,6 +1,6 @@
 //==========================================================
 //
-// ゲージ [gage.h]
+// ゲージ [gage.cpp]
 // Author : Ibuki Okusada
 //
 //==========================================================
@@ -12,7 +12,7 @@
 // 無名名前空間
 namespace {
 	const int DEF_PRI = (3);	// 優先順位
-	const char* FILENAME[CGage::TYPE_MAX] = {
+	const char* FILENAME[CGage::TYPE_MAX] = {	// テクスチャファイル名
 		"data\\TEXTURE\\map001.png",
 		"data\\TEXTURE\\gage000.jpg"
 	};
@@ -56,6 +56,8 @@ HRESULT CGage::Init(void)
 		m_apObject[nCnt]->SetFusion(CObjectBillboard::FUSION_NORMAL);
 		m_apObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(FILENAME[nCnt]));
 	}
+
+	m_fRate = 1.0f;
 
 	return S_OK;
 }
@@ -138,6 +140,29 @@ void CGage::SetRate(const float fRate)
 	else if (m_fRate > 1.0f) {	// 値が基準を超えた
 		m_fRate = 1.0f;
 	}
+
+	if (m_fRate >= 1.0f)
+	{
+		for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+			if (m_apObject[nCnt] == nullptr) {	// 使用されていない
+				continue;
+			}
+
+			// 座標設定
+			m_apObject[nCnt]->SetDraw(false);
+		}
+	}
+	else
+	{
+		for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+			if (m_apObject[nCnt] == nullptr) {	// 使用されていない
+				continue;
+			}
+
+			// 座標設定
+			m_apObject[nCnt]->SetDraw();
+		}
+	}
 }
 
 //==========================================================
@@ -155,7 +180,7 @@ void CGage::SetPolySize(const float fWidth, const float fHeight)
 
 	// 高さの設定
 	{
-		m_fPolyHeight = m_fPolyHeight;
+		m_fPolyHeight = fHeight;
 		if (m_fPolyHeight < 0.0f) {	// 値がマイナス
 			m_fPolyHeight = 0.0f;
 		}

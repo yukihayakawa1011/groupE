@@ -39,6 +39,7 @@ CRanking::CRanking()
 	// ’l‚ðƒNƒŠƒA‚·‚é
 	m_nTimer = 0;
 	m_nRank = 0;
+	m_nCounter = 0;
 }
 
 //===============================================
@@ -95,7 +96,6 @@ void CRanking::Uninit(void)
 			m_apScore[nCntRanking][nCntRank]->Uninit();
 		}
 	}
-
 }
 
 //===============================================
@@ -107,10 +107,18 @@ void CRanking::Update(void)
 
 	CItem *pItem = CItem::GetTop();
 
+	//m_nCounter++;
 	
-	if (m_nTimer % 10 == 0)
+	if (m_nCounter % 5 == 0)
 	{
-		CItem::Create(D3DXVECTOR3(0.0f, 1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
+		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		D3DXVECTOR3 pos1 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		
+		pos.x = ((float)(rand() % 9000 - 4500) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
+		pos1.x = ((float)(rand() % 9000 - 4500) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
+
+		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, -500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
+		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, -500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
 	}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))

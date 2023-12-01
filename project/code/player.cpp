@@ -41,6 +41,7 @@
 #include "air.h"
 #include "particle.h"
 #include "effect.h"
+#include "gage.h"
 
 //===============================================
 // マクロ定義
@@ -77,11 +78,13 @@
 #define MAX_GAGE		(100.0f)		// ゲージ最大
 
 namespace {
-	const float BULLET_MOVE = (22.0f);
-	const float HIT_RANGE = (100.0f);
-	const float KUNAI_GAGE = (20.0f);
-	const float AIR_GAGE = (100.0f);
-	const float KAKUREMI_GAGE = (1.0f);
+	const float BULLET_MOVE = (22.0f);	// 弾の移動量
+	const float HIT_RANGE = (100.0f);	// 当たり判定のサイズ
+	const float KUNAI_GAGE = (20.0f);	// クナイのゲージ必要量
+	const float AIR_GAGE = (100.0f);	// 風神の術のゲージ必要量
+	const float KAKUREMI_GAGE = (1.0f);	// 隠れ蓑術のゲージ必要量
+	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
+	const D3DXVECTOR2 GAGE_SIZE = {75.0f, 5.0f};	// ゲージのポリゴンサイズ
 }
 
 // 前方宣言
@@ -141,6 +144,7 @@ CPlayer::CPlayer()
 	m_nItemCnt = 0;
 	m_fGage = 0.0f;
 	m_pMyCamera = nullptr;
+	m_pGage = nullptr;
 
 	for (int i = 0; i < MAX_ITEM; i++)
 	{
@@ -230,6 +234,8 @@ HRESULT CPlayer::Init(void)
 		m_pScore->Init();
 	}
 
+	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
+
 	m_fGage = MAX_GAGE;
 	m_Info.state = STATE_APPEAR;
 	m_action = ACTION_NEUTRAL;
@@ -315,6 +321,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 		m_pScore->Init();
 	}
 
+	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
 	m_fGage = MAX_GAGE;
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
@@ -409,7 +416,11 @@ void CPlayer::Uninit(void)
 		m_pScore = nullptr;
 	}
 
-	
+	// ゲージの終了
+	if (m_pGage != nullptr) {
+		m_pGage->Uninit();
+		m_pGage = nullptr;
+	}
 
 	// 人数を減らす
 	m_nNumCount--;
@@ -478,6 +489,16 @@ void CPlayer::Update(void)
 		CModel *pModel = m_pLeg->GetParts(0);
 
 		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	}
+
+	// ゲージの設定
+	{
+		if (m_pGage == nullptr) {
+			return;
+		}
+
+		float fRate = m_fGage / MAX_GAGE;
+		m_pGage->SetRate(fRate);
 	}
 }
 

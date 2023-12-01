@@ -126,6 +126,43 @@ FIELDSET
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
+FIELDSET
+	TEXTYPE = 1
+	POS = 900.0 1.0 -2650.0
+	ROT = 0 0 0
+	BLOCK = 10 8
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = -700.0 1.0 -2650.0
+	ROT = 0 0 0
+	BLOCK = 10 8
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 900.0 1.0 -4500.0
+	ROT = 0 0 0
+	BLOCK = 10 8
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = -700.0 1.0 -4500.0
+	ROT = 0 0 0
+	BLOCK = 10 8
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+
 #==============================================================================
 # ƒ‚ƒfƒ‹”z’u
 #==============================================================================

@@ -251,11 +251,11 @@ HRESULT CGame::Init(void)
 		pFall->BindButton(pButton);
 
 		// ‹¦—Í”à
-		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		pMultiDoor->SetNumButton(2);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, 0.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(300.0f, 0.0f, 0.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
 		
 		// ƒS[ƒ‹
@@ -421,7 +421,8 @@ void CGame::Uninit(void)
 
 	if (m_pMiniMap != nullptr)
 	{
-		m_pMiniMap->Uninit();
+		/*m_pMiniMap->Uninit();
+		m_pMiniMap = nullptr;*/
 	}
 
 	if (m_pFileLoad != nullptr)
