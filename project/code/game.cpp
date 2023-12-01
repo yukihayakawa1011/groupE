@@ -51,7 +51,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (100);				// 開始制限時間
+	const int START_TIMER = (180);				// 開始制限時間
 	const int START_WAITCNT = (180);
 }
 
@@ -339,7 +339,7 @@ HRESULT CGame::Init(void)
 			m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 			m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
 			m_ppCamera[nCnt]->SetLength(400.0f);
-			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 1.0f, D3DX_PI * 0.375f));
+			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f));
 
 			D3DVIEWPORT9 viewport;
 			//プレイヤー追従カメラの画面位置設定
