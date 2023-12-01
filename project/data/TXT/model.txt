@@ -162,6 +162,14 @@ FIELDSET
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
+FIELDSET
+	TEXTYPE = 1
+	POS = -2150.0 1.0 900.0
+	ROT = 0 0 0
+	BLOCK = 5 5
+	SIZE = 100 100
+	MOVE = 0.0 0.0
+END_FIELDSET
 
 #==============================================================================
 # モデル配置
@@ -8209,6 +8217,39 @@ END_MODELSET
 MODELSET
 	TYPE = 0
 	POS = 722 49 -1478
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200 150 900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200 150 1000
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+
+MODELSET
+	TYPE = 0
+	POS = -1200 200 900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1200 200 1000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1

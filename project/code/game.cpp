@@ -173,7 +173,7 @@ HRESULT CGame::Init(void)
 			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
 			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-1600.0f, 0.0f, 950.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-2250.0f, 0.0f, 1000.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 
 			//スコアとUIの高さと間隔の調整用
@@ -216,8 +216,8 @@ HRESULT CGame::Init(void)
 
 		// 開始扉(人数分)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + nCnt * 10.0f));
-			l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
+			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(1125.0f, 100.0f, -560.0f + nCnt * 50.0f));
+			l->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
 			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			p->SetLever(l);
@@ -504,22 +504,24 @@ void CGame::Update(void)
 			}
 		}
 	}
+	else
+	{
+		if (m_state != STATE_END) {	// 終了状態以外
+			if (EndCheck()) {	// 全員ゴールしている
+				CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+				m_state = STATE_END;
+			}
+			else
+			{
+				if (m_pTimer != nullptr) {
+					m_pTimer->Update();
 
-	if (m_state != STATE_END) {	// 終了状態以外
-		if (EndCheck()) {	// 全員ゴールしている
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-			m_state = STATE_END;
-		}
-		else
-		{
-			if (m_pTimer != nullptr) {
-				m_pTimer->Update();
-
-				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
-					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-					CResult::SetNumPlayer(m_nNumPlayer);
-					CResult::SetScore(m_ppPlayer);
-					m_state = STATE_END;
+					if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+						CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+						CResult::SetNumPlayer(m_nNumPlayer);
+						CResult::SetScore(m_ppPlayer);
+						m_state = STATE_END;
+					}
 				}
 			}
 		}
