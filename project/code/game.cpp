@@ -243,7 +243,7 @@ HRESULT CGame::Init(void)
 
 		// ‰ñ“]”à
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(400.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(480.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 		// —Ž‚Æ‚µŒŠ
