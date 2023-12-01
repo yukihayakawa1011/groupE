@@ -586,15 +586,6 @@ void CPlayer::Controller(void)
 	m_bJump = true;	// ジャンプ状態リセット
 
 	// 起伏との当たり判定
-
-	// オブジェクトとの当たり判定
-	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 10.0f, 50.0f);
-	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
-	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
-	{
-		m_bJump = false;
-	}
-
 	// メッシュフィールドとの判定
 	{
 		float fHeight = CMeshField::GetHeight(m_Info.pos);
@@ -604,6 +595,14 @@ void CPlayer::Controller(void)
 			m_Info.move.y = 0.0f;
 			m_bJump = false;
 		}
+	}
+
+	// オブジェクトとの当たり判定
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 10.0f, 50.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
+	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
+	{
+		m_bJump = false;
 	}
 
 	// アイテムとの当たり判定
@@ -1816,12 +1815,12 @@ void CPlayer::SelectItem(void)
 	// ゲームパッドの情報を取得
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId))
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHT, m_nId))
 	{
 		m_nItemId++;
 	}
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFTBUTTON, m_nId))
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId))
 	{
 		m_nItemId--;
 	}
@@ -1835,7 +1834,7 @@ void CPlayer::SelectItem(void)
 		m_nItemId = 11;
 	}
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId))
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_UP, m_nId))
 	{
 		if (m_nItemCnt > 0 && GetSelectItem(m_nItemId) > 0)
 		{
@@ -2360,7 +2359,7 @@ void CPlayer::Ninjutsu(void)
 			m_action = ACTION_KUNAI;
 		}
 	}
-	else if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId)) {	// クナイ
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId)) {	// クナイ
 		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR)
 		{
 			m_fGage -= AIR_GAGE;

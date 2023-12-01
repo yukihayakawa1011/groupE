@@ -421,7 +421,8 @@ void CGame::Uninit(void)
 
 	if (m_pMiniMap != nullptr)
 	{
-		m_pMiniMap->Uninit();
+		/*m_pMiniMap->Uninit();
+		m_pMiniMap = nullptr;*/
 	}
 
 	if (m_pFileLoad != nullptr)

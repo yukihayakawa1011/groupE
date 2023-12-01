@@ -10,6 +10,7 @@
 #include "debugproc.h"
 #include "texture.h"
 #include "model.h"
+#include "objectX.h"
 
 // ƒ}ƒNƒ’è‹`
 #define COLLISION_SIZE	(50.0f)
@@ -213,7 +214,9 @@ void CItem::Update(void)
 
 			if (m_nBound >= BOUND_COUNT)
 			{
+				m_move.y = 0.0f;
 				m_nState = TYPE_NORMAL;
+				m_nBound = 0;
 			}
 		}
 	}
@@ -247,9 +250,9 @@ void CItem::Update(void)
 		m_move.y += GRAVITY;
 		m_pos += m_move;
 
-		if (m_pos.x <= -900.0f)
+		if (m_pos.y <= -700.0f)
 		{
-			m_pos.y = -900.0f;
+			m_pos.y = -700.0f;
 			m_move *= 0.8f;
 			m_move.y *= -1.0f;
 			m_nState = TYPE_NORMAL;
@@ -283,6 +286,14 @@ void CItem::Update(void)
 	if (nullptr != m_pObject) {
 		m_pObject->SetPosition(m_pos);
 		m_pObject->SetRotation(m_rot);
+	}
+
+	// “–‚½‚è”»’è
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING)
+	{
+		CObjectX::Collision(m_pos, m_posOld, m_move,
+			D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE),
+			D3DXVECTOR3(COLLISION_SIZE, COLLISION_SIZE, COLLISION_SIZE));
 	}
 }
 

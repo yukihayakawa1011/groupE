@@ -140,6 +140,29 @@ void CGage::SetRate(const float fRate)
 	else if (m_fRate > 1.0f) {	// 値が基準を超えた
 		m_fRate = 1.0f;
 	}
+
+	if (m_fRate >= 1.0f)
+	{
+		for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+			if (m_apObject[nCnt] == nullptr) {	// 使用されていない
+				continue;
+			}
+
+			// 座標設定
+			m_apObject[nCnt]->SetDraw(false);
+		}
+	}
+	else
+	{
+		for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+			if (m_apObject[nCnt] == nullptr) {	// 使用されていない
+				continue;
+			}
+
+			// 座標設定
+			m_apObject[nCnt]->SetDraw();
+		}
+	}
 }
 
 //==========================================================
