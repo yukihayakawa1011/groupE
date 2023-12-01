@@ -27,6 +27,8 @@
 #include "gimmick_lever.h"
 #include "object3D.h"
 #include "enemy.h"
+#include "character.h"
+#include "motion.h"
 
 // 無名名前空間
 namespace
@@ -56,7 +58,14 @@ CTutorial::CTutorial()
 	{
 		m_pObject3D[i] = nullptr;
 	}
+
+	for (int i = 0; i < NUM_ENEMY; i++)
+	{
+		m_apEnemy[i] = nullptr;
+	}
 	
+	m_nCntRespawn = 0;
+	m_nEnemyId = 0;
 	m_bEnd = false;
 }
 
@@ -91,7 +100,7 @@ HRESULT CTutorial::Init(void)
 
 		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f)); 
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
 
 		D3DVIEWPORT9 viewport;
 		//プレイヤー追従カメラの画面位置設定
@@ -110,7 +119,7 @@ HRESULT CTutorial::Init(void)
 	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(950.0f, 0.0f, -550.0f));
 	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 	p->SetLever(l);
-	
+
 	// 回転扉
 	CGimmickRotateDoor::Create(D3DXVECTOR3(-700.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
@@ -125,7 +134,14 @@ HRESULT CTutorial::Init(void)
 	m_ppPlayer[0]->BindId(0);
 	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
 
-	CEnemy::Create(D3DXVECTOR3(200.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+	for (int i = 0; i < NUM_ENEMY; i++)
+	{
+		if (m_apEnemy[i] == nullptr)
+		{// 使用されていない場合
+
+			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+		}
+	}
 
 	// 基本操作
 	if (m_pObject3D[0] == nullptr)
@@ -195,6 +211,26 @@ void CTutorial::Uninit(void)
 		m_pFileLoad = NULL;
 	}
 
+	for (int i = 0; i < NUM_PORI; i++)
+	{
+		if (m_pObject3D[i] != nullptr)
+		{// 使用されている場合
+
+			// 使用していない状態にする
+			m_pObject3D[i] = nullptr;
+		}
+	}
+
+	for (int i = 0; i < NUM_ENEMY; i++)
+	{
+		if (m_apEnemy[i] != nullptr)
+		{// 使用されている場合
+
+		 // 使用していない状態にする
+			m_apEnemy[i] = nullptr;
+		}
+	}
+
 	if (m_ppPlayer != NULL)
 	{// 使用していた場合
 		int nNum = CPlayer::GetNum();
@@ -254,6 +290,20 @@ void CTutorial::Update(void)
 		if (m_pObject3D[i] != nullptr)
 		{
 			m_pObject3D[i]->ZoomSize(m_ppPlayer, 100.0f);
+		}
+	}
+
+	if (CEnemy::GetNum() <= 0)
+	{// 敵が死んだら再生成
+
+		for (int i = 0; i < NUM_ENEMY; i++)
+		{
+			m_apEnemy[i] = nullptr;
+
+			if (m_apEnemy[i] == nullptr)
+			{
+				m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			}
 		}
 	}
 

@@ -295,7 +295,7 @@ void CEnemy::Update(void)
 
 	m_nCounterAttack--;
 
-	if ((m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW) && CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL)
+	if (m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW)
 	{
 		// 敵操作
 		Controller();
@@ -393,59 +393,63 @@ void CEnemy::Controller(void)
 		}
 	}
 
-	pos = GetPosition();	// 座標を取得
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL)
+	{// チュートリアル以外
 
-	float fGravity = ENEMY_GRAVITY * CManager::GetInstance()->GetSlow()->Get();
-	m_Info.move.y += fGravity;
-	pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
+		pos = GetPosition();	// 座標を取得
 
-	m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
-	m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
+		float fGravity = ENEMY_GRAVITY * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += fGravity;
+		pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
-	pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
-	pos.z += m_Info.move.z * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
+		m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
 
-	// 調整
-	Adjust();
+		pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
+		pos.z += m_Info.move.z * CManager::GetInstance()->GetSlow()->Get();
 
-	m_Info.pos = pos;
-	m_bJump = true;
+		// 調整
+		Adjust();
 
-	// 起伏との当たり判定
-	float fHeight = CMeshField::GetHeight(m_Info.pos);
-	if (m_Info.pos.y <= fHeight)
-	{
-		m_Info.pos.y = fHeight;
-		m_bJump = false;
-	}
+		m_Info.pos = pos;
+		m_bJump = true;
 
-	//当たり判定処理前の位置記憶
-	pos = m_Info.pos;
-
-	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
-	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
-	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
-	{
-		m_bJump = false;
-	}
-
-	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, D3DXVECTOR3(0.0f,0.0f,0.0f), vtxMin, vtxMax,0);
-
-	//追跡モードでかつxzどちらか処理前から変化している
-	if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
-	{
-		//ジャンプする必要があるか確認
-		CPlayer* pPlayerNear = SearchNearPlayer(FLT_MAX);
-
-		if (pPlayerNear != nullptr && CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
+		// 起伏との当たり判定
+		float fHeight = CMeshField::GetHeight(m_Info.pos);
+		if (m_Info.pos.y <= fHeight)
 		{
-			m_Info.move.y = ENEMY_JUMP;
-			m_bJump = true;
+			m_Info.pos.y = fHeight;
+			m_bJump = false;
 		}
-	}
 
-	//敵同士当たり判定
-	this->Collision();
+		//当たり判定処理前の位置記憶
+		pos = m_Info.pos;
+
+		D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 0.0f, 50.0f);
+		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
+		if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
+		{
+			m_bJump = false;
+		}
+
+		CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, D3DXVECTOR3(0.0f, 0.0f, 0.0f), vtxMin, vtxMax, 0);
+
+		//追跡モードでかつxzどちらか処理前から変化している
+		if (m_bChace == true && m_bJump == false && (m_Info.pos.x != pos.x || m_Info.pos.z != pos.z))
+		{
+			//ジャンプする必要があるか確認
+			CPlayer* pPlayerNear = SearchNearPlayer(FLT_MAX);
+
+			if (pPlayerNear != nullptr && CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
+			{
+				m_Info.move.y = ENEMY_JUMP;
+				m_bJump = true;
+			}
+		}
+
+		//敵同士当たり判定
+		this->Collision();
+	}
 }
 
 //===============================================
