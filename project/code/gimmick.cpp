@@ -141,3 +141,33 @@ void CGimmick::ListOut(void)
 		}
 	}
 }
+
+//==========================================================
+// スイッチをオフにする
+//==========================================================
+void CGimmick::SwitchOff(void)
+{
+	CGimmick *pObj = m_pTop;	// 先頭取得
+
+	while (pObj != nullptr)
+	{
+		CGimmick *pObjNext = pObj->m_pNext;
+		pObj->Switch(false);
+		pObj = pObjNext;
+	}
+}
+
+//==========================================================
+// スイッチをオンにする
+//==========================================================
+void CGimmick::SwitchOn(void)
+{
+	CGimmick *pObj = m_pTop;	// 先頭取得
+
+	while (pObj != nullptr)
+	{
+		CGimmick *pObjNext = pObj->m_pNext;
+		pObj->Switch(true);
+		pObj = pObjNext;
+	}
+}

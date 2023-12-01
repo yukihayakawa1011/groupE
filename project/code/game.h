@@ -87,6 +87,7 @@ private:
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;
+	int m_nStartCnt;				// 開始タイマー
 };
 
 #endif

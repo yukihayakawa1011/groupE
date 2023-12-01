@@ -173,3 +173,21 @@ bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 
 	return bValue;
 }
+
+//==========================================================
+// スイッチ切り替え
+//==========================================================
+void CGimmickLever::Switch(bool bUse)
+{
+	// 状態に合わせてボタンの色を変更
+	switch (bUse)
+	{
+	case false:	// 何もない
+		m_state = STATE_NONE;
+		break;
+
+	case true:	// 押されている
+		m_state = STATE_PRESS;
+		break;
+	}
+}
