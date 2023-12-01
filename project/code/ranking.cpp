@@ -63,17 +63,10 @@ HRESULT CRanking::Init(void)
 
 	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
 	{
-		m_pObjectRank[nCnt] = CObject2D::Create(D3DXVECTOR3(100.0f, 200.0f + (100.0f* nCnt), 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		m_pObjectRank[nCnt]->SetPosition(D3DXVECTOR3(500.0f, -100.0f, 0.0f));
-		m_pObjectRank[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
-
-		// 頂点情報の設定
-		m_pObjectRank[nCnt]->SetVtx(nCnt, NUM_RANK, 1);
+		m_pObjectRank[nCnt] = CObject2D::Create();
+		m_pObjectRank[nCnt]->SetPosition(D3DXVECTOR3(100.0f, 200.0f + (100.0f* nCnt), 0.0f));
+		m_pObjectRank[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));	
 	}
-	
-	
-	
-
 
 	// データの読み込み
 	Load(&aScore[0]);
@@ -111,6 +104,11 @@ void CRanking::Uninit(void)
 			m_apScore[nCntRanking][nCntRank]->Uninit();
 		}
 	}
+
+	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+	{
+		m_pObjectRank[nCnt]->Uninit();
+	}
 }
 
 //===============================================
@@ -119,6 +117,14 @@ void CRanking::Uninit(void)
 void CRanking::Update(void)
 {
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+
+	//サイズの設定
+	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+	{
+		// 頂点情報の設定
+		m_pObjectRank[nCnt]->SetVtx();
+		m_pObjectRank[nCnt]->SetVtx(nCnt, NUM_RANK, 1);
+	}
 
 	//m_nCounter++;
 	
