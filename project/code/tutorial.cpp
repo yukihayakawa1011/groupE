@@ -26,6 +26,7 @@
 #include "gimmick_startdoor.h"
 #include "gimmick_lever.h"
 #include "object3D.h"
+#include "enemy.h"
 
 // –³–¼–¼‘O‹óŠÔ
 namespace
@@ -124,6 +125,8 @@ HRESULT CTutorial::Init(void)
 	m_ppPlayer[0]->BindId(0);
 	m_ppPlayer[0]->SetType(CPlayer::TYPE_ACTIVE);
 
+	CEnemy::Create(D3DXVECTOR3(200.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+
 	// Šî–{‘€ì
 	if (m_pObject3D[0] == nullptr)
 	{
@@ -141,7 +144,7 @@ HRESULT CTutorial::Init(void)
 		m_pObject3D[1]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[1]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[1]->SetSize(100.0f, 100.0f);
-		m_pObject3D[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\arrow0.png"));
+		m_pObject3D[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial004.png"));
 	}
 
 	// ”EpŠÖ˜A

@@ -295,7 +295,7 @@ void CEnemy::Update(void)
 
 	m_nCounterAttack--;
 
-	if (m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW)
+	if ((m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW) && CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL)
 	{
 		// ìGëÄçÏ
 		Controller();
