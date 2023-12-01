@@ -49,6 +49,9 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXMATRIX *GetMtxWorld(void) { return &m_mtxWorld; }
 	TYPE GetType(void) { return m_type; }
+	static void SwitchOff(void);
+	static void SwitchOn(void);
+	virtual void Switch(bool bUse) {}
 
 	// ダウンキャスト用関数
 	virtual CGimmickRotateDoor *GetRotateDoor(void) { return nullptr; }

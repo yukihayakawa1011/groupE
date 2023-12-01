@@ -52,6 +52,7 @@ namespace {
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
 	const int START_TIMER = (100);				// 開始制限時間
+	const int START_WAITCNT = (180);
 }
 
 //===============================================
@@ -96,7 +97,7 @@ CGame::CGame()
 	m_pTimer = nullptr;
 	m_nSledCnt = 0;
 	m_bEnd = false;
-	
+	m_nStartCnt = 0;
 }
 
 //===============================================
@@ -113,6 +114,7 @@ CGame::CGame(int nNumPlayer)
 	m_pTimer = nullptr;
 	m_nSledCnt = 0;
 	m_bEnd = false;
+	m_nStartCnt = 0;
 
 	// 人数設定
 	m_nNumPlayer = nNumPlayer;
@@ -171,9 +173,8 @@ HRESULT CGame::Init(void)
 			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
 			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-1600.0f, 0.0f, 950.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-2250.0f, 0.0f, 1000.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
-			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 
 			//スコアとUIの高さと間隔の調整用
 			float fData = 0.0f;
@@ -215,8 +216,8 @@ HRESULT CGame::Init(void)
 
 		// 開始扉(人数分)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + nCnt * 10.0f));
-			l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
+			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(1125.0f, 100.0f, -560.0f + nCnt * 50.0f));
+			l->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
 			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			p->SetLever(l);
@@ -259,7 +260,7 @@ HRESULT CGame::Init(void)
 		pMultiDoor->BindButton(pButton);
 		
 		// ゴール
-		CGoal::Create(D3DXVECTOR3(1025.0f, 2.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
 		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
 		CItem::Create(D3DXVECTOR3(-600.0f, 20.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
@@ -303,8 +304,6 @@ HRESULT CGame::Init(void)
 
 	//壺
 	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
-
 
 	//カメラ初期化
 	{
@@ -399,6 +398,8 @@ HRESULT CGame::Init(void)
 		m_pMiniMap = CMiniMap::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 256.0f, 144.0f, m_nNumPlayer, 10, 10);
 	}
 
+	CGimmick::SwitchOn();
+
 	return S_OK;
 }
 
@@ -487,21 +488,40 @@ void CGame::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
-	if (m_state != STATE_END) {	// 終了状態以外
-		if (EndCheck()) {	// 全員ゴールしている
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-			m_state = STATE_END;
-		}
-		else
-		{
-			if (m_pTimer != nullptr) {
-				m_pTimer->Update();
+	// 開始タイマー
+	if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
+		m_nStartCnt++;
 
-				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
-					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-					CResult::SetNumPlayer(m_nNumPlayer);
-					CResult::SetScore(m_ppPlayer);
-					m_state = STATE_END;
+		if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
+			CGimmick::SwitchOff();
+		}
+		else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
+			if (m_ppPlayer != nullptr) { // 使用していた場合
+				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+				{
+					m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+				}
+			}
+		}
+	}
+	else
+	{
+		if (m_state != STATE_END) {	// 終了状態以外
+			if (EndCheck()) {	// 全員ゴールしている
+				CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+				m_state = STATE_END;
+			}
+			else
+			{
+				if (m_pTimer != nullptr) {
+					m_pTimer->Update();
+
+					if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+						CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+						CResult::SetNumPlayer(m_nNumPlayer);
+						CResult::SetScore(m_ppPlayer);
+						m_state = STATE_END;
+					}
 				}
 			}
 		}
