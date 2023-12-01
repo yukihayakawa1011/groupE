@@ -168,6 +168,7 @@
     <ClCompile Include="code\enemymanager.cpp" />
     <ClCompile Include="code\fade.cpp" />
     <ClCompile Include="code\fileload.cpp" />
+    <ClCompile Include="code\gage.cpp" />
     <ClCompile Include="code\game.cpp" />
     <ClCompile Include="code\gimmick.cpp" />
     <ClCompile Include="code\gimmick_button.cpp" />
@@ -243,6 +244,7 @@
     <ClInclude Include="code\enemymanager.h" />
     <ClInclude Include="code\fade.h" />
     <ClInclude Include="code\fileload.h" />
+    <ClInclude Include="code\gage.h" />
     <ClInclude Include="code\game.h" />
     <ClInclude Include="code\gimmick.h" />
     <ClInclude Include="code\gimmick_button.h" />

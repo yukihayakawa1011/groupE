@@ -175,8 +175,10 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindId(nCnt);
 			m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
 
+			//スコアとUIの高さと間隔の調整用
 			float fData = 0.0f;
 			float fData1 = 0.0f;
+			float fData2 = 0.0f;
 
 			if (nCnt == 1 || nCnt == 3)
 			{
@@ -190,17 +192,20 @@ HRESULT CGame::Init(void)
 			if (nCnt == 2 || nCnt == 3)
 			{
 				fData1 = 600.0f;
+				fData2 = 60.0f;
+
 			}
 			else
 			{
 				fData1 = 0.0f;
+				fData2 = 0.0f;
 			}
 
 			//UIの生成
 			CUI *pUI = CUI::Create(D3DXVECTOR3(175.0f + fData, 60.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
 			m_ppPlayer[nCnt]->BindUI(pUI);
 
-			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + nCnt * 500.0f, 25.0f, 0.0f), 16.0f, 20.0f);
+			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + fData, 25.0f + fData1 + fData2, 0.0f), 16.0f, 20.0f);
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 		
