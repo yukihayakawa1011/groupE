@@ -250,9 +250,9 @@ void CItem::Update(void)
 		m_move.y += GRAVITY;
 		m_pos += m_move;
 
-		if (m_pos.x <= -900.0f)
+		if (m_pos.y <= -700.0f)
 		{
-			m_pos.y = -900.0f;
+			m_pos.y = -700.0f;
 			m_move *= 0.8f;
 			m_move.y *= -1.0f;
 			m_nState = TYPE_NORMAL;
