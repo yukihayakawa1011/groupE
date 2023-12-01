@@ -214,7 +214,9 @@ void CItem::Update(void)
 
 			if (m_nBound >= BOUND_COUNT)
 			{
+				m_move.y = 0.0f;
 				m_nState = TYPE_NORMAL;
+				m_nBound = 0;
 			}
 		}
 	}
@@ -287,9 +289,12 @@ void CItem::Update(void)
 	}
 
 	// “–‚½‚è”»’è
-	CObjectX::Collision(m_pos, m_posOld, m_move, 
-		D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE), 
-		D3DXVECTOR3(COLLISION_SIZE, COLLISION_SIZE, COLLISION_SIZE));
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING)
+	{
+		CObjectX::Collision(m_pos, m_posOld, m_move,
+			D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE),
+			D3DXVECTOR3(COLLISION_SIZE, COLLISION_SIZE, COLLISION_SIZE));
+	}
 }
 
 ////==========================================================
