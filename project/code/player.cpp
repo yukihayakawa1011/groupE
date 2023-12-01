@@ -1816,12 +1816,12 @@ void CPlayer::SelectItem(void)
 	// ゲームパッドの情報を取得
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHTBUTTON, m_nId))
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHT, m_nId))
 	{
 		m_nItemId++;
 	}
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFTBUTTON, m_nId))
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId))
 	{
 		m_nItemId--;
 	}
@@ -1835,7 +1835,7 @@ void CPlayer::SelectItem(void)
 		m_nItemId = 11;
 	}
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId))
+	if (pInputPad->GetTrigger(CInputPad::BUTTON_UP, m_nId))
 	{
 		if (m_nItemCnt > 0 && GetSelectItem(m_nItemId) > 0)
 		{
@@ -2360,7 +2360,7 @@ void CPlayer::Ninjutsu(void)
 			m_action = ACTION_KUNAI;
 		}
 	}
-	else if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId)) {	// クナイ
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId)) {	// クナイ
 		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR)
 		{
 			m_fGage -= AIR_GAGE;
