@@ -25,10 +25,12 @@
 #include "gimmick_rotatedoor.h"
 #include "gimmick_startdoor.h"
 #include "gimmick_lever.h"
+#include "gimmick_multidoor.h"
+#include "gimmick_button.h"
+#include "gimmick_spear.h"
 #include "object3D.h"
 #include "enemy.h"
-#include "character.h"
-#include "motion.h"
+#include "item.h"
 
 // 無名名前空間
 namespace
@@ -113,18 +115,22 @@ HRESULT CTutorial::Init(void)
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
 
-	// 開始扉
-	CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + 10.0f));
-	l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
-	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(950.0f, 0.0f, -550.0f));
-	p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-	p->SetLever(l);
-
 	// 回転扉
 	CGimmickRotateDoor::Create(D3DXVECTOR3(-700.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 	// ゴール
-	CGoal::Create(D3DXVECTOR3(1025.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+	CGoal::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 200.0f);
+
+	// 協力扉
+	CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-1350.0f, 0.0f, -950.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	pMultiDoor->SetNumButton(1);
+	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-1700.0f, 0.0f, -300.0f));
+	pMultiDoor->BindButton(pButton);
+	/*pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
+	pMultiDoor->BindButton(pButton);*/
+
+	// 地面からの槍
+	CGimmickSpear::Create(D3DXVECTOR3(-850.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 
 	// 人数分ポインタ生成
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];
@@ -139,14 +145,25 @@ HRESULT CTutorial::Init(void)
 		if (m_apEnemy[i] == nullptr)
 		{// 使用されていない場合
 
-			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 		}
 	}
+
+	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, -100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
+	CItem::Create(D3DXVECTOR3(-1300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+	CItem::Create(D3DXVECTOR3(-1300.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+	CItem::Create(D3DXVECTOR3(-1300.0f, 0.0f, -400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+	CItem::Create(D3DXVECTOR3(-1300.0f, 0.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+	CItem::Create(D3DXVECTOR3(-1300.0f, 0.0f, 500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
 
 	// 基本操作
 	if (m_pObject3D[0] == nullptr)
 	{
-		m_pObject3D[0] = CObject3D::Create(D3DXVECTOR3(400.0f, 10.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[0] = CObject3D::Create(D3DXVECTOR3(600.0f, 10.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[0]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f));
 		m_pObject3D[0]->SetSize(100.0f, 100.0f);
@@ -156,7 +173,7 @@ HRESULT CTutorial::Init(void)
 	// ギミック
 	if (m_pObject3D[1] == nullptr)
 	{
-		m_pObject3D[1] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[1] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[1]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[1]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[1]->SetSize(100.0f, 100.0f);
@@ -166,7 +183,7 @@ HRESULT CTutorial::Init(void)
 	// 忍術関連
 	if (m_pObject3D[2] == nullptr)
 	{
-		m_pObject3D[2] = CObject3D::Create(D3DXVECTOR3(600.0f, 10.0f, 360.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[2] = CObject3D::Create(D3DXVECTOR3(600.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[2]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[2]->SetSize(100.0f, 100.0f);
@@ -288,20 +305,24 @@ void CTutorial::Update(void)
 	for (int i = 0; i < NUM_PORI; i++)
 	{
 		if (m_pObject3D[i] != nullptr)
-		{
+		{// 使用されている場合
+
+			// 近づくと大きくなる
 			m_pObject3D[i]->ZoomSize(m_ppPlayer, 100.0f);
 		}
 	}
 
 	if (CEnemy::GetNum() <= 0)
-	{// 敵が死んだら再生成
+	{// 敵が全員死んだら再生成
 
 		for (int i = 0; i < NUM_ENEMY; i++)
 		{
+			// 使用していない状態にする
 			m_apEnemy[i] = nullptr;
 
 			if (m_apEnemy[i] == nullptr)
-			{
+			{// 使用していなかったら
+				
 				m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 			}
 		}
