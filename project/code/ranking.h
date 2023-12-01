@@ -55,6 +55,7 @@ private:
 	int m_nTimer;			// 自動遷移タイマー
 	int m_nRank;
 	CCarManager *m_pCarManager;		// カーマネージャーのポインタ
+	int m_nCounter;
 };
 
 #endif
