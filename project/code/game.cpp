@@ -210,7 +210,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 		
-		//CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
 		// ÉMÉ~ÉbÉNÇÃê∂ê¨
 
