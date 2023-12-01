@@ -28,6 +28,7 @@ public:
 
 	// シングルトン
 	static CTaskManager* GetInstance(void);
+	static void Release(void);
 
 private:	// 自分だけがアクセス可能
 

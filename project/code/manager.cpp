@@ -221,6 +221,10 @@ void CManager::Uninit(void)
 	// サウンドの停止
 	m_pSound->Stop();
 
+	//各種マネージャの破棄
+	CTaskManager::Release();
+	CObjectManager::Release();
+
 	if (m_pScene != NULL)
 	{
 		m_pScene->Uninit();
@@ -233,6 +237,27 @@ void CManager::Uninit(void)
 		m_pSlow->Uninit();
 		delete m_pScene;
 		m_pScene = NULL;
+	}
+
+	if (m_pLight != nullptr)
+	{
+		m_pLight->Uninit();
+		delete m_pLight;
+		m_pLight = nullptr;
+	}
+
+	if (m_pCamera != nullptr)
+	{
+		m_pCamera->Uninit();
+		delete m_pCamera;
+		m_pCamera = nullptr;
+	}
+
+	if (m_pSound != nullptr)
+	{
+		m_pSound->Uninit();
+		delete m_pSound;
+		m_pSound = nullptr;
 	}
 
 	if (m_pInputKeyboard != NULL)

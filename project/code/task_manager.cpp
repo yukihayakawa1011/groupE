@@ -191,3 +191,16 @@ CTaskManager* CTaskManager::GetInstance()
 
 	return m_pInstance;
 }
+
+//===============================================
+// インスタンスの廃棄
+//===============================================
+void CTaskManager::Release(void)
+{
+	if (m_pInstance != NULL)
+	{
+		m_pInstance->Uninit();
+		delete m_pInstance;
+		m_pInstance = NULL;
+	}
+}
