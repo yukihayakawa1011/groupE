@@ -9,6 +9,9 @@
 #include "debugproc.h"
 #include <time.h>
 
+//メモリ破壊検出
+#include <crtdbg.h>
+
 //マクロ定義
 #define CLASS_NAME	"WindowClass"		//ウインドウクラスの名前
 #define WINDOW_NAME	"すたじお I"	//ウインドウの名前
@@ -24,6 +27,9 @@ int g_nCountFPS = 0;		//FPSカウンタ
 //===========================================================
 int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hInstancePrev, LPSTR lpCmdLine, int nCmdShow)
 {
+	//メモリ破壊検出
+	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF | _CRTDBG_CHECK_ALWAYS_DF);
+
 	DWORD dwCurrentTime;	//現在時刻
 	DWORD dwExecLastTime;	//最後に処理した時刻
 	DWORD dwFrameCount;		//フレームカウント

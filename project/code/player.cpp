@@ -80,7 +80,7 @@
 namespace {
 	const float BULLET_MOVE = (22.0f);	// 弾の移動量
 	const float HIT_RANGE = (100.0f);	// 当たり判定のサイズ
-	const float KUNAI_GAGE = (20.0f);	// クナイのゲージ必要量
+	const float KUNAI_GAGE = (50.0f);	// クナイのゲージ必要量
 	const float AIR_GAGE = (100.0f);	// 風神の術のゲージ必要量
 	const float KAKUREMI_GAGE = (1.0f);	// 隠れ蓑術のゲージ必要量
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
@@ -441,18 +441,15 @@ void CPlayer::Update(void)
 
 	if (m_type == TYPE_ACTIVE)
 	{
-
 		if (m_Info.state != STATE_SPAWN)
 		{
 			// プレイヤー操作
 			Controller();
 		}
 
-		// カメラ追従
 		if (m_pMyCamera != nullptr) {
 			// 追従処理
 			m_pMyCamera->Update();
-			m_pMyCamera->Pursue(GetPosition(), GetRotation());
 		}
 
 		// オンライン送信
@@ -462,8 +459,20 @@ void CPlayer::Update(void)
 	}
 	else
 	{// 操作キャラではない
-		D3DXVECTOR3 posDest = m_Info.posDiff - m_Info.pos;
-		m_Info.pos += posDest * 0.95f;
+		float fIner = INER;
+		D3DXVECTOR3 pos = GetPosition();	// 座標を取得
+		m_bMove = true;
+		m_Info.move.x = 10.0f;
+
+		MotionSet();	// モーション設定
+		pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.pos = pos;
+	}
+
+	// カメラ追従
+	if (m_pMyCamera != nullptr) {
+		// 追従処理
+		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
@@ -2538,4 +2547,12 @@ bool CPlayer::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 void CPlayer::Blow(void) {
 	m_Info.fStateCounter = DAMAGE_APPEAR;
 	m_Info.state = STATE_BLOW;
+}
+
+//===============================================
+// 吹き飛ばされる
+//===============================================
+void CPlayer::BindUI(CUI *pUI) 
+{ 
+	m_pUI = pUI; m_pUI->SetLife(m_nLife); 
 }

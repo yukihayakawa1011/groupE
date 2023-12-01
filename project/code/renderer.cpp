@@ -22,9 +22,10 @@ CRenderer::CRenderer()
 	m_pD3D = NULL;			//Direct3Dオブジェクトのポインタ
 	m_pD3DDevice = NULL;	//Direct3Dデバイスへのポインタ
 	pTexture = NULL;
-	pTexture = NULL;
 	m_pRenderTextureSurface = NULL;
 	m_pZSurface = NULL;
+	m_pOrgSurface = NULL;
+	m_pOrgZBuffer = NULL;
 }
 
 //===================================================
