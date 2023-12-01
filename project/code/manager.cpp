@@ -62,6 +62,7 @@ CManager::~CManager()
 //===================================================
 HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 {
+
 	// レンダラーの生成
 	if (m_pRenderer == NULL)
 	{// 使用していない場合
@@ -221,10 +222,6 @@ void CManager::Uninit(void)
 	// サウンドの停止
 	m_pSound->Stop();
 
-	//各種マネージャの破棄
-	CTaskManager::Release();
-	CObjectManager::Release();
-
 	if (m_pScene != NULL)
 	{
 		m_pScene->Uninit();
@@ -235,8 +232,8 @@ void CManager::Uninit(void)
 	if (m_pSlow != NULL)
 	{
 		m_pSlow->Uninit();
-		delete m_pScene;
-		m_pScene = NULL;
+		delete m_pSlow;
+		m_pSlow = NULL;
 	}
 
 	if (m_pLight != nullptr)
@@ -341,6 +338,10 @@ void CManager::Uninit(void)
 
 		m_pModelFile = NULL;	// 使用していない状態にする
 	}
+
+	//各種マネージャの破棄
+	CTaskManager::Release();
+	CObjectManager::Release();
 }
 
 //===================================================
