@@ -61,9 +61,18 @@ HRESULT CRanking::Init(void)
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
 
-	//CObject2D *pObject = CObject2D::Create();
-	//pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\frame0.png"));
-	//pObject->SetPosition(D3DXVECTOR3(500.0f,-100.0f,0.0f));
+	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+	{
+		m_pObjectRank[nCnt] = CObject2D::Create(D3DXVECTOR3(100.0f, 200.0f + (100.0f* nCnt), 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObjectRank[nCnt]->SetPosition(D3DXVECTOR3(500.0f, -100.0f, 0.0f));
+		m_pObjectRank[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
+
+		// 頂点情報の設定
+		m_pObjectRank[nCnt]->SetVtx(nCnt, NUM_RANK, 1);
+	}
+	
+	
+	
 
 
 	// データの読み込み
@@ -79,7 +88,7 @@ HRESULT CRanking::Init(void)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
-			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(50.0f + nCntRanking * 800.0f, 180.0f + nCntRank * 70.0f, 0.0f), 15.0f, 15.0f);
+			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(200.0f + nCntRanking * 800.0f, 200.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
 		}
 	}
 

@@ -20,6 +20,7 @@ class CScore;
 class CFileLoad;
 class CCarManager;
 class CNumber;
+class CObject2D;
 
 //===============================================
 // ランキングクラスの定義(派生クラス)
@@ -56,6 +57,7 @@ private:
 	int m_nRank;
 	CCarManager *m_pCarManager;		// カーマネージャーのポインタ
 	int m_nCounter;
+	CObject2D *m_pObjectRank[NUM_RANK];
 };
 
 #endif
