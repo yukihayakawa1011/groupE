@@ -10,6 +10,7 @@
 #include "debugproc.h"
 #include "texture.h"
 #include "model.h"
+#include "objectX.h"
 
 // ƒ}ƒNƒ’è‹`
 #define COLLISION_SIZE	(50.0f)
@@ -284,6 +285,11 @@ void CItem::Update(void)
 		m_pObject->SetPosition(m_pos);
 		m_pObject->SetRotation(m_rot);
 	}
+
+	// “–‚½‚è”»’è
+	CObjectX::Collision(m_pos, m_posOld, m_move, 
+		D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE), 
+		D3DXVECTOR3(COLLISION_SIZE, COLLISION_SIZE, COLLISION_SIZE));
 }
 
 ////==========================================================
