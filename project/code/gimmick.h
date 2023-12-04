@@ -11,6 +11,7 @@
 
 // 前方宣言
 class CGimmickRotateDoor;
+class CGimmickPull;
 
 //==========================================================
 // サンプルのクラス定義
@@ -52,9 +53,11 @@ public:	// 誰でもアクセス可能
 	static void SwitchOff(void);
 	static void SwitchOn(void);
 	virtual void Switch(bool bUse) {}
+	virtual void SetMtxParent(D3DXMATRIX *pMtx) {}
 
 	// ダウンキャスト用関数
 	virtual CGimmickRotateDoor *GetRotateDoor(void) { return nullptr; }
+	virtual CGimmickPull *GetPull(void) { return nullptr; }
 
 	// メンバ関数(設定)
 	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }

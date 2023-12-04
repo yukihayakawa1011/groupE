@@ -11,6 +11,7 @@
 
 // 前方宣言
 class CObjectBillboard;
+class CPlayer;
 
 //==========================================================
 // サンプルのクラス定義
@@ -50,7 +51,8 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(取得)
 	void SetParent(D3DXVECTOR3 *pPos) { m_pPos = pPos; }
 	void SetUpHeight(const float fHeight) { m_fUpHeight = fHeight; }
-	void SetRate(const float fRate);
+	void SetItem(int nThrowItemID);
+
 
 private:	// 自分だけがアクセス可能
 
@@ -60,6 +62,9 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	D3DXVECTOR3 *m_pPos;	// 親の座標
+	int m_nBeforeID;        // 現在選択している番号の前の番号
+	int m_nNowID;           // 現在選択している番号
+	int m_nNextID;          // 現在選択している番号の次の番号
 	float m_fUpHeight;	    // 上げる高さ
 	float m_fPolyWidth;	    // オブジェクトの幅
 	float m_fPolyHeight;	// オブジェクトの高さ

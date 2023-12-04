@@ -515,6 +515,14 @@ void CPlayer::Update(void)
 		float fRate = m_fGage / MAX_GAGE;
 		m_pGage->SetRate(fRate);
 	}
+
+	// 捨てるアイテム
+	{
+		if (m_pThrowItem != nullptr)
+		{
+			m_pThrowItem->SetItem(m_nItemId);
+		}
+	}
 }
 
 //===============================================
@@ -560,6 +568,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	float fIner = INER;
 	m_fRotMove = rot.y;	//現在の向きを取得
+	CGimmick *pGimmick = &*m_Catch.pGimmick;
 
 	// 操作処理
 	if(m_action != ACTION_DAMAGE){	// ダメージリアクションをしていない
@@ -613,7 +622,7 @@ void CPlayer::Controller(void)
 	}
 
 	// オブジェクトとの当たり判定
-	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 10.0f, 50.0f);
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 120.0f, 50.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
@@ -652,9 +661,26 @@ void CPlayer::Controller(void)
 
 	// ギミックとの判定
 	bool bLand = false;
+
 	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick,&bLand)) {
 		Damage(1);
 	}
+
+	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
+		if (m_Catch.pGimmick->GetPull() != nullptr) 
+		{
+			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
+			{// 掴むことができるモーションタイミング
+				m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
+				m_action = ACTION_CATCH;
+			}
+			else 
+			{
+				m_Catch.pGimmick = nullptr;
+			}
+		}
+	}
+
 	if (bLand == true)
 	{
 		m_bJump = false;
@@ -821,7 +847,7 @@ void CPlayer::MoveController(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
 
-	if (m_Catch.pPlayer != nullptr) {
+	if (m_Catch.pPlayer != nullptr || m_Catch.pGimmick) {
 		fSpeed = CATCH_MOVE;
 	}
 
@@ -1253,7 +1279,7 @@ void CPlayer::MotionSet(void)
 
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
-			if (m_Catch.pPlayer == nullptr)
+			if (m_Catch.pPlayer == nullptr && m_Catch.pGimmick == nullptr)
 			{
 				m_action = ACTION_NEUTRAL;
 			}
@@ -1429,11 +1455,6 @@ void CPlayer::Catch(void)
 		}
 	}
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId))
-	{
-		int n = 0;
-	}
-
 	// 持った対象の判定
 	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH) {	// 他のプレイヤーを持っている
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// 相手の状態が変わった場合
@@ -1486,6 +1507,14 @@ void CPlayer::Catch(void)
 				GimmickRelease();	// ギミックを離す
 			}
 		}
+		else
+		{
+			if(pInputPad->GetTrigger(CInputPad::BUTTON_X, m_nId)) {	// キー入力
+				m_Info.state = STATE_NORMAL;
+				m_Catch.pGimmick->SetMtxParent(nullptr);
+				m_Catch.pGimmick = nullptr;
+			}
+		}
 	}
 }
 
@@ -1507,13 +1536,7 @@ const char *CPlayer::ItemFileName(int type)
 
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:
-	{
-		return "\0";
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:
 	{
 		return  "data\\MODEL\\coin.x";
@@ -1631,13 +1654,7 @@ void CPlayer::AddItemCount(int type)
 {
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:  // なんもない
-	{
-		
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:  // コイン
 	{
 		m_nNumItemCoin++;
@@ -1732,13 +1749,7 @@ void CPlayer::SubItemCount(int type)
 {
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:  // なんもない
-	{
-
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:  // コイン
 	{
 		m_nNumItemCoin--;
@@ -1844,13 +1855,13 @@ void CPlayer::SelectItem(void)
 		m_nItemId--;
 	}
 
-	if (m_nItemId >= 12)
+	if (m_nItemId > 10)
 	{
-		m_nItemId = 1;
+		m_nItemId = 0;
 	}
-	else if(m_nItemId <= 0)
+	else if(m_nItemId < 0)
 	{
-		m_nItemId = 11;
+		m_nItemId = 10;
 	}
 
 	if (pInputPad->GetTrigger(CInputPad::BUTTON_UP, m_nId))
@@ -1894,13 +1905,7 @@ int CPlayer::GetSelectItem(int type)
 {
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:  // なんもない
-	{
-
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:  // コイン
 	{
 		return m_nNumItemCoin;
@@ -2230,15 +2235,15 @@ void CPlayer::SetCatchMatrix(void)
 		
 		if (pDoor != nullptr) {
 
+			// 位置を反映
+			D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
+			D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
+
+			// 向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
+			D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxRot);
+
 			if (pDoor->GetModel() != nullptr) {
-
-				// 位置を反映
-				D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
-				D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
-
-				// 向きを反映
-				D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
-				D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxRot);
 
 				// パーツのマトリックスと親のマトリックスをかけ合わせる
 				D3DXMatrixMultiply(&m_Info.mtxWorld,
@@ -2246,9 +2251,9 @@ void CPlayer::SetCatchMatrix(void)
 
 				m_Info.pos = D3DXVECTOR3(m_Info.mtxWorld._41, m_Info.mtxWorld._42, m_Info.mtxWorld._43);
 			}
-		}
 
-		return;
+			return;
+		}
 	}
 
 	// 向きを反映

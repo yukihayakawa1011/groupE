@@ -30,7 +30,6 @@ public:
 
 	enum TYPE
 	{
-		TYPE_NORMAL = 0,   // なんもない
 		TYPE_COIN,         // コイン
 		TYPE_BRECELET,     // ブレスレット
 		TYPE_CUP,          // 盃
@@ -56,7 +55,7 @@ public:	// 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 
-	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType = TYPE_NORMAL);
+	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType = TYPE_COIN);
 	static CItem *Collision(D3DXVECTOR3 &pos);
 
 	// メンバ関数(設定)

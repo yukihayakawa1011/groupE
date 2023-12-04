@@ -31,7 +31,7 @@ CItem::CItem()
 	m_rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_type = TYPE_NORMAL;
+	m_type = TYPE_COIN;
 	m_pPrev = nullptr;
 	m_pNext = nullptr;
 
@@ -178,7 +178,7 @@ void CItem::Update(void)
 
 	switch (m_nState)
 	{
-	case TYPE_NORMAL:
+	case STATE_NORMAL:
 	{
 		D3DXVECTOR3 pos = m_pos;
 		m_posOld = m_pObject->GetPosition();
@@ -215,7 +215,7 @@ void CItem::Update(void)
 			if (m_nBound >= BOUND_COUNT)
 			{
 				m_move.y = 0.0f;
-				m_nState = TYPE_NORMAL;
+				m_nState = STATE_NORMAL;
 				m_nBound = 0;
 			}
 		}
@@ -235,7 +235,7 @@ void CItem::Update(void)
 			m_pos.x = -900.0f;
 			m_move *= 0.8f;
 			m_move.x *= -1.0f;
-			m_nState = TYPE_NORMAL;
+			m_nState = STATE_NORMAL;
 
 			Uninit();
 		}
@@ -255,7 +255,7 @@ void CItem::Update(void)
 			m_pos.y = -700.0f;
 			m_move *= 0.8f;
 			m_move.y *= -1.0f;
-			m_nState = TYPE_NORMAL;
+			m_nState = STATE_NORMAL;
 
 			Uninit();
 		}

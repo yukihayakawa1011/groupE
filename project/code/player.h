@@ -141,6 +141,7 @@ public:	// 誰でもアクセス可能
 	bool GetGoal(void) { return m_bGoal; }
 	CScore *GetScore(void) { return m_pScore; }
 	ACTION GetAction(void) const { return m_action; }
+	int GetThrowItemId(void) { return m_nItemId; }
 
 private:	// 自分だけがアクセス可能
 
