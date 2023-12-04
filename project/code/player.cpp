@@ -515,6 +515,14 @@ void CPlayer::Update(void)
 		float fRate = m_fGage / MAX_GAGE;
 		m_pGage->SetRate(fRate);
 	}
+
+	// 捨てるアイテム
+	{
+		if (m_pThrowItem != nullptr)
+		{
+			m_pThrowItem->SetItem(m_nItemId);
+		}
+	}
 }
 
 //===============================================
@@ -614,7 +622,7 @@ void CPlayer::Controller(void)
 	}
 
 	// オブジェクトとの当たり判定
-	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 10.0f, 50.0f);
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 120.0f, 50.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
