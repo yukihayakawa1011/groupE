@@ -560,6 +560,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	float fIner = INER;
 	m_fRotMove = rot.y;	//現在の向きを取得
+	CGimmick *pGimmick = &(*m_Catch.pGimmick);
 
 	// 操作処理
 	if(m_action != ACTION_DAMAGE){	// ダメージリアクションをしていない
@@ -652,9 +653,24 @@ void CPlayer::Controller(void)
 
 	// ギミックとの判定
 	bool bLand = false;
+
 	if (CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, m_Catch.SetPos, vtxMin, vtxMax, m_action, &m_Catch.pGimmick,&bLand)) {
 		Damage(1);
 	}
+
+	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
+		m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
+	}
+	else 
+	{
+		if (pGimmick == nullptr && m_Catch.pGimmick != nullptr) {
+			if (m_Catch.pGimmick->GetPull() != nullptr) {
+				m_Catch.pGimmick = nullptr;
+			}
+		}
+	}
+
+
 	if (bLand == true)
 	{
 		m_bJump = false;
@@ -1429,11 +1445,6 @@ void CPlayer::Catch(void)
 		}
 	}
 
-	if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId))
-	{
-		int n = 0;
-	}
-
 	// 持った対象の判定
 	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH) {	// 他のプレイヤーを持っている
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// 相手の状態が変わった場合
@@ -1484,6 +1495,14 @@ void CPlayer::Catch(void)
 
 			if (pDoor->GetModel()->GetCurrentRotation().y == 0.0f) {	// 回転が止まっている
 				GimmickRelease();	// ギミックを離す
+			}
+		}
+		else
+		{
+			if(pInputPad->GetTrigger(CInputPad::BUTTON_X, m_nId)) {	// キー入力
+				m_Info.state = STATE_NORMAL;
+				m_Catch.pGimmick->SetMtxParent(nullptr);
+				m_Catch.pGimmick = nullptr;
 			}
 		}
 	}
@@ -2206,15 +2225,15 @@ void CPlayer::SetCatchMatrix(void)
 		
 		if (pDoor != nullptr) {
 
+			// 位置を反映
+			D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
+			D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
+
+			// 向きを反映
+			D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
+			D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxRot);
+
 			if (pDoor->GetModel() != nullptr) {
-
-				// 位置を反映
-				D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
-				D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
-
-				// 向きを反映
-				D3DXMatrixRotationYawPitchRoll(&mtxRot, rot.y, rot.x, rot.z);
-				D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxRot);
 
 				// パーツのマトリックスと親のマトリックスをかけ合わせる
 				D3DXMatrixMultiply(&m_Info.mtxWorld,
@@ -2222,9 +2241,9 @@ void CPlayer::SetCatchMatrix(void)
 
 				m_Info.pos = D3DXVECTOR3(m_Info.mtxWorld._41, m_Info.mtxWorld._42, m_Info.mtxWorld._43);
 			}
-		}
 
-		return;
+			return;
+		}
 	}
 
 	// 向きを反映
