@@ -515,6 +515,14 @@ void CPlayer::Update(void)
 		float fRate = m_fGage / MAX_GAGE;
 		m_pGage->SetRate(fRate);
 	}
+
+	// ŽÌ‚Ä‚éƒAƒCƒeƒ€
+	{
+		if (m_pThrowItem != nullptr)
+		{
+			m_pThrowItem->SetItem(m_nItemId);
+		}
+	}
 }
 
 //===============================================
