@@ -11,6 +11,7 @@
 
 // 前方宣言
 class CObjectBillboard;
+class CPlayer;
 
 //==========================================================
 // サンプルのクラス定義
@@ -65,6 +66,7 @@ private:	// 自分だけがアクセス可能
 	float m_fPolyHeight;	// オブジェクトの高さ
 	float m_fRate;		    // 割合
 	CObjectBillboard *m_apObject[TYPE_MAX];	// オブジェクトの配列
+	static CPlayer **m_ppPlayer;
 };
 
 #endif
