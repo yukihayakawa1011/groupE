@@ -61,12 +61,44 @@ HRESULT CRanking::Init(void)
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
 
-	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
-		m_pObjectRank[nCnt] = CObject2D::Create();
-		m_pObjectRank[nCnt]->SetPosition(D3DXVECTOR3(100.0f, 200.0f + (100.0f* nCnt), 0.0f));
-		m_pObjectRank[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));	
+		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+		{
+			m_pObjectRank[nCntRanking][nCnt] = CObject2D::Create();
+			m_pObjectRank[nCntRanking][nCnt]->SetPosition(D3DXVECTOR3(200.0f + nCntRanking * 600.0f, 400.0f + (nCnt* 100.0f), 0.0f));
+			m_pObjectRank[nCntRanking][nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
+		}
 	}
+
+	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
+	{
+		m_pObject[nCnt] = CObject2D::Create();
+	}
+
+	for (int nCnt = 0; nCnt < 2; nCnt++)
+	{
+		m_pObject[nCnt]->SetPosition(D3DXVECTOR3(400.0f + nCnt * 600.0f, 300.0f, 0.0f));
+		m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\new_record00.png"));
+		m_pObject[nCnt]->SetLength(250.0f, 100.0f);
+	}
+
+	m_pObject[2]->SetPosition(D3DXVECTOR3(300.0f, 100.0f, 0.0f));
+	m_pObject[2]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\ranking_one00.png"));
+	m_pObject[2]->SetLength(250.0f, 100.0f);
+
+	m_pObject[3]->SetPosition(D3DXVECTOR3(1000.0f, 100.0f, 0.0f));
+	m_pObject[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\ranking_team00.png"));
+	m_pObject[3]->SetLength(200.0f, 75.0f);
+
+	for (int nCnt = 4; nCnt < MAX_RANKING; nCnt++)
+	{
+		m_pObject[nCnt]->SetPosition(D3DXVECTOR3(100.0f + (nCnt - 4) * 600.0f, 200.0f, 0.0f));
+		m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
+		/*m_pObject[nCnt]->SetLength(250.0f, 100.0f);*/
+	}
+
+
 
 	// データの読み込み
 	Load(&aScore[0]);
@@ -81,7 +113,7 @@ HRESULT CRanking::Init(void)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
-			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(200.0f + nCntRanking * 800.0f, 200.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
+			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
 		}
 	}
 
@@ -105,9 +137,12 @@ void CRanking::Uninit(void)
 		}
 	}
 
-	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
-		m_pObjectRank[nCnt]->Uninit();
+		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+		{
+			m_pObjectRank[nCntRanking][nCnt]->Uninit();
+		}
 	}
 }
 
@@ -119,12 +154,28 @@ void CRanking::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 
 	//サイズの設定
-	for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
+	{
+		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
+		{
+			// 頂点情報の設定
+			m_pObjectRank[nCntRanking][nCnt]->SetVtx();
+			m_pObjectRank[nCntRanking][nCnt]->SetVtx(nCnt, NUM_RANK, 1);
+		}
+	}
+
+	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
 		// 頂点情報の設定
-		m_pObjectRank[nCnt]->SetVtx();
-		m_pObjectRank[nCnt]->SetVtx(nCnt, NUM_RANK, 1);
+		m_pObject[nCnt]->SetVtx();	
+
+		if (nCnt >= 4)
+		{
+			m_pObject[nCnt]->SetVtx(0, NUM_RANK, 1);
+		}
 	}
+
+	
 
 	//m_nCounter++;
 	

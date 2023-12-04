@@ -254,6 +254,7 @@ MODELSET
 	SHADOW = 1		#égópÇµÇ»Ç¢èÍçáÇÕ0
 END_MODELSET
 
+
 MODELSET
 	TYPE = 0
 	POS = -700.0 200.0 100.0
