@@ -34,6 +34,7 @@ CGimmickPull::CGimmickPull()
 	m_pObj = nullptr;
 	m_pMtxParent = nullptr;
 	m_state = STATE_NONE;
+	m_posOld = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 }
 
 //==========================================================
@@ -85,6 +86,8 @@ void CGimmickPull::Uninit(void)
 //==========================================================
 void CGimmickPull::Update(void)
 {
+	m_posOld = D3DXVECTOR3(GetMtxWorld()->_41, GetMtxWorld()->_42, GetMtxWorld()->_43);
+
 	// 状態に合わせてボタンの色を変更
 	switch (m_state)
 	{
@@ -100,6 +103,23 @@ void CGimmickPull::Update(void)
 	}
 	break;
 	}
+
+	bool bLand = false;
+	CGimmick *pGimmick = nullptr;
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 SetPos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 pos = D3DXVECTOR3(GetMtxWorld()->_41, GetMtxWorld()->_42, GetMtxWorld()->_43);
+
+	// 向きを反映
+	m_pObj->SetRotSize(vtxMax,
+		vtxMin,
+		pFile->GetMax(m_pObj->GetId()),
+		pFile->GetMin(m_pObj->GetId()),
+		0.0f);
+
+	CGimmick::Collision(pos, m_posOld, m_move, SetPos, vtxMin, vtxMax, -1, &pGimmick, &bLand);
 }
 
 //==========================================================
@@ -107,22 +127,22 @@ void CGimmickPull::Update(void)
 //==========================================================
 CGimmickPull *CGimmickPull::Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot)
 {
-	CGimmickPull *pSample = nullptr;
+	CGimmickPull *pPull = nullptr;
 
-	pSample = new CGimmickPull;
+	pPull = new CGimmickPull;
 
-	if (pSample != nullptr)
+	if (pPull != nullptr)
 	{
 		// 初期化処理
-		pSample->Init();
+		pPull->Init();
 
 		// 値の設定
-		pSample->SetPosition(pos);
-		pSample->SetRotation(rot);
-		pSample->BindType(TYPE_ROTATEDOOR);
+		pPull->SetPosition(pos);
+		pPull->SetRotation(rot);
+		pPull->BindType(TYPE_ROTATEDOOR);
 	}
 
-	return pSample;
+	return pPull;
 }
 
 //==========================================================
@@ -155,7 +175,7 @@ bool CGimmickPull::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVEC
 		
 		if (nAction == CPlayer::ACTION_CATCH) {
 			m_state = STATE_PULL;
-			SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
 			SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			*ppGimmick = this;
 		}

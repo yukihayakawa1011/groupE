@@ -568,7 +568,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	float fIner = INER;
 	m_fRotMove = rot.y;	//現在の向きを取得
-	CGimmick *pGimmick = &(*m_Catch.pGimmick);
+	CGimmick *pGimmick = &*m_Catch.pGimmick;
 
 	// 操作処理
 	if(m_action != ACTION_DAMAGE){	// ダメージリアクションをしていない
@@ -667,17 +667,19 @@ void CPlayer::Controller(void)
 	}
 
 	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
-		m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
-	}
-	else 
-	{
-		if (pGimmick == nullptr && m_Catch.pGimmick != nullptr) {
-			if (m_Catch.pGimmick->GetPull() != nullptr) {
+		if (m_Catch.pGimmick->GetPull() != nullptr) 
+		{
+			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
+			{// 掴むことができるモーションタイミング
+				m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
+				m_action = ACTION_CATCH;
+			}
+			else 
+			{
 				m_Catch.pGimmick = nullptr;
 			}
 		}
 	}
-
 
 	if (bLand == true)
 	{
@@ -845,7 +847,7 @@ void CPlayer::MoveController(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
 
-	if (m_Catch.pPlayer != nullptr) {
+	if (m_Catch.pPlayer != nullptr || m_Catch.pGimmick) {
 		fSpeed = CATCH_MOVE;
 	}
 
@@ -1277,7 +1279,7 @@ void CPlayer::MotionSet(void)
 
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
-			if (m_Catch.pPlayer == nullptr)
+			if (m_Catch.pPlayer == nullptr && m_Catch.pGimmick == nullptr)
 			{
 				m_action = ACTION_NEUTRAL;
 			}

@@ -57,6 +57,8 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	D3DXMATRIX *m_pMtxParent;	// 親のマトリックス
+	D3DXVECTOR3 m_posOld;		// 前回の位置
+	D3DXVECTOR3 m_move;		// 移動量
 	CModel *m_pObj;			// オブジェクトのポインタ
 	STATE m_state;			// 状態
 	D3DXVECTOR3 m_RotDest;		// 目標の角度

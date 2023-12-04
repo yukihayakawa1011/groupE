@@ -406,7 +406,7 @@ HRESULT CGame::Init(void)
 	//ミニマップ生成
 	if (m_pMiniMap == nullptr)
 	{
-		m_pMiniMap = CMiniMap::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 256.0f, 144.0f, m_nNumPlayer, 10, 10);
+		m_pMiniMap = CMiniMap::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 369.0f, 150.0f, m_nNumPlayer, 10, 10);
 	}
 
 	CGimmick::SwitchOn();
