@@ -253,12 +253,20 @@ HRESULT CGame::Init(void)
 
 		// ã¶óÕî‡
 		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		pMultiDoor->SetNumButton(2);
+		pMultiDoor->SetNumButton(4);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
+
+		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
+		pMultiDoor->BindButton(pButton);
 		
+		pMultiDoor->SetActiveButton(2);
+
+
 		// ÉSÅ[Éã
 		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
