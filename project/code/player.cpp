@@ -568,7 +568,7 @@ void CPlayer::Controller(void)
 	D3DXVECTOR3 rot = GetRotation();	// 向きを取得
 	float fIner = INER;
 	m_fRotMove = rot.y;	//現在の向きを取得
-	CGimmick *pGimmick = &(*m_Catch.pGimmick);
+	CGimmick *pGimmick = &*m_Catch.pGimmick;
 
 	// 操作処理
 	if(m_action != ACTION_DAMAGE){	// ダメージリアクションをしていない
@@ -667,17 +667,18 @@ void CPlayer::Controller(void)
 	}
 
 	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
-		m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
-	}
-	else 
-	{
-		if (pGimmick == nullptr && m_Catch.pGimmick != nullptr) {
-			if (m_Catch.pGimmick->GetPull() != nullptr) {
+		if (m_Catch.pGimmick->GetPull() != nullptr) 
+		{
+			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
+			{
+				m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
+			}
+			else 
+			{
 				m_Catch.pGimmick = nullptr;
 			}
 		}
 	}
-
 
 	if (bLand == true)
 	{
