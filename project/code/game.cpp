@@ -51,7 +51,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (180);				// 開始制限時間
+	const int START_TIMER = (25);				// 開始制限時間
 	const int START_WAITCNT = (180);
 }
 

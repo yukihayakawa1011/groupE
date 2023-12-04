@@ -22,13 +22,21 @@
 #include "camera.h"
 #include "score.h"
 #include "player.h"
+#include "object_manager.h"
 
 // マクロ定義
 #define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
 #define MOVE_TIMER	(660)
 
+namespace {
+	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f};	// 合計スコアの設置座標
+	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.6f, 0.0f };	// 合計スコアの設置座標
+	const float X_RANKSPACE = (100.0f);
+	const D3DXVECTOR2 RANK_SIZE = { 100.0f, 100.0f };
+}
+
 // 静的メンバ変数
-int *CResult::m_nScore = 0;
+int *CResult::m_pScore = 0;
 int CResult::m_nTopScore = 0;
 CResult::TYPE CResult::m_type = CResult::TYPE_MAX;
 int CResult::m_nNumPlayer = 0;
@@ -43,11 +51,8 @@ CResult::CResult()
 	m_pMeshSky = NULL;
 	m_nTimer = 0;
 	m_pTime = NULL;
-
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
-	{
-		m_apCharacter[nCnt] = NULL;
-	}
+	m_pTotalScore = nullptr;
+	m_pRank = nullptr;
 }
 
 //===============================================
@@ -78,85 +83,6 @@ HRESULT CResult::Init(void)
 		}
 	}
 
-	//// 種類ごとに描画
-	//switch (m_type)
-	//{
-
-	//case TYPE_MULTI_WIN:
-	//{
-	//	m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-	//	m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
-	//	m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
-	//	m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-	//	m_apCharacter[TYPE_MULTI_LOSE] = CCharacter::Create("data\\TXT\\motion_kidsgirl.txt");
-	//	m_apCharacter[TYPE_MULTI_LOSE]->GetMotion()->InitSet(5);
-	//	m_apCharacter[TYPE_MULTI_LOSE]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
-	//	m_apCharacter[TYPE_MULTI_LOSE]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	//	CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
-	//	CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, 100.0f));
-
-	//	CObject2D *pObj = CObject2D::Create();
-	//	pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.8f, 0.0f));
-	//	pObj->SetSize(SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.2f);
-	//	pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\result_win.png"));
-	//}
-	//	break;
-
-	//case TYPE_MULTI_LOSE:
-	//{
-	//	m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsgirl.txt");
-	//	m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
-	//	m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
-	//	m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-	//	m_apCharacter[TYPE_MULTI_LOSE] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-	//	m_apCharacter[TYPE_MULTI_LOSE]->GetMotion()->InitSet(5);
-	//	m_apCharacter[TYPE_MULTI_LOSE]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
-	//	m_apCharacter[TYPE_MULTI_LOSE]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	//	CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
-	//	CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, -100.0f));
-
-	//	CObject2D *pObj = CObject2D::Create();
-	//	pObj->SetPosition(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.8f, 0.0f));
-	//	pObj->SetSize(SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.2f);
-	//	pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\result_lose.png"));
-	//}
-	//	break;
-
-	//case TYPE_MAX:
-	//{
-	//	m_apCharacter[TYPE_MULTI_WIN] = CCharacter::Create("data\\TXT\\motion_kidsboy.txt");
-	//	if (m_nScore != 0)
-	//	{
-	//		m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(4);
-	//	}
-	//	else
-	//	{
-	//		m_apCharacter[TYPE_MULTI_WIN]->GetMotion()->InitSet(5);
-	//	}
-
-	//	m_apCharacter[TYPE_MULTI_WIN]->SetPosition(D3DXVECTOR3(0.0f, 0.0f, 100.0f));
-	//	m_apCharacter[TYPE_MULTI_WIN]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-
-	//	CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 1.0f, 1.51f));
-	//	CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(1000.0f, 0.0f, 0.0f));
-
-	//	int aScore[NUM_RANK] = {};	// スコア格納用
-	//	m_nRank = -1;	//ランクインしてない状態
-
-	//	// データの読み込み
-	//	Load(&aScore[0]);
-
-	//	// データのソート
-	//	Sort(&aScore[0]);
-
-	//	// ランクイン確認
-	//	RankIn(&aScore[0], m_nScore);
-	//}
-	//	break;
-	//}
-
 	// 人数分ポインタ生成
 	m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -178,13 +104,24 @@ HRESULT CResult::Init(void)
 	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
 		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(50.0f + nCount * 300.0f, 180.0f, 0.0f), 15.0f, 15.0f);
-
-		m_apScore[nCount]->SetScore(m_nScore[nCount]);
+		m_apScore[nCount]->SetScore(m_pScore[nCount]);
 	}
 
-	SetTopScore(m_nScore);
+	if (m_pRank == nullptr && m_nNumPlayer <= 0) {
+		m_pRank = new int[m_nNumPlayer];
+	}
 
-	//CObject2D::Create(D3DXVECTOR3(m_apScore[m_nTopScore]->), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	//// それぞれのランク付け
+	//SetRank(m_nNumPlayer);
+
+	//// ランクのポリゴン生成
+	//for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+	//	CObject2D *pObj = CObject2D::Create(NUM_PRIORITY);
+	//	pObj->BindTexture(CTexture::TYPE_RESULTRANK);
+	//	pObj->SetPosition(D3DXVECTOR3(RANK_POS.x + nCnt * X_RANKSPACE, RANK_POS.y, RANK_POS.z));
+	//	pObj->SetSize(RANK_SIZE.x, RANK_SIZE.y);
+	//	pObj->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
+	//}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
@@ -196,34 +133,43 @@ HRESULT CResult::Init(void)
 //===============================================
 void CResult::Uninit(void)
 {
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
-	{
-		if (m_apCharacter[nCnt] != NULL)
-		{
-			m_apCharacter[nCnt]->Uninit();
-			delete m_apCharacter[nCnt];
-			m_apCharacter[nCnt] = NULL;
+	if (m_apScore != nullptr) {
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+			if (m_apScore[nCnt] != nullptr) {// 使用されている場合
+
+				// 終了処理
+				m_apScore[nCnt]->Uninit();
+
+				// 破棄
+				delete m_apScore[nCnt];
+
+				// 使用していない状態にする
+				m_apScore[nCnt] = nullptr;
+			}
 		}
+		delete[] m_apScore;	// ポインタの開放
+		m_apScore = nullptr;	// 使用していない状態にする
 	}
 
-	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-	{
-		if (m_apScore[nCnt] != nullptr)
-		{// 使用されている場合
-
+	if (m_ppPlayer != nullptr) { // 使用していた場合
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
 			// 終了処理
-			m_apScore[nCnt]->Uninit();
-
-			// 破棄
-			delete m_apScore[nCnt];
-
-			// 使用していない状態にする
-			m_apScore[nCnt] = nullptr;
+			m_ppPlayer[nCnt]->Uninit();
+			m_ppPlayer[nCnt] = nullptr;	// 使用していない状態にする
 		}
+
+		delete[] m_ppPlayer;	// ポインタの開放
+		m_ppPlayer = nullptr;	// 使用していない状態にする
 	}
 
 	m_type = TYPE_MAX;
-	m_nScore = 0;
+
+	if (m_pScore != nullptr) {
+		delete[] m_pScore;
+		m_pScore = nullptr;
+	}
+
 	m_nNumPlayer = 0;
 }
 
@@ -233,14 +179,6 @@ void CResult::Uninit(void)
 void CResult::Update(void)
 {
 	m_nTimer++;
-
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++)
-	{
-		if (m_apCharacter[nCnt] != nullptr)
-		{
-			m_apCharacter[nCnt]->Update();
-		}
-	}
 
 	if (/*CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 
 		||*/ CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
@@ -267,65 +205,17 @@ void CResult::SetScore(CPlayer **ppPlayer)
 	CPlayer *pPlayer = CPlayer::GetTop();
 	int nNumGoal = 0;
 
-	m_nScore = new int [m_nNumPlayer];
+	m_pScore = new int [m_nNumPlayer];
 
 	for (int i = 0; i < m_nNumPlayer; i++)
 	{
 		if (ppPlayer[i]->GetGoal())
 		{
-			m_nScore[i] = ppPlayer[i]->GetScore()->GetScore();
+			m_pScore[i] = ppPlayer[i]->GetScore()->GetScore();
 		}
 		else
 		{
-			m_nScore[i] = 0;
-		}
-	}
-}
-
-//===============================================
-// ランキングデータ保存
-//===============================================
-void CResult::Save(int *pScore)
-{
-	FILE *pFile;
-
-	pFile = fopen(RANKING_FILE, "wb");
-
-	if (pFile != NULL)
-	{//ファイルが開けた場合
-
-	 //データを読み込む
-		fwrite(pScore, sizeof(int), NUM_RANK, pFile);
-
-		//ファイルを閉じる
-		fclose(pFile);
-	}
-}
-
-//===============================================
-// ランキングデータ読み込み
-//===============================================
-void CResult::Load(int *pScore)
-{
-	FILE *pFile;
-
-	pFile = fopen(RANKING_FILE, "rb");
-
-	if (pFile != NULL)
-	{//ファイルが開けた場合
-
-	 //データを読み込む
-		fread(pScore, sizeof(int), NUM_RANK, pFile);
-
-		//ファイルを閉じる
-		fclose(pFile);
-	}
-	else
-	{//ファイルが開けなかった場合
-	 //要素を入れておく
-		for (int nCntRanking = 0; nCntRanking < NUM_RANK; nCntRanking++)
-		{
-			pScore[nCntRanking] = 500 + (nCntRanking * 100);
+			m_pScore[i] = 0;
 		}
 	}
 }
@@ -358,45 +248,18 @@ void CResult::Sort(int *pScore)
 }
 
 //===============================================
-// ランキングイン確認
-//===============================================
-void CResult::RankIn(int *pScore, int nResult)
-{
-	if (nResult > pScore[NUM_RANK - 1])
-	{
-		pScore[NUM_RANK - 1] = nResult;
-
-		// ソート処理
-		Sort(pScore);
-
-		// 保存処理
-		Save(pScore);
-
-		//ランクインした順位を確認する
-		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
-		{
-			if (pScore[nCntRank] == nResult)
-			{
-				m_nRank = nCntRank;	// ランクインした順位を保存			
-				break;
-			}
-		}
-	}
-}
-
-//===============================================
 // 全員のスコア足す
 //===============================================
-bool CResult::SumScore(void)
+int CResult::SumScore(void)
 {
 	int nSumScore = 0;
 
 	for (int i = 0; i < m_nNumPlayer; i++)
 	{
-		nSumScore += m_nScore[i];
+		nSumScore += m_pScore[i];
 	}
 
-	return false;
+	return nSumScore;
 }
 
 //===============================================
@@ -411,4 +274,61 @@ void CResult::SetTopScore(int * pScore)
 			m_nTopScore = nCount;
 		}
 	}
+}
+
+//===============================================
+// それぞれのランク付け
+//===============================================
+void CResult::SetRank(int nNum)
+{
+	if (m_apScore == nullptr) {	// スコア存在していない
+		return;
+	}
+
+	int *pScore = new int[nNum];
+
+	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
+	{
+		pScore[nCount] = m_pScore[nCount];
+	}
+
+	// 降順ソート
+	for (int nCntFst = 0; nCntFst < m_nNumPlayer - 1; nCntFst++)
+	{
+		int nTempNum = nCntFst;	// 仮の一番大きい番号
+
+		for (int nCntSec = nCntFst + 1; nCntSec < m_nNumPlayer; nCntSec++)
+		{
+			if (pScore[nCntSec] > pScore[nTempNum])
+			{// 値が大きい場合
+				nTempNum = nCntSec;	// 大きい番号を変更
+			}
+		}
+
+		if (nTempNum != nCntFst) 
+		{// 変更する場合
+			int nTemp = pScore[nCntFst];
+			pScore[nCntFst] = pScore[nTempNum];
+			pScore[nTempNum] = nTemp;
+		}
+	}
+
+	// ランク付け
+	for (int nCntFst = 0; nCntFst < m_nNumPlayer; nCntFst++)
+	{
+		for (int nCntSec = 0; nCntSec < m_nNumPlayer; nCntSec++)
+		{
+			if (m_pScore[nCntFst] == pScore[nCntSec])
+			{// 値が大きい場合
+				m_pRank[nCntFst] = nCntSec;
+				break;
+			}
+		}
+	}
+
+	if (pScore != nullptr) {
+		delete[] pScore;
+		pScore = nullptr;
+	}
+
 }

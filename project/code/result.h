@@ -51,26 +51,24 @@ public:
 private:
 
 	// メンバ関数
-	void Save(int *pScore);
-	void Load(int *pScore);
+	int SumScore(void);
 	void Sort(int *pScore);
-	void RankIn(int *pScore, int nResult);
-	bool SumScore(void);
+	void SetRank(int nNum);
 	void SetTopScore(int *pScore);
 
 	// メンバ変数
 	CFileLoad *m_pFileLoad;	// ファイル読み込みのポインタ
 	CMeshDome *m_pMeshSky;		// 空用
 	CTime *m_pTime;			// タイマー
+	CScore *m_pTotalScore;		// 合計スコアオブジェクト
 	static CScore **m_apScore;	// スコアのポインタ(順位分)
-	CCharacter *m_apCharacter[TYPE_MAX];
-	static CPlayer **m_ppPlayer;		// プレイヤーのポインタ
-	int m_nRank;				// 今回のランク
+	static CPlayer **m_ppPlayer;	// プレイヤーのポインタ
 	int m_nTimer;				// 遷移タイマー
-	static int *m_nScore;			// 今回のスコア
-	static int m_nTopScore;     // 一位のスコア
-	static TYPE m_type;		    // 種類
-	static int m_nNumPlayer;    // ゴールしたプレイヤーの人数
+	int *m_pRank;				// ランク
+	static int *m_pScore;		// 今回のスコア
+	static int m_nTopScore;   // 一位のスコア
+	static TYPE m_type;		// 種類
+	static int m_nNumPlayer;  // ゴールしたプレイヤーの人数
 };
 
 #endif
