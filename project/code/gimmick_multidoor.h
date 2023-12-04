@@ -56,6 +56,7 @@ public:	// 誰でもアクセス可能
 	static CGimmickMultiDoor *Create(const D3DXVECTOR3& pos, const D3DXVECTOR3& rot);
 	void BindButton(CGimmickButton *pButton);
 	void SetNumButton(const int nNum);
+	void SetActiveButton(const int nNum);
 	
 	// メンバ関数(取得)
 
@@ -71,6 +72,7 @@ private:	// 自分だけがアクセス可能
 	SObj m_aObject[TYPE_MAX];
 	int m_nNumSwitch;					// 規定値のスイッチ数
 	int m_nNumLinkSwitch;				// リンクしているスイッチ数
+	int m_nActiveSwitch;				// 起動に必要なスイッチ数
 	CGimmickButton **m_ppButton;		// アクセス入力装置
 	STATE m_state;					// 状態
 	int m_nStateCnt;					// 状態管理カウンター

@@ -51,7 +51,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (100);				// 開始制限時間
+	const int START_TIMER = (180);				// 開始制限時間
 	const int START_WAITCNT = (180);
 }
 
@@ -173,7 +173,7 @@ HRESULT CGame::Init(void)
 			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
 			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-1600.0f, 0.0f, 950.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-2250.0f, 0.0f, 1000.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 
 			//スコアとUIの高さと間隔の調整用
@@ -210,14 +210,14 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 		
-		//CEnemy::Create(D3DXVECTOR3(-1500.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
 		// ギミックの生成
 
 		// 開始扉(人数分)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-1350.0f, 100.0f, -560.0f + nCnt * 10.0f));
-			l->SetRotation(D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f));
+			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(1125.0f, 100.0f, -560.0f + nCnt * 50.0f));
+			l->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
 			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			p->SetLever(l);
@@ -243,7 +243,7 @@ HRESULT CGame::Init(void)
 
 		// 回転扉
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(400.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(480.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 		// 落とし穴
@@ -339,7 +339,7 @@ HRESULT CGame::Init(void)
 			m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
 			m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
 			m_ppCamera[nCnt]->SetLength(400.0f);
-			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 1.0f, D3DX_PI * 0.375f));
+			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f));
 
 			D3DVIEWPORT9 viewport;
 			//プレイヤー追従カメラの画面位置設定
@@ -504,22 +504,24 @@ void CGame::Update(void)
 			}
 		}
 	}
+	else
+	{
+		if (m_state != STATE_END) {	// 終了状態以外
+			if (EndCheck()) {	// 全員ゴールしている
+				CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+				m_state = STATE_END;
+			}
+			else
+			{
+				if (m_pTimer != nullptr) {
+					m_pTimer->Update();
 
-	if (m_state != STATE_END) {	// 終了状態以外
-		if (EndCheck()) {	// 全員ゴールしている
-			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-			m_state = STATE_END;
-		}
-		else
-		{
-			if (m_pTimer != nullptr) {
-				m_pTimer->Update();
-
-				if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
-					CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-					CResult::SetNumPlayer(m_nNumPlayer);
-					CResult::SetScore(m_ppPlayer);
-					m_state = STATE_END;
+					if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+						CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+						CResult::SetNumPlayer(m_nNumPlayer);
+						CResult::SetScore(m_ppPlayer);
+						m_state = STATE_END;
+					}
 				}
 			}
 		}

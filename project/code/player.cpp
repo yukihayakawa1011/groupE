@@ -42,6 +42,7 @@
 #include "particle.h"
 #include "effect.h"
 #include "gage.h"
+#include "throwitem.h"
 
 //===============================================
 // マクロ定義
@@ -80,11 +81,13 @@
 namespace {
 	const float BULLET_MOVE = (22.0f);	// 弾の移動量
 	const float HIT_RANGE = (100.0f);	// 当たり判定のサイズ
-	const float KUNAI_GAGE = (20.0f);	// クナイのゲージ必要量
+	const float KUNAI_GAGE = (50.0f);	// クナイのゲージ必要量
 	const float AIR_GAGE = (100.0f);	// 風神の術のゲージ必要量
 	const float KAKUREMI_GAGE = (1.0f);	// 隠れ蓑術のゲージ必要量
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
 	const D3DXVECTOR2 GAGE_SIZE = {75.0f, 5.0f};	// ゲージのポリゴンサイズ
+	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
+	const D3DXVECTOR2 ITEMUI_SIZE = { 25.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 }
 
 // 前方宣言
@@ -145,6 +148,7 @@ CPlayer::CPlayer()
 	m_fGage = 0.0f;
 	m_pMyCamera = nullptr;
 	m_pGage = nullptr;
+	m_pThrowItem = nullptr;
 
 	for (int i = 0; i < MAX_ITEM; i++)
 	{
@@ -234,8 +238,8 @@ HRESULT CPlayer::Init(void)
 		m_pScore->Init();
 	}
 
+	m_pThrowItem = CThrowItem::Create(&m_Info.pos, ITEMUI_UPHEIGHT, ITEMUI_SIZE.x, ITEMUI_SIZE.y);
 	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
-
 	m_fGage = MAX_GAGE;
 	m_Info.state = STATE_APPEAR;
 	m_action = ACTION_NEUTRAL;
@@ -321,6 +325,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 		m_pScore->Init();
 	}
 
+	m_pThrowItem = CThrowItem::Create(&m_Info.pos, ITEMUI_UPHEIGHT, ITEMUI_SIZE.x, ITEMUI_SIZE.y);
 	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
 	m_fGage = MAX_GAGE;
 	m_nLife = START_LIFE;
@@ -441,11 +446,15 @@ void CPlayer::Update(void)
 
 	if (m_type == TYPE_ACTIVE)
 	{
-
 		if (m_Info.state != STATE_SPAWN)
 		{
 			// プレイヤー操作
 			Controller();
+		}
+
+		if (m_pMyCamera != nullptr) {
+			// 追従処理
+			m_pMyCamera->Update();
 		}
 
 		// オンライン送信
@@ -455,16 +464,22 @@ void CPlayer::Update(void)
 	}
 	else
 	{// 操作キャラではない
-		D3DXVECTOR3 posDest = m_Info.posDiff - m_Info.pos;
-		m_Info.pos += posDest * 0.95f;
+		float fIner = INER;
+		D3DXVECTOR3 pos = GetPosition();	// 座標を取得
+		m_bMove = true;
+		m_Info.move.x = 10.0f;
+
+		MotionSet();	// モーション設定
+		pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.pos = pos;
 	}
 
 	// カメラ追従
 	if (m_pMyCamera != nullptr) {
 		// 追従処理
-		m_pMyCamera->Update();
 		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
+
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
@@ -785,6 +800,12 @@ void CPlayer::KeyBoardRotation(void)
 //===============================================
 void CPlayer::MoveController(void)
 {
+	m_bMove = false;
+
+	if (m_action == ACTION_AIR) {
+		return;
+	}
+
 	if (m_nId < 0 || m_nId >= PLAYER_MAX)
 	{// コントローラー数おーばー
 		return;
@@ -805,8 +826,6 @@ void CPlayer::MoveController(void)
 	}
 
 	fSpeed -= (m_nItemCnt * SPEED_DECAY);
-
-	m_bMove = false;
 
 	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.5f, CInputPad::STICK_MINUS) == true)
 	{
@@ -889,7 +908,7 @@ void CPlayer::Jump(void)
 		return;
 	}
 
-	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH)
+	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH && m_action == ACTION_AIR)
 	{
 		return;
 	}
@@ -2359,9 +2378,8 @@ void CPlayer::Ninjutsu(void)
 			m_action = ACTION_KUNAI;
 		}
 	}
-	else if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId)) {	// クナイ
-		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR)
-		{
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId)) {	// 風神
+		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR && !m_bJump) {	// ゲージが足りる
 			m_fGage -= AIR_GAGE;
 			m_action = ACTION_AIR;
 		}
@@ -2375,7 +2393,6 @@ void CPlayer::Ninjutsu(void)
 
 			// 煙のパーティクル生成
 			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
-
 			ChangeBody();
 		}
 

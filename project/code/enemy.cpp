@@ -499,7 +499,7 @@ void CEnemy::Search(void)
 void CEnemy::Chace(void)
 {
 	float fLengthNear = FLT_MAX;
-	CPlayer* pPlayerNear = SearchNearPlayer(FLT_MAX, &fLengthNear);
+	CPlayer* pPlayerNear = SearchNearPlayer(SEARCH_RADIUS, &fLengthNear);
 
 	if (pPlayerNear != nullptr && fLengthNear <= ATTACK_LENGTH)
 	{//UŒ‚”ÍˆÍ

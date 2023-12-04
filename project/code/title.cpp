@@ -72,9 +72,6 @@ HRESULT CTitle::Init(void)
 		}
 	}
 
-	//家モデルの設置
-	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\house.x", NULL);
-
 	//タイトル生成
 	CObject3D* pObj3D = CObject3D::Create(D3DXVECTOR3(-1000.0f, 900.0f, -600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	pObj3D->SetRotation(D3DXVECTOR3(0.0f, -0.8f, 0.1f));
