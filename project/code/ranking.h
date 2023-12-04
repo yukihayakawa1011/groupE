@@ -14,7 +14,7 @@
 //===============================================
 #define NUM_RANK	(3)		// ランキングの順位数
 #define NUM_RANKING (2)     // 表示するランキングの数
-#define MAX_RANKING (4)
+#define MAX_RANKING (6)
 
 // 前方宣言
 class CScore;
@@ -58,7 +58,7 @@ private:
 	int m_nRank;
 	CCarManager *m_pCarManager;		// カーマネージャーのポインタ
 	int m_nCounter;
-	CObject2D *m_pObjectRank[NUM_RANK];
+	CObject2D *m_pObjectRank[NUM_RANKING][NUM_RANK];
 	CObject2D *m_pObject[MAX_RANKING];
 };
 
