@@ -88,6 +88,11 @@ void CObjectBillboard::Update(void)
 //==========================================================
 void CObjectBillboard::Draw(void)
 {
+	if (!GetDraw())
+	{
+		return;
+	}
+
 	if (m_pVtxBuff == nullptr)
 	{
 		return;
