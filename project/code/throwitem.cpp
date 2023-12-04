@@ -12,6 +12,7 @@
 // 無名名前空間
 namespace {
 	const int DEF_PRI = (3);	// 優先順位
+	const int MAX_ITEMSELECT = (10);  // 選択できるIDの最大
 	const char* FILENAME[CThrowItem::TYPE_MAX] = {	// テクスチャファイル名
 		"data\\TEXTURE\\item_icon1.png",
 		"data\\TEXTURE\\item_icon0.png",
@@ -85,39 +86,39 @@ CThrowItem * CThrowItem::Create(D3DXVECTOR3 * pPos, const float fUpHeight, const
 //==========================================================
 void CThrowItem::SetItem(int nThrowItemID)
 {
-	//// 現在選択している番号
-	//m_nNowID = nThrowItemID;
+	// 現在選択している番号
+	m_nNowID = nThrowItemID;
 
-	//// 選択している番号の一個前
-	//m_nBeforeID = m_nNowID - 1;
+	// 選択している番号の一個前
+	m_nBeforeID = m_nNowID - 1;
 
-	//// 選択している番号の次
-	//m_nNextID = m_nNowID + 1;
+	// 選択している番号の次
+	m_nNextID = m_nNowID + 1;
 
-	//if (m_nBeforeID < 0)
-	//{
-	//	m_nBeforeID = 10;
-	//}
+	if (m_nBeforeID < 0)
+	{
+		m_nBeforeID = MAX_ITEMSELECT;
+	}
 
-	//if (m_nNextID > 10)
-	//{
-	//	m_nNextID = 0;
-	//}
+	if (m_nNextID > MAX_ITEMSELECT)
+	{
+		m_nNextID = 0;
+	}
 
-	//// サイズを設定
-	//{
-	//	if (m_apObject[m_nBeforeID] == nullptr || m_apObject[m_nNowID] == nullptr || m_apObject[m_nNextID] == nullptr) {
-	//		return;
-	//	}
+	// サイズを設定
+	{
+		if (m_apObject[m_nBeforeID] == nullptr || m_apObject[m_nNowID] == nullptr || m_apObject[m_nNextID] == nullptr) {
+			return;
+		}
 
-	//	m_apObject[m_nBeforeID]->SetSize(m_fPolyWidth, m_fPolyHeight);
-	//	m_apObject[m_nNowID]->SetSize(m_fPolyWidth, m_fPolyHeight);
-	//	m_apObject[m_nNextID]->SetSize(m_fPolyWidth, m_fPolyHeight);
+		m_apObject[m_nBeforeID]->SetSize(m_fPolyWidth, m_fPolyHeight);
+		m_apObject[m_nNowID]->SetSize(m_fPolyWidth, m_fPolyHeight);
+		m_apObject[m_nNextID]->SetSize(m_fPolyWidth, m_fPolyHeight);
 
-	//	m_apObject[m_nBeforeID]->SetDraw(true);
-	//	m_apObject[m_nNowID]->SetDraw(true);
-	//	m_apObject[m_nNextID]->SetDraw(true);
-	//}
+		m_apObject[m_nBeforeID]->SetDraw(true);
+		m_apObject[m_nNowID]->SetDraw(true);
+		m_apObject[m_nNextID]->SetDraw(true);
+	}
 }
 
 //==========================================================
@@ -162,7 +163,7 @@ void CThrowItem::Uninit(void)
 void CThrowItem::Update(void)
 {
 	// 座標の更新
-	//SetMixPosition();
+	SetMixPosition();
 }
 
 //==========================================================
