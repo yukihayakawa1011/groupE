@@ -492,6 +492,16 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 			move.y = 0.0f;
 			bLand = true;
 		}
+
+		//â∫Ç©ÇÁÇÃîªíË
+		if (posOld.y + vtxMax.y <= m_pos.y + vtxObjMin.y
+			&& pos.y + vtxMax.y > m_pos.y + vtxObjMin.y)
+		{//â∫Ç©ÇÁÇﬂÇËçûÇÒÇæ
+		 //ÇªÇÃçÇÇ≥ÇÃÇ‹Ç‹
+			pos.y = m_pos.y - vtxObjMin.y - vtxMax.y;
+			move.y = 0.0f;
+			bLand = true;
+		}
 	}
 
 	return bLand;
