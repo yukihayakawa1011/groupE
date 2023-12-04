@@ -1507,13 +1507,7 @@ const char *CPlayer::ItemFileName(int type)
 
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:
-	{
-		return "\0";
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:
 	{
 		return  "data\\MODEL\\coin.x";
@@ -1631,13 +1625,7 @@ void CPlayer::AddItemCount(int type)
 {
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:  // なんもない
-	{
-		
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:  // コイン
 	{
 		m_nNumItemCoin++;
@@ -1732,13 +1720,7 @@ void CPlayer::SubItemCount(int type)
 {
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:  // なんもない
-	{
-
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:  // コイン
 	{
 		m_nNumItemCoin--;
@@ -1844,13 +1826,13 @@ void CPlayer::SelectItem(void)
 		m_nItemId--;
 	}
 
-	if (m_nItemId >= 12)
+	if (m_nItemId > 10)
 	{
-		m_nItemId = 1;
+		m_nItemId = 0;
 	}
-	else if(m_nItemId <= 0)
+	else if(m_nItemId < 0)
 	{
-		m_nItemId = 11;
+		m_nItemId = 10;
 	}
 
 	if (pInputPad->GetTrigger(CInputPad::BUTTON_UP, m_nId))
@@ -1894,13 +1876,7 @@ int CPlayer::GetSelectItem(int type)
 {
 	switch (type)
 	{
-	case CItem::TYPE_NORMAL:  // なんもない
-	{
-
-	}
-
-	break;
-
+	
 	case CItem::TYPE_COIN:  // コイン
 	{
 		return m_nNumItemCoin;

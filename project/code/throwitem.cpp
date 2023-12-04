@@ -8,6 +8,10 @@
 #include "billboard.h"
 #include "manager.h"
 #include "texture.h"
+#include "player.h"
+
+// 静的メンバ変数宣言
+CPlayer **CThrowItem::m_ppPlayer = nullptr;
 
 // 無名名前空間
 namespace {
@@ -78,7 +82,7 @@ CThrowItem * CThrowItem::Create(D3DXVECTOR3 * pPos, const float fUpHeight, const
 
 //==========================================================
 // 初期化処理
-//==========================================================」
+//==========================================================
 HRESULT CThrowItem::Init(void)
 {
 	// オブジェクトの生成
@@ -119,15 +123,47 @@ void CThrowItem::Update(void)
 	// 座標の更新
 	SetMixPosition();
 
-	// サイズを設定
+	CPlayer *pPlayer = CPlayer::GetTop();
+
+	while (pPlayer != nullptr)
 	{
-		for (int i = 0; i < TYPE_MAX; i++)
+		CPlayer *pPlayerNext = pPlayer->GetNext();	// 次を保持
+
+		int nOldId, nId, nNextId;
+
+		// 現在選択している番号
+		nId = pPlayer->GetThrowItemId();
+
+		// 選択している番号の一個前
+		nOldId = nId - 1;
+
+		// 選択している番号の次
+		nNextId = nId + 1;
+
+		if (nOldId < 0)
 		{
-			if (m_apObject[i] == nullptr) {
+			nOldId = 10;
+		}
+
+		if (nNextId > 10)
+		{
+			nNextId = 0;
+		}
+
+		// サイズを設定
+		{
+			if (m_apObject[nOldId] == nullptr || m_apObject[nId] == nullptr || m_apObject[nNextId] == nullptr) {
 				return;
 			}
-			m_apObject[i]->SetSize(m_fPolyWidth, m_fPolyHeight);
+
+			m_apObject[nOldId]->SetSize(m_fPolyWidth, m_fPolyHeight);
+
+			m_apObject[nId]->SetSize(m_fPolyWidth, m_fPolyHeight);
+
+			m_apObject[nNextId]->SetSize(m_fPolyWidth, m_fPolyHeight);
 		}
+
+		pPlayer = pPlayerNext;
 	}
 }
 
