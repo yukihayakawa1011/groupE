@@ -18,13 +18,15 @@ NUM_TEXTURE = 0
 #==============================================================================
 # モデル数
 #==============================================================================
-NUM_MODEL = 2
+NUM_MODEL = 4
 
 #==============================================================================
 # モデルファイル名
 #==============================================================================
 MODEL_FILENAME = data\MODEL\warehouse.x
 MODEL_FILENAME = data\MODEL\house.x
+MODEL_FILENAME = data\MODEL\fence.x
+MODEL_FILENAME = data\MODEL\fence_corner.x
 
 #==============================================================================
 # カメラ情報
@@ -75,6 +77,47 @@ MODELSET
 	TYPE = 0
 	POS = -1083 0 -1123
 	ROT = 0 -1.57 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 0 0 900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -1000 0 900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 1000 0 900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 3
+	POS = -1950 0 900
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -1950 0 -50
+	ROT = 0 1.57 0
+#	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 

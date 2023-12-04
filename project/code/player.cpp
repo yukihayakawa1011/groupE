@@ -42,6 +42,7 @@
 #include "particle.h"
 #include "effect.h"
 #include "gage.h"
+#include "throwitem.h"
 
 //===============================================
 // マクロ定義
@@ -85,6 +86,8 @@ namespace {
 	const float KAKUREMI_GAGE = (1.0f);	// 隠れ蓑術のゲージ必要量
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
 	const D3DXVECTOR2 GAGE_SIZE = {75.0f, 5.0f};	// ゲージのポリゴンサイズ
+	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
+	const D3DXVECTOR2 ITEMUI_SIZE = { 25.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 }
 
 // 前方宣言
@@ -145,6 +148,7 @@ CPlayer::CPlayer()
 	m_fGage = 0.0f;
 	m_pMyCamera = nullptr;
 	m_pGage = nullptr;
+	m_pThrowItem = nullptr;
 
 	for (int i = 0; i < MAX_ITEM; i++)
 	{
@@ -234,8 +238,8 @@ HRESULT CPlayer::Init(void)
 		m_pScore->Init();
 	}
 
+	m_pThrowItem = CThrowItem::Create(&m_Info.pos, ITEMUI_UPHEIGHT, ITEMUI_SIZE.x, ITEMUI_SIZE.y);
 	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
-
 	m_fGage = MAX_GAGE;
 	m_Info.state = STATE_APPEAR;
 	m_action = ACTION_NEUTRAL;
@@ -321,6 +325,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 		m_pScore->Init();
 	}
 
+	m_pThrowItem = CThrowItem::Create(&m_Info.pos, ITEMUI_UPHEIGHT, ITEMUI_SIZE.x, ITEMUI_SIZE.y);
 	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
 	m_fGage = MAX_GAGE;
 	m_nLife = START_LIFE;

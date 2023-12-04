@@ -25,19 +25,19 @@ NUM_MODEL = 13
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/5mcube.x	   # [0]5mキューブ
-MODEL_FILENAME = data/MODEL/botan.x        # [1]ボタン
-MODEL_FILENAME = data/MODEL/camera000.x    # [2]監視カメラ
-MODEL_FILENAME = data/MODEL/desk.x         # [3]机
-MODEL_FILENAME = data/MODEL/gate.x         # [4]ドア
-MODEL_FILENAME = data/MODEL/gate001.x      # [5]ドア
-MODEL_FILENAME = data/MODEL/roundchair.x   # [6]丸椅子
-MODEL_FILENAME = data/MODEL/wall000.x      # [7]壁
-MODEL_FILENAME = data/MODEL/coin_mini.x    # [8]コイン
-MODEL_FILENAME = data/MODEL/house.x  	   # [9]家
-MODEL_FILENAME = data/MODEL/warehouse.x    # [10]倉庫
-MODEL_FILENAME = data/MODEL/fence.x		   # [11]壁みたいなフェンス
-MODEL_FILENAME = data/MODEL/fence_corner.x # [12]壁みたいなフェンスの角
+MODEL_FILENAME = data/MODEL/5mcube.x	  # [0]5mキューブ
+MODEL_FILENAME = data/MODEL/botan.x       # [1]ボタン
+MODEL_FILENAME = data/MODEL/camera000.x   # [2]監視カメラ
+MODEL_FILENAME = data/MODEL/desk.x        # [3]机
+MODEL_FILENAME = data/MODEL/gate.x        # [4]ドア
+MODEL_FILENAME = data/MODEL/gate001.x     # [5]ドア
+MODEL_FILENAME = data/MODEL/roundchair.x  # [6]丸椅子
+MODEL_FILENAME = data/MODEL/wall000.x     # [7]壁
+MODEL_FILENAME = data/MODEL/coin_mini.x   # [8]コイン
+MODEL_FILENAME = data/MODEL/house.x  	  # [9]家
+MODEL_FILENAME = data/MODEL/warehouse.x   # [10]倉庫
+MODEL_FILENAME = data\MODEL\fence.x		  # [11]壁みたいなフェンス
+MODEL_FILENAME = data\MODEL\fence_corner.x# [12]壁みたいなフェンスの角
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1942,7 +1942,7 @@ END_MODELSET
 MODELSET
 	TYPE = 10
 	POS = -1083 0 -1123
-	ROT = 0 -90 0
+	ROT = 0 -1.57 0
 	SHADOW = 0
 END_MODELSET
 
@@ -1970,14 +1970,14 @@ END_MODELSET
 MODELSET
 	TYPE = 12
 	POS = -1950 0 900
-	ROT = 0 180 0
+	ROT = 0 3.14159 0
 	SHADOW = 0
 END_MODELSET
 
 MODELSET
 	TYPE = 11
 	POS = -1950 0 -50
-	ROT = 0 90 0
+	ROT = 0 1.57 0
 	SHADOW = 0
 END_MODELSET
 
