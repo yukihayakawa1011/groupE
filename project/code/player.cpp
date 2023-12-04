@@ -800,6 +800,12 @@ void CPlayer::KeyBoardRotation(void)
 //===============================================
 void CPlayer::MoveController(void)
 {
+	m_bMove = false;
+
+	if (m_action == ACTION_AIR) {
+		return;
+	}
+
 	if (m_nId < 0 || m_nId >= PLAYER_MAX)
 	{// コントローラー数おーばー
 		return;
@@ -820,8 +826,6 @@ void CPlayer::MoveController(void)
 	}
 
 	fSpeed -= (m_nItemCnt * SPEED_DECAY);
-
-	m_bMove = false;
 
 	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.5f, CInputPad::STICK_MINUS) == true)
 	{
@@ -904,7 +908,7 @@ void CPlayer::Jump(void)
 		return;
 	}
 
-	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH)
+	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH && m_action == ACTION_AIR)
 	{
 		return;
 	}
@@ -2374,9 +2378,8 @@ void CPlayer::Ninjutsu(void)
 			m_action = ACTION_KUNAI;
 		}
 	}
-	else if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId)) {	// クナイ
-		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR)
-		{
+	else if (pInputPad->GetTrigger(CInputPad::BUTTON_Y, m_nId)) {	// 風神
+		if (m_fGage >= AIR_GAGE && m_action != ACTION_AIR && !m_bJump) {	// ゲージが足りる
 			m_fGage -= AIR_GAGE;
 			m_action = ACTION_AIR;
 		}
@@ -2390,7 +2393,6 @@ void CPlayer::Ninjutsu(void)
 
 			// 煙のパーティクル生成
 			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
-
 			ChangeBody();
 		}
 
