@@ -30,9 +30,9 @@
 
 namespace {
 	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f};	// 合計スコアの設置座標
-	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.3f, SCREEN_HEIGHT * 0.6f, 0.0f };	// 合計スコアの設置座標
+	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.1f, SCREEN_HEIGHT * 0.4f, 0.0f };	// 合計スコアの設置座標
 	const float X_RANKSPACE = (100.0f);
-	const D3DXVECTOR2 RANK_SIZE = { 100.0f, 100.0f };
+	const D3DXVECTOR2 RANK_SIZE = { 50.0f, 30.0f };
 }
 
 // 静的メンバ変数
@@ -107,21 +107,27 @@ HRESULT CResult::Init(void)
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
 	}
 
-	if (m_pRank == nullptr && m_nNumPlayer <= 0) {
+	if (m_pRank == nullptr && m_nNumPlayer > 0) {
 		m_pRank = new int[m_nNumPlayer];
 	}
 
-	//// それぞれのランク付け
-	//SetRank(m_nNumPlayer);
+	// それぞれのランク付け
+	SetRank(m_nNumPlayer);
 
-	//// ランクのポリゴン生成
-	//for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-	//	CObject2D *pObj = CObject2D::Create(NUM_PRIORITY);
-	//	pObj->BindTexture(CTexture::TYPE_RESULTRANK);
-	//	pObj->SetPosition(D3DXVECTOR3(RANK_POS.x + nCnt * X_RANKSPACE, RANK_POS.y, RANK_POS.z));
-	//	pObj->SetSize(RANK_SIZE.x, RANK_SIZE.y);
-	//	pObj->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
-	//}
+	// ランクのポリゴン生成
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+		CObject2D *pObj = CObject2D::Create(NUM_PRIORITY);
+		pObj->BindTexture(CTexture::TYPE_RESULTRANK);
+		pObj->SetPosition(D3DXVECTOR3(RANK_POS.x + nCnt * X_RANKSPACE, RANK_POS.y, RANK_POS.z));
+		pObj->SetSize(RANK_SIZE.x, RANK_SIZE.y);
+		pObj->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
+	}
+
+	// 合計スコアの取得
+	int nTotalScore = SumScore();
+
+	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 15.0f, 15.0f);
+	m_pTotalScore->SetScore(nTotalScore);
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
