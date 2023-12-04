@@ -41,6 +41,7 @@ CGimmickMultiDoor::CGimmickMultiDoor()
 	m_nNumLinkSwitch = 0;
 	m_fInerMulti = 0.0f;
 	m_ppButton = nullptr;
+	m_nActiveSwitch = 0;
 }
 
 //==========================================================
@@ -115,7 +116,8 @@ void CGimmickMultiDoor::Update(void)
 		}
 	}
 
-	if (nActive >= m_nNumLinkSwitch) {	// スイッチが規定値押されている
+	if (nActive >= m_nNumLinkSwitch ||
+		nActive >= m_nActiveSwitch) {	// スイッチが規定値押されている
 		m_state = STATE_OPEN;
 		StateSet();
 	}
@@ -359,6 +361,7 @@ void CGimmickMultiDoor::SetNumButton(const int nNum)
 	// ポインタを生成
 	m_ppButton = new CGimmickButton*[nNum];
 	m_nNumSwitch = nNum;
+	m_nActiveSwitch = nNum;
 
 	for (int nCnt = 0; nCnt < m_nNumSwitch; nCnt++) {
 		m_ppButton[nCnt] = nullptr;
@@ -374,5 +377,20 @@ void CGimmickMultiDoor::SetNumButton(const int nNum)
 		}
 		delete[] ppButtonOld;	// ポインタの開放
 		ppButtonOld = nullptr;	// 使用していない状態にする
+	}
+}
+
+//==========================================================
+// ボタン使用数を設定
+//==========================================================
+void CGimmickMultiDoor::SetActiveButton(const int nNum)
+{
+	m_nActiveSwitch = nNum;
+
+	if (m_nActiveSwitch > m_nNumSwitch) {	// 規定数よりも多い場合
+		m_nActiveSwitch = m_nNumSwitch;
+	}
+	else if (m_nActiveSwitch < 0) {	// 0未満
+		m_nActiveSwitch = 0;
 	}
 }
