@@ -16,6 +16,15 @@ class CMultiCamera;
 class CObject2D;
 class CObject2DMap;
 
+//人数別ミニマップ配置
+namespace PlacePos
+{
+	const D3DXVECTOR3 ONE_PLAYER = D3DXVECTOR3(1040.0f, 120.0f, 0.0f);
+	const D3DXVECTOR3 TWO_PLAYER = D3DXVECTOR3(640.0f, 600.0f, 0.0f);
+	const D3DXVECTOR3 THREE_PLAYER = D3DXVECTOR3(960.0f, 540.0f, 0.0f);
+	const D3DXVECTOR3 FOUR_PLAYER = D3DXVECTOR3(640.0f, 360.0f, 0.0f);
+}
+
 //ミニマップクラス
 class CMiniMap : public CTask
 {

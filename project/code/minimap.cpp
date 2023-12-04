@@ -91,6 +91,9 @@ HRESULT CMiniMap::Init(void)
 	}
 
 	//マップオブジェ生成
+	CObject2D* pObjScroll = CObject2D::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	pObjScroll->SetSize((m_fHeight * 0.8f) * 2.0f, (m_fHeight * 0.8f));
+	pObjScroll->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\scroll_minimap.png"));
 	if (m_pObjMap == nullptr)
 	{
 		m_pObjMap = CObject2DMap::Create(m_pos, D3DXVECTOR3(0.0f,0.0f,0.0f), m_fWidth * 0.5f, m_fHeight * 0.5f);
