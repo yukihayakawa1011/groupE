@@ -34,6 +34,7 @@ public:
 		STATE_LOCAL = 0,	// ローカル通信
 		STATE_ONLINE,		// TCPオンライン
 		STATE_END,
+		STATE_PAUSE,
 		STATE_MAX
 	};
 
@@ -88,6 +89,7 @@ private:
 	std::mutex m_mutex;
 	bool m_bEnd;
 	int m_nStartCnt;				// 開始タイマー
+	bool m_bPause;              //ポーズ
 };
 
 #endif
