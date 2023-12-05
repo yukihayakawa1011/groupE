@@ -1352,7 +1352,8 @@ void CPlayer::MotionSet(void)
 	}
 	else if (m_action == ACTION_AIR)
 	{// •—‚Ìp
-		m_pBody->GetMotion()->Set(ACTION_ATK);
+		m_pBody->GetMotion()->Set(ACTION_HENGE);
+		m_pLeg->GetMotion()->Set(ACTION_HENGE);
 
 		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 		{
@@ -1362,6 +1363,10 @@ void CPlayer::MotionSet(void)
 		if (m_pBody->GetMotion()->GetEnd())
 		{// ƒ‚[ƒVƒ‡ƒ“I—¹
 			m_action = ACTION_NEUTRAL;
+		}
+		else
+		{
+			return;
 		}
 	}
 
