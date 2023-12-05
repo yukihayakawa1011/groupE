@@ -1,178 +1,66 @@
 #==============================================================================
 #
-# マップ配置スクリプトファイル [model.txt]
-# Author : IBUKI OKUSADA
+# マップ配置スクリプトファイル [enemy_move_trace.txt]
+# IS_MapEditor_Generalより生成
 #
 #==============================================================================
-SCRIPT			# この行は絶対消さないこと！
+SCRIPT
 
-#------------------------------------------------------------------------------
+#==============================================================================
 # テクスチャ数
-#------------------------------------------------------------------------------
-NUM_TEXTURE = 8
+#==============================================================================
+NUM_TEXTURE = 0
 
-#------------------------------------------------------------------------------
+#==============================================================================
 # テクスチャファイル名
-#------------------------------------------------------------------------------
-TEXTURE_FILENAME = data/TEXTURE/river000.jpg		# [0]川水(下)
-TEXTURE_FILENAME = data/TEXTURE/field001.jpg		# [1]川水(上)
-TEXTURE_FILENAME = data/TEXTURE/field000.jpg		# [2]監視カメラ
-TEXTURE_FILENAME = data/TEXTURE/WoodDesign.jpg		# [3]ちゃぶ台
-TEXTURE_FILENAME = data/TEXTURE/WoodDesign001.jpg	# [4]ちゃぶ台(脚)
-TEXTURE_FILENAME = data/TEXTURE/zabuton000.jpg		# [5]座布団
-TEXTURE_FILENAME = data/TEXTURE/sumdorr.jpg			# [6]ドア左(和)
-TEXTURE_FILENAME = data/TEXTURE/gold000.jpg			# [7]金の掛け軸
+#==============================================================================
 
-#------------------------------------------------------------------------------
+#==============================================================================
 # モデル数
-#------------------------------------------------------------------------------
-NUM_MODEL = 16
+#==============================================================================
+NUM_MODEL = 3
 
-#------------------------------------------------------------------------------
+#==============================================================================
 # モデルファイル名
-#------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/5mcube.x	  # [0]5mキューブ
-MODEL_FILENAME = data/MODEL/botan.x       # [1]ボタン
-MODEL_FILENAME = data/MODEL/camera000.x   # [2]監視カメラ
-MODEL_FILENAME = data/MODEL/desk.x        # [3]机
-MODEL_FILENAME = data/MODEL/roundchair.x  # [4]丸椅子
-MODEL_FILENAME = data/MODEL/gate.x        # [5]ドア
-MODEL_FILENAME = data/MODEL/gate001.x     # [6]ドア
-MODEL_FILENAME = data/MODEL/wall000.x     # [7]壁
-MODEL_FILENAME = data/MODEL/Aisle.x       # [8]通路
-MODEL_FILENAME = data/MODEL/Cyabudai.x    # [9]ちゃぶ台
-MODEL_FILENAME = data/MODEL/sumdorr000.x  # [10]ドア左(和)
-MODEL_FILENAME = data/MODEL/sumdorr001.x  # [11]ドア右(和)
-MODEL_FILENAME = data/MODEL/zabuton.x     # [12]座布団
-MODEL_FILENAME = data/MODEL/Irori.x       # [13]いろり
-MODEL_FILENAME = data/MODEL/kakeziku000.x # [14]掛け軸
-MODEL_FILENAME = data/MODEL/5x15x5mCube.x # [15]高いキューブ
+#==============================================================================
+MODEL_FILENAME = data\MODEL\5mCube.x
+MODEL_FILENAME = data\MODEL\5x15x5mCube.x
+MODEL_FILENAME = data\MODEL\frag_big.x
 
-
-#------------------------------------------------------------------------------
+#==============================================================================
 # カメラ情報
-#------------------------------------------------------------------------------
-CAMERASET
-	POS = -208.78 79.02 381.75			# 視点
-	REF = 53.42 -37.93 -75.02			# 注視点
-END_CAMERASET
+#==============================================================================
+#CAMERASET(エディタ未実装のため手動で入力してください)
+#	POS = 0 0 0
+#	ROT = 0 0 0
+#END_CAMERASET
 
-#------------------------------------------------------------------------------
+#==============================================================================
 # ライト情報
-#------------------------------------------------------------------------------
-LIGHTSET
-	DIRECTION = 0.22 -0.87 0.44		# 方向
-	DIFFUSE = 1.0 1.0 1.0			# 拡散光
-END_LIGHTSET
+#==============================================================================
+#LIGHTSET(エディタ未実装のため手動で入力してください)
+#	DIRECTION = 0 0 0
+#	DIFFUSE = 0 0 0
+#END_LIGHTSET
 
-LIGHTSET
-	DIRECTION = 0.80 0.23 -0.55	# 方向
-	DIFFUSE = 0.65 0.65 0.65		# 拡散光
-END_LIGHTSET
-
-LIGHTSET
-	DIRECTION = 0.89 -0.11 0.44		# 方向
-	DIFFUSE = 0.15 0.15 0.15		# 拡散光
-END_LIGHTSET
-
-#------------------------------------------------------------------------------
+#==============================================================================
 # 空情報
-#------------------------------------------------------------------------------
-SKYSET
-	TEXTYPE = 0
-	MOVE = 0.00002
-END_SKYSET
+#==============================================================================
+#SKYSET(エディタ未実装のため手動で入力してください)
+#	TEXTYPE = 0
+#	MOVE = 0
+#END_SKYSET
 
-#------------------------------------------------------------------------------
+#==============================================================================
 # 山情報
-#------------------------------------------------------------------------------
-MOUNTAINSET
-	TEXTYPE = 1
-END_MOUNTAINSET
+#==============================================================================
+#MOUNTAINSET(エディタ未実装のため手動で入力してください)
+#	TEXTYPE = 0
+#END_MOUNTAINSET
 
-# 床配置情報
-
-FIELDSET
-	TEXTYPE = 1
-	POS = -900.0 1.0 900.0
-	ROT = 0 0 0
-	BLOCK = 10 8
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = 900.0 1.0 -900.0
-	ROT = 0 0 0
-	BLOCK = 10 8
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = -900.0 1.0 -900.0
-	ROT = 0 0 0
-	BLOCK = 8 10
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = 900.0 1.0 900.0
-	ROT = 0 0 0
-	BLOCK = 8 10
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = 900.0 1.0 -2650.0
-	ROT = 0 0 0
-	BLOCK = 10 8
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = -700.0 1.0 -2650.0
-	ROT = 0 0 0
-	BLOCK = 10 8
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = 900.0 1.0 -4500.0
-	ROT = 0 0 0
-	BLOCK = 10 8
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = -700.0 1.0 -4500.0
-	ROT = 0 0 0
-	BLOCK = 10 8
-	SIZE = 100 100
-	MOVE = -0.0005 0.0
-END_FIELDSET
-
-FIELDSET
-	TEXTYPE = 1
-	POS = -2150.0 1.0 900.0
-	ROT = 0 0 0
-	BLOCK = 5 5
-	SIZE = 100 100
-	MOVE = 0.0 0.0
-END_FIELDSET
-
+#==============================================================================
+# 床情報
+#==============================================================================
 #==============================================================================
 # モデル配置
 #==============================================================================
@@ -393,7 +281,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1100 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -401,7 +289,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1000 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -409,7 +297,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 900 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -417,7 +305,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 800 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -425,7 +313,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -433,7 +321,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 600 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -441,7 +329,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1100 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -449,7 +337,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 400 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -457,7 +345,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -465,7 +353,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 200 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -473,7 +361,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 100 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -481,7 +369,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 0 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -489,7 +377,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -100 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -497,7 +385,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -200 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -505,7 +393,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -300 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -513,7 +401,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -400 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -521,7 +409,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -500 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -529,7 +417,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -537,7 +425,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -700 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -545,7 +433,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -553,7 +441,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -561,7 +449,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -569,7 +457,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -577,7 +465,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -585,7 +473,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -593,7 +481,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -601,7 +489,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -609,7 +497,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -617,7 +505,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -625,7 +513,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -633,7 +521,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -641,7 +529,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -649,7 +537,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -657,7 +545,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 0
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -665,7 +553,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -673,7 +561,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -681,7 +569,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -689,7 +577,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -697,7 +585,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -705,7 +593,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -713,7 +601,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -721,7 +609,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -729,7 +617,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -737,7 +625,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -745,7 +633,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -753,7 +641,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -761,7 +649,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -769,7 +657,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -777,7 +665,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -785,7 +673,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -793,7 +681,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -801,7 +689,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -500 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -809,7 +697,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -817,7 +705,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -825,7 +713,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -833,7 +721,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -841,7 +729,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -849,7 +737,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -857,7 +745,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -865,7 +753,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -873,7 +761,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -881,7 +769,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -889,7 +777,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -897,7 +785,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -905,7 +793,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -913,7 +801,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -921,7 +809,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -929,7 +817,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -937,7 +825,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -945,7 +833,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -953,7 +841,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -961,7 +849,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -969,7 +857,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -977,7 +865,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -3900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -985,7 +873,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -993,7 +881,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1001,7 +889,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1009,7 +897,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1017,7 +905,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1025,7 +913,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1033,7 +921,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1041,7 +929,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1100 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1049,7 +937,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1057,7 +945,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1065,7 +953,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -5000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1073,7 +961,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -5100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1081,7 +969,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1089,7 +977,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1097,7 +985,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1105,7 +993,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1113,7 +1001,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1121,7 +1009,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -700 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1129,7 +1017,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -500 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1137,7 +1025,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -400 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1145,7 +1033,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -200 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1153,7 +1041,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -300 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1161,7 +1049,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -100 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1169,7 +1057,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 0 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1177,7 +1065,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 100 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1185,7 +1073,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 200 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1193,7 +1081,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1201,7 +1089,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 400 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1209,7 +1097,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1217,7 +1105,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 600 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1225,7 +1113,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1233,7 +1121,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 800 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1241,7 +1129,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 900 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1249,7 +1137,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1000 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1257,7 +1145,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1100 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1265,7 +1153,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -5200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1273,7 +1161,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -5100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1281,7 +1169,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -5000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1289,7 +1177,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1297,7 +1185,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1305,7 +1193,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1313,7 +1201,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1321,7 +1209,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1329,7 +1217,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1337,7 +1225,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1345,7 +1233,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1353,7 +1241,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1361,7 +1249,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -4000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1369,7 +1257,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1377,7 +1265,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1385,7 +1273,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1393,7 +1281,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1401,7 +1289,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1409,7 +1297,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1417,7 +1305,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1425,7 +1313,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1433,7 +1321,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1441,7 +1329,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -3000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1449,7 +1337,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1457,7 +1345,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1465,7 +1353,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1473,7 +1361,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1481,7 +1369,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1489,7 +1377,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1497,7 +1385,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1505,7 +1393,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1513,7 +1401,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1521,7 +1409,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -2000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1529,7 +1417,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1537,7 +1425,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 0 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1545,7 +1433,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1553,7 +1441,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1561,7 +1449,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1569,7 +1457,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1577,7 +1465,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1585,7 +1473,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1593,7 +1481,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1601,7 +1489,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1609,7 +1497,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1617,7 +1505,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1625,7 +1513,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1633,7 +1521,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1641,7 +1529,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1649,7 +1537,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1657,7 +1545,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1665,7 +1553,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1673,7 +1561,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 0
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1681,7 +1569,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1689,7 +1577,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1697,7 +1585,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1705,7 +1593,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1713,7 +1601,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1721,7 +1609,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1729,7 +1617,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1737,7 +1625,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1745,7 +1633,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1753,7 +1641,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1761,7 +1649,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 1000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1769,7 +1657,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1777,7 +1665,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1785,7 +1673,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1793,7 +1681,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 1000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1801,7 +1689,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1809,7 +1697,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1817,7 +1705,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1825,7 +1713,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1833,7 +1721,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1841,7 +1729,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1849,7 +1737,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 800 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1857,7 +1745,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 900 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1865,7 +1753,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1000 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1873,7 +1761,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1881,7 +1769,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1889,7 +1777,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1100 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1897,7 +1785,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1000 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1905,7 +1793,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -1400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1913,7 +1801,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 800 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1921,7 +1809,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 900 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1929,7 +1817,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1937,7 +1825,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -1300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1985,7 +1873,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1993,7 +1881,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2001,7 +1889,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2009,7 +1897,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2017,7 +1905,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -1200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2025,7 +1913,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -1100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2033,7 +1921,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -1000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2041,7 +1929,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2049,7 +1937,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2057,7 +1945,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2065,7 +1953,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2073,7 +1961,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2081,7 +1969,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2089,7 +1977,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 0
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2097,7 +1985,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2105,7 +1993,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2113,7 +2001,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2121,7 +2009,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2129,7 +2017,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2137,7 +2025,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1200 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2145,7 +2033,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1100 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2153,7 +2041,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 1000 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2161,7 +2049,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 900 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2169,7 +2057,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 800 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2177,7 +2065,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2185,7 +2073,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 600 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2193,7 +2081,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2201,7 +2089,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 400 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2209,7 +2097,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 900 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2217,7 +2105,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 200 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2225,7 +2113,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 100 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2233,7 +2121,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2241,7 +2129,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2249,7 +2137,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2257,7 +2145,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2265,7 +2153,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2273,7 +2161,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -700 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2281,7 +2169,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2289,7 +2177,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -1800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2297,7 +2185,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -1900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2305,7 +2193,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2000
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2313,7 +2201,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2321,7 +2209,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2200
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2329,7 +2217,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2337,7 +2225,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2345,7 +2233,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2353,7 +2241,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2361,7 +2249,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 300 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2369,7 +2257,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 400 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2377,7 +2265,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2385,7 +2273,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 600 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2393,7 +2281,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2401,7 +2289,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 800 0 -2700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2441,7 +2329,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -4600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2449,7 +2337,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2457,7 +2345,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2465,7 +2353,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2473,7 +2361,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2481,7 +2369,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -700 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2489,7 +2377,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -3600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2497,7 +2385,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -3700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2505,7 +2393,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -3800
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2513,7 +2401,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -4300
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2521,7 +2409,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -4400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2529,7 +2417,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -4500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2537,7 +2425,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1200 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2545,7 +2433,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1100 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2553,7 +2441,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -1000 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2561,7 +2449,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -900 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2569,7 +2457,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -800 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2577,7 +2465,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -700 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2585,7 +2473,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -600 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2593,7 +2481,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -500 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2601,7 +2489,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -400 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2609,7 +2497,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -300 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2617,7 +2505,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -200 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2625,7 +2513,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = -100 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2633,7 +2521,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 400 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2641,7 +2529,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 500 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2649,7 +2537,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 600 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2657,7 +2545,7 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
+	TYPE = 1
 	POS = 700 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -2665,32 +2553,141 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 15
-	POS = -800 0 -600
+	TYPE = 1
+	POS = 800 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 0
-	POS = -800 200 -500
+	TYPE = 1
+	POS = 900 0 -4700
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 0
-	POS = -800 150 -500
+	TYPE = 1
+	POS = 1000 0 -4700
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+#敵移動ポイント
+#前半
+MODELSET
+	TYPE = 2
+	POS = -700 0 -950
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 0
-	POS = -800 150 -400
+	TYPE = 2
+	POS = 1000 -0 -950
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 1000 -0 40
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -700 0 40
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+#後半_共通
+MODELSET
+	TYPE = 2
+	POS = 130 1 -3460
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -450 -0 -2900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+#後半_1
+MODELSET
+	TYPE = 2
+	POS = -1000 0 -3450
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 130 0 -1950
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -1000 0 -1950
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -450 -0 -4550
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+#後半_2
+MODELSET
+	TYPE = 2
+	POS = 1050 1 -4550
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = -450 -0 -3450
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 130 1 -2900
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 2
+	POS = 1050 1 -2900
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1

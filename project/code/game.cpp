@@ -52,7 +52,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (25);				// 開始制限時間
+	const int START_TIMER = (90);				// 開始制限時間
 	const int START_WAITCNT = (180);
 }
 
@@ -152,7 +152,8 @@ HRESULT CGame::Init(void)
 		if (m_pFileLoad != NULL)
 		{
 			m_pFileLoad->Init();
-			m_pFileLoad->OpenFile("data\\TXT\\model.txt");
+			m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
+			m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
 		}
 	}
 
@@ -248,6 +249,7 @@ HRESULT CGame::Init(void)
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(480.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(-800.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 		// 落とし穴
 		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
