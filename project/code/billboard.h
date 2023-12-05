@@ -47,6 +47,7 @@ public:	// 誰でもアクセス可能
 	void SetVtx(D3DXCOLOR col);
 	void SetMtx(void);
 	void SetVtx(const int nPatternAnim, const int nTexWidth, const int nTexHeight);
+	void SetVtx(const float fTexU, const float fTexV);
 	void SetCol(const D3DXCOLOR col);
 	void SetSize(float fWidth, float fHeight);
 	float GetHeight(void) { return m_fHeight; }

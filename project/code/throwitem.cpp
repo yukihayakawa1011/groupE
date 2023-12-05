@@ -8,6 +8,7 @@
 #include "billboard.h"
 #include "manager.h"
 #include "texture.h"
+#include "number.h"
 
 // 無名名前空間
 namespace {
@@ -36,6 +37,12 @@ CThrowItem::CThrowItem()
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 		m_apObject[nCnt] = nullptr;
 	}
+
+	m_pObject = nullptr;
+
+	for (int nCnt = 0; nCnt < MAX_ITEM; nCnt++) {
+		m_pNumber[nCnt] = nullptr;
+	} 
 
 	m_nBeforeID = 0;
 	m_nNowID = 0;
@@ -85,42 +92,14 @@ CThrowItem * CThrowItem::Create(D3DXVECTOR3 * pPos, const float fUpHeight, const
 //==========================================================
 void CThrowItem::SetItem(int nThrowItemID)
 {
-	if (m_nNowID > nThrowItemID || (nThrowItemID == TYPE_MAX && m_nNowID == 0))
-	{
-		m_apObject[m_nNextID]->SetDraw(false);
-	}
-
-	if (m_nNowID < nThrowItemID)
-	{
-		m_apObject[m_nBeforeID]->SetDraw(false);
-	}
-
 	// 現在選択している番号
 	m_nNowID = nThrowItemID;
 
-	// 選択している番号の前
-	m_nBeforeID = (m_nNowID + TYPE_MAX - 1) % TYPE_MAX;;
+	if (m_pObject != nullptr)
+	{// 使用されていた場合
 
-	// 選択している番号の次
-	m_nNextID = (m_nNowID + 1) % TYPE_MAX;
-
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-		m_apObject[nCnt]->SetDraw(false);
-	}
-
-	// サイズを設定
-	{
-		if (m_apObject[m_nBeforeID] == nullptr || m_apObject[m_nNowID] == nullptr || m_apObject[m_nNextID] == nullptr) {
-			return;
-		}
-
-		m_apObject[m_nBeforeID]->SetSize(m_fPolyWidth, m_fPolyHeight);
-		m_apObject[m_nNowID]->SetSize(m_fPolyWidth, m_fPolyHeight);
-		m_apObject[m_nNextID]->SetSize(m_fPolyWidth, m_fPolyHeight);
-
-		m_apObject[m_nBeforeID]->SetDraw(true);
-		m_apObject[m_nNowID]->SetDraw(true);
-		m_apObject[m_nNextID]->SetDraw(true);
+		// テクスチャ座標設定
+		m_pObject->SetVtx(((float)(m_nNowID - 1) * 0.09f), 1.0f);
 	}
 }
 
@@ -129,17 +108,21 @@ void CThrowItem::SetItem(int nThrowItemID)
 //==========================================================
 HRESULT CThrowItem::Init(void)
 {
-	// オブジェクトの生成
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-		m_apObject[nCnt] = CObjectBillboard::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), DEF_PRI + nCnt);
-		m_apObject[nCnt]->SetDraw(false);
-		m_apObject[nCnt]->SetAlphaText(false);
-		m_apObject[nCnt]->SetLighting(true);
-		m_apObject[nCnt]->SetZTest(false);
-		m_apObject[nCnt]->SetFusion(CObjectBillboard::FUSION_NORMAL);
-		m_apObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(FILENAME[nCnt]));
-	}
+	// ビルボード生成
+	m_pObject = CObjectBillboard::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), DEF_PRI);
+	m_pObject->SetDraw();
+	m_pObject->SetAlphaText(false);
+	m_pObject->SetLighting(true);
+	m_pObject->SetZTest(false);
+	m_pObject->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\item_icon.png"));
 
+	// 数字生成
+	/*for (int nCount = 0; nCount < MAX_ITEM; nCount++)
+	{
+		m_pNumber[nCount] = CNumber::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10.0f, 20.0f);
+	}*/
+	
 	return S_OK;
 }
 
@@ -148,11 +131,25 @@ HRESULT CThrowItem::Init(void)
 //==========================================================
 void CThrowItem::Uninit(void)
 {
-	// オブジェクトの終了処理
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-		if (m_apObject[nCnt] != nullptr) {
-			m_apObject[nCnt]->Uninit();
-			m_apObject[nCnt] = nullptr;
+	if (m_pObject != nullptr) { // 使用されていた場合
+
+		// 終了処理
+		m_pObject->Uninit();
+
+		// 使用していない状態にする
+		m_pObject = nullptr;
+	}
+
+	for (int nCount = 0; nCount < MAX_ITEM; nCount++)
+	{
+		if (m_pNumber[nCount] != nullptr)
+		{// 使用されていた場合
+
+			// 終了処理
+			m_pNumber[nCount]->Uninit();
+
+			// 使用していない状態にする
+			m_pNumber[nCount] = nullptr;
 		}
 	}
 
@@ -190,14 +187,10 @@ void CThrowItem::SetPolySize(const float fWidth, const float fHeight)
 		}
 	}
 
-	// オブジェクトに適応させる
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-		if (m_apObject[nCnt] == nullptr) {	// 使用されていない
-			continue;
-		}
-
+	if (m_pObject != nullptr)
+	{
 		// 座標設定
-		m_apObject[nCnt]->SetSize(m_fPolyWidth, m_fPolyHeight);
+		m_pObject->SetSize(m_fPolyWidth, m_fPolyHeight);
 	}
 }
 
@@ -212,21 +205,9 @@ void CThrowItem::SetMixPosition(void)
 	}
 	pos.y += m_fUpHeight;	// 設定された高さを上げる
 
-	if (m_apObject[m_nBeforeID] == nullptr || m_apObject[m_nNowID] == nullptr || m_apObject[m_nNextID] == nullptr) {
-		return;
-	}
-
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-		if (m_apObject[nCnt] == nullptr) {	// 使用されていない
-			continue;
-		}
-
+	if (m_pObject != nullptr)
+	{
 		// 座標設定
-		m_apObject[nCnt]->SetPosition(D3DXVECTOR3(pos));
+		m_pObject->SetPosition(D3DXVECTOR3(pos));
 	}
-
-	// 座標設定
-	m_apObject[m_nBeforeID]->SetPosition(D3DXVECTOR3(pos.x - 50.0f, pos.y, pos.z));
-	m_apObject[m_nNowID]->SetPosition(D3DXVECTOR3(pos));
-	m_apObject[m_nNextID]->SetPosition(D3DXVECTOR3(pos.x + 50.0f, pos.y, pos.z));
 }
