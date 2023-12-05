@@ -2666,23 +2666,31 @@ END_MODELSET
 
 MODELSET
 	TYPE = 15
-	POS = 800 0 -4700
+	POS = -800 0 -600
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 15
-	POS = 900 0 -4700
+	TYPE = 0
+	POS = -800 200 -500
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 15
-	POS = 1000 0 -4700
+	TYPE = 0
+	POS = -800 150 -500
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -800 150 -400
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
