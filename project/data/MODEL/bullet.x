@@ -663,7 +663,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\3DCG\\2023_ƒ`[ƒ€§ì\\data\\TEXTURE\\bandage01.png";
+    "data\\TEXTURE\\bandage01.png";
    }
   }
  }

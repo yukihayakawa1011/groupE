@@ -23,14 +23,17 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
+#define RANKING_FILE_ONE	"data\\FILE\\rankingone.bin"	// ランキングファイル
+#define RANKING_FILE_TEAM	"data\\FILE\\rankingteam.bin"	// ランキングファイル
 #define AUTOMOVE_TITLE	(600)						// タイトル自動遷移タイマー
 
 //===============================================
 // 静的メンバ変数
 //===============================================
-CScore *CRanking::m_apScore[NUM_RANKING][NUM_RANK] = {};	// ランキングのポインタ
+CScore *CRanking::m_apScore[NUM_RANKING][NUM_RANK] = {};	// ランキングの
+CScore *CRanking::m_apNowScore[NUM_NOWSCORE] = {};	// ランキングのポインタ
 int CRanking::m_nScore = 0;					// スコア
+int CRanking::m_nTotalScore = 0;					// スコア
 
 //===============================================
 // コンストラクタ
@@ -57,6 +60,7 @@ CRanking::~CRanking()
 HRESULT CRanking::Init(void)
 {
 	int aScore[NUM_RANK] = {};	// スコア格納用
+	int aTotalScore[NUM_RANK] = {};	// スコア格納用
 	m_nRank = -1;	//ランクインしてない状態
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
@@ -91,30 +95,49 @@ HRESULT CRanking::Init(void)
 	m_pObject[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\ranking_team00.png"));
 	m_pObject[3]->SetLength(200.0f, 75.0f);
 
-	for (int nCnt = 4; nCnt < MAX_RANKING; nCnt++)
-	{
-		m_pObject[nCnt]->SetPosition(D3DXVECTOR3(100.0f + (nCnt - 4) * 600.0f, 200.0f, 0.0f));
-		m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
-		/*m_pObject[nCnt]->SetLength(250.0f, 100.0f);*/
-	}
-
-
-
+	//個人
 	// データの読み込み
-	Load(&aScore[0]);
+	Load(&aScore[0], RANKING_FILE_ONE);
 
 	// データのソート
 	Sort(&aScore[0]);
 
 	// ランクイン確認
-	RankIn(&aScore[0], m_nScore);
+	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE);
+
+	//合計
+	// データの読み込み
+	Load(&aTotalScore[0], RANKING_FILE_TEAM);
+
+	// データのソート
+	Sort(&aTotalScore[0]);
+
+	// ランクイン確認
+	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM);
+
+	//今回のスコア
+	for (int nCnt = 0; nCnt < NUM_NOWSCORE; nCnt++)
+	{
+		m_apNowScore[nCnt] = CScore::Create(D3DXVECTOR3(300.0f + nCnt * 600.0f, 200.0f, 0.0f), 15.0f, 25.0f);
+	}
+
+	m_apNowScore[0]->SetScore(m_nScore);
+	m_apNowScore[1]->SetScore(m_nTotalScore);
 
 	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
 			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
+		/*	m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
+			m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);*/
 		}
+	}
+
+	for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+	{
+		m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
+		m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
@@ -128,6 +151,7 @@ HRESULT CRanking::Init(void)
 void CRanking::Uninit(void)
 {
 	m_nScore = 0;
+	m_nTotalScore = 0;
 
 	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
@@ -175,12 +199,6 @@ void CRanking::Update(void)
 		}
 	}
 
-	
-
-	//m_nCounter++;
-	
-	if (m_nCounter % 5 == 0)
-	{
 		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		D3DXVECTOR3 pos1 = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		
@@ -192,7 +210,6 @@ void CRanking::Update(void)
 
 		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
 		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, pos1.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
-	}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
@@ -223,11 +240,11 @@ void CRanking::Draw(void)
 //===============================================
 // ランキングデータ保存
 //===============================================
-void CRanking::Save(int *pScore)
+void CRanking::Save(int *pScore, const char *pFileName)
 {
 	FILE *pFile;
 
-	pFile = fopen(RANKING_FILE, "wb");
+	pFile = fopen(pFileName, "wb");
 
 	if (pFile != NULL)
 	{//ファイルが開けた場合
@@ -243,11 +260,11 @@ void CRanking::Save(int *pScore)
 //===============================================
 // ランキングデータ読み込み
 //===============================================
-void CRanking::Load(int *pScore)
+void CRanking::Load(int *pScore, const char *pFileName)
 {
 	FILE *pFile;
 
-	pFile = fopen(RANKING_FILE, "rb");
+	pFile = fopen(pFileName, "rb");
 
 	if (pFile != NULL)
 	{//ファイルが開けた場合
@@ -263,7 +280,7 @@ void CRanking::Load(int *pScore)
 		//要素を入れておく
 		for (int nCntRanking = 0; nCntRanking < NUM_RANK; nCntRanking++)
 		{
-			pScore[nCntRanking] = 40000 - (nCntRanking * 5000);
+			pScore[nCntRanking] = 5 - (nCntRanking * 5);
 		}
 	}
 }
@@ -298,7 +315,7 @@ void CRanking::Sort(int *pScore)
 //===============================================
 // ランキングイン確認
 //===============================================
-void CRanking::RankIn(int *pScore, int nResult)
+void CRanking::RankIn(int *pScore, int nResult, const char *pFileName)
 {
 	if (nResult > pScore[NUM_RANK - 1])
 	{
@@ -308,7 +325,7 @@ void CRanking::RankIn(int *pScore, int nResult)
 		Sort(pScore);
 
 		// 保存処理
-		Save(pScore);
+		Save(pScore, pFileName);
 
 		//ランクインした順位を確認する
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)

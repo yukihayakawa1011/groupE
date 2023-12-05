@@ -92,6 +92,7 @@ void CGage::Update(void)
 		if (m_apObject[TYPE_CONTENT] == nullptr) {
 			return;
 		}
+
 		m_apObject[TYPE_CONTENT]->SetSize(m_fPolyWidth * m_fRate, m_fPolyHeight);
 	}
 }
@@ -141,25 +142,23 @@ void CGage::SetRate(const float fRate)
 		m_fRate = 1.0f;
 	}
 
-	if (m_fRate >= 1.0f)
-	{
+	if (m_fRate >= 1.0f) { // MAXの場合
 		for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 			if (m_apObject[nCnt] == nullptr) {	// 使用されていない
 				continue;
 			}
 
-			// 座標設定
+			// 描画設定(しないように)
 			m_apObject[nCnt]->SetDraw(false);
 		}
 	}
-	else
-	{
+	else {	// 少しでも減っている
 		for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 			if (m_apObject[nCnt] == nullptr) {	// 使用されていない
 				continue;
 			}
 
-			// 座標設定
+			// 描画設定(するように)
 			m_apObject[nCnt]->SetDraw();
 		}
 	}
