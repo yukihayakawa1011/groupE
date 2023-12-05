@@ -16,8 +16,8 @@ namespace {
 		"data\\TEXTURE\\item_icon1.png",
 		"data\\TEXTURE\\item_icon0.png",
 		"data\\TEXTURE\\item_icon2.png",
-		"data\\TEXTURE\\item_icon4.png",
 		"data\\TEXTURE\\item_icon3.png",
+		"data\\TEXTURE\\item_icon4.png",
 		"data\\TEXTURE\\item_icon5.png",
 		"data\\TEXTURE\\item_icon6.png",
 		"data\\TEXTURE\\item_icon8.png",
@@ -36,6 +36,10 @@ CThrowItem::CThrowItem()
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 		m_apObject[nCnt] = nullptr;
 	}
+
+	m_nBeforeID = 0;
+	m_nNowID = 0;
+	m_nNextID = 0;
 }
 
 //==========================================================
@@ -77,13 +81,58 @@ CThrowItem * CThrowItem::Create(D3DXVECTOR3 * pPos, const float fUpHeight, const
 }
 
 //==========================================================
+// どのアイテムを選択しているか
+//==========================================================
+void CThrowItem::SetItem(int nThrowItemID)
+{
+	if (m_nNowID > nThrowItemID || (nThrowItemID == TYPE_MAX && m_nNowID == 0))
+	{
+		m_apObject[m_nNextID]->SetDraw(false);
+	}
+
+	if (m_nNowID < nThrowItemID)
+	{
+		m_apObject[m_nBeforeID]->SetDraw(false);
+	}
+
+	// 現在選択している番号
+	m_nNowID = nThrowItemID;
+
+	// 選択している番号の前
+	m_nBeforeID = (m_nNowID + TYPE_MAX - 1) % TYPE_MAX;;
+
+	// 選択している番号の次
+	m_nNextID = (m_nNowID + 1) % TYPE_MAX;
+
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		m_apObject[nCnt]->SetDraw(false);
+	}
+
+	// サイズを設定
+	{
+		if (m_apObject[m_nBeforeID] == nullptr || m_apObject[m_nNowID] == nullptr || m_apObject[m_nNextID] == nullptr) {
+			return;
+		}
+
+		m_apObject[m_nBeforeID]->SetSize(m_fPolyWidth, m_fPolyHeight);
+		m_apObject[m_nNowID]->SetSize(m_fPolyWidth, m_fPolyHeight);
+		m_apObject[m_nNextID]->SetSize(m_fPolyWidth, m_fPolyHeight);
+
+		m_apObject[m_nBeforeID]->SetDraw(true);
+		m_apObject[m_nNowID]->SetDraw(true);
+		m_apObject[m_nNextID]->SetDraw(true);
+	}
+}
+
+//==========================================================
 // 初期化処理
-//==========================================================」
+//==========================================================
 HRESULT CThrowItem::Init(void)
 {
 	// オブジェクトの生成
 	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
 		m_apObject[nCnt] = CObjectBillboard::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), DEF_PRI + nCnt);
+		m_apObject[nCnt]->SetDraw(false);
 		m_apObject[nCnt]->SetAlphaText(false);
 		m_apObject[nCnt]->SetLighting(true);
 		m_apObject[nCnt]->SetZTest(false);
@@ -118,17 +167,6 @@ void CThrowItem::Update(void)
 {
 	// 座標の更新
 	SetMixPosition();
-
-	// サイズを設定
-	{
-		for (int i = 0; i < TYPE_MAX; i++)
-		{
-			if (m_apObject[i] == nullptr) {
-				return;
-			}
-			m_apObject[i]->SetSize(m_fPolyWidth, m_fPolyHeight);
-		}
-	}
 }
 
 //==========================================================
@@ -174,12 +212,21 @@ void CThrowItem::SetMixPosition(void)
 	}
 	pos.y += m_fUpHeight;	// 設定された高さを上げる
 
-	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-		if (m_apObject[nCnt] == nullptr) {	// 使用されていない
-			continue;
-		}
-
-		// 座標設定
-		m_apObject[nCnt]->SetPosition(D3DXVECTOR3(pos));
+	if (m_apObject[m_nBeforeID] == nullptr || m_apObject[m_nNowID] == nullptr || m_apObject[m_nNextID] == nullptr) {
+		return;
 	}
+
+	//for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+	//	if (m_apObject[nCnt] == nullptr) {	// 使用されていない
+	//		continue;
+	//	}
+
+	//	// 座標設定
+	//	m_apObject[nCnt]->SetPosition(D3DXVECTOR3(pos));
+	//}
+
+	// 座標設定
+	m_apObject[m_nBeforeID]->SetPosition(D3DXVECTOR3(pos.x - 50.0f, pos.y, pos.z));
+	m_apObject[m_nNowID]->SetPosition(D3DXVECTOR3(pos));
+	m_apObject[m_nNextID]->SetPosition(D3DXVECTOR3(pos.x + 50.0f, pos.y, pos.z));
 }

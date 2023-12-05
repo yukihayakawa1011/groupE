@@ -112,7 +112,6 @@ void CGimmickMultiDoor::Update(void)
 				nActive++;
 				continue;
 			}
-			break;
 		}
 	}
 

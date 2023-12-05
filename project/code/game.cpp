@@ -43,6 +43,7 @@
 #include "score.h"
 #include "gimmick_multidoor.h"
 #include "minimap.h"
+#include "gimmick_pull.h"
 
 // 無名名前空間を定義
 namespace {
@@ -51,7 +52,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (180);				// 開始制限時間
+	const int START_TIMER = (25);				// 開始制限時間
 	const int START_WAITCNT = (180);
 }
 
@@ -255,12 +256,22 @@ HRESULT CGame::Init(void)
 
 		// 協力扉
 		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		pMultiDoor->SetNumButton(2);
+		pMultiDoor->SetNumButton(4);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
+
+		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
+		pMultiDoor->BindButton(pButton);
 		
+		pMultiDoor->SetActiveButton(2);
+
+		// ツボ
+		CGimmickPull::Create(D3DXVECTOR3(-250.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+
 		// ゴール
 		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
@@ -301,7 +312,7 @@ HRESULT CGame::Init(void)
 
 	for (int nCnt = 0; nCnt < 9; nCnt++)
 	{
-		CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 0.0f, 300.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::TYPE_NORMAL);
+		CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 0.0f, 300.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_NORMAL);
 	}
 
 	//壺
@@ -397,7 +408,7 @@ HRESULT CGame::Init(void)
 	//ミニマップ生成
 	if (m_pMiniMap == nullptr)
 	{
-		m_pMiniMap = CMiniMap::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 256.0f, 144.0f, m_nNumPlayer, 10, 10);
+		m_pMiniMap = CMiniMap::Create(PlacePos::THREE_PLAYER, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 369.0f, 150.0f, m_nNumPlayer, 10, 10);
 	}
 
 	CGimmick::SwitchOn();
