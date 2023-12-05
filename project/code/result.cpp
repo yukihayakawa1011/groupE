@@ -106,6 +106,7 @@ HRESULT CResult::Init(void)
 	{
 		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(50.0f + nCount * 300.0f, 180.0f, 0.0f), 15.0f, 15.0f);
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
+
 	}
 
 	SetTopScore(m_pScore);
@@ -255,7 +256,6 @@ void CResult::Sort(int *pScore)
 			pScore[nTempNum] = nTemp;
 		}
 	}
-	
 }
 
 //===============================================
@@ -278,15 +278,17 @@ int CResult::SumScore(void)
 //===============================================
 void CResult::SetTopScore(int * pScore)
 {
-	for (int nCount = 0; nCount < MAX_RANK; nCount++)
+	int nTopScore = 0;
+
+	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
-		if(m_nTopScore < pScore[nCount])
+		if(nTopScore < pScore[nCount])
 		{
-			m_nTopScore = pScore[nCount];
+			nTopScore = pScore[nCount];
 		}
 	}
 
-	CRanking::SetScore(m_nTopScore);
+	CRanking::SetScore(nTopScore);
 }
 
 //===============================================
