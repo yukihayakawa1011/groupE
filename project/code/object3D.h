@@ -43,6 +43,7 @@ public:	// 誰でもアクセス可能
 	float GetWidth(void) { return m_fWidth; }
 	void SetMtx(void);
 	D3DXMATRIX *GetMtx(void) { return &m_mtxWorld; }
+	void SetLighting(bool bValue) { m_bLighting = bValue; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
@@ -58,6 +59,7 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_pos;		//位置
 	D3DXVECTOR3 m_rot;		//向き
 	int m_nIdxTexture;		// テクスチャ番号
+	bool m_bLighting;			// ライティング設定
 	float m_fWidth;		// 幅
 	float m_fHeight;	// 高さ
 };

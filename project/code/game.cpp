@@ -515,6 +515,13 @@ void CGame::Update(void)
 	if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
 		m_nStartCnt++;
 
+		if (m_ppCamera != nullptr) { // 使用していた場合
+			for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+			{
+				m_ppCamera[nCnt]->SetLength(m_ppCamera[nCnt]->GetLength() + 1.5f);
+			}
+		}
+
 		if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
 			CGimmick::SwitchOff();
 		}
@@ -528,7 +535,7 @@ void CGame::Update(void)
 		}
 	}
 	else
-	{
+	{	// 時間切れ
 		if (m_state != STATE_END) {	// 終了状態以外
 			if (EndCheck()) {	// 全員ゴールしている
 				CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
