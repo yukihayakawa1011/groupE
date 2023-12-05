@@ -109,6 +109,7 @@ HRESULT CItem::Init(void)
 HRESULT CItem::Init(const char *pFileName, int type)
 {
 	m_pObject = CModel::Create(pFileName);
+	m_pObject->SetRotation(m_rot);
 	m_type = type;
 
 	return S_OK;
@@ -190,7 +191,20 @@ void CItem::Update(void)
 
 		//ˆÊ’u‚ð‘ã“ü‚·‚é
 		m_pos.y = m_posOld.y + sinf(m_fCurve) * 1.5f;
-		m_rot.y += sinf(D3DX_PI * 0.02f);
+
+		if (m_pObject->GetMtxParent() == nullptr) {
+			m_rot.y += sinf(D3DX_PI * 0.02f);
+		}
+		else {
+
+			if ((m_rot.x >= D3DX_PI * 0.1f && m_rot.x <= D3DX_PI * 0.6f) || (m_rot.x <= -D3DX_PI * 0.4f && m_rot.x >= -D3DX_PI * 0.9f)) {
+				m_rot.x += sinf(D3DX_PI * 0.005f);
+			}
+			else
+			{
+				m_rot.x += sinf(D3DX_PI * 0.04f);
+			}
+		}
 
 		m_pos = pos;
 	}
