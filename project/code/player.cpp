@@ -1168,6 +1168,15 @@ void CPlayer::Damage(int nDamage)
 		}
 	}
 
+	if (m_action == ACTION_HENGE) {	// 変化だった
+		CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+		m_action = ACTION_DAMAGE;
+
+		// 煙のパーティクル生成
+		CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+		ChangeBody();
+	}
+
 	if (m_Catch.pPlayer != nullptr) {	// 他のプレイヤーを持っている
 		m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
 		m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
@@ -1352,7 +1361,8 @@ void CPlayer::MotionSet(void)
 	}
 	else if (m_action == ACTION_AIR)
 	{// 風の術
-		m_pBody->GetMotion()->Set(ACTION_ATK);
+		m_pBody->GetMotion()->Set(ACTION_HENGE);
+		m_pLeg->GetMotion()->Set(ACTION_HENGE);
 
 		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 		{
@@ -1362,6 +1372,10 @@ void CPlayer::MotionSet(void)
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
 			m_action = ACTION_NEUTRAL;
+		}
+		else
+		{
+			return;
 		}
 	}
 
