@@ -98,6 +98,7 @@ CGame::CGame()
 	m_nSledCnt = 0;
 	m_bEnd = false;
 	m_nStartCnt = 0;
+	m_bPause = false;
 }
 
 //===============================================
@@ -115,6 +116,7 @@ CGame::CGame(int nNumPlayer)
 	m_nSledCnt = 0;
 	m_bEnd = false;
 	m_nStartCnt = 0;
+	m_bPause = false;
 
 	// 人数設定
 	m_nNumPlayer = nNumPlayer;
@@ -488,6 +490,16 @@ void CGame::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
+	if (pInputKey->GetTrigger(DIK_P) == true)
+	{//ポーズキー(Pキー)が押された
+		m_bPause = m_bPause ? false : true;
+	}
+
+	if (m_bPause == true)
+	{
+		return;
+	}
+
 	// 開始タイマー
 	if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
 		m_nStartCnt++;
@@ -531,6 +543,8 @@ void CGame::Update(void)
 	{
 		CScene::Update();
 	}
+
+
 }
 
 //===============================================
