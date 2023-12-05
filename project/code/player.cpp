@@ -670,8 +670,9 @@ void CPlayer::Controller(void)
 		if (m_Catch.pGimmick->GetPull() != nullptr) 
 		{
 			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
-			{
+			{// 掴むことができるモーションタイミング
 				m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
+				m_action = ACTION_CATCH;
 			}
 			else 
 			{
@@ -846,7 +847,7 @@ void CPlayer::MoveController(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
 
-	if (m_Catch.pPlayer != nullptr) {
+	if (m_Catch.pPlayer != nullptr || m_Catch.pGimmick) {
 		fSpeed = CATCH_MOVE;
 	}
 
@@ -1278,7 +1279,7 @@ void CPlayer::MotionSet(void)
 
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
-			if (m_Catch.pPlayer == nullptr)
+			if (m_Catch.pPlayer == nullptr && m_Catch.pGimmick == nullptr)
 			{
 				m_action = ACTION_NEUTRAL;
 			}

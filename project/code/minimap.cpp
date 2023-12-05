@@ -91,6 +91,9 @@ HRESULT CMiniMap::Init(void)
 	}
 
 	//マップオブジェ生成
+	CObject2D* pObjScroll = CObject2D::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	pObjScroll->SetSize((m_fHeight * 0.8f) * 2.0f, (m_fHeight * 0.8f));
+	pObjScroll->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\scroll_minimap.png"));
 	if (m_pObjMap == nullptr)
 	{
 		m_pObjMap = CObject2DMap::Create(m_pos, D3DXVECTOR3(0.0f,0.0f,0.0f), m_fWidth * 0.5f, m_fHeight * 0.5f);
@@ -154,7 +157,6 @@ void CMiniMap::DrawTexture(void)
 	CManager* pManager = CManager::GetInstance();
 	LPDIRECT3DDEVICE9 pDevice = pManager->GetRenderer()->GetDevice();		//デバイスへのポインタ
 	CScene* pScene = pManager->GetScene();
-	CCamera* pOrgCamera = pManager->GetCamera();
 
 	//バックバッファ用
 	LPDIRECT3DSURFACE9 pOrgSurface;
@@ -169,15 +171,15 @@ void CMiniMap::DrawTexture(void)
 	//専用カメラ
 	D3DXMATRIX mtxViewCamera;	// ビューマトリックス
 	D3DXMATRIX mtxProjection;	// プロジェクションマトリックス
-	D3DXVECTOR3 posR = D3DXVECTOR3(-2500.0f, 1.0f, 1000.0f);
-	D3DXVECTOR3 posV = D3DXVECTOR3(-2500.0f, 6000.0f, 1100.0f);
+	D3DXVECTOR3 posR = D3DXVECTOR3(0.0f, 1.0f, -2000.0f);
+	D3DXVECTOR3 posV = D3DXVECTOR3(-50.0f, 3500.0f, -2000.0f);
 	D3DXVECTOR3 vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	//プロジェクションマトリの初期化
 	D3DXMatrixIdentity(&mtxProjection);
 
 	D3DXMatrixPerspectiveFovLH(&mtxProjection,
 		D3DXToRadian(45.0f),
-		(float)SCREEN_WIDTH / (float)SCREEN_HEIGHT,
+		(float)m_fWidth / (float)m_fHeight,
 		10.0f,
 		40000.0f);
 

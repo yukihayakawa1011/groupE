@@ -175,7 +175,7 @@ bool CGimmickPull::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVEC
 		
 		if (nAction == CPlayer::ACTION_CATCH) {
 			m_state = STATE_PULL;
-			SetPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+			SetPosition(D3DXVECTOR3(0.0f, 0.0f, -100.0f));
 			SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 			*ppGimmick = this;
 		}
