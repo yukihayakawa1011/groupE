@@ -26,6 +26,16 @@
 #define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
 #define AUTOMOVE_TITLE	(600)						// タイトル自動遷移タイマー
 
+
+// ファイル名
+const char *CRanking::m_apFileName[TYPE_MAX] =
+{
+	"data\\TEXTURE\\rank00.png",
+	"data\\TEXTURE\\new_record00.png",
+	"data\\TEXTURE\\ranking_one00.png",
+	"data\\TEXTURE\\ranking_team00.png",
+};
+
 //===============================================
 // 静的メンバ変数
 //===============================================
