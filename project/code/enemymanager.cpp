@@ -6,6 +6,7 @@
 //==========================================================
 #include "enemymanager.h"
 #include "enemy.h"
+#include "point.h"
 
 // マクロ定義
 #define TEMP_SPAWN_POS	D3DXVECTOR3(0.0f,0.0f,0.0f)	//仮のスポーン位置
@@ -58,7 +59,13 @@ void CEnemyManager::Update(void)
 
 		if (CEnemy::GetNum() < MAX_SPAWN_ENEMY)
 		{
-			CEnemy::Create(TEMP_SPAWN_POS, D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			int nRand = rand() % CPoint::GetNumAll();
+			CPoint* pPoint = CPoint::GetTop();
+			for (int cnt = 0; cnt < nRand; cnt++)
+			{
+				pPoint = pPoint->GetNext();
+			}
+			CEnemy::Create(pPoint->GetPoint(0), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL, nRand);
 		}
 	}
 }

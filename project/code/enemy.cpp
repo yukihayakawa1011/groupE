@@ -33,34 +33,40 @@
 #include "model.h"
 #include "object3DFan.h"
 #include "waist.h"
+#include "point.h"
+
+//無名名前空間
+namespace
+{
+	const float MOVE = 2.0f;			// 移動量
+	const float GRAVITY = -0.9f;		// 敵重力
+	const float JUMP = 25.0f;			// 敵ジャンプ力
+	const float ROT_MULTI = 0.1f;		// 向き補正倍率
+	const float INER = 0.3f;			// 慣性
+	const float BLOW_INER = 0.1f;		// 吹き飛ばし中慣性
+	const int START_LIFE = 4;			// 初期体力
+	const int DAMAGE_INTERVAL = 80;		// ダメージ付与間隔
+	const int APPEAR_INTERVAL = 120;	// 出現中になっている間隔
+	const float DEFAULT_ROTATE = 0.1f;	// プレイヤー探索中の回転量
+	const float SEARCH_LENGTH = 500.0f;	// プレイヤー探索範囲
+	const float SEARCH_RADIUS = 0.3f;	// プレイヤー探索角度
+	const float CHACE_LENGTH = 800.0f;	// 追跡範囲
+	const float ATTACK_LENGTH = 50.0f;	// 攻撃モードにする範囲
+	const int ATTACK_COOLTIME = 60;		// 攻撃クールタイム
+	const float NEXTPOINT_LENGTH = 100.0f;	//次のポイントに切り替える距離
+	const D3DXVECTOR3 ENEMY_VTX_MIN = D3DXVECTOR3(-20.0f, 0.0f, -20.0f);	// 当たり判定などのサイズ
+	const D3DXVECTOR3 ENEMY_VTX_MAX = D3DXVECTOR3(20.0f, 0.0f, 20.0f);
+	const float HIT_RANGE = 100.0f;		// 攻撃が当たる範囲
+	const int DROP_COIN = 3;			// コインのドロップ量
+	const char* BODY_FILENAME = "data\\TXT\\enemy\\motion_ninjabody.txt";	// 上半身のモーションファイルパス
+	const char* LEG_FILENAME = "data\\TXT\\enemy\\motion_ninjaleg.txt";		// 下半身のモーションファイルパス
+}
 
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(2.0f)		// 移動量
-#define ENEMY_GRAVITY	(-0.9f)		//敵重力
-#define ENEMY_JUMP		(25.0f)		//敵ジャンプ力
-#define ROT_MULTI	(0.1f)	// 向き補正倍率
-#define INER	(0.3f)		// 慣性
-#define BLOW_INER (0.1f)	// 吹き飛ばし中慣性
-#define START_LIFE	(4)	// 初期体力
-#define DAMAGE_INTERVAL	(80)
-#define APPEAR_INTERVAL	(120)
-#define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
-#define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
-#define SEARCH_RADIUS	(0.3f)
-#define CHACE_LENGTH	(800.0f)	//追跡範囲
-#define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
-#define ATTACK_COOLTIME	(60)		//攻撃クールタイム
-#define ENEMY_VTX_MIN	D3DXVECTOR3(-20.0f,0.0f,-20.0f)
-#define ENEMY_VTX_MAX	D3DXVECTOR3(20.0f,0.0f,20.0f)
-#define HIT_RANGE	(100.0f)
-#define DROP_COIN	(3)
-
 #define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//角度を-PI~PIに修正
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
-#define BODY_FILENAME	"data\\TXT\\enemy\\motion_ninjabody.txt"
-#define LEG_FILENAME	"data\\TXT\\enemy\\motion_ninjaleg.txt"
 
 // 前方宣言
 CEnemy *CEnemy::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -88,6 +94,8 @@ CEnemy::CEnemy()
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
 	m_pChase = nullptr;
+	m_nPointID = -1;
+	m_nPointNum = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != nullptr)
@@ -333,35 +341,36 @@ void CEnemy::Update(void)
 //===============================================
 // 生成
 //===============================================
-CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName)
+CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName, const int nPointID)
 {
-	CEnemy *pPlayer = nullptr;
+	CEnemy *pEnemy = nullptr;
 
 	// 敵の生成
-	pPlayer = new CEnemy();
+	pEnemy = new CEnemy();
 
-	if (nullptr != pPlayer)
+	if (nullptr != pEnemy)
 	{// 生成できた場合
 		// 初期化処理
-		pPlayer->Init(pBodyName, pLegName);
+		pEnemy->Init(pBodyName, pLegName);
+		pEnemy->m_nPointID = nPointID;
 
 		// 座標設定
-		pPlayer->SetPosition(pos);
+		pEnemy->SetPosition(pos);
 
 		// 向き設定
-		pPlayer->SetRotation(rot);
+		pEnemy->SetRotation(rot);
 
-		pPlayer->m_fRotDest = rot.y;
+		pEnemy->m_fRotDest = rot.y;
 
 		// 移動量設定
-		pPlayer->SetMove(move);
+		pEnemy->SetMove(move);
 	}
 	else
 	{// 生成に失敗した場合
 		return nullptr;
 	}
 
-	return pPlayer;
+	return pEnemy;
 }
 
 //===============================================
@@ -398,7 +407,7 @@ void CEnemy::Controller(void)
 
 		pos = GetPosition();	// 座標を取得
 
-		float fGravity = ENEMY_GRAVITY * CManager::GetInstance()->GetSlow()->Get();
+		float fGravity = GRAVITY * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y += fGravity;
 		pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
@@ -442,7 +451,7 @@ void CEnemy::Controller(void)
 
 			if (pPlayerNear != nullptr && CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
 			{
-				m_Info.move.y = ENEMY_JUMP;
+				m_Info.move.y = JUMP;
 				m_bJump = true;
 			}
 		}
@@ -471,6 +480,31 @@ void CEnemy::Rotation(void)
 }
 
 //===============================================
+// ポイント移動
+//===============================================
+void CEnemy::Trace(void)
+{
+	CPoint* pPoint = CPoint::GetTop();
+	D3DXVECTOR3 posPoint;
+
+	//ポイント位置取得
+	for (int cnt = 0; cnt < m_nPointID; cnt++)
+	{
+		pPoint = pPoint->GetNext();
+	}
+	posPoint = pPoint->GetPoint(m_nPointNum);
+
+	//角度調整
+	m_fRotDest = FIX_ROT(atan2f(posPoint.x - m_Info.pos.x, posPoint.z - m_Info.pos.z) + D3DX_PI);
+
+	//近くなったら次のポイント
+	if (D3DXVec3Length(&(posPoint - m_Info.pos)) < NEXTPOINT_LENGTH)
+	{
+		m_nPointNum = (m_nPointNum + 1) % pPoint->GetRegistPointNum();
+	}
+}
+
+//===============================================
 // 探索
 //===============================================
 void CEnemy::Search(void)
@@ -488,8 +522,15 @@ void CEnemy::Search(void)
 		}
 	}
 	else
-	{//適当にぐるぐる
-		Rotation();	// 回転
+	{
+		if (m_nPointID != -1)
+		{//移動パターンあり
+			Trace();
+		}
+		else
+		{//適当にぐるぐる
+			Rotation();	// 回転
+		}
 	}
 }
 

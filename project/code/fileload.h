@@ -64,6 +64,7 @@ private:	// 自分だけがアクセス可能
 	void LoadVtxMaxData(FILE *pFile, int nIdx);
 	void LoadVtxMinData(FILE *pFile, int nIdx);
 	void LoadGimmickData(FILE *pFile, int nIdx);
+	void LoadPointData(FILE *pFile);
 
 	// メンバ変数
 	File *m_pModelFile;	// モデルファイル情報
