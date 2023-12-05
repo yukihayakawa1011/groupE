@@ -169,34 +169,32 @@ void CMiniMap::DrawTexture(void)
 	int nHeight = static_cast<int>(m_fHeight);
 
 	//専用カメラ
-	D3DXMATRIX mtxViewCamera;	// ビューマトリックス
-	D3DXMATRIX mtxProjection;	// プロジェクションマトリックス
 	D3DXVECTOR3 posR = D3DXVECTOR3(0.0f, 1.0f, -2000.0f);
 	D3DXVECTOR3 posV = D3DXVECTOR3(-50.0f, 3500.0f, -2000.0f);
 	D3DXVECTOR3 vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	//プロジェクションマトリの初期化
-	D3DXMatrixIdentity(&mtxProjection);
+	D3DXMatrixIdentity(&m_mtxProj);
 
-	D3DXMatrixPerspectiveFovLH(&mtxProjection,
+	D3DXMatrixPerspectiveFovLH(&m_mtxProj,
 		D3DXToRadian(45.0f),
 		(float)m_fWidth / (float)m_fHeight,
 		10.0f,
 		40000.0f);
 
 	//プロジェクションマトリックスの設定
-	pDevice->SetTransform(D3DTS_PROJECTION, &mtxProjection);
+	pDevice->SetTransform(D3DTS_PROJECTION, &m_mtxProj);
 
 	//ビューマトリの初期化
-	D3DXMatrixIdentity(&mtxViewCamera);
+	D3DXMatrixIdentity(&m_mtxView);
 
 	//ビューマトリの作成
-	D3DXMatrixLookAtLH(&mtxViewCamera,
+	D3DXMatrixLookAtLH(&m_mtxView,
 		&posV,
 		&posR,
 		&vecU);
 
 	//ビューマトリの設定
-	pDevice->SetTransform(D3DTS_VIEW, &mtxViewCamera);
+	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
 
 	//テクスチャ
 	//作成テクスチャ用インターフェース取得
@@ -234,18 +232,40 @@ void CMiniMap::DrawTexture(void)
 	pDevice->SetRenderTarget(0, pOrgSurface);
 	pDevice->SetDepthStencilSurface(pOrgZBuffer);
 
-	//探索済みエリアの透明化（テクスチャが）
-	//必要な変数
-	D3DXMATRIX mtxViewPort, mtxProj, mtxView, mtx;
+	
 
+	pOrgSurface->Release();
+	pOrgZBuffer->Release();
+	pTexSurface->Release();
+}
+
+//===============================================
+// 探索済みの場所のまっくろくろすけを消してプレイヤーを表示
+//===============================================
+void CMiniMap::ExploredMap(void)
+{
+	//デバイス
+	CManager* pManager = CManager::GetInstance();
+	LPDIRECT3DDEVICE9 pDevice = pManager->GetRenderer()->GetDevice();		//デバイスへのポインタ
+	CScene* pScene = pManager->GetScene();
+	D3DXMATRIX mtxViewPort, mtx;
+
+	//int型サイズ
+	int nWidth = static_cast<int>(m_fWidth);
+	int nHeight = static_cast<int>(m_fHeight);
+
+	//プロジェクションマトリの初期化
+	D3DXMatrixIdentity(&m_mtxProj);
+
+	D3DXMatrixPerspectiveFovLH(&m_mtxProj,
+		D3DXToRadian(45.0f),
+		(float)m_fWidth / (float)m_fHeight,
+		10.0f,
+		40000.0f);
+
+	//探索済みエリアの透明化（テクスチャが）
 	//必要なマトリ計算
 	{
-		//ビューマトリ取得
-		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
-
-		//プロジェクションマトリ取得
-		pDevice->GetTransform(D3DTS_PROJECTION, &mtxProj);
-
 		//ビューポートマトリ設定
 		D3DXMatrixIdentity(&mtxViewPort);
 		mtxViewPort._11 = m_fWidth * 0.5f;
@@ -254,9 +274,9 @@ void CMiniMap::DrawTexture(void)
 		mtxViewPort._42 = m_fHeight * 0.5f;
 
 		//全部掛ける
-		mtx = mtxView * mtxProj * mtxViewPort;	//内部でD3DXMatrixMultiplyやってるみたい
+		mtx = m_mtxView * m_mtxProj * mtxViewPort;	//内部でD3DXMatrixMultiplyやってるみたい
 	}
-	
+
 	//プレイヤーすべて見る
 	int nPlaceIcon = 0;
 	CPlayer* pPlayer = CPlayer::GetTop();
@@ -318,10 +338,6 @@ void CMiniMap::DrawTexture(void)
 		}
 	}
 	m_pTextureUnex->UnlockRect(0);
-
-	pOrgSurface->Release();
-	pOrgZBuffer->Release();
-	pTexSurface->Release();
 }
 
 //===============================================
@@ -438,8 +454,7 @@ void CMiniMap::Reset(void)
 //===============================================
 // 生成処理
 //===============================================
-CMiniMap* CMiniMap::Create(const D3DXVECTOR3 posMap, const D3DXVECTOR3 rotMap, const float width, const float height, const int playerNum,
-	const int elaseWidth, const int elaseHeight)
+CMiniMap* CMiniMap::Create(const int playerNum, const int elaseWidth, const int elaseHeight)
 {
 	CMiniMap* pMiniMap = nullptr;
 
@@ -447,11 +462,11 @@ CMiniMap* CMiniMap::Create(const D3DXVECTOR3 posMap, const D3DXVECTOR3 rotMap, c
 	{//ちゃんとぬるぽだから生成
 		pMiniMap = new CMiniMap;
 		pMiniMap->m_nPlayerNum = playerNum;
-		pMiniMap->m_fWidth = width;
-		pMiniMap->m_fHeight = height;
+		pMiniMap->m_fWidth = PlacePos::NUM_PLACE_DATA[playerNum - 1].fWidth;
+		pMiniMap->m_fHeight = PlacePos::NUM_PLACE_DATA[playerNum - 1].fHeight;
 		pMiniMap->m_nElaseWidth = elaseWidth;
 		pMiniMap->m_nElaseHeight = elaseHeight;
-		pMiniMap->m_pos = posMap;
+		pMiniMap->m_pos = PlacePos::NUM_PLACE_DATA[playerNum - 1].pos;
 		pMiniMap->Init();
 	}
 
