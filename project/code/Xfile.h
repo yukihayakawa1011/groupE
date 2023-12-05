@@ -37,8 +37,8 @@ private:	// 自分だけがアクセス可能な定義
 	// ファイル読み込み情報
 	struct FileInfo
 	{
-		FileData filedata;			// ファイル情報
 		char aFileName[MAX_NAME];	// ファイル名
+		FileData filedata;			// ファイル情報
 	};
 
 public:	// 誰でもアクセス可能
