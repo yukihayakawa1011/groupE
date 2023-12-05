@@ -22,6 +22,7 @@
 #include "camera.h"
 #include "score.h"
 #include "player.h"
+#include "ranking.h"
 #include "object_manager.h"
 
 // ƒ}ƒNƒ’è‹`
@@ -107,6 +108,8 @@ HRESULT CResult::Init(void)
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
 	}
 
+	SetTopScore(m_pScore);
+
 	if (m_pRank == nullptr && m_nNumPlayer > 0) {
 		m_pRank = new int[m_nNumPlayer];
 	}
@@ -128,6 +131,7 @@ HRESULT CResult::Init(void)
 
 	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 15.0f, 15.0f);
 	m_pTotalScore->SetScore(nTotalScore);
+	CRanking::SetTotalScore(nTotalScore);
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
@@ -251,6 +255,7 @@ void CResult::Sort(int *pScore)
 			pScore[nTempNum] = nTemp;
 		}
 	}
+	
 }
 
 //===============================================
@@ -277,9 +282,11 @@ void CResult::SetTopScore(int * pScore)
 	{
 		if(m_nTopScore < pScore[nCount])
 		{
-			m_nTopScore = nCount;
+			m_nTopScore = pScore[nCount];
 		}
 	}
+
+	CRanking::SetScore(m_nTopScore);
 }
 
 //===============================================

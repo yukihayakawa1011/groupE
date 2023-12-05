@@ -216,14 +216,14 @@ void CThrowItem::SetMixPosition(void)
 		return;
 	}
 
-	//for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
-	//	if (m_apObject[nCnt] == nullptr) {	// 使用されていない
-	//		continue;
-	//	}
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) {
+		if (m_apObject[nCnt] == nullptr) {	// 使用されていない
+			continue;
+		}
 
-	//	// 座標設定
-	//	m_apObject[nCnt]->SetPosition(D3DXVECTOR3(pos));
-	//}
+		// 座標設定
+		m_apObject[nCnt]->SetPosition(D3DXVECTOR3(pos));
+	}
 
 	// 座標設定
 	m_apObject[m_nBeforeID]->SetPosition(D3DXVECTOR3(pos.x - 50.0f, pos.y, pos.z));

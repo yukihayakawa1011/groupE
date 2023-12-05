@@ -408,7 +408,8 @@ HRESULT CGame::Init(void)
 	//ミニマップ生成
 	if (m_pMiniMap == nullptr)
 	{
-		m_pMiniMap = CMiniMap::Create(PlacePos::THREE_PLAYER, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 369.0f, 150.0f, m_nNumPlayer, 10, 10);
+		m_pMiniMap = CMiniMap::Create(m_nNumPlayer, 10, 10);	//生成
+		m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
 	}
 
 	CGimmick::SwitchOn();
@@ -570,8 +571,7 @@ void CGame::Update(void)
 //===============================================
 void CGame::Draw(void)
 {
-	//ミニマップテクスチャの描画
-	m_pMiniMap->DrawTexture();
+	m_pMiniMap->ExploredMap();
 
 	CScene::Draw();
 }
