@@ -1168,6 +1168,15 @@ void CPlayer::Damage(int nDamage)
 		}
 	}
 
+	if (m_action == ACTION_HENGE) {	// 変化だった
+		CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+		m_action = ACTION_DAMAGE;
+
+		// 煙のパーティクル生成
+		CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+		ChangeBody();
+	}
+
 	if (m_Catch.pPlayer != nullptr) {	// 他のプレイヤーを持っている
 		m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
 		m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
