@@ -464,14 +464,16 @@ void CPlayer::Update(void)
 	}
 	else
 	{// 操作キャラではない
-		float fIner = INER;
-		D3DXVECTOR3 pos = GetPosition();	// 座標を取得
-		m_bMove = true;
-		m_Info.move.x = 10.0f;
+		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME) {
+			float fIner = INER;
+			D3DXVECTOR3 pos = GetPosition();	// 座標を取得
+			m_bMove = true;
+			m_Info.move.x = 10.0f;
 
-		MotionSet();	// モーション設定
-		pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.pos = pos;
+			MotionSet();	// モーション設定
+			pos.x += m_Info.move.x * CManager::GetInstance()->GetSlow()->Get();
+			m_Info.pos = pos;
+		}
 	}
 
 	// カメラ追従

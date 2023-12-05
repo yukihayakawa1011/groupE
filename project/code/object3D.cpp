@@ -24,6 +24,7 @@
 CObject3D::CObject3D(int nPriority) : CObject(nPriority)
 {
 	m_nIdxTexture = -1;
+	m_bLighting = false;
 
 	//各種変数の初期化
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -181,12 +182,22 @@ void CObject3D::Draw(void)
 	//テクスチャの設定
 	pDevice->SetTexture(0, pTexture->SetAddress(m_nIdxTexture));
 
+	if (m_bLighting) {
+		//ライティングをオンにする
+		pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
+	}
+
 	//ポリゴンの描画
 	pDevice->DrawPrimitive(
 		D3DPT_TRIANGLESTRIP,	//プリミティブの種類
 		0,
 		2	//頂点情報構造体のサイズ
 		);
+
+	if (m_bLighting) {
+		//ライティングをオンにする
+		pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
+	}
 }
 
 //==========================================================
@@ -310,6 +321,8 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 		m_fHeight += fDestHeight;
 
 		SetSize(m_fWidth, m_fHeight);
+
+		SetLighting(true);
 	}
 	else
 	{
@@ -324,6 +337,8 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 		m_fHeight += fDestHeight;
 
 		SetSize(m_fWidth, m_fHeight);
+
+		SetLighting(false);
 	}
 }
 

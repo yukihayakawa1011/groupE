@@ -63,6 +63,7 @@ public:	// 誰でもアクセス可能
 	CCamera *GetNext(void) { return m_pNext; }
 	CCamera *GetPrev(void) { return m_pPrev; }
 	bool GetDraw(void) const { return m_bDraw; }
+	float GetLength(void) { return m_fLength; }
 
 	// メンバ関数(設定)
 	D3DXMATRIX SetMtxView(D3DXMATRIX mtxView) { m_mtxView = mtxView; }

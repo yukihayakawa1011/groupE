@@ -70,6 +70,11 @@ HRESULT CGoal::Init(void)
 //==========================================================
 void CGoal::Uninit(void)
 {
+	if (m_pObject != nullptr) {
+		m_pObject->Uninit();
+		m_pObject = nullptr;
+	}
+
 	// ƒŠƒXƒg‚©‚çíœ
 	ListOut();
 
