@@ -119,8 +119,6 @@ HRESULT CItem::Init(const char *pFileName, int type)
 //==========================================================
 void CItem::Uninit(void)
 {
-	Release();
-
 	// リストから自分自身を削除する
 	if (m_pTop == this)
 	{// 自身が先頭
@@ -164,6 +162,8 @@ void CItem::Uninit(void)
 		m_pObject->Uninit();
 		m_pObject = NULL;
 	}
+
+	Release();
 }
 
 //==========================================================

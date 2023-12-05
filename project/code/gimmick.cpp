@@ -56,7 +56,6 @@ CGimmick::~CGimmick()
 //==========================================================
 void CGimmick::SetMtxWorld(void)
 {
-	LPDIRECT3DDEVICE9 pDevice = CManager::GetInstance()->GetRenderer()->GetDevice();	//デバイスへのポインタを取得
 	D3DXMATRIX mtxRot, mtxTrans;	//計算用マトリックス
 	D3DXMATRIX mtxParent;			// 親のマトリックス情報
 
@@ -70,9 +69,6 @@ void CGimmick::SetMtxWorld(void)
 	// 位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
-
-	// ワールドマトリックスの設定
-	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);
 }
 
 //==========================================================

@@ -102,6 +102,11 @@ void CItemBox::Uninit(void)
 		}
 	}
 
+	if (m_pObj != nullptr) {
+		m_pObj->Uninit();
+		m_pObj = nullptr;
+	}
+
 	ListOut();
 
 	Release();
