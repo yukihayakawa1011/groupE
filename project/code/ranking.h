@@ -33,10 +33,8 @@ public:
 
 	enum TYPE
 	{
-		TYPE_RANK = 0,	// 順位
-		TYPE_NEW,		// 新記録
-		TYPE_ONE,		// 個人
-		TYPE_TEAM,		// チーム
+		TYPE_ONE = 0,	// 順位
+		TYPE_TEAM,		// 新記録
 		TYPE_MAX
 	};
 
@@ -56,10 +54,10 @@ public:
 private:
 
 	// メンバ関数
-	void Save(int *pScore);
-	void Load(int *pScore);
+	void Save(int *pScore, const char *pFileName);
+	void Load(int *pScore, const char *pFileName);
 	void Sort(int *pScore);
-	void RankIn(int *pScore, int nResult);
+	void RankIn(int *pScore, int nResult, const char *pFileName);
 
 	// メンバ変数
 	CFileLoad *m_pFileLoad;	// ファイル読み込みのポインタ
