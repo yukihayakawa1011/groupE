@@ -23,7 +23,8 @@
 //===============================================
 // マクロ定義
 //===============================================
-#define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
+#define RANKING_FILE_ONE	"data\\FILE\\rankingone.bin"	// ランキングファイル
+#define RANKING_FILE_TEAM	"data\\FILE\\rankingteam.bin"	// ランキングファイル
 #define AUTOMOVE_TITLE	(600)						// タイトル自動遷移タイマー
 
 //===============================================
@@ -96,24 +97,25 @@ HRESULT CRanking::Init(void)
 
 	//個人
 	// データの読み込み
-	Load(&aScore[0]);
+	Load(&aScore[0], RANKING_FILE_ONE);
 
 	// データのソート
 	Sort(&aScore[0]);
 
 	// ランクイン確認
-	RankIn(&aScore[0], m_nScore);
+	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE);
 
 	//合計
 	// データの読み込み
-	Load(&aTotalScore[0]);
+	Load(&aTotalScore[0], RANKING_FILE_TEAM);
 
 	// データのソート
 	Sort(&aTotalScore[0]);
 
 	// ランクイン確認
-	RankIn(&aTotalScore[0], m_nTotalScore);
+	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM);
 
+	//今回のスコア
 	for (int nCnt = 0; nCnt < NUM_NOWSCORE; nCnt++)
 	{
 		m_apNowScore[nCnt] = CScore::Create(D3DXVECTOR3(300.0f + nCnt * 600.0f, 200.0f, 0.0f), 15.0f, 25.0f);
@@ -127,7 +129,15 @@ HRESULT CRanking::Init(void)
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
 			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
+		/*	m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
+			m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);*/
 		}
+	}
+
+	for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+	{
+		m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
+		m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
@@ -230,11 +240,11 @@ void CRanking::Draw(void)
 //===============================================
 // ランキングデータ保存
 //===============================================
-void CRanking::Save(int *pScore)
+void CRanking::Save(int *pScore, const char *pFileName)
 {
 	FILE *pFile;
 
-	pFile = fopen(RANKING_FILE, "wb");
+	pFile = fopen(pFileName, "wb");
 
 	if (pFile != NULL)
 	{//ファイルが開けた場合
@@ -250,11 +260,11 @@ void CRanking::Save(int *pScore)
 //===============================================
 // ランキングデータ読み込み
 //===============================================
-void CRanking::Load(int *pScore)
+void CRanking::Load(int *pScore, const char *pFileName)
 {
 	FILE *pFile;
 
-	pFile = fopen(RANKING_FILE, "rb");
+	pFile = fopen(pFileName, "rb");
 
 	if (pFile != NULL)
 	{//ファイルが開けた場合
@@ -270,7 +280,7 @@ void CRanking::Load(int *pScore)
 		//要素を入れておく
 		for (int nCntRanking = 0; nCntRanking < NUM_RANK; nCntRanking++)
 		{
-			pScore[nCntRanking] = 40000 - (nCntRanking * 5000);
+			pScore[nCntRanking] = 5 - (nCntRanking * 5);
 		}
 	}
 }
@@ -305,7 +315,7 @@ void CRanking::Sort(int *pScore)
 //===============================================
 // ランキングイン確認
 //===============================================
-void CRanking::RankIn(int *pScore, int nResult)
+void CRanking::RankIn(int *pScore, int nResult, const char *pFileName)
 {
 	if (nResult > pScore[NUM_RANK - 1])
 	{
@@ -315,7 +325,7 @@ void CRanking::RankIn(int *pScore, int nResult)
 		Sort(pScore);
 
 		// 保存処理
-		Save(pScore);
+		Save(pScore, pFileName);
 
 		//ランクインした順位を確認する
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)

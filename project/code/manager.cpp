@@ -574,7 +574,7 @@ void CManager::DataReset(void)
 	CTaskManager::GetInstance()->Init();
 
 	// オブジェクトマネージャーの初期化
-	CObjectManager::GetInstance()->Uninit();
+	CObjectManager::GetInstance()->Init();
 }
 
 //===================================================
