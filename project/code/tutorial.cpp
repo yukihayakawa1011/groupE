@@ -343,6 +343,8 @@ void CTutorial::Update(void)
 
 		// ƒQ[ƒ€‚É‘JˆÚ
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
+		CGame::SetNumPlayer(CPlayer::GetNum());
+
 	}
 
 	// XVˆ—
