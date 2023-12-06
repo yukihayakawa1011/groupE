@@ -102,6 +102,7 @@ void CPoint::Uninit(void)
 		delete[] m_pPosPoint;
 		m_pPosPoint = nullptr;
 	}
+	m_nNumAll--;
 
 	Release();
 }

@@ -9,8 +9,12 @@
 
 #include "task.h"	// これでファイルインクルードできます
 
+// マクロ定義
+#define MAX_ITEM (2)  // 表示する桁
+
 // 前方宣言
 class CObjectBillboard;
+class CNumber;
 class CPlayer;
 
 //==========================================================
@@ -23,17 +27,9 @@ public:
 	// 種類列挙型
 	enum TYPE
 	{
-		TYPE_COIN = 0,		// ただのコイン
-		TYPE_BRECETET,		// つけると被れるブレスレット
-		TYPE_CUP,           // 聖杯
-		TYPE_EMERALD,       // エメラルドスプラッシュ
-		TYPE_DIAMOND,       // クレイジーダイアモンド
-		TYPE_GOLD,          // 思ったより軽い金塊
-		TYPE_JAR,           // 高そうな壺
-		TYPE_KUNAI,         // 金色の高そうなクナイ
-		TYPE_RING,          // いい感じの腕輪
-		TYPE_SCROLL,        // 秘伝の術が記された巻物
-		TYPE_SHURIKEN,      // 伝説の忍者が使っていた手裏剣
+		TYPE_ARROW = 0,         // 矢印
+		TYPE_ITEM,  // アイテムのアイコン
+		TYPE_FRAME,         // 枠
 		TYPE_MAX
 	};
 
@@ -70,6 +66,8 @@ private:	// 自分だけがアクセス可能
 	float m_fPolyHeight;	// オブジェクトの高さ
 	float m_fRate;		    // 割合
 	CObjectBillboard *m_apObject[TYPE_MAX];	// オブジェクトの配列
+	CObjectBillboard *m_pObject;            // ビルボードへのポインタ
+	CNumber *m_pNumber[MAX_ITEM];           // ナンバーへのポインタ
 };
 
 #endif
