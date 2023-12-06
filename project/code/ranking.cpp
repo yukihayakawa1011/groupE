@@ -21,6 +21,7 @@
 #include "object2D.h"
 #include "meshdome.h"
 #include "camera.h"
+#include "fileload.h"
 
 //===============================================
 // マクロ定義
@@ -69,6 +70,17 @@ HRESULT CRanking::Init(void)
 	int aTotalScore[NUM_RANK] = {};	// スコア格納用
 	m_nRank = -1;	//ランクインしてない状態
 
+	// 外部ファイル読み込みの生成
+	if (nullptr == m_pFileLoad)
+	{// 使用していない場合
+		m_pFileLoad = new CFileLoad;
+
+		if (m_pFileLoad != NULL)
+		{
+			m_pFileLoad->Init();
+			m_pFileLoad->OpenFile("data\\TXT\\ranking.txt");			//モデル類
+		}
+	}
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
 
