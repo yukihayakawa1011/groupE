@@ -437,6 +437,13 @@ void CObjectBillboard::SetVtx(const float fTexU, const float fTexV)
 		0
 	);
 
+	float ftexU = 0.3f + fTexU;
+
+	if (ftexU > 1.0f)
+	{
+		ftexU = 1.0f;
+	}
+
 	// テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(fTexU, 0.0f);
 	pVtx[1].tex = D3DXVECTOR2(0.3f + fTexU, 0.0f);
