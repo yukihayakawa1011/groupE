@@ -46,6 +46,8 @@ CRanking::CRanking()
 	m_nCounter = 0;
 	m_bOne = false;
 	m_bTotal = false;
+	m_nOne = -1;
+	m_nTotal = -1;
 }
 
 //===============================================
@@ -150,6 +152,12 @@ HRESULT CRanking::Init(void)
 	{
 		m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
 		m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);
+	}
+
+	if (m_nRank != -1)
+	{
+		m_apScore[0][m_nOne]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		m_apScore[1][m_nTotal]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
 	}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
@@ -346,15 +354,26 @@ void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, int nNew)
 			{
 				m_nRank = nCntRank;	// ƒ‰ƒ“ƒNƒCƒ“‚µ‚½‡ˆÊ‚ğ•Û‘¶		
 
-				if (m_nRank == 0)
+				if (nNew == 0)
 				{
-					if (nNew == 0)
+					if (m_nRank == 0)
 					{
 						m_bOne = true;
 					}
-					else if (nNew == 1)
+					if (m_nRank != -1)
+					{
+						m_nOne = m_nRank;
+					}
+				}
+				else if (nNew == 1)
+				{
+					if (m_nRank == 0)
 					{
 						m_bTotal = true;
+					}
+					if (m_nRank != -1)
+					{
+						m_nTotal = m_nRank;
 					}
 
 				}
