@@ -34,6 +34,7 @@
 #include "object3DFan.h"
 #include "waist.h"
 #include "point.h"
+#include "particle.h"
 
 //無名名前空間
 namespace
@@ -141,6 +142,10 @@ HRESULT CEnemy::Init(void)
 	m_Info.state = STATE_APPEAR;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
+
+	// 煙のパーティクル生成
+	CModel *pModel = m_pLeg->GetParts(0);
+	CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
 
 	return S_OK;
 }
@@ -364,6 +369,9 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const
 
 		// 移動量設定
 		pEnemy->SetMove(move);
+
+		//煙出す
+		CParticle::Create(pos, CEffect::TYPE_SMAKE);
 	}
 	else
 	{// 生成に失敗した場合
