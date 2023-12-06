@@ -34,6 +34,7 @@
 #include "object3DFan.h"
 #include "waist.h"
 #include "point.h"
+#include "particle.h"
 
 //無名名前空間
 namespace
@@ -141,6 +142,10 @@ HRESULT CEnemy::Init(void)
 	m_Info.state = STATE_APPEAR;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
+
+	// 煙のパーティクル生成
+	CModel *pModel = m_pLeg->GetParts(0);
+	CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
 
 	return S_OK;
 }
@@ -364,6 +369,9 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const
 
 		// 移動量設定
 		pEnemy->SetMove(move);
+
+		//煙出す
+		CParticle::Create(pos, CEffect::TYPE_SMAKE);
 	}
 	else
 	{// 生成に失敗した場合
@@ -492,15 +500,22 @@ void CEnemy::Trace(void)
 	{
 		pPoint = pPoint->GetNext();
 	}
-	posPoint = pPoint->GetPoint(m_nPointNum);
-
-	//角度調整
-	m_fRotDest = FIX_ROT(atan2f(posPoint.x - m_Info.pos.x, posPoint.z - m_Info.pos.z) + D3DX_PI);
-
-	//近くなったら次のポイント
-	if (D3DXVec3Length(&(posPoint - m_Info.pos)) < NEXTPOINT_LENGTH)
+	if (pPoint != nullptr)
 	{
-		m_nPointNum = (m_nPointNum + 1) % pPoint->GetRegistPointNum();
+		posPoint = pPoint->GetPoint(m_nPointNum);
+
+		//角度調整
+		m_fRotDest = FIX_ROT(atan2f(posPoint.x - m_Info.pos.x, posPoint.z - m_Info.pos.z) + D3DX_PI);
+
+		//近くなったら次のポイント
+		if (D3DXVec3Length(&(posPoint - m_Info.pos)) < NEXTPOINT_LENGTH)
+		{
+			m_nPointNum = (m_nPointNum + 1) % pPoint->GetRegistPointNum();
+		}
+	}
+	else
+	{//一応ぬるぽの時はぐるぐるするようにする
+		m_nPointID = -1;
 	}
 }
 
@@ -539,6 +554,8 @@ void CEnemy::Search(void)
 //===============================================
 void CEnemy::Chace(void)
 {
+	CPoint* pPoint = CPoint::GetTop();
+	int nPointNear = -1;
 	float fLengthNear = FLT_MAX;
 	CPlayer* pPlayerNear = SearchNearPlayer(SEARCH_RADIUS, &fLengthNear);
 
@@ -562,9 +579,38 @@ void CEnemy::Chace(void)
 	}
 	else
 	{
+		//探索状態にする
 		m_bChace = false;
 		m_pFov->SetLength(SEARCH_LENGTH);
 		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.4f));
+
+		//一番近いポイントに移動するようにする
+		//ポイント取得
+		for (int cnt = 0; cnt < m_nPointID; cnt++)
+		{
+			pPoint = pPoint->GetNext();
+		}
+		if (pPoint != nullptr)
+		{
+			//近いの探索
+			fLengthNear = FLT_MAX;
+			for (int cnt = 0; cnt < pPoint->GetRegistPointNum(); cnt++)
+			{
+				D3DXVECTOR3 posPoint = pPoint->GetPoint(cnt);
+				float fLength = D3DXVec3Length(&(posPoint - m_Info.pos));
+				if (fLengthNear > fLength)
+				{
+					fLengthNear = fLength;
+					nPointNear = cnt;
+				}
+			}
+			//次の移動先を設定
+			m_nPointNum = nPointNear;
+		}
+		else
+		{//一応ぬるぽの時はぐるぐるするようにする
+			m_nPointID = -1;
+		}
 	}
 }
 

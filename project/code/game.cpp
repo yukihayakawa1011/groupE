@@ -44,6 +44,7 @@
 #include "gimmick_multidoor.h"
 #include "minimap.h"
 #include "gimmick_pull.h"
+#include "pause.h"
 
 // 無名名前空間を定義
 namespace {
@@ -100,6 +101,7 @@ CGame::CGame()
 	m_bEnd = false;
 	m_nStartCnt = 0;
 	m_bPause = false;
+	m_pPause = nullptr;
 }
 
 //===============================================
@@ -118,6 +120,7 @@ CGame::CGame(int nNumPlayer)
 	m_bEnd = false;
 	m_nStartCnt = 0;
 	m_bPause = false;
+	m_pPause = nullptr;
 
 	// 人数設定
 	m_nNumPlayer = nNumPlayer;
@@ -213,8 +216,6 @@ HRESULT CGame::Init(void)
 			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + fData, 25.0f + fData1 + fData2, 0.0f), 16.0f, 20.0f);
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
-		
-		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
 		// ギミックの生成
 
@@ -429,6 +430,12 @@ HRESULT CGame::Init(void)
 		m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
 	}
 
+	// ポーズの生成
+	m_pPause = CPause::Create();
+	if (m_pPause != nullptr) {
+		m_pPause->SetDraw(m_bPause);
+	}
+
 	CGimmick::SwitchOn();
 
 	return S_OK;
@@ -449,6 +456,12 @@ void CGame::Uninit(void)
 		{
 			break;
 		}
+	}
+
+	if (m_pPause != nullptr) {
+		m_pPause->Uninit();
+		delete m_pPause;
+		m_pPause = nullptr;
 	}
 
 	if (m_pMiniMap != nullptr)
@@ -519,13 +532,23 @@ void CGame::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
-	if (pInputKey->GetTrigger(DIK_P) == true)
+	if (pInputKey->GetTrigger(DIK_P) == true || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{//ポーズキー(Pキー)が押された
 		m_bPause = m_bPause ? false : true;
+
+		if (m_pPause != nullptr) {
+			m_pPause->SetDraw(m_bPause);
+		}
 	}
 
 	if (m_bPause == true)
 	{
+		if (m_pPause != nullptr) {
+			if (m_pPause->Update()) {
+				m_bPause = false;
+				m_pPause->SetDraw(m_bPause);
+			}
+		}
 		return;
 	}
 

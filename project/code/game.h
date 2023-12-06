@@ -18,6 +18,7 @@ class CFileLoad;
 class CClient;
 class CMeshDome;
 class CMiniMap;
+class CPause;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -85,6 +86,7 @@ private:
 	static STATE m_state;			// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
 	static int m_nNumPlayer;		// プレイ人数
+	CPause *m_pPause;				// ポーズ画面
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;

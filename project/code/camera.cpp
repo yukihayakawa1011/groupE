@@ -42,6 +42,7 @@ CCamera::CCamera()
 	m_pPrev = nullptr;
 	m_bDraw = true;
 	m_nId = 0;
+	m_bActive = true;
 
 	// リストに挿入
 	CCameraManager::GetInstance()->ListIn(this);
@@ -90,7 +91,7 @@ void CCamera::Uninit(void)
 //==========================================================
 void CCamera::Update(void)
 {
-	if (!m_bDraw) {	// 使用しない場合
+	if (!m_bDraw || !m_bActive) {	// 使用しない場合
 		return;
 	}
 
