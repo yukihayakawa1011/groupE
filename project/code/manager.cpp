@@ -222,6 +222,13 @@ void CManager::Uninit(void)
 	// サウンドの停止
 	m_pSound->Stop();
 
+	if (m_pFade != NULL)
+	{
+		m_pFade->Uninit();
+		delete m_pFade;
+		m_pFade = NULL;
+	}
+
 	if (m_pScene != NULL)
 	{
 		m_pScene->Uninit();
@@ -338,7 +345,6 @@ void CManager::Uninit(void)
 
 		m_pModelFile = NULL;	// 使用していない状態にする
 	}
-
 	//各種マネージャの破棄
 	CTaskManager::Release();
 	CObjectManager::Release();

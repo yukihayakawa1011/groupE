@@ -17,6 +17,7 @@
 #include "meshdome.h"
 #include "object3D.h"
 #include "texture.h"
+#include "enemy.h"
 
 //===============================================
 // 無名名前空間
@@ -95,6 +96,9 @@ HRESULT CTitle::Init(void)
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
 
+	//演出用敵生成
+	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 10.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+
 	//ドーム追加
 	CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6000.0f, 6000.0f,3,8,8);
 
@@ -161,8 +165,9 @@ void CTitle::Update(void)
 		}
 
 		if (m_bPush == false)
-		{//1回だけ音鳴らす
+		{//1回だけ音鳴らす・移動量設定
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
+			m_pEnemy->SetPointID(ExPattern::POINTID_TITLE);
 		}
 
 		m_bPush = true;		//ボタンを押した
