@@ -135,7 +135,7 @@ HRESULT CResult::Init(void)
 
 	//ƒJƒƒ‰‰Šú‰»
 	{
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(0.0f, 137.77f, -381.94f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(0.0f, 137.77f, -301.94f));
 		//CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(205.0f, 92.42f, -89.13f));
 		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -D3DX_PI * 0.5f, 1.63f));
 		CManager::GetInstance()->GetCamera()->SetLength(300.0f);
