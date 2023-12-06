@@ -44,6 +44,7 @@
 #include "gimmick_multidoor.h"
 #include "minimap.h"
 #include "gimmick_pull.h"
+#include "pause.h"
 
 // 無名名前空間を定義
 namespace {
@@ -52,7 +53,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (25);				// 開始制限時間
+	const int START_TIMER = (90);				// 開始制限時間
 	const int START_WAITCNT = (180);
 }
 
@@ -100,6 +101,7 @@ CGame::CGame()
 	m_bEnd = false;
 	m_nStartCnt = 0;
 	m_bPause = false;
+	m_pPause = nullptr;
 }
 
 //===============================================
@@ -118,6 +120,7 @@ CGame::CGame(int nNumPlayer)
 	m_bEnd = false;
 	m_nStartCnt = 0;
 	m_bPause = false;
+	m_pPause = nullptr;
 
 	// 人数設定
 	m_nNumPlayer = nNumPlayer;
@@ -152,7 +155,8 @@ HRESULT CGame::Init(void)
 		if (m_pFileLoad != NULL)
 		{
 			m_pFileLoad->Init();
-			m_pFileLoad->OpenFile("data\\TXT\\model.txt");
+			m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
+			m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
 		}
 	}
 
@@ -212,8 +216,6 @@ HRESULT CGame::Init(void)
 			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + fData, 25.0f + fData1 + fData2, 0.0f), 16.0f, 20.0f);
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
-		
-		CEnemy::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 
 		// ギミックの生成
 
@@ -246,8 +248,12 @@ HRESULT CGame::Init(void)
 
 		// 回転扉
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(480.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -1650.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(-300.0f, 0.0f, -3950.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		// 落とし穴
 		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
@@ -259,18 +265,30 @@ HRESULT CGame::Init(void)
 		pMultiDoor->SetNumButton(4);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
-
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
 		pMultiDoor->BindButton(pButton);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
 		pMultiDoor->BindButton(pButton);
-		
 		pMultiDoor->SetActiveButton(2);
 
+		pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		pMultiDoor->SetNumButton(4);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -4300.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-150.0f, 0.0f, -4300.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
+		pMultiDoor->BindButton(pButton);
+		pMultiDoor->SetActiveButton(3);
+
 		// ツボ
-		CGimmickPull::Create(D3DXVECTOR3(-250.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickPull::Create(D3DXVECTOR3(500.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		// ゴール
 		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
@@ -412,6 +430,12 @@ HRESULT CGame::Init(void)
 		m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
 	}
 
+	// ポーズの生成
+	m_pPause = CPause::Create();
+	if (m_pPause != nullptr) {
+		m_pPause->SetDraw(m_bPause);
+	}
+
 	CGimmick::SwitchOn();
 
 	return S_OK;
@@ -432,6 +456,12 @@ void CGame::Uninit(void)
 		{
 			break;
 		}
+	}
+
+	if (m_pPause != nullptr) {
+		m_pPause->Uninit();
+		delete m_pPause;
+		m_pPause = nullptr;
 	}
 
 	if (m_pMiniMap != nullptr)
@@ -502,13 +532,23 @@ void CGame::Update(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
-	if (pInputKey->GetTrigger(DIK_P) == true)
+	if (pInputKey->GetTrigger(DIK_P) == true || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{//ポーズキー(Pキー)が押された
 		m_bPause = m_bPause ? false : true;
+
+		if (m_pPause != nullptr) {
+			m_pPause->SetDraw(m_bPause);
+		}
 	}
 
 	if (m_bPause == true)
 	{
+		if (m_pPause != nullptr) {
+			if (m_pPause->Update()) {
+				m_bPause = false;
+				m_pPause->SetDraw(m_bPause);
+			}
+		}
 		return;
 	}
 

@@ -18,6 +18,12 @@ class CWaist;
 class CCharacter;
 class CObject3DFan;
 
+namespace ExPattern
+{
+	const int POINTID_FREE = -1;
+	const int POINTID_TITLE = -2;
+}
+
 //==========================================================
 // 敵のクラス定義(派生クラス)
 //==========================================================
@@ -74,7 +80,7 @@ public:	// 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	static CEnemy *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const D3DXVECTOR3 move,
-		const char *pBodyName, const char *pLegName);
+		const char *pBodyName, const char *pLegName, const int nPointID = -1);
 	bool HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage = 1);
 
 	// メンバ関数(設定)
@@ -84,6 +90,7 @@ public:	// 誰でもアクセス可能
 	void SetRotation(const D3DXVECTOR3 rot) { m_Info.rot = rot; }
 	void BindId(int nId) { m_nId = nId; }
 	void SetType(TYPE type){ m_type = type; }
+	void SetPointID(const int nID) { m_nPointID = nID; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
@@ -106,7 +113,8 @@ private:	// 自分だけがアクセス可能
 	void Controller(void);
 	void Move(void);
 	void Rotation(void);
-	void Adjust(void);
+	void Trace(void);		//ポイントIDがある
+	void Adjust(void);		//ない
 	void Search(void);
 	void Chace(void);
 	void Death(void);
@@ -137,6 +145,8 @@ private:	// 自分だけがアクセス可能
 	bool m_bChace;	//追跡モードか否か
 	int m_nId;	// ID
 	TYPE m_type;	// 種類
+	int m_nPointID;	//ポイントID
+	int m_nPointNum;	//ポイントNo
 	static int m_nNumCount;
 
 };

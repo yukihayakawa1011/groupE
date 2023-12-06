@@ -87,7 +87,7 @@ namespace {
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
 	const D3DXVECTOR2 GAGE_SIZE = {75.0f, 5.0f};	// ゲージのポリゴンサイズ
 	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
-	const D3DXVECTOR2 ITEMUI_SIZE = { 25.0f, 25.0f };	// アイテムUIのポリゴンサイズ
+	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 }
 
 // 前方宣言
@@ -2584,4 +2584,29 @@ void CPlayer::Blow(void) {
 void CPlayer::BindUI(CUI *pUI) 
 { 
 	m_pUI = pUI; m_pUI->SetLife(m_nLife); 
+}
+
+//===============================================
+// 指定モーションに設定
+//===============================================
+void CPlayer::SetMotion(int nMotion) {
+	if (m_pBody == nullptr) {
+		return;
+	}
+
+	if (m_pBody->GetMotion() == nullptr) {
+		return;
+	}
+
+	m_pBody->GetMotion()->InitSet(nMotion);
+
+	if (m_pLeg == nullptr) {
+		return;
+	}
+
+	if (m_pLeg->GetMotion() == nullptr) {
+		return;
+	}
+
+	m_pLeg->GetMotion()->InitSet(nMotion);
 }

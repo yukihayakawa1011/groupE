@@ -29,11 +29,15 @@
 #define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
 #define MOVE_TIMER	(660)
 
+// 無名名前空間
 namespace {
-	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f};	// 合計スコアの設置座標
-	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.1f, SCREEN_HEIGHT * 0.4f, 0.0f };	// 合計スコアの設置座標
+	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.425f, SCREEN_HEIGHT * 0.8f, 0.0f};	// 合計スコアの設置座標
+	const float SCORE_MOVESIZE = (100.0f);
+	const float SCORE_SPACE = (100.0f);
+	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.4f, 0.0f };	// 合計スコアの設置座標
 	const float X_RANKSPACE = (100.0f);
 	const D3DXVECTOR2 RANK_SIZE = { 50.0f, 30.0f };
+	const int PLAYER_MAXMOTION = (13);
 }
 
 // 静的メンバ変数
@@ -41,6 +45,7 @@ int *CResult::m_pScore = 0;
 int CResult::m_nTopScore = 0;
 CResult::TYPE CResult::m_type = CResult::TYPE_MAX;
 int CResult::m_nNumPlayer = 0;
+int CResult::m_nQuota = 0;
 CPlayer **CResult::m_ppPlayer = nullptr;
 CScore **CResult::m_apScore = nullptr;
 
@@ -54,6 +59,7 @@ CResult::CResult()
 	m_pTime = NULL;
 	m_pTotalScore = nullptr;
 	m_pRank = nullptr;
+	m_bClear = false;
 }
 
 //===============================================
@@ -95,7 +101,7 @@ HRESULT CResult::Init(void)
 		sprintf(&aBodyPass[0], "data\\TXT\\Player%d\\motion_ninjabody.txt", nCnt);
 		sprintf(&aLegPass[0], "data\\TXT\\Player%d\\motion_ninjaleg.txt", nCnt);
 
-		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(nCnt * 60.0f, 100.0f, 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
+		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-((m_nNumPlayer - 1) * 100.0f) + nCnt * 200.0f, 0.0f, 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
 		m_ppPlayer[nCnt]->BindId(nCnt);
 		m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_NONE);
 	}
@@ -104,7 +110,7 @@ HRESULT CResult::Init(void)
 
 	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
-		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(50.0f + nCount * 300.0f, 180.0f, 0.0f), 15.0f, 15.0f);
+		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(-((m_nNumPlayer - 1) * SCORE_MOVESIZE) + nCount * SCORE_SPACE, 180.0f, 0.0f), 15.0f, 15.0f);
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
 
 	}
@@ -127,6 +133,24 @@ HRESULT CResult::Init(void)
 		pObj->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
 	}
 
+	//カメラ初期化
+	{
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(0.0f, 137.77f, -301.94f));
+		//CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(205.0f, 92.42f, -89.13f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -D3DX_PI * 0.5f, 1.63f));
+		CManager::GetInstance()->GetCamera()->SetLength(300.0f);
+
+		D3DVIEWPORT9 viewport;
+		//プレイヤー追従カメラの画面位置設定
+		viewport.X = 0;
+		viewport.Y = 0;
+		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+		viewport.MinZ = 0.0f;
+		viewport.MaxZ = 1.0f;
+		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+	}
+
 	// 合計スコアの取得
 	int nTotalScore = SumScore();
 
@@ -135,6 +159,24 @@ HRESULT CResult::Init(void)
 	CRanking::SetTotalScore(nTotalScore);
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
+
+	if (m_ppPlayer == nullptr) {
+		return S_OK;
+	}
+
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	{
+		if (m_ppPlayer[nCnt] == nullptr) {
+			continue;
+		}
+
+		if (nTotalScore < m_nQuota) {	// ノルマを達成していない
+			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION - 2);
+		}
+		else {
+			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION - 1);
+		}
+	}
 
 	return S_OK;
 }

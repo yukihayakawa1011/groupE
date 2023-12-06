@@ -46,6 +46,7 @@ public:
 	static void SetScore(CPlayer **ppPlayer);
 	static void SetType(TYPE type) { m_type = type; }
 	static TYPE GetType(void) { return m_type; }
+	static void SetQuata(const int nValue) { m_nQuota = nValue; }
 	static void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
 
 private:
@@ -65,9 +66,11 @@ private:
 	static CPlayer **m_ppPlayer;	// プレイヤーのポインタ
 	int m_nTimer;				// 遷移タイマー
 	int *m_pRank;				// ランク
+	bool m_bClear;			// 達成かどうか
 	static int *m_pScore;		// 今回のスコア
 	static int m_nTopScore;   // 一位のスコア
 	static TYPE m_type;		// 種類
+	static int m_nQuota;		// ノルマ
 	static int m_nNumPlayer;  // ゴールしたプレイヤーの人数
 };
 

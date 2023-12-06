@@ -105,7 +105,7 @@ void CObjectManager::ReleaseAll(void)
 //===============================================
 // 全てのオブジェクトの描画
 //===============================================
-void CObjectManager::DrawAll(TYPE type)
+void CObjectManager::DrawAll(void)
 {
 	// 死亡フラグをチェック
 	DeathCheck();
@@ -120,7 +120,35 @@ void CObjectManager::DrawAll(TYPE type)
 			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
 
 			// 描画処理
-			if (type == TYPE_ALL || pObject->GetObject2D() == nullptr)
+			if (pObject->GetDraw())
+			{
+				pObject->Draw();
+			}
+
+			pObject = pObjectNext;	// 次のオブジェクトに移動
+		}
+	}
+}
+
+//===============================================
+// 3Dのオブジェクトのみ描画
+//===============================================
+void CObjectManager::DrawAll3D(void)
+{
+	// 死亡フラグをチェック
+	DeathCheck();
+
+	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
+	{
+		CObject *pObject = m_apTop[nCntPri];	// 先頭を取得
+
+		while (pObject != NULL)
+		{// 使用されていない状態まで
+
+			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
+
+			// 描画処理
+			if (pObject->GetObject2D() == nullptr)
 			{
 				pObject->Draw();
 			}

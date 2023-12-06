@@ -15,7 +15,7 @@ NUM_TEXTURE = 3
 # テクスチャファイル名
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/river000.jpg			# [0]川水(下)
-TEXTURE_FILENAME = data/TEXTURE/field000.jpg			# [1]川水(上)
+TEXTURE_FILENAME = data/TEXTURE/rotatedoor001.jpg			# [1]川水(上)
 
 #------------------------------------------------------------------------------
 # モデル数

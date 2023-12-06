@@ -33,34 +33,41 @@
 #include "model.h"
 #include "object3DFan.h"
 #include "waist.h"
+#include "point.h"
+#include "particle.h"
+
+//無名名前空間
+namespace
+{
+	const float MOVE = 2.0f;			// 移動量
+	const float GRAVITY = -0.9f;		// 敵重力
+	const float JUMP = 25.0f;			// 敵ジャンプ力
+	const float ROT_MULTI = 0.1f;		// 向き補正倍率
+	const float INER = 0.3f;			// 慣性
+	const float BLOW_INER = 0.1f;		// 吹き飛ばし中慣性
+	const int START_LIFE = 4;			// 初期体力
+	const int DAMAGE_INTERVAL = 80;		// ダメージ付与間隔
+	const int APPEAR_INTERVAL = 120;	// 出現中になっている間隔
+	const float DEFAULT_ROTATE = 0.1f;	// プレイヤー探索中の回転量
+	const float SEARCH_LENGTH = 500.0f;	// プレイヤー探索範囲
+	const float SEARCH_RADIUS = 0.3f;	// プレイヤー探索角度
+	const float CHACE_LENGTH = 800.0f;	// 追跡範囲
+	const float ATTACK_LENGTH = 50.0f;	// 攻撃モードにする範囲
+	const int ATTACK_COOLTIME = 60;		// 攻撃クールタイム
+	const float NEXTPOINT_LENGTH = 100.0f;	//次のポイントに切り替える距離
+	const D3DXVECTOR3 ENEMY_VTX_MIN = D3DXVECTOR3(-20.0f, 0.0f, -20.0f);	// 当たり判定などのサイズ
+	const D3DXVECTOR3 ENEMY_VTX_MAX = D3DXVECTOR3(20.0f, 0.0f, 20.0f);
+	const float HIT_RANGE = 100.0f;		// 攻撃が当たる範囲
+	const int DROP_COIN = 3;			// コインのドロップ量
+	const char* BODY_FILENAME = "data\\TXT\\enemy\\motion_ninjabody.txt";	// 上半身のモーションファイルパス
+	const char* LEG_FILENAME = "data\\TXT\\enemy\\motion_ninjaleg.txt";		// 下半身のモーションファイルパス
+}
 
 //===============================================
 // マクロ定義
 //===============================================
-#define MOVE	(2.0f)		// 移動量
-#define ENEMY_GRAVITY	(-0.9f)		//敵重力
-#define ENEMY_JUMP		(25.0f)		//敵ジャンプ力
-#define ROT_MULTI	(0.1f)	// 向き補正倍率
-#define INER	(0.3f)		// 慣性
-#define BLOW_INER (0.1f)	// 吹き飛ばし中慣性
-#define START_LIFE	(4)	// 初期体力
-#define DAMAGE_INTERVAL	(80)
-#define APPEAR_INTERVAL	(120)
-#define DEFAULT_ROTATE	(0.1f)		//プレイヤー探索中の回転量
-#define SEARCH_LENGTH	(500.0f)	//プレイヤー探索範囲
-#define SEARCH_RADIUS	(0.3f)
-#define CHACE_LENGTH	(800.0f)	//追跡範囲
-#define ATTACK_LENGTH	(50.0f)		//攻撃モードにする範囲
-#define ATTACK_COOLTIME	(60)		//攻撃クールタイム
-#define ENEMY_VTX_MIN	D3DXVECTOR3(-20.0f,0.0f,-20.0f)
-#define ENEMY_VTX_MAX	D3DXVECTOR3(20.0f,0.0f,20.0f)
-#define HIT_RANGE	(100.0f)
-#define DROP_COIN	(3)
-
 #define FIX_ROT(x)				(fmodf(x + (D3DX_PI * 3), D3DX_PI * 2) - D3DX_PI)	//角度を-PI~PIに修正
 #define MINUS_GUARD(x)			((x < 0) ? 0 : x)
-#define BODY_FILENAME	"data\\TXT\\enemy\\motion_ninjabody.txt"
-#define LEG_FILENAME	"data\\TXT\\enemy\\motion_ninjaleg.txt"
 
 // 前方宣言
 CEnemy *CEnemy::m_pTop = nullptr;	// 先頭のオブジェクトへのポインタ
@@ -88,6 +95,8 @@ CEnemy::CEnemy()
 	m_type = TYPE_NONE;
 	m_nId = m_nNumCount;
 	m_pChase = nullptr;
+	m_nPointID = -1;
+	m_nPointNum = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != nullptr)
@@ -133,6 +142,10 @@ HRESULT CEnemy::Init(void)
 	m_Info.state = STATE_APPEAR;
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
+
+	// 煙のパーティクル生成
+	CModel *pModel = m_pLeg->GetParts(0);
+	CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
 
 	return S_OK;
 }
@@ -197,7 +210,7 @@ HRESULT CEnemy::Init(const char *pBodyName, const char *pLegName)
 		}
 	}
 
-	if (nullptr == m_pFov)
+	if (nullptr == m_pFov && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{
 		m_pFov = CObject3DFan::Create(m_Info.pos, m_Info.rot, SEARCH_LENGTH, SEARCH_RADIUS * D3DX_PI, 8);
 		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.6f));
@@ -326,42 +339,46 @@ void CEnemy::Update(void)
 	{// 使用されている場合
 		CModel *pModel = m_pLeg->GetParts(0);
 
-		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
 	}
 }
 
 //===============================================
 // 生成
 //===============================================
-CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName)
+CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const char *pBodyName, const char *pLegName, const int nPointID)
 {
-	CEnemy *pPlayer = nullptr;
+	CEnemy *pEnemy = nullptr;
 
 	// 敵の生成
-	pPlayer = new CEnemy();
+	pEnemy = new CEnemy();
 
-	if (nullptr != pPlayer)
+	if (nullptr != pEnemy)
 	{// 生成できた場合
 		// 初期化処理
-		pPlayer->Init(pBodyName, pLegName);
+		pEnemy->Init(pBodyName, pLegName);
+		pEnemy->m_nPointID = nPointID;
 
 		// 座標設定
-		pPlayer->SetPosition(pos);
+		pEnemy->SetPosition(pos);
 
 		// 向き設定
-		pPlayer->SetRotation(rot);
+		pEnemy->SetRotation(rot);
 
-		pPlayer->m_fRotDest = rot.y;
+		pEnemy->m_fRotDest = rot.y;
 
 		// 移動量設定
-		pPlayer->SetMove(move);
+		pEnemy->SetMove(move);
+
+		//煙出す
+		CParticle::Create(pos, CEffect::TYPE_SMAKE);
 	}
 	else
 	{// 生成に失敗した場合
 		return nullptr;
 	}
 
-	return pPlayer;
+	return pEnemy;
 }
 
 //===============================================
@@ -393,12 +410,12 @@ void CEnemy::Controller(void)
 		}
 	}
 
-	if (CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL)
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{// チュートリアル以外
 
 		pos = GetPosition();	// 座標を取得
 
-		float fGravity = ENEMY_GRAVITY * CManager::GetInstance()->GetSlow()->Get();
+		float fGravity = GRAVITY * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y += fGravity;
 		pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
@@ -442,13 +459,30 @@ void CEnemy::Controller(void)
 
 			if (pPlayerNear != nullptr && CObjectX::CollisionCloss(pPlayerNear->GetPosition(), m_Info.pos))
 			{
-				m_Info.move.y = ENEMY_JUMP;
+				m_Info.move.y = JUMP;
 				m_bJump = true;
 			}
 		}
 
 		//敵同士当たり判定
 		this->Collision();
+	}
+	else if (CManager::GetInstance()->GetMode() == CScene::MODE_TITLE && m_nPointID == ExPattern::POINTID_TITLE)
+	{
+		pos.z += 8.0f * CManager::GetInstance()->GetSlow()->Get();
+
+		m_Info.pos = pos;
+		m_fRotDest = D3DX_PI;
+
+		Adjust();
+
+		// 起伏との当たり判定
+		float fHeight = CMeshField::GetHeight(m_Info.pos);
+		if (m_Info.pos.y <= fHeight)
+		{
+			m_Info.pos.y = fHeight;
+			m_bJump = false;
+		}
 	}
 }
 
@@ -471,6 +505,38 @@ void CEnemy::Rotation(void)
 }
 
 //===============================================
+// ポイント移動
+//===============================================
+void CEnemy::Trace(void)
+{
+	CPoint* pPoint = CPoint::GetTop();
+	D3DXVECTOR3 posPoint;
+
+	//ポイント位置取得
+	for (int cnt = 0; cnt < m_nPointID; cnt++)
+	{
+		pPoint = pPoint->GetNext();
+	}
+	if (pPoint != nullptr)
+	{
+		posPoint = pPoint->GetPoint(m_nPointNum);
+
+		//角度調整
+		m_fRotDest = FIX_ROT(atan2f(posPoint.x - m_Info.pos.x, posPoint.z - m_Info.pos.z) + D3DX_PI);
+
+		//近くなったら次のポイント
+		if (D3DXVec3Length(&(posPoint - m_Info.pos)) < NEXTPOINT_LENGTH)
+		{
+			m_nPointNum = (m_nPointNum + 1) % pPoint->GetRegistPointNum();
+		}
+	}
+	else
+	{//一応ぬるぽの時はぐるぐるするようにする
+		m_nPointID = ExPattern::POINTID_FREE;
+	}
+}
+
+//===============================================
 // 探索
 //===============================================
 void CEnemy::Search(void)
@@ -488,8 +554,15 @@ void CEnemy::Search(void)
 		}
 	}
 	else
-	{//適当にぐるぐる
-		Rotation();	// 回転
+	{
+		if (m_nPointID != ExPattern::POINTID_FREE && m_nPointID != ExPattern::POINTID_TITLE)
+		{//移動パターンあり
+			Trace();
+		}
+		else if (m_nPointID == ExPattern::POINTID_FREE)
+		{//適当にぐるぐる
+			Rotation();	// 回転
+		}
 	}
 }
 
@@ -498,6 +571,8 @@ void CEnemy::Search(void)
 //===============================================
 void CEnemy::Chace(void)
 {
+	CPoint* pPoint = CPoint::GetTop();
+	int nPointNear = -1;
 	float fLengthNear = FLT_MAX;
 	CPlayer* pPlayerNear = SearchNearPlayer(SEARCH_RADIUS, &fLengthNear);
 
@@ -521,9 +596,38 @@ void CEnemy::Chace(void)
 	}
 	else
 	{
+		//探索状態にする
 		m_bChace = false;
 		m_pFov->SetLength(SEARCH_LENGTH);
 		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.4f));
+
+		//一番近いポイントに移動するようにする
+		//ポイント取得
+		for (int cnt = 0; cnt < m_nPointID; cnt++)
+		{
+			pPoint = pPoint->GetNext();
+		}
+		if (pPoint != nullptr)
+		{
+			//近いの探索
+			fLengthNear = FLT_MAX;
+			for (int cnt = 0; cnt < pPoint->GetRegistPointNum(); cnt++)
+			{
+				D3DXVECTOR3 posPoint = pPoint->GetPoint(cnt);
+				float fLength = D3DXVec3Length(&(posPoint - m_Info.pos));
+				if (fLengthNear > fLength)
+				{
+					fLengthNear = fLength;
+					nPointNear = cnt;
+				}
+			}
+			//次の移動先を設定
+			m_nPointNum = nPointNear;
+		}
+		else
+		{//一応ぬるぽの時はぐるぐるするようにする
+			m_nPointID = ExPattern::POINTID_FREE;
+		}
 	}
 }
 

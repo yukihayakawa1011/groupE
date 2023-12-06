@@ -16,6 +16,7 @@
 #include "game.h"
 #include "item.h"
 #include "title_enter.h"
+#include "point.h"
 
 //==========================================================
 // マクロ定義
@@ -35,6 +36,8 @@
 #define ENDMODELSET_TXT	"END_MODELSET"	// モデル読み込み終了
 #define ITEMSET_TXT		"ITEMSET"		// アイテム配置確認文字
 #define ENDITEMSET_TXT	"END_ITEMSET"			// アイテム読み込み終了
+#define POINTSET_TXT	"SET_POINTLIST"			// アイテム読み込み終了
+#define ENDPOINTSET_TXT	"END_SET_POINTLIST"			// アイテム読み込み終了
 #define LOAD_POS		"POS"				// 座標
 #define LOAD_ROT		"ROT"				// 向き
 #define LOAD_TEXTYPE	"TEXTYPE"			// テクスチャ番号
@@ -190,6 +193,10 @@ void CFileLoad::LoadFileData(FILE *pFile)
 		else if (strcmp(&aStr[0], ITEMSET_TXT) == 0)
 		{//モデル配置の場合
 			LoadItemData(pFile);
+		}
+		else if (strcmp(&aStr[0], POINTSET_TXT) == 0)
+		{
+			LoadPointData(pFile);
 		}
 
 		//終了確認
@@ -594,6 +601,44 @@ void CFileLoad::LoadDomeData(FILE *pFile)
 void CFileLoad::LoadCylinderData(FILE *pFile)
 {
 
+}
+
+//==========================================================
+// ポイント読み込み
+//==========================================================
+void CFileLoad::LoadPointData(FILE * pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+	int nNum;
+	D3DXVECTOR3 pos;
+	CPoint* pPoint = CPoint::Create();
+
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strncmp(&aStr[0], "NUM_POINT", strlen("NUM_POINT")) == 0)
+		{//ポイント数
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nNum);		//ポイント数読み込み
+			pPoint->SetNum(nNum);
+		}
+		else if (strncmp(&aStr[0], "POS", strlen("POS")) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+			pPoint->AddPoint(pos);
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDPOINTSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
 }
 
 //==========================================================
