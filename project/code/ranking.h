@@ -71,10 +71,11 @@ private:
 	int m_nCounter;
 	CObject2D *m_pObjectRank[NUM_RANKING][NUM_RANK];
 	CObject2D *m_pObject[MAX_RANKING];
-	const static char *m_apFileName[TYPE_MAX];	// 初期読み込みファイル名
 
-	bool m_bOne;		// 今回のスコア
-	bool m_bTotal;	// 今回のスコア
+	bool m_bOne;	//トップになったか
+	bool m_bTotal;	//トップになったか
+	int m_nOne;	//トップになったか
+	int m_nTotal;	//トップになったか
 };
 
 #endif

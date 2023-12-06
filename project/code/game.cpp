@@ -248,9 +248,12 @@ HRESULT CGame::Init(void)
 
 		// âÒì]î‡
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(480.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-800.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -1650.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(-300.0f, 0.0f, -3950.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		// óéÇ∆Çµåä
 		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
@@ -262,18 +265,30 @@ HRESULT CGame::Init(void)
 		pMultiDoor->SetNumButton(4);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
-
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
 		pMultiDoor->BindButton(pButton);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
 		pMultiDoor->BindButton(pButton);
-		
 		pMultiDoor->SetActiveButton(2);
 
+		pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		pMultiDoor->SetNumButton(4);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -4300.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-150.0f, 0.0f, -4300.0f));
+		pMultiDoor->BindButton(pButton);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
+		pMultiDoor->BindButton(pButton);
+		pMultiDoor->SetActiveButton(3);
+
 		// ÉcÉ{
-		CGimmickPull::Create(D3DXVECTOR3(-250.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		CGimmickPull::Create(D3DXVECTOR3(500.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		// ÉSÅ[Éã
 		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
