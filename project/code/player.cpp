@@ -87,7 +87,7 @@ namespace {
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
 	const D3DXVECTOR2 GAGE_SIZE = {75.0f, 5.0f};	// ゲージのポリゴンサイズ
 	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
-	const D3DXVECTOR2 ITEMUI_SIZE = { 25.0f, 25.0f };	// アイテムUIのポリゴンサイズ
+	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 }
 
 // 前方宣言
