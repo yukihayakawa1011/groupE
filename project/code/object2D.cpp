@@ -49,7 +49,7 @@ CObject2D::CObject2D(const D3DXVECTOR3 pos) : CObject(3)
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nIdxTexture = -1;
-	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //===============================================
@@ -65,7 +65,7 @@ CObject2D::CObject2D(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const int nPr
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nIdxTexture = -1;
-	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //===============================================
@@ -81,7 +81,7 @@ CObject2D::CObject2D(int nPriority) : CObject(nPriority)
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nIdxTexture = -1;
-	m_col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //===============================================
