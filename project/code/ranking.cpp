@@ -33,7 +33,7 @@
 CScore *CRanking::m_apScore[NUM_RANKING][NUM_RANK] = {};	// ランキングの
 CScore *CRanking::m_apNowScore[NUM_NOWSCORE] = {};	// ランキングのポインタ
 int CRanking::m_nScore = 0;					// スコア
-int CRanking::m_nTotalScore = 0;					// スコア
+int CRanking::m_nTotalScore = 0;			// スコア
 
 //===============================================
 // コンストラクタ
@@ -45,7 +45,7 @@ CRanking::CRanking()
 	m_nRank = 0;
 	m_nCounter = 0;
 	m_bOne = false;
-	m_bTotala = false;
+	m_bTotal = false;
 }
 
 //===============================================
@@ -64,6 +64,7 @@ HRESULT CRanking::Init(void)
 	int aScore[NUM_RANK] = {};	// スコア格納用
 	int aTotalScore[NUM_RANK] = {};	// スコア格納用
 	m_nRank = -1;	//ランクインしてない状態
+
 
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
 
@@ -106,7 +107,12 @@ HRESULT CRanking::Init(void)
 	Sort(&aScore[0]);
 
 	// ランクイン確認
-	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE, m_bOne);
+	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE, 0);
+
+	if (m_bOne == true)
+	{
+		m_pObject[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 
 	//合計
 	// データの読み込み
@@ -116,15 +122,11 @@ HRESULT CRanking::Init(void)
 	Sort(&aTotalScore[0]);
 
 	// ランクイン確認
-	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM, m_bTotala);
-
-	if (m_bOne == true)
+	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM, 1);
+	
+	if (m_bTotal == true)
 	{
-		m_pObject[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	}
-	if (m_bTotala == true)
-	{
-		m_pObject[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject[1]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 	//今回のスコア
@@ -325,7 +327,7 @@ void CRanking::Sort(int *pScore)
 //===============================================
 // ランキングイン確認
 //===============================================
-void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, bool bNewTop)
+void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, int nNew)
 {
 	if (nResult > pScore[NUM_RANK - 1])
 	{
@@ -346,7 +348,15 @@ void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, bool bNew
 
 				if (m_nRank == 0)
 				{
-					bNewTop = true;
+					if (nNew == 0)
+					{
+						m_bOne = true;
+					}
+					else if (nNew == 1)
+					{
+						m_bTotal = true;
+					}
+
 				}
 
 				break;
