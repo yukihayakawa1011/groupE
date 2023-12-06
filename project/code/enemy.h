@@ -18,6 +18,12 @@ class CWaist;
 class CCharacter;
 class CObject3DFan;
 
+namespace ExPattern
+{
+	const int POINTID_FREE = -1;
+	const int POINTID_TITLE = -2;
+}
+
 //==========================================================
 // 敵のクラス定義(派生クラス)
 //==========================================================
@@ -84,6 +90,7 @@ public:	// 誰でもアクセス可能
 	void SetRotation(const D3DXVECTOR3 rot) { m_Info.rot = rot; }
 	void BindId(int nId) { m_nId = nId; }
 	void SetType(TYPE type){ m_type = type; }
+	void SetPointID(const int nID) { m_nPointID = nID; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
