@@ -57,7 +57,7 @@ private:
 	void Save(int *pScore, const char *pFileName);
 	void Load(int *pScore, const char *pFileName);
 	void Sort(int *pScore);
-	void RankIn(int *pScore, int nResult, const char *pFileName, bool bNewTop);
+	void RankIn(int *pScore, int nResult, const char *pFileName, int nNew);
 
 	// メンバ変数
 	CFileLoad *m_pFileLoad;	// ファイル読み込みのポインタ
@@ -73,8 +73,8 @@ private:
 	CObject2D *m_pObject[MAX_RANKING];
 	const static char *m_apFileName[TYPE_MAX];	// 初期読み込みファイル名
 
-	bool m_bOne;
-	bool m_bTotala;
+	bool m_bOne;		// 今回のスコア
+	bool m_bTotal;	// 今回のスコア
 };
 
 #endif
