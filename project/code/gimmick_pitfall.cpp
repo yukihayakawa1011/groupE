@@ -154,17 +154,17 @@ bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DX
 
 			D3DXVECTOR3 posObj = m_apModel[cnt]->GetPosition();
 
-			if (pos.x + vtxMax.x > posObj.x + vtxObjMin.x
-				&& pos.x + vtxMin.x < posObj.x + vtxObjMax.x
-				&& pos.z + vtxMax.z > posObj.z + vtxObjMin.z
-				&& pos.z + vtxMin.z < posObj.z + vtxObjMax.z)
+			if (pos.x + vtxMax.x >= posObj.x + vtxObjMin.x
+				&& pos.x + vtxMin.x <= posObj.x + vtxObjMax.x
+				&& pos.z + vtxMax.z >= posObj.z + vtxObjMin.z
+				&& pos.z + vtxMin.z <= posObj.z + vtxObjMax.z)
 			{//”ÍˆÍ“à‚É‚ ‚é
 			 //ã‚©‚ç‚Ì”»’è
-				if (posOld.y + vtxMax.y >= posObj.y + vtxObjMax.y
-					&& pos.y + vtxMax.y < posObj.y + vtxObjMax.y)
+				if (posOld.y >= posObj.y + vtxObjMax.y
+					&& pos.y < posObj.y + vtxObjMax.y)
 				{//ã‚©‚ç‚ß‚èž‚ñ‚¾
 				 //ã‚É‚Ì‚¹‚é
-					pos.y = posObj.y + vtxObjMax.y - vtxMax.y;
+					pos.y = posObj.y + vtxObjMax.y;
 					move.y = 0.0f;
 					if (bLand != nullptr)
 					{
