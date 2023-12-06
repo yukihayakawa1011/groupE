@@ -237,6 +237,20 @@ void CScore::SetScore(int nScore)
 	m_apNumber[7]->SetIdx(m_nNumScore % 10 / 1);
 }
 
+//===============================================
+// 色設定
+//===============================================
+void CScore::SetClo(D3DXCOLOR col)
+{
+	for (int nCnt = 0; nCnt < NUM_SCORE; nCnt++)
+	{
+		if (m_apNumber[nCnt] != NULL)
+		{// 使用していない場合
+			m_apNumber[nCnt]->GetObject2D()->SetCol(col);
+		}
+	}
+}
+
 ////===============================================
 //// 頂点設定
 ////===============================================

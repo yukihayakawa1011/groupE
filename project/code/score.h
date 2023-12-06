@@ -44,6 +44,7 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(設定)
 	void SetIdx(const int nIdx);
 	void SetScore(int nScore);
+	void SetClo(D3DXCOLOR col);
 
 	// メンバ関数(取得)
 	int GetIdx(void) { return m_nIdx; }

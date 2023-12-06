@@ -19,6 +19,8 @@
 #include "objectX.h"
 #include "item.h"
 #include "object2D.h"
+#include "meshdome.h"
+#include "camera.h"
 
 //===============================================
 // マクロ定義
@@ -33,7 +35,7 @@
 CScore *CRanking::m_apScore[NUM_RANKING][NUM_RANK] = {};	// ランキングの
 CScore *CRanking::m_apNowScore[NUM_NOWSCORE] = {};	// ランキングのポインタ
 int CRanking::m_nScore = 0;					// スコア
-int CRanking::m_nTotalScore = 0;					// スコア
+int CRanking::m_nTotalScore = 0;			// スコア
 
 //===============================================
 // コンストラクタ
@@ -45,7 +47,9 @@ CRanking::CRanking()
 	m_nRank = 0;
 	m_nCounter = 0;
 	m_bOne = false;
-	m_bTotala = false;
+	m_bTotal = false;
+	m_nOne = -1;
+	m_nTotal = -1;
 }
 
 //===============================================
@@ -65,13 +69,14 @@ HRESULT CRanking::Init(void)
 	int aTotalScore[NUM_RANK] = {};	// スコア格納用
 	m_nRank = -1;	//ランクインしてない状態
 
+
 	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
 
 	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
 		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
 		{
-			m_pObjectRank[nCntRanking][nCnt] = CObject2D::Create();
+			m_pObjectRank[nCntRanking][nCnt] = CObject2D::Create(7);
 			m_pObjectRank[nCntRanking][nCnt]->SetPosition(D3DXVECTOR3(200.0f + nCntRanking * 600.0f, 400.0f + (nCnt* 100.0f), 0.0f));
 			m_pObjectRank[nCntRanking][nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
 		}
@@ -79,14 +84,14 @@ HRESULT CRanking::Init(void)
 
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
-		m_pObject[nCnt] = CObject2D::Create();
+		m_pObject[nCnt] = CObject2D::Create(7);
 	}
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		m_pObject[nCnt]->SetPosition(D3DXVECTOR3(400.0f + nCnt * 600.0f, 300.0f, 0.0f));
+		m_pObject[nCnt]->SetPosition(D3DXVECTOR3(450.0f + nCnt * 600.0f, 300.0f, 0.0f));
 		m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\new_record00.png"));
-		m_pObject[nCnt]->SetLength(250.0f, 100.0f);
+		m_pObject[nCnt]->SetLength(200.0f, 75.0f);
 		m_pObject[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
@@ -96,7 +101,7 @@ HRESULT CRanking::Init(void)
 
 	m_pObject[3]->SetPosition(D3DXVECTOR3(1000.0f, 100.0f, 0.0f));
 	m_pObject[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\ranking_team00.png"));
-	m_pObject[3]->SetLength(200.0f, 75.0f);
+	m_pObject[3]->SetLength(250.0f, 100.0f);
 
 	//個人
 	// データの読み込み
@@ -106,7 +111,12 @@ HRESULT CRanking::Init(void)
 	Sort(&aScore[0]);
 
 	// ランクイン確認
-	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE, m_bOne);
+	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE, 0);
+
+	if (m_bOne == true)
+	{
+		m_pObject[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 
 	//合計
 	// データの読み込み
@@ -116,15 +126,11 @@ HRESULT CRanking::Init(void)
 	Sort(&aTotalScore[0]);
 
 	// ランクイン確認
-	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM, m_bTotala);
-
-	if (m_bOne == true)
+	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM, 1);
+	
+	if (m_bTotal == true)
 	{
-		m_pObject[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	}
-	if (m_bTotala == true)
-	{
-		m_pObject[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject[1]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	}
 
 	//今回のスコア
@@ -149,6 +155,32 @@ HRESULT CRanking::Init(void)
 		m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
 		m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);
 	}
+
+	if (m_nRank != -1)
+	{
+		m_apScore[0][m_nOne]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		m_apScore[1][m_nTotal]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+	}
+
+	//カメラ初期化
+	{
+		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(387.0f, 793.0f, -2328.0f));
+		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-400.0f, 441.0f, -304.0f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -1.20f, 1.41f));
+
+		D3DVIEWPORT9 viewport;
+		//プレイヤー追従カメラの画面位置設定
+		viewport.X = 0;
+		viewport.Y = 0;
+		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+		viewport.MinZ = 0.0f;
+		viewport.MaxZ = 1.0f;
+		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+	}
+
+	//ドーム追加
+	CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6000.0f, 6000.0f, 3, 8, 8);
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
@@ -178,6 +210,17 @@ void CRanking::Uninit(void)
 			m_pObjectRank[nCntRanking][nCnt]->Uninit();
 		}
 	}
+
+	for (int nCnt = 0; nCnt < 2; nCnt++)
+	{
+		m_apNowScore[nCnt]->Uninit();
+	}
+
+	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
+	{
+		m_pObject[nCnt]->Uninit();
+	}
+
 }
 
 //===============================================
@@ -325,7 +368,7 @@ void CRanking::Sort(int *pScore)
 //===============================================
 // ランキングイン確認
 //===============================================
-void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, bool bNewTop)
+void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, int nNew)
 {
 	if (nResult > pScore[NUM_RANK - 1])
 	{
@@ -344,9 +387,28 @@ void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, bool bNew
 			{
 				m_nRank = nCntRank;	// ランクインした順位を保存		
 
-				if (m_nRank == 0)
+				if (nNew == 0)
 				{
-					bNewTop = true;
+					if (m_nRank == 0)
+					{
+						m_bOne = true;
+					}
+					if (m_nRank != -1)
+					{
+						m_nOne = m_nRank;
+					}
+				}
+				else if (nNew == 1)
+				{
+					if (m_nRank == 0)
+					{
+						m_bTotal = true;
+					}
+					if (m_nRank != -1)
+					{
+						m_nTotal = m_nRank;
+					}
+
 				}
 
 				break;
