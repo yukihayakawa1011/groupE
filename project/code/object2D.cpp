@@ -49,6 +49,7 @@ CObject2D::CObject2D(const D3DXVECTOR3 pos) : CObject(3)
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nIdxTexture = -1;
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //===============================================
@@ -64,6 +65,7 @@ CObject2D::CObject2D(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, const int nPr
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nIdxTexture = -1;
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //===============================================
@@ -79,6 +81,7 @@ CObject2D::CObject2D(int nPriority) : CObject(nPriority)
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
 	m_nIdxTexture = -1;
+	m_col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 //===============================================
@@ -264,10 +267,10 @@ void CObject2D::SetVtx(void)
 	pVtx[3].rhw = 1.0f;
 
 	// 頂点カラーの設定
-	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[0].col = m_col;
+	pVtx[1].col = m_col;
+	pVtx[2].col = m_col;
+	pVtx[3].col = m_col;
 
 	// テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(0.0f, 0.0f);
@@ -340,10 +343,10 @@ void CObject2D::SetVtx(const float fTexU, const float fTexV, const float fWidth,
 	pVtx[3].rhw = 1.0f;
 
 	// 頂点カラーの設定
-	pVtx[0].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[1].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[2].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	pVtx[3].col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+	pVtx[0].col = m_col;
+	pVtx[1].col = m_col;
+	pVtx[2].col = m_col;
+	pVtx[3].col = m_col;
 
 	// テクスチャ座標の設定
 	pVtx[0].tex = D3DXVECTOR2(fTexU, fTexV);
@@ -504,6 +507,7 @@ void CObject2D::SetIdxTex(int nIdx)
 //===============================================
 void CObject2D::SetCol(const D3DXCOLOR col)
 {
+	m_col = col;
 	VERTEX_2D *pVtx;
 
 	//頂点バッファをロックし頂点情報へのポインタを取得

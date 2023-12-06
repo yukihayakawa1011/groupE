@@ -44,6 +44,8 @@ CRanking::CRanking()
 	m_nTimer = 0;
 	m_nRank = 0;
 	m_nCounter = 0;
+	m_bOne = false;
+	m_bTotala = false;
 }
 
 //===============================================
@@ -85,6 +87,7 @@ HRESULT CRanking::Init(void)
 		m_pObject[nCnt]->SetPosition(D3DXVECTOR3(400.0f + nCnt * 600.0f, 300.0f, 0.0f));
 		m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\new_record00.png"));
 		m_pObject[nCnt]->SetLength(250.0f, 100.0f);
+		m_pObject[nCnt]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 	}
 
 	m_pObject[2]->SetPosition(D3DXVECTOR3(300.0f, 100.0f, 0.0f));
@@ -103,7 +106,7 @@ HRESULT CRanking::Init(void)
 	Sort(&aScore[0]);
 
 	// ランクイン確認
-	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE);
+	RankIn(&aScore[0], m_nScore, RANKING_FILE_ONE, m_bOne);
 
 	//合計
 	// データの読み込み
@@ -113,7 +116,16 @@ HRESULT CRanking::Init(void)
 	Sort(&aTotalScore[0]);
 
 	// ランクイン確認
-	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM);
+	RankIn(&aTotalScore[0], m_nTotalScore, RANKING_FILE_TEAM, m_bTotala);
+
+	if (m_bOne == true)
+	{
+		m_pObject[2]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
+	if (m_bTotala == true)
+	{
+		m_pObject[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+	}
 
 	//今回のスコア
 	for (int nCnt = 0; nCnt < NUM_NOWSCORE; nCnt++)
@@ -129,8 +141,6 @@ HRESULT CRanking::Init(void)
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
 			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
-		/*	m_apScore[0][nCntRank]->SetScore(aScore[nCntRank]);
-			m_apScore[1][nCntRank]->SetScore(aTotalScore[nCntRank]);*/
 		}
 	}
 
@@ -315,7 +325,7 @@ void CRanking::Sort(int *pScore)
 //===============================================
 // ランキングイン確認
 //===============================================
-void CRanking::RankIn(int *pScore, int nResult, const char *pFileName)
+void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, bool bNewTop)
 {
 	if (nResult > pScore[NUM_RANK - 1])
 	{
@@ -332,7 +342,13 @@ void CRanking::RankIn(int *pScore, int nResult, const char *pFileName)
 		{
 			if (pScore[nCntRank] == nResult)
 			{
-				m_nRank = nCntRank;	// ランクインした順位を保存			
+				m_nRank = nCntRank;	// ランクインした順位を保存		
+
+				if (m_nRank == 0)
+				{
+					bNewTop = true;
+				}
+
 				break;
 			}
 		}

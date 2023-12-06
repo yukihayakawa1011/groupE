@@ -215,7 +215,7 @@ bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 		}
 	}
 
-	if (m_state < STATE_APPEAR || m_state > STATE_ATKNOW) {	// ŠJ‚­”à
+	if (m_state < STATE_APPEAR || m_state >= STATE_ATKNOW) {	// ŠJ‚­”à
 		return false;
 	}
 
