@@ -113,6 +113,7 @@ HRESULT CTutorial::Init(void)
 		viewport.MinZ = 0.0f;
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+		CManager::GetInstance()->GetCamera()->SetActive(false);
 	}
 
 	// 回転扉
@@ -271,6 +272,8 @@ void CTutorial::Uninit(void)
 		delete[] m_ppPlayer;	// ポインタの開放
 		m_ppPlayer = NULL;	// 使用していない状態にする
 	}
+
+	CManager::GetInstance()->GetCamera()->SetActive(true);
 }
 
 //===============================================

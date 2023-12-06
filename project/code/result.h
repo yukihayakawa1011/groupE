@@ -68,6 +68,7 @@ private:
 	static int *m_pScore;		// 今回のスコア
 	static int m_nTopScore;   // 一位のスコア
 	static TYPE m_type;		// 種類
+	static int m_nQuota;		// ノルマ
 	static int m_nNumPlayer;  // ゴールしたプレイヤーの人数
 };
 

@@ -80,6 +80,7 @@ private:	// 自分だけがアクセス可能
 	float m_fAngle;		// 対角線の角度
 	D3DXVECTOR3 m_pos;	// 位置
 	D3DXVECTOR3 m_rot;	// 向き
+	D3DXCOLOR m_col;		// 色
 	int m_nIdxTexture;	// テクスチャ番号
 };
 

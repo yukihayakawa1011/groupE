@@ -71,6 +71,7 @@ public:	// 誰でもアクセス可能
 	void SetNext(CCamera *pNext) { m_pNext = pNext; }
 	void SetPrev(CCamera *pPrev) { m_pPrev = pPrev; }
 	void SetDraw(const bool bDraw) { m_bDraw = bDraw; }
+	void SetActive(const bool bActive) { m_bActive = bActive; }
 	void BindId(int nId) { m_nId = nId; }
 
 private:	// 自分だけがアクセス可能
@@ -98,6 +99,7 @@ private:	// 自分だけがアクセス可能
 	CCamera *m_pPrev;			// 前
 	int m_nId;				// 使用コントローラー番号
 	bool m_bDraw;				// 描画
+	bool m_bActive;			// 操作可能かどうか
 };
 
 //**********************************************************

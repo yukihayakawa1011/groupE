@@ -41,6 +41,7 @@ int *CResult::m_pScore = 0;
 int CResult::m_nTopScore = 0;
 CResult::TYPE CResult::m_type = CResult::TYPE_MAX;
 int CResult::m_nNumPlayer = 0;
+int CResult::m_nQuota = 0;
 CPlayer **CResult::m_ppPlayer = nullptr;
 CScore **CResult::m_apScore = nullptr;
 
