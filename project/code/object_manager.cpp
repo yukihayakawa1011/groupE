@@ -120,7 +120,7 @@ void CObjectManager::DrawAll(TYPE type)
 			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
 
 			// 描画処理
-			if (type == TYPE_ALL || pObject->GetObject2D() == nullptr)
+			if (pObject->GetDraw())
 			{
 				pObject->Draw();
 			}
