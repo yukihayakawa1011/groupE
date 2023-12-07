@@ -31,6 +31,12 @@
 
 // 無名名前空間
 namespace {
+	const float PLAYER_MOVESIZE = (100.0f);
+	const float PLAYER_SPACE = (200.0f);
+	const float PLAYER_POSY = (2000.0f);
+	const float PLAYER_RANK_POSY = (-350.0f);
+	const float PLAYER_UPPOSY = (300.0f);
+	const float PLAYER_GRAVITY = (-15.0f);
 	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT * 0.9f, 0.0f};	// 合計スコアの設置座標
 	const D3DXVECTOR3 SCORE_POS = {SCREEN_WIDTH * 0.425f, SCREEN_HEIGHT * 0.3f, 0.0f};	// 合計スコアの設置座標
 	const float SCORE_MOVESIZE = (130.0f);
@@ -92,29 +98,12 @@ HRESULT CResult::Init(void)
 		}
 	}
 
-	// 人数分ポインタ生成
-	m_ppPlayer = new CPlayer*[m_nNumPlayer];
-
-	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-	{
-		char aBodyPass[200] = "";		// 胴体パス
-		char aLegPass[200] = "";		// 下半身パス
-
-		sprintf(&aBodyPass[0], "data\\TXT\\Player%d\\motion_ninjabody.txt", nCnt);
-		sprintf(&aLegPass[0], "data\\TXT\\Player%d\\motion_ninjaleg.txt", nCnt);
-
-		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-((m_nNumPlayer - 1) * 100.0f) + nCnt * 200.0f, 0.0f, 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
-		m_ppPlayer[nCnt]->BindId(nCnt);
-		m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_NONE);
-	}
-
 	m_apScore = new CScore*[m_nNumPlayer];
 
 	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
 		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(SCORE_POS.x + (-((m_nNumPlayer - 1) * SCORE_MOVESIZE) + nCount * SCORE_SPACE), SCORE_POS.y, 0.0f), 15.0f, 20.0f);
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
-
 	}
 
 	SetTopScore(m_pScore);
@@ -152,6 +141,23 @@ HRESULT CResult::Init(void)
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
 	}
 
+	// 人数分ポインタ生成
+	m_ppPlayer = new CPlayer*[m_nNumPlayer];
+
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	{
+		char aBodyPass[200] = "";		// 胴体パス
+		char aLegPass[200] = "";		// 下半身パス
+
+		sprintf(&aBodyPass[0], "data\\TXT\\Player%d\\motion_ninjabody.txt", nCnt);
+		sprintf(&aLegPass[0], "data\\TXT\\Player%d\\motion_ninjaleg.txt", nCnt);
+
+		m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-((m_nNumPlayer - 1) * PLAYER_MOVESIZE) + nCnt * PLAYER_SPACE, PLAYER_POSY + m_pRank[nCnt] * PLAYER_RANK_POSY + PLAYER_UPPOSY * m_nNumPlayer, 60.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
+		m_ppPlayer[nCnt]->BindId(nCnt);
+		m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_NONE);
+	}
+
+
 	// 合計スコアの取得
 	int nTotalScore = SumScore();
 
@@ -174,8 +180,8 @@ HRESULT CResult::Init(void)
 			continue;
 		}
 
-		if (nTotalScore < m_nQuota) {	// ノルマを達成していない
-			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION - 2);
+		if (nTotalScore < m_nQuota || m_pScore[nCnt] <= 0) {	// ノルマを達成していない
+			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION);
 		}
 		else {
 			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION - 1);
@@ -236,6 +242,34 @@ void CResult::Uninit(void)
 //===============================================
 void CResult::Update(void)
 {
+	// プレイヤーの更新
+	
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	{
+		if (m_ppPlayer == nullptr) {
+			break;
+		}
+
+		if (m_ppPlayer[nCnt] == nullptr) {
+			continue;
+		}
+
+		D3DXVECTOR3 pos = m_ppPlayer[nCnt]->GetPosition();
+
+		if (pos.y == 0.0f) {
+			continue;
+		}
+
+		// 重力を反映
+		pos.y += PLAYER_GRAVITY;
+
+		if (pos.y <= 0.0f) {	// 地面に埋まった
+			pos.y = 0.0f;
+			m_ppPlayer[nCnt]->SetMotion(m_ppPlayer[nCnt]->GetMotion() - 2);
+		}
+
+		m_ppPlayer[nCnt]->SetPosition(pos);
+	}
 	m_nTimer++;
 
 	if (/*CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 

@@ -12,7 +12,7 @@
 
 // マクロ定義
 #define TEXTURE_MONEY	("data\\TEXTURE\\money0.png")	//お金の単位のテクスチャ
-#define MONEY_POSY	(38.0f)		//単位の場所
+#define MONEY_POSY	(25.0f)		//単位の場所
 
 // ファイル名
 const char *CUI::m_apFrameFileName[FRAME_MAX] =
@@ -67,7 +67,7 @@ HRESULT CUI::Init(void)
 	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\frame0.png"));
 	m_pObject[0]->SetPosition(m_pos);
 	m_pObject[0]->SetRotation(m_rot);
-	m_pObject[0]->SetLength(300.0f, 125.0f);
+	m_pObject[0]->SetLength(200.0f, 125.0f);
 
 	m_pObject[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(TEXTURE_MONEY));
 	m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 50.0f, m_pos.y + 38.0f, m_pos.z));
@@ -98,7 +98,7 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 	//フレーム
 	m_pObject[0]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(m_apFrameFileName[nFrame]));
 	m_pObject[0]->SetPosition(m_pos);
-	m_pObject[0]->SetLength(350.0f, 125.0f);
+	m_pObject[0]->SetLength(250.0f, 100.0f);
 
 	//お金の単位
 	m_pObject[1]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(TEXTURE_MONEY));
@@ -106,35 +106,35 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 
 	//顔
 	m_pObject[2]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(m_apIconFileName[nIcon]));
-	m_pObject[2]->SetLength(70.0f, 70.0f);
+	m_pObject[2]->SetLength(45.0f, 45.0f);
 
 	//タイプごとの位置設定
 	if (nFrame == 0)
 	{
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y - MONEY_POSY, m_pos.z));	//単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 135.0f, m_pos.y + 15.0f, m_pos.z));	//顔
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 80.0f, m_pos.y - MONEY_POSY, m_pos.z));	//単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 95.0f, m_pos.y + 15.0f, m_pos.z));	//顔
 		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 
 	}
 	else if (nFrame == 1)
 	{
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + 20.0f, m_pos.z));	//顔
-		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y + 20.0f, m_pos.z));	//顔
+		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
 	else if (nFrame == 2)
 	{
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 80.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 95.0f, m_pos.y - 20.0f, m_pos.z));	//顔
 		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
 	else if (nFrame == 3)
 	{	
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y - 20.0f, m_pos.z));	//顔
 		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f , m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
@@ -220,7 +220,7 @@ void CUI::SetLife(int nLife)
 	{
 		if (m_pLife == NULL)
 		{
-			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 			m_pLife->SetLife(m_nLife);
 		}
 	}

@@ -123,14 +123,14 @@ void CLife::SetLife(int nLife)
 				if (nCnt % 2 == 0)
 				{
 					m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartL_0.png"));
-					m_pObject[nCnt]->SetPosition(D3DXVECTOR3(m_pos.x + (20.0f * nCnt), m_pos.y, m_pos.z));
-					m_pObject[nCnt]->SetLength(25.0f, 50.0f);
+					m_pObject[nCnt]->SetPosition(D3DXVECTOR3(m_pos.x + (13.0f * nCnt), m_pos.y, m_pos.z));
+					m_pObject[nCnt]->SetLength(15.0f, 40.0f);
 				}
 				else if (nCnt % 2 != 0)
 				{
 					m_pObject[nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\heartR_0.png"));
-					m_pObject[nCnt]->SetPosition(D3DXVECTOR3(m_pos.x + (20.0f * nCnt), m_pos.y, m_pos.z));
-					m_pObject[nCnt]->SetLength(25.0f, 50.0f);
+					m_pObject[nCnt]->SetPosition(D3DXVECTOR3(m_pos.x + (13.0f * nCnt), m_pos.y, m_pos.z));
+					m_pObject[nCnt]->SetLength(15.0f, 40.0f);
 				}
 			}
 		}

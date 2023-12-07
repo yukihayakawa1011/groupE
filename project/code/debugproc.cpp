@@ -14,6 +14,7 @@
 #include "Xfile.h"
 #include "camera.h"
 #include "object_manager.h"
+#include "camera_manager.h"
 
 // 静的メンバ変数宣言
 LPD3DXFONT CDebugProc::m_pFont = NULL;	// デバッグフォントへのポインタ
@@ -104,11 +105,11 @@ void CDebugProc::Update(void)
 	Print("FPS : %d\n", GetFPS());
 	Print("現在のモード [ %s ] : [Enter]で遷移\n", m_apMode[CManager::GetInstance()->GetMode()]);
 	
-	Print("オブジェクトの総数 : %d\n", CObjectManager::GetInstance()->GetNumAll());
+	//Print("オブジェクトの総数 : %d\n", CObjectManager::GetInstance()->GetNumAll());
 	Print("優先順位別(%d個分) ↓\n", NUM_PRIORITY);
 	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
 	{
-		Print("[%d] : %d  ", nCntPri, CObjectManager::GetInstance()->GetPriNumAll(nCntPri));
+		//Print("[%d] : %d  ", nCntPri, CObjectManager::GetInstance()->GetPriNumAll(nCntPri));
 
 		if ((nCntPri + 1) % 4 == 0)
 		{
@@ -122,17 +123,21 @@ void CDebugProc::Update(void)
 
 	{
 		D3DXVECTOR3 CamPosV = CManager::GetInstance()->GetCamera()->GetPositionV();
-		CManager::GetInstance()->GetDebugProc()->Print("カメラ 視点 : [%f, %f, %f]\n", CamPosV.x, CamPosV.y, CamPosV.z);
+		Print("カメラ 視点 : [%f, %f, %f]\n", CamPosV.x, CamPosV.y, CamPosV.z);
 	}
 
 	{
 		D3DXVECTOR3 CamPosR = CManager::GetInstance()->GetCamera()->GetPositionR();
-		CManager::GetInstance()->GetDebugProc()->Print("       注視点 : [%f, %f, %f]\n", CamPosR.x, CamPosR.y, CamPosR.z);
+		Print("       注視点 : [%f, %f, %f]\n", CamPosR.x, CamPosR.y, CamPosR.z);
 	}
 
 	{
 		D3DXVECTOR3 CamRot = CManager::GetInstance()->GetCamera()->GetRotation();
-		CManager::GetInstance()->GetDebugProc()->Print("       向き : [%f, %f, %f]\n", CamRot.x, CamRot.y, CamRot.z);
+		Print("       向き : [%f, %f, %f]\n", CamRot.x, CamRot.y, CamRot.z);
+	}
+
+	{
+		Print("       カメラ数 : [%d]\n", CCameraManager::GetInstance()->GetNum());
 	}
 
 	{

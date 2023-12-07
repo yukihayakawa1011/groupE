@@ -41,6 +41,7 @@ CTitle::CTitle()
 	m_bPush = false;
 	m_pFileLoad = nullptr;
 	m_pEnter = nullptr;
+	m_appEnemy = nullptr;
 }
 
 //===============================================
@@ -178,9 +179,12 @@ void CTitle::Update(void)
 		if (m_bPush == false)
 		{//1‰ñ‚¾‚¯‰¹–Â‚ç‚·EˆÚ“®—ÊÝ’è
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
-			for (int cnt = 0; cnt < ENEMY_NUM; cnt++)
-			{
-				m_appEnemy[cnt]->SetPointID(ExPattern::POINTID_TITLE);
+
+			if (m_appEnemy != nullptr) {
+				for (int cnt = 0; cnt < ENEMY_NUM; cnt++)
+				{
+					m_appEnemy[cnt]->SetPointID(ExPattern::POINTID_TITLE);
+				}
 			}
 		}
 
