@@ -18,6 +18,7 @@ CCameraManager::CCameraManager()
 	// 値のクリア
 	m_pCur = nullptr;
 	m_pTop = nullptr;
+	m_nNum = 0;
 }
 
 //==========================================================
@@ -92,6 +93,8 @@ void CCameraManager::ListIn(CCamera *pCamera)
 		m_pTop = pCamera;	// 自分自身が先頭になる
 		m_pCur = pCamera;	// 自分自身が最後尾になる
 	}
+
+	m_nNum++;
 }
 
 //==========================================================
@@ -137,4 +140,6 @@ void CCameraManager::ListOut(CCamera *pCamera)
 			pCamera->GetPrev()->SetNext(pCamera->GetNext());	// 自身の前に次のポインタを覚えさせる
 		}
 	}
+
+	m_nNum--;
 }

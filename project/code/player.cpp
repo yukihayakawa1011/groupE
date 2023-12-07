@@ -2610,3 +2610,19 @@ void CPlayer::SetMotion(int nMotion) {
 
 	m_pLeg->GetMotion()->InitSet(nMotion);
 }
+
+//===============================================
+// ƒ‚[ƒVƒ‡ƒ“‚ðŽæ“¾
+//===============================================
+int CPlayer::GetMotion(void) {
+
+	if (m_pBody == nullptr) {
+		return -1;
+	}
+
+	if (m_pBody->GetMotion() == nullptr) {
+		return -1;
+	}
+
+	return m_pBody->GetMotion()->GetNowMotion();
+}

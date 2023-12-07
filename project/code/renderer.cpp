@@ -136,10 +136,10 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 void CRenderer::Uninit(void)
 {
 	// タスクの廃棄
-	CTaskManager::GetInstance()->Uninit();
+	//CTaskManager::GetInstance()->Uninit();
 
 	// オブジェクトの廃棄
-	CObjectManager::GetInstance()->Uninit();
+	//CObjectManager::GetInstance()->Uninit();
 
 	// Direct3Dデバイスの廃棄
 	if (m_pD3DDevice != NULL)
