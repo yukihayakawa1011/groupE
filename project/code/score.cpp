@@ -49,7 +49,7 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 		{// 使用されていない場合
 
 			// 生成
-			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * POLYSIZE, pos.y, pos.z), fWidth, fHeight);
+			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * (fWidth + fWidth * 0.75f), pos.y, pos.z), fWidth, fHeight);
 
 			if (m_apNumber[nCount] != nullptr)
 			{// 使用されている場合
