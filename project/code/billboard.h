@@ -57,6 +57,7 @@ public:	// 誰でもアクセス可能
 	void SetAlphaText(bool bTest) { m_bAlphatest = bTest; }
 	void SetZTest(bool bTest) { m_bZtest = bTest; }
 	void SetLighting(bool bTest) { m_bLighting = bTest; }
+	void SetCurrent(D3DXMATRIX *Current) { m_pCurrent = Current; }
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
@@ -69,7 +70,8 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ関数
 	LPDIRECT3DVERTEXBUFFER9 m_pVtxBuff;	//頂点バッファへのポインタ
-	D3DXMATRIX m_mtxWorld;	//ワールドマトリックス
+	D3DXMATRIX m_mtxWorld;	// ワールドマトリックス
+	D3DXMATRIX *m_pCurrent;    //　親
 	D3DXVECTOR3 m_pos;		//位置
 	D3DXVECTOR3 m_rot;		//向き
 	D3DXCOLOR m_col;		// 色

@@ -31,12 +31,6 @@ CThrowItem::CThrowItem()
 		m_apObject[nCnt] = nullptr;
 	}
 
-	m_pObject = nullptr;
-
-	for (int nCnt = 0; nCnt < MAX_ITEM; nCnt++) {
-		m_pNumber[nCnt] = nullptr;
-	} 
-
 	m_nBeforeID = 0;
 	m_nNowID = 0;
 	m_nNextID = 0;
@@ -123,28 +117,6 @@ void CThrowItem::Uninit(void)
 		}
 	}
 
-	if (m_pObject != nullptr) { // 使用されていた場合
-
-		// 終了処理
-		m_pObject->Uninit();
-
-		// 使用していない状態にする
-		m_pObject = nullptr;
-	}
-
-	for (int nCount = 0; nCount < MAX_ITEM; nCount++)
-	{
-		if (m_pNumber[nCount] != nullptr)
-		{// 使用されていた場合
-
-			// 終了処理
-			m_pNumber[nCount]->Uninit();
-
-			// 使用していない状態にする
-			m_pNumber[nCount] = nullptr;
-		}
-	}
-
 	// 開放
 	Release();
 }
@@ -206,12 +178,6 @@ void CThrowItem::SetPolySize(const float fWidth, const float fHeight)
 		// 座標設定
 		m_apObject[TYPE_ARROW]->SetSize(m_fPolyWidth - 15.0f, m_fPolyHeight - 10.0f);
 	}
-
-	//if (m_pObject != nullptr)
-	//{
-	//	// 座標設定
-	//	m_pObject->SetSize(m_fPolyWidth, m_fPolyHeight);
-	//}
 }
 
 //==========================================================
@@ -239,14 +205,7 @@ void CThrowItem::SetMixPosition(void)
 				// 座標設定
 				m_apObject[nCount]->SetPosition(D3DXVECTOR3(pos));
 			}
-			
 		}
-	}
-
-	if (m_pObject != nullptr)
-	{
-		// 座標設定
-		m_pObject->SetPosition(D3DXVECTOR3(pos));
 	}
 }
 

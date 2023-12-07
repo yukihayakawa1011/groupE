@@ -23,6 +23,7 @@ class CLife;
 class CUI;
 class CGage;
 class CThrowItem;
+class CHeadUI;
 
 // マクロ定義
 #define MAX_ITEM  (1280)  // 所持できるアイテムの最大数
@@ -218,6 +219,7 @@ private:	// 自分だけがアクセス可能
 	CUI *m_pUI;
 	CGage *m_pGage;		// 忍術ゲージ
 	CThrowItem *m_pThrowItem; // 頭の上に出るアイテムのアイコン
+	CHeadUI *m_pHeadUI;
 };
 
 #endif

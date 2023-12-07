@@ -9,13 +9,8 @@
 
 #include "task.h"	// これでファイルインクルードできます
 
-// マクロ定義
-#define MAX_ITEM (2)  // 表示する桁
-
 // 前方宣言
 class CObjectBillboard;
-class CNumber;
-class CPlayer;
 
 //==========================================================
 // サンプルのクラス定義
@@ -42,6 +37,7 @@ public:	// 誰でもアクセス可能
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
+	CObjectBillboard *GetObjectBillBoard(void) { return m_apObject[0]; }
 	static CThrowItem *Create(D3DXVECTOR3* pPos, const float fUpHeight, const float fPolyWidth, const float fPolyHeight);
 
 	// メンバ関数(取得)
@@ -66,8 +62,6 @@ private:	// 自分だけがアクセス可能
 	float m_fPolyHeight;	// オブジェクトの高さ
 	float m_fRate;		    // 割合
 	CObjectBillboard *m_apObject[TYPE_MAX];	// オブジェクトの配列
-	CObjectBillboard *m_pObject;            // ビルボードへのポインタ
-	CNumber *m_pNumber[MAX_ITEM];           // ナンバーへのポインタ
 };
 
 #endif

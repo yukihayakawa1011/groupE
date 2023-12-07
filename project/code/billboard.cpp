@@ -23,6 +23,7 @@ CObjectBillboard::CObjectBillboard(int nPriority) : CObject(nPriority)
 	m_bLighting = true;
 	m_bAlphatest = true;
 	m_bZtest = true;
+	m_pCurrent = nullptr;
 }
 
 //==========================================================
@@ -106,18 +107,28 @@ void CObjectBillboard::Draw(void)
 	//ワールドマトリックスの初期化
 	D3DXMatrixIdentity(&m_mtxWorld);
 
-	//ビューマトリックスを取得
-	pDevice->GetTransform(D3DTS_VIEW, &mtxView);
+	if (m_pCurrent == nullptr)
+	{
+		//ビューマトリックスを取得
+		pDevice->GetTransform(D3DTS_VIEW, &mtxView);
 
-	//ポリゴンをカメラに対して正面に向ける
-	D3DXMatrixInverse(&m_mtxWorld, NULL, &mtxView);
-	m_mtxWorld._41 = 0.0f;
-	m_mtxWorld._42 = 0.0f;
-	m_mtxWorld._43 = 0.0f;
-
+		//ポリゴンをカメラに対して正面に向ける
+		D3DXMatrixInverse(&m_mtxWorld, NULL, &mtxView);
+		m_mtxWorld._41 = 0.0f;
+		m_mtxWorld._42 = 0.0f;
+		m_mtxWorld._43 = 0.0f;
+	}
+	
 	//位置を反映
 	D3DXMatrixTranslation(&mtxTrans, m_pos.x, m_pos.y, m_pos.z);
 	D3DXMatrixMultiply(&m_mtxWorld, &m_mtxWorld, &mtxTrans);
+
+	if (m_pCurrent != nullptr)
+	{
+		// マトリックスと親のマトリックスをかけ合わせる
+		D3DXMatrixMultiply(&m_mtxWorld,
+			&m_mtxWorld, m_pCurrent);
+	}
 
 	//ワールドマトリックスの設定
 	pDevice->SetTransform(D3DTS_WORLD, &m_mtxWorld);

@@ -43,6 +43,7 @@
 #include "effect.h"
 #include "gage.h"
 #include "throwitem.h"
+#include "headui.h"
 
 //===============================================
 // マクロ定義
@@ -149,6 +150,7 @@ CPlayer::CPlayer()
 	m_pMyCamera = nullptr;
 	m_pGage = nullptr;
 	m_pThrowItem = nullptr;
+	m_pHeadUI = nullptr;
 
 	for (int i = 0; i < MAX_ITEM; i++)
 	{
@@ -240,6 +242,7 @@ HRESULT CPlayer::Init(void)
 
 	m_pThrowItem = CThrowItem::Create(&m_Info.pos, ITEMUI_UPHEIGHT, ITEMUI_SIZE.x, ITEMUI_SIZE.y);
 	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
+	m_pHeadUI = CHeadUI::Create(&m_Info.pos, m_pThrowItem->GetObjectBillBoard()->GetMtx(), GAGE_UPHEIGHT, 5.0f, 10.0f);
 	m_fGage = MAX_GAGE;
 	m_Info.state = STATE_APPEAR;
 	m_action = ACTION_NEUTRAL;
@@ -327,6 +330,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 
 	m_pThrowItem = CThrowItem::Create(&m_Info.pos, ITEMUI_UPHEIGHT, ITEMUI_SIZE.x, ITEMUI_SIZE.y);
 	m_pGage = CGage::Create(&m_Info.pos, GAGE_UPHEIGHT, GAGE_SIZE.x, GAGE_SIZE.y);
+	m_pHeadUI = CHeadUI::Create(&m_Info.pos, m_pThrowItem->GetObjectBillBoard()->GetMtx(), GAGE_UPHEIGHT, 5.0f, 10.0f);
 	m_fGage = MAX_GAGE;
 	m_nLife = START_LIFE;
 	m_type = TYPE_NONE;
@@ -523,6 +527,14 @@ void CPlayer::Update(void)
 		if (m_pThrowItem != nullptr)
 		{
 			m_pThrowItem->SetItem(m_nItemId);
+		}
+	}
+
+	// 所持しているアイテムの数
+	{
+		if (m_pHeadUI != nullptr)
+		{
+			m_pHeadUI->SetIdx(GetSelectItem(m_nItemId));
 		}
 	}
 }
@@ -2121,6 +2133,8 @@ void CPlayer::Drop(int nDropCnt)
 		}
 
 		m_aSaveType[nCnt] = 0;
+
+		SubItemCount(m_aSaveType[nCnt]);
 
 		if (nullptr != pItem)
 		{
