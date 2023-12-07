@@ -469,7 +469,7 @@ void CEnemy::Controller(void)
 	}
 	else if (CManager::GetInstance()->GetMode() == CScene::MODE_TITLE && m_nPointID == ExPattern::POINTID_TITLE)
 	{
-		pos.z += 8.0f * CManager::GetInstance()->GetSlow()->Get();
+		pos.z += 10.0f * CManager::GetInstance()->GetSlow()->Get();
 
 		m_Info.pos = pos;
 		m_fRotDest = D3DX_PI;

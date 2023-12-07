@@ -27,6 +27,7 @@ namespace {
 	const D3DXVECTOR3 ENTERROT = { 0.0f, 0.0f, 0.0f };	// ENTER 向き
 	const int AUTOMOVE_RANKING = 640;	// ランキング自動遷移時間
 	const int MOVE_TUTORIAL = 110;		// チュートリアルに遷移するまでの時間
+	const int ENEMY_NUM = 3;			//演出用敵出現数
 }
 
 //===============================================
@@ -97,7 +98,11 @@ HRESULT CTitle::Init(void)
 	}
 
 	//演出用敵生成
-	m_pEnemy = CEnemy::Create(D3DXVECTOR3(0.0f, 10.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+	m_appEnemy = new CEnemy*[ENEMY_NUM];
+	for (int cnt = 0; cnt < ENEMY_NUM; cnt++)
+	{
+		m_appEnemy[cnt] = CEnemy::Create(D3DXVECTOR3(0.0f, 10.0f, -1600.0f -(150.0f * cnt)), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+	}
 
 	//ドーム追加
 	CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6000.0f, 6000.0f,3,8,8);
@@ -125,6 +130,12 @@ void CTitle::Uninit(void)
 		m_pEnter->Uninit();
 		delete m_pEnter;
 		m_pEnter = nullptr;
+	}
+
+	if (m_appEnemy != nullptr)
+	{
+		delete m_appEnemy;
+		m_appEnemy = nullptr;
 	}
 }
 
@@ -167,7 +178,10 @@ void CTitle::Update(void)
 		if (m_bPush == false)
 		{//1回だけ音鳴らす・移動量設定
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
-			m_pEnemy->SetPointID(ExPattern::POINTID_TITLE);
+			for (int cnt = 0; cnt < ENEMY_NUM; cnt++)
+			{
+				m_appEnemy[cnt]->SetPointID(ExPattern::POINTID_TITLE);
+			}
 		}
 
 		m_bPush = true;		//ボタンを押した
