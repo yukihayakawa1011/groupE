@@ -380,7 +380,7 @@ void CManager::Update(void)
 	// マウスの更新処理
 	if (m_pInputPad != NULL)
 	{// 使用している場合
-		m_pInputPad->Update();
+ 		m_pInputPad->Update();
 	}
 
 	if (m_pScene != NULL)
