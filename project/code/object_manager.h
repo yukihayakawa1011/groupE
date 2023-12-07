@@ -33,7 +33,8 @@ public:
 	HRESULT Init(void);
 	void Uninit(void);
 	void Draw(void);
-	void DrawAll(TYPE type = TYPE_ALL);
+	void DrawAll(void);
+	void DrawAll3D(void);
 	void ListIn(CObject *pObject);
 	CObject *GetTop(const int nPriority) { return m_apTop[nPriority]; }
 	int GetNumAll(void) { return m_nNumAll; }

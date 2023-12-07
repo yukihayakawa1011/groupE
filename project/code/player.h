@@ -125,6 +125,7 @@ public:	// 誰でもアクセス可能
 	void BindUI(CUI *pUI);
 	void Ninjutsu(void);
 	void Blow(void);
+	void SetMotion(int nMotion);
 
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }

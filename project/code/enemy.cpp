@@ -34,6 +34,7 @@
 #include "object3DFan.h"
 #include "waist.h"
 #include "point.h"
+#include "particle.h"
 
 //無名名前空間
 namespace
@@ -142,6 +143,10 @@ HRESULT CEnemy::Init(void)
 	m_type = TYPE_NONE;
 	m_nLife = START_LIFE;
 
+	// 煙のパーティクル生成
+	CModel *pModel = m_pLeg->GetParts(0);
+	CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+
 	return S_OK;
 }
 
@@ -205,7 +210,7 @@ HRESULT CEnemy::Init(const char *pBodyName, const char *pLegName)
 		}
 	}
 
-	if (nullptr == m_pFov)
+	if (nullptr == m_pFov && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{
 		m_pFov = CObject3DFan::Create(m_Info.pos, m_Info.rot, SEARCH_LENGTH, SEARCH_RADIUS * D3DX_PI, 8);
 		m_pFov->SetColor(D3DXCOLOR(1.0f, 1.0f, 0.0f, 0.6f));
@@ -334,7 +339,7 @@ void CEnemy::Update(void)
 	{// 使用されている場合
 		CModel *pModel = m_pLeg->GetParts(0);
 
-		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		pModel->SetCurrentPosition(D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
 	}
 }
 
@@ -364,6 +369,9 @@ CEnemy *CEnemy::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, D3DXVECTOR3 move, const
 
 		// 移動量設定
 		pEnemy->SetMove(move);
+
+		//煙出す
+		CParticle::Create(pos, CEffect::TYPE_SMAKE);
 	}
 	else
 	{// 生成に失敗した場合
@@ -402,7 +410,7 @@ void CEnemy::Controller(void)
 		}
 	}
 
-	if (CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL)
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_TUTORIAL && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{// チュートリアル以外
 
 		pos = GetPosition();	// 座標を取得
@@ -459,6 +467,23 @@ void CEnemy::Controller(void)
 		//敵同士当たり判定
 		this->Collision();
 	}
+	else if (CManager::GetInstance()->GetMode() == CScene::MODE_TITLE && m_nPointID == ExPattern::POINTID_TITLE)
+	{
+		pos.z += 10.0f * CManager::GetInstance()->GetSlow()->Get();
+
+		m_Info.pos = pos;
+		m_fRotDest = D3DX_PI;
+
+		Adjust();
+
+		// 起伏との当たり判定
+		float fHeight = CMeshField::GetHeight(m_Info.pos);
+		if (m_Info.pos.y <= fHeight)
+		{
+			m_Info.pos.y = fHeight;
+			m_bJump = false;
+		}
+	}
 }
 
 //===============================================
@@ -507,7 +532,7 @@ void CEnemy::Trace(void)
 	}
 	else
 	{//一応ぬるぽの時はぐるぐるするようにする
-		m_nPointID = -1;
+		m_nPointID = ExPattern::POINTID_FREE;
 	}
 }
 
@@ -530,11 +555,11 @@ void CEnemy::Search(void)
 	}
 	else
 	{
-		if (m_nPointID != -1)
+		if (m_nPointID != ExPattern::POINTID_FREE && m_nPointID != ExPattern::POINTID_TITLE)
 		{//移動パターンあり
 			Trace();
 		}
-		else
+		else if (m_nPointID == ExPattern::POINTID_FREE)
 		{//適当にぐるぐる
 			Rotation();	// 回転
 		}
@@ -601,7 +626,7 @@ void CEnemy::Chace(void)
 		}
 		else
 		{//一応ぬるぽの時はぐるぐるするようにする
-			m_nPointID = -1;
+			m_nPointID = ExPattern::POINTID_FREE;
 		}
 	}
 }

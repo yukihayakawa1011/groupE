@@ -2585,3 +2585,28 @@ void CPlayer::BindUI(CUI *pUI)
 { 
 	m_pUI = pUI; m_pUI->SetLife(m_nLife); 
 }
+
+//===============================================
+// Žw’èƒ‚[ƒVƒ‡ƒ“‚ÉÝ’è
+//===============================================
+void CPlayer::SetMotion(int nMotion) {
+	if (m_pBody == nullptr) {
+		return;
+	}
+
+	if (m_pBody->GetMotion() == nullptr) {
+		return;
+	}
+
+	m_pBody->GetMotion()->InitSet(nMotion);
+
+	if (m_pLeg == nullptr) {
+		return;
+	}
+
+	if (m_pLeg->GetMotion() == nullptr) {
+		return;
+	}
+
+	m_pLeg->GetMotion()->InitSet(nMotion);
+}
