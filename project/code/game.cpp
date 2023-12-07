@@ -190,7 +190,7 @@ HRESULT CGame::Init(void)
 
 			if (nCnt == 1 || nCnt == 3)
 			{
-				fData = 930.0f;
+				fData = 1025.0f;
 			}
 			else
 			{
@@ -199,7 +199,7 @@ HRESULT CGame::Init(void)
 
 			if (nCnt == 2 || nCnt == 3)
 			{
-				fData1 = 600.0f;
+				fData1 = 620.0f;
 				fData2 = 60.0f;
 
 			}
@@ -210,8 +210,9 @@ HRESULT CGame::Init(void)
 			}
 
 			//UI‚Ì¶¬
-			CUI *pUI = CUI::Create(D3DXVECTOR3(175.0f + fData, 60.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
+			CUI *pUI = CUI::Create(D3DXVECTOR3(130.0f + fData, 50.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
 			m_ppPlayer[nCnt]->BindUI(pUI);
+			
 
 			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + fData, 25.0f + fData1 + fData2, 0.0f), 16.0f, 20.0f);
 			m_ppPlayer[nCnt]->BindScore(pScore);
