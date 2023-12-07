@@ -9,6 +9,7 @@
 #include "camera.h"
 #include "manager.h"
 #include "camera_manager.h"
+#include <assert.h>
 
 CObjectManager *CObjectManager::m_pInstance = NULL;
 
@@ -33,7 +34,19 @@ CObjectManager::CObjectManager()
 //==========================================================
 CObjectManager::~CObjectManager()
 {
-
+	for (int nCntPri = 0; nCntPri < NUM_PRIORITY; nCntPri++)
+	{
+		if (m_apTop[nCntPri] != nullptr) {
+			assert(false);
+		}
+		if (m_apCur[nCntPri] != nullptr) {
+			assert(false);
+		}
+		if (m_aPriNumAll[nCntPri] > 0) {
+			assert(false);
+		}
+		
+	}
 }
 
 //==========================================================

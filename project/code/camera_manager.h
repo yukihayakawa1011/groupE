@@ -32,6 +32,7 @@ public:	// 誰でもアクセス可能
 	CCamera *GetCur(void) { return m_pCur; }
 	void ListIn(CCamera *pCamera);
 	void ListOut(CCamera *pCamera);
+	int GetNum(void) { return m_nNum; }
 
 private:	// 自分だけがアクセス可能
 
@@ -40,6 +41,7 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	CCamera *m_pTop;	// 先頭
 	CCamera *m_pCur;	// 最後尾
+	int m_nNum;
 	static CCameraManager *m_pInstance;	// インスタンス
 };
 

@@ -209,7 +209,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// モードの生成
-	SetMode(CScene::MODE_TITLE);
+	SetMode(CScene::MODE_GAME);
 
 	return S_OK;
 }
@@ -380,7 +380,7 @@ void CManager::Update(void)
 	// マウスの更新処理
 	if (m_pInputPad != NULL)
 	{// 使用している場合
-		m_pInputPad->Update();
+ 		m_pInputPad->Update();
 	}
 
 	if (m_pScene != NULL)

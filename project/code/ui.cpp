@@ -12,7 +12,7 @@
 
 // マクロ定義
 #define TEXTURE_MONEY	("data\\TEXTURE\\money0.png")	//お金の単位のテクスチャ
-#define MONEY_POSY	(30.0f)		//単位の場所
+#define MONEY_POSY	(25.0f)		//単位の場所
 
 // ファイル名
 const char *CUI::m_apFrameFileName[FRAME_MAX] =
@@ -119,22 +119,22 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 	}
 	else if (nFrame == 1)
 	{
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + 20.0f, m_pos.z));	//顔
-		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y - MONEY_POSY, m_pos.z)); //単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y + 20.0f, m_pos.z));	//顔
+		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
 	else if (nFrame == 2)
 	{
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 125.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 80.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x - 95.0f, m_pos.y - 20.0f, m_pos.z));	//顔
 		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
 	else if (nFrame == 3)
 	{	
-		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
-		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 130.0f, m_pos.y - 20.0f, m_pos.z));	//顔
+		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
+		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y - 20.0f, m_pos.z));	//顔
 		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f , m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
@@ -220,7 +220,7 @@ void CUI::SetLife(int nLife)
 	{
 		if (m_pLife == NULL)
 		{
-			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 			m_pLife->SetLife(m_nLife);
 		}
 	}
