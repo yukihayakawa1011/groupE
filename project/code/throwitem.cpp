@@ -14,7 +14,7 @@
 namespace {
 	const int DEF_PRI = (7);	// 優先順位
 	const char* FILENAME[CThrowItem::TYPE_MAX] = {	// テクスチャファイル名
-		"data\\TEXTURE\\arrow00.png",
+		"data\\TEXTURE\\arrow01.png",
 		"data\\TEXTURE\\item_icon.png",
 		"data\\TEXTURE\\frame.png",
 		

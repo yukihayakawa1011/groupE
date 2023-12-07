@@ -14,6 +14,7 @@
 // マクロ定義
 #define MAX_WIDTHPATTERN	(10)	// パターン数
 #define LEN (10.0f)
+#define TEXTURENAME  ("data\\TEXTURE\\number004.png") // 数字
 
 //===============================================
 // コンストラクタ
@@ -75,7 +76,7 @@ HRESULT CHeadUI::Init()
 			m_apObject[nCount]->SetLighting(true);
 			m_apObject[nCount]->SetZTest(false);
 			m_apObject[nCount]->SetFusion(CObjectBillboard::FUSION_NORMAL);
-			m_apObject[nCount]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\number000.png"));
+			m_apObject[nCount]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(TEXTURENAME));
 		}
 	}
 
@@ -146,7 +147,7 @@ CHeadUI *CHeadUI::Create(D3DXVECTOR3 * pPos, D3DXMATRIX *Matrix, const float fUp
 	if (pOverUI != NULL)
 	{// 使用されていない場合
 
-	 // 初期化処理
+		// 初期化処理
 		pOverUI->Init();
 
 		// 親の設定
@@ -178,7 +179,7 @@ void CHeadUI::SetIdx(const int nIdx)
 	if (m_apObject[0] != nullptr && m_apObject[1] != nullptr)
 	{// 使用していた場合
 
-	 // 頂点情報の設定
+		// 頂点情報の設定
 		m_apObject[0]->SetVtx(m_nIdx % 100 / 10, MAX_WIDTHPATTERN, 1);
 		m_apObject[1]->SetVtx(m_nIdx % 10 / 1, MAX_WIDTHPATTERN, 1);
 	}
@@ -231,9 +232,9 @@ void CHeadUI::SetMixPosition(void)
 {
 	for (int nCount = 0; nCount < NUM_DIGIT; nCount++)
 	{
-		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f + (nCount * 10.0f), 0.0f, -20.0f);	// 基準の座標
+		D3DXVECTOR3 pos = D3DXVECTOR3(5.0f + (nCount * 12.0f), 0.0f, -20.0f);	// 基準の座標
 
-		pos.y += 10.0f;	      // 設定された高さを上げる
+		pos.y += 2.0f;	      // 設定された高さを上げる
 
 		if(m_apObject[nCount] != nullptr)
 		{
