@@ -608,6 +608,9 @@ void CObject2D::SetPlayerVtx(void)
 	m_pVtxBuff->Unlock();
 }
 
+//===============================================
+// テクスチャ座標設定
+//===============================================
 void CObject2D::SetTex(const float fTexU, const float fTexV, const float fWidth, const float fHeight)
 {
 	VERTEX_2D *pVtx;

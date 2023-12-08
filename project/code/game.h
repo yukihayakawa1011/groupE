@@ -19,6 +19,7 @@ class CClient;
 class CMeshDome;
 class CMiniMap;
 class CPause;
+class CQuataUI;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -82,6 +83,8 @@ private:
 	CTime *m_pTimer;			// タイマー
 	CMiniMap* m_pMiniMap;		// ミニマップ
 	CClient *m_pClient;			// クライアントのポインタ
+	CScore *m_QuataScore;       // ノルマのスコア
+	CQuataUI *m_QuataUI;        // ノルマのUI
 	char m_aAddress[30];		// 接続先サーバーのアドレス
 	static STATE m_state;		// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
@@ -91,8 +94,10 @@ private:
 	std::mutex m_mutex;
 	bool m_bEnd;
 	int m_nStartCnt;			// 開始タイマー
+	int m_nCntLostQuataUI;      // ノルマのUIが消えるまでのカウント
 	bool m_bPause;              // ポーズ
 	bool m_bQuota;              // ノルマ達成しているどうか
+	bool m_bDispQuataUI;        // ノルマのUIができるかどうか
 };
 
 #endif
