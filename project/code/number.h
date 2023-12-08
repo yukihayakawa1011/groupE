@@ -32,6 +32,7 @@ public:	// 誰でもアクセス可能
 	static CNumber *Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
 	CObject2D *GetObject2D(void) { return m_pObject2D; }
 	void PolygonDelete(void);
+	void SetPosition(const D3DXVECTOR3& pos);
 	
 	void BindTexture(LPDIRECT3DTEXTURE9 m_Texture);  //テクスチャをバインド
 
