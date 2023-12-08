@@ -14,7 +14,7 @@
 namespace {
 	const int DEF_PRI = (7);	// 優先順位
 	const char* FILENAME[CThrowItem::TYPE_MAX] = {	// テクスチャファイル名
-		"data\\TEXTURE\\arrow00.png",
+		"data\\TEXTURE\\arrow01.png",
 		"data\\TEXTURE\\item_icon.png",
 		"data\\TEXTURE\\frame.png",
 		
@@ -90,12 +90,6 @@ HRESULT CThrowItem::Init(void)
 		m_apObject[nCount]->SetFusion(CObjectBillboard::FUSION_NORMAL);
 		m_apObject[nCount]->BindTexture(CManager::GetInstance()->GetTexture()->Regist(FILENAME[nCount]));
 	}
-	
-	// 数字生成
-	/*for (int nCount = 0; nCount < MAX_ITEM; nCount++)
-	{
-		m_pNumber[nCount] = CNumber::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10.0f, 20.0f);
-	}*/
 	
 	return S_OK;
 }
@@ -221,11 +215,4 @@ void CThrowItem::SetItem(int nThrowItemID)
 	{
 		m_apObject[TYPE_ITEM]->SetVtx(((float)(m_nNowID - 1) * 0.09f), 1.0f);
 	}
-
-	//if (m_pObject != nullptr)
-	//{// 使用されていた場合
-
-	// // テクスチャ座標設定
-	//	m_pObject->SetVtx(((float)(m_nNowID - 1) * 0.09f), 1.0f);
-	//}
 }

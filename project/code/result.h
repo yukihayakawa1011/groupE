@@ -14,6 +14,7 @@ class CFileLoad;
 class CMeshDome;
 class CTime;
 class CCharacter;
+class CObject2D;
 
 #define MAX_RANK	(4)		// ランキングの順位数
 
@@ -62,9 +63,11 @@ private:
 	CMeshDome *m_pMeshSky;		// 空用
 	CTime *m_pTime;			// タイマー
 	CScore *m_pTotalScore;		// 合計スコアオブジェクト
+	CObject2D **m_ppRank;
 	static CScore **m_apScore;	// スコアのポインタ(順位分)
 	static CPlayer **m_ppPlayer;	// プレイヤーのポインタ
 	int m_nTimer;				// 遷移タイマー
+	int m_nWorst;				// 最下位の順位
 	int *m_pRank;				// ランク
 	bool m_bClear;			// 達成かどうか
 	static int *m_pScore;		// 今回のスコア
