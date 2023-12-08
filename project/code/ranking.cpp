@@ -170,8 +170,13 @@ HRESULT CRanking::Init(void)
 
 	if (m_nRank != -1)
 	{
-		m_apScore[0][m_nOne]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
-		m_apScore[1][m_nTotal]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		if (m_nOne > -1) {
+			m_apScore[0][m_nOne]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		}
+
+		if (m_nTotal > -1) {
+			m_apScore[1][m_nTotal]->SetClo(D3DXCOLOR(1.0f, 0.0f, 0.0f, 1.0f));
+		}
 	}
 
 	//ƒJƒƒ‰‰Šú‰»

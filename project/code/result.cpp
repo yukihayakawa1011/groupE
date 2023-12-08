@@ -37,6 +37,7 @@ namespace {
 	const float PLAYER_RANK_POSY = (-350.0f);
 	const float PLAYER_UPPOSY = (300.0f);
 	const float PLAYER_RANKMOVEPOS_Y = (900.0f);
+	const float CAMERA_MOVESTARTPOSY = (1400.0f);
 	const float PLAYER_GRAVITY = (-15.0f);
 	const float RANK_DOWNSPEED = (20.0f);
 	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT * 0.9f, 0.0f};	// 合計スコアの設置座標
@@ -71,6 +72,7 @@ CResult::CResult()
 	m_pRank = nullptr;
 	m_bClear = false;
 	m_ppRank = nullptr;
+	m_nWorst = 0;
 }
 
 //===============================================
@@ -128,12 +130,17 @@ HRESULT CResult::Init(void)
 		m_ppRank[nCnt]->SetPosition(D3DXVECTOR3(RANK_POS.x + (-((m_nNumPlayer - 1) * RANK_MOVESIZE) + nCnt * RANK_SPACE), RANK_POS.y, 0.0f));
 		m_ppRank[nCnt]->SetSize(RANK_SIZE.x, RANK_SIZE.y);
 		m_ppRank[nCnt]->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
+
+		if (m_pRank[nCnt] > m_nWorst)
+		{
+			m_nWorst = m_pRank[nCnt];
+		}
 	}
 
 	//カメラ初期化
 	{
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(0.0f, 137.77f, -301.94f));
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -D3DX_PI * 0.5f, 1.63f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -D3DX_PI * 0.5f, 2.63f));
 		CManager::GetInstance()->GetCamera()->SetLength(300.0f);
 
 		D3DVIEWPORT9 viewport;
@@ -240,8 +247,14 @@ void CResult::Uninit(void)
 			m_ppRank[nCnt] = nullptr;	// 使用していない状態にする
 		}
 
-		delete[] m_ppPlayer;	// ポインタの開放
+		delete[] m_ppRank;	// ポインタの開放
 		m_ppRank = nullptr;	// 使用していない状態にする
+	}
+
+	if (m_pTotalScore != nullptr) {
+		m_pTotalScore->Uninit();
+		delete m_pTotalScore;
+		m_pTotalScore = nullptr;
 	}
 
 	m_type = TYPE_MAX;
@@ -260,6 +273,9 @@ void CResult::Uninit(void)
 //===============================================
 void CResult::Update(void)
 {
+	int nLandPlayer = 0;	// 着地プレイヤー数
+	bool bCamera = false;
+
 	// プレイヤーの更新
 	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 	{
@@ -273,7 +289,24 @@ void CResult::Update(void)
 
 		D3DXVECTOR3 pos = m_ppPlayer[nCnt]->GetPosition();
 
-		if (pos.y <= PLAYER_RANKMOVEPOS_Y && pos.y > 0.0f) {	// 座標を設定
+		if (pos.y <= CAMERA_MOVESTARTPOSY && pos.y > PLAYER_RANKMOVEPOS_Y) {	// 座標を設定
+
+			if (m_pRank == nullptr) {
+				continue;
+			}
+
+			if (m_pRank[nCnt] == m_nWorst) {
+
+				if (!bCamera) {
+					CCamera *pCamera = CManager::GetInstance()->GetCamera();
+					D3DXVECTOR3 rot = pCamera->GetRotation();
+					rot.z -= 0.03f;
+					pCamera->SetRotation(rot);
+					bCamera = true;
+				}
+			}
+		}
+		else if (pos.y <= PLAYER_RANKMOVEPOS_Y && pos.y > 0.0f) {	// 座標を設定
 			if (m_ppRank != nullptr) {
 				if (m_ppRank[nCnt] != nullptr) {
 					D3DXVECTOR3 RankPos = m_ppRank[nCnt]->GetPosition();
@@ -292,6 +325,7 @@ void CResult::Update(void)
 			}
 		}
 		else if (pos.y == 0.0f) {	// 着地済み
+			nLandPlayer++;
 			continue;
 		}
 
@@ -305,12 +339,17 @@ void CResult::Update(void)
 
 		m_ppPlayer[nCnt]->SetPosition(pos);
 	}
-	m_nTimer++;
 
-	if (/*CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 
-		||*/ CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
-	{
-		CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
+	if (nLandPlayer >= m_nNumPlayer) {	// 全員着地した
+		m_nTimer++;
+
+		if (m_nTimer >= MOVE_TIMER ||
+			CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) ||
+			CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
+		{
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
+			m_nTimer = 0;
+		}
 	}
 
 	CScene::Update();
@@ -336,7 +375,7 @@ void CResult::SetScore(CPlayer **ppPlayer)
 
 	for (int i = 0; i < m_nNumPlayer; i++)
 	{
-		if (!ppPlayer[i]->GetGoal())
+		if (ppPlayer[i]->GetGoal())
 		{
 			m_pScore[i] = ppPlayer[i]->GetScore()->GetScore();
 		}

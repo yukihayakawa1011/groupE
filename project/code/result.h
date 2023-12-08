@@ -67,6 +67,7 @@ private:
 	static CScore **m_apScore;	// スコアのポインタ(順位分)
 	static CPlayer **m_ppPlayer;	// プレイヤーのポインタ
 	int m_nTimer;				// 遷移タイマー
+	int m_nWorst;				// 最下位の順位
 	int *m_pRank;				// ランク
 	bool m_bClear;			// 達成かどうか
 	static int *m_pScore;		// 今回のスコア
