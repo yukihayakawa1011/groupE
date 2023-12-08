@@ -45,17 +45,22 @@ public:	// 誰でもアクセス可能
 	void SetIdx(const int nIdx);
 	void SetScore(int nScore);
 	void SetClo(D3DXCOLOR col);
+	void SetPosition(const D3DXVECTOR3& pos);
 
 	// メンバ関数(取得)
 	int GetIdx(void) { return m_nIdx; }
 	int GetScore(void) { return m_nNumScore; }
+	D3DXVECTOR3 GetPosition(void) const { return m_pos; }
 
 private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	CNumber *m_apNumber[NUM_SCORE];	// ナンバーへのポインタ
-	int m_nIdx;	                    // 数字の番号
-	int m_nNumScore;                // スコア
+	D3DXVECTOR3 m_pos;				// 位置
+	float m_fHeight;				// 高さ
+	float m_fWidth;				// 幅
+	int m_nIdx;					// 数字の番号
+	int m_nNumScore;				// スコア
 };
 
 #endif
