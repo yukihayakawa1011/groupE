@@ -19,6 +19,7 @@ class CClient;
 class CMeshDome;
 class CMiniMap;
 class CPause;
+class CQuataUI;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -76,22 +77,27 @@ private:
 	bool EndCheck(void);
 
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
-	CPlayer **m_ppPlayer;			// プレイヤーのポインタ
-	CMultiCamera **m_ppCamera;		// カメラのポインタ
+	CPlayer **m_ppPlayer;		// プレイヤーのポインタ
+	CMultiCamera **m_ppCamera;	// カメラのポインタ
 	CMeshDome *m_pMeshDome;		// メッシュドームのポインタ
-	CTime *m_pTimer;				// タイマー
-	CMiniMap* m_pMiniMap;			// ミニマップ
+	CTime *m_pTimer;			// タイマー
+	CMiniMap* m_pMiniMap;		// ミニマップ
 	CClient *m_pClient;			// クライアントのポインタ
-	char m_aAddress[30];			// 接続先サーバーのアドレス
-	static STATE m_state;			// 状態
+	CScore *m_QuataScore;       // ノルマのスコア
+	CQuataUI *m_QuataUI;        // ノルマのUI
+	char m_aAddress[30];		// 接続先サーバーのアドレス
+	static STATE m_state;		// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
-	static int m_nNumPlayer;		// プレイ人数
-	CPause *m_pPause;				// ポーズ画面
+	static int m_nNumPlayer;	// プレイ人数
+	CPause *m_pPause;			// ポーズ画面
 	WSADATA m_wsaData;
 	std::mutex m_mutex;
 	bool m_bEnd;
-	int m_nStartCnt;				// 開始タイマー
-	bool m_bPause;              //ポーズ
+	int m_nStartCnt;			// 開始タイマー
+	int m_nCntLostQuataUI;      // ノルマのUIが消えるまでのカウント
+	bool m_bPause;              // ポーズ
+	bool m_bQuota;              // ノルマ達成しているどうか
+	bool m_bDispQuataUI;        // ノルマのUIができるかどうか
 };
 
 #endif

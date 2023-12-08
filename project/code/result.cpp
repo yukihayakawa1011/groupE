@@ -36,12 +36,15 @@ namespace {
 	const float PLAYER_POSY = (2000.0f);
 	const float PLAYER_RANK_POSY = (-350.0f);
 	const float PLAYER_UPPOSY = (300.0f);
+	const float PLAYER_RANKMOVEPOS_Y = (900.0f);
+	const float CAMERA_MOVESTARTPOSY = (1400.0f);
 	const float PLAYER_GRAVITY = (-15.0f);
+	const float RANK_DOWNSPEED = (20.0f);
 	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT * 0.9f, 0.0f};	// 合計スコアの設置座標
-	const D3DXVECTOR3 SCORE_POS = {SCREEN_WIDTH * 0.425f, SCREEN_HEIGHT * 0.3f, 0.0f};	// 合計スコアの設置座標
+	const D3DXVECTOR3 SCORE_POS = {SCREEN_WIDTH * 0.425f, -SCREEN_HEIGHT * 1.4f, 0.0f};		// 合計スコアの設置座標
 	const float SCORE_MOVESIZE = (130.0f);
 	const float SCORE_SPACE = (270.0f);
-	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.4f, 0.0f };	// 合計スコアの設置座標
+	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.5f, -SCREEN_HEIGHT * 1.3f, 0.0f };		// 合計スコアの設置座標
 	const float RANK_MOVESIZE = (135.0f);
 	const float RANK_SPACE = (270.0f);
 	const D3DXVECTOR2 RANK_SIZE = { 50.0f, 30.0f };
@@ -68,6 +71,8 @@ CResult::CResult()
 	m_pTotalScore = nullptr;
 	m_pRank = nullptr;
 	m_bClear = false;
+	m_ppRank = nullptr;
+	m_nWorst = 0;
 }
 
 //===============================================
@@ -115,19 +120,27 @@ HRESULT CResult::Init(void)
 	// それぞれのランク付け
 	SetRank(m_nNumPlayer);
 
+	// 人数分ポインタ生成
+	m_ppRank = new CObject2D*[m_nNumPlayer];
+
 	// ランクのポリゴン生成
 	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-		CObject2D *pObj = CObject2D::Create(NUM_PRIORITY);
-		pObj->BindTexture(CTexture::TYPE_RESULTRANK);
-		pObj->SetPosition(D3DXVECTOR3(RANK_POS.x + (-((m_nNumPlayer - 1) * RANK_MOVESIZE) + nCnt * RANK_SPACE), RANK_POS.y, 0.0f));
-		pObj->SetSize(RANK_SIZE.x, RANK_SIZE.y);
-		pObj->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
+		m_ppRank[nCnt] = CObject2D::Create(NUM_PRIORITY);
+		m_ppRank[nCnt]->BindTexture(CTexture::TYPE_RESULTRANK);
+		m_ppRank[nCnt]->SetPosition(D3DXVECTOR3(RANK_POS.x + (-((m_nNumPlayer - 1) * RANK_MOVESIZE) + nCnt * RANK_SPACE), RANK_POS.y, 0.0f));
+		m_ppRank[nCnt]->SetSize(RANK_SIZE.x, RANK_SIZE.y);
+		m_ppRank[nCnt]->SetVtx(m_pRank[nCnt], PLAYER_MAX, 1);
+
+		if (m_pRank[nCnt] > m_nWorst)
+		{
+			m_nWorst = m_pRank[nCnt];
+		}
 	}
 
 	//カメラ初期化
 	{
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(0.0f, 137.77f, -301.94f));
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -D3DX_PI * 0.5f, 1.63f));
+		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -D3DX_PI * 0.5f, 2.63f));
 		CManager::GetInstance()->GetCamera()->SetLength(300.0f);
 
 		D3DVIEWPORT9 viewport;
@@ -226,6 +239,24 @@ void CResult::Uninit(void)
 		m_ppPlayer = nullptr;	// 使用していない状態にする
 	}
 
+	if (m_ppRank != nullptr) { // 使用していた場合
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			// 終了処理
+			m_ppRank[nCnt]->Uninit();
+			m_ppRank[nCnt] = nullptr;	// 使用していない状態にする
+		}
+
+		delete[] m_ppRank;	// ポインタの開放
+		m_ppRank = nullptr;	// 使用していない状態にする
+	}
+
+	if (m_pTotalScore != nullptr) {
+		m_pTotalScore->Uninit();
+		delete m_pTotalScore;
+		m_pTotalScore = nullptr;
+	}
+
 	m_type = TYPE_MAX;
 
 	if (m_pScore != nullptr) {
@@ -242,8 +273,10 @@ void CResult::Uninit(void)
 //===============================================
 void CResult::Update(void)
 {
+	int nLandPlayer = 0;	// 着地プレイヤー数
+	bool bCamera = false;
+
 	// プレイヤーの更新
-	
 	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 	{
 		if (m_ppPlayer == nullptr) {
@@ -256,7 +289,43 @@ void CResult::Update(void)
 
 		D3DXVECTOR3 pos = m_ppPlayer[nCnt]->GetPosition();
 
-		if (pos.y == 0.0f) {
+		if (pos.y <= CAMERA_MOVESTARTPOSY && pos.y > PLAYER_RANKMOVEPOS_Y) {	// 座標を設定
+
+			if (m_pRank == nullptr) {
+				continue;
+			}
+
+			if (m_pRank[nCnt] == m_nWorst) {
+
+				if (!bCamera) {
+					CCamera *pCamera = CManager::GetInstance()->GetCamera();
+					D3DXVECTOR3 rot = pCamera->GetRotation();
+					rot.z -= 0.03f;
+					pCamera->SetRotation(rot);
+					bCamera = true;
+				}
+			}
+		}
+		else if (pos.y <= PLAYER_RANKMOVEPOS_Y && pos.y > 0.0f) {	// 座標を設定
+			if (m_ppRank != nullptr) {
+				if (m_ppRank[nCnt] != nullptr) {
+					D3DXVECTOR3 RankPos = m_ppRank[nCnt]->GetPosition();
+					RankPos.y += RANK_DOWNSPEED;
+					m_ppRank[nCnt]->SetPosition(RankPos);
+					m_ppRank[nCnt]->SetSize(RANK_SIZE.x, RANK_SIZE.y);
+				}
+			}
+
+			if (m_apScore != nullptr) {
+				if (m_apScore[nCnt] != nullptr) {
+					D3DXVECTOR3 RankPos = m_apScore[nCnt]->GetPosition();
+					RankPos.y += RANK_DOWNSPEED;
+					m_apScore[nCnt]->SetPosition(RankPos);
+				}
+			}
+		}
+		else if (pos.y == 0.0f) {	// 着地済み
+			nLandPlayer++;
 			continue;
 		}
 
@@ -270,12 +339,17 @@ void CResult::Update(void)
 
 		m_ppPlayer[nCnt]->SetPosition(pos);
 	}
-	m_nTimer++;
 
-	if (/*CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || m_nTimer > MOVE_TIMER 
-		||*/ CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) || CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
-	{
-		CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
+	if (nLandPlayer >= m_nNumPlayer) {	// 全員着地した
+		m_nTimer++;
+
+		if (m_nTimer >= MOVE_TIMER ||
+			CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_A, 0) ||
+			CManager::GetInstance()->GetInputPad()->GetTrigger(CInputPad::BUTTON_START, 0))
+		{
+			CManager::GetInstance()->GetFade()->Set(CScene::MODE_RANKING);
+			m_nTimer = 0;
+		}
 	}
 
 	CScene::Update();

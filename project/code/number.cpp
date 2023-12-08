@@ -210,3 +210,16 @@ void CNumber::BindTexture(LPDIRECT3DTEXTURE9 m_Texture)
 {
 	m_pTexture = m_Texture;
 }
+
+void CNumber::SetPosition(const D3DXVECTOR3& pos)
+{
+	if (m_pObject2D == nullptr) {
+		return;
+	}
+
+	// 座標設定
+	m_pObject2D->SetPosition(pos);
+
+	// サイズ設定
+	m_pObject2D->SetSize(m_pObject2D->GetWidth(), m_pObject2D->GetHeight());
+}
