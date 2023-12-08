@@ -43,6 +43,10 @@ CScore::~CScore()
 //===============================================
 HRESULT CScore::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 {
+	m_pos = pos;
+	m_fWidth = fWidth;
+	m_fHeight = fHeight;
+
 	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{
 		if (m_apNumber[nCount] == nullptr)
@@ -247,6 +251,23 @@ void CScore::SetClo(D3DXCOLOR col)
 		if (m_apNumber[nCnt] != NULL)
 		{// 使用していない場合
 			m_apNumber[nCnt]->GetObject2D()->SetCol(col);
+		}
+	}
+}
+
+//===============================================
+// 座標設定
+//===============================================
+void CScore::SetPosition(const D3DXVECTOR3& pos) {
+	m_pos = pos;
+
+	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+	{
+		if (m_apNumber[nCount] != nullptr)
+		{// 使用されていない場合
+
+			// 生成
+			m_apNumber[nCount]->SetPosition(D3DXVECTOR3(m_pos.x + nCount * (m_fWidth + m_fWidth * 0.75f), m_pos.y, m_pos.z));
 		}
 	}
 }
