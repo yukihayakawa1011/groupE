@@ -55,6 +55,7 @@ namespace {
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
 	const int START_TIMER = (90);				// 開始制限時間
 	const int START_WAITCNT = (180);
+	const int SCORE = (5000);
 }
 
 //===============================================
@@ -78,6 +79,7 @@ namespace {
 #define ADDRESSFILE	"data\\TXT\\address.txt"
 #define WIDTH_NUM		(2)		// 横の分割数
 #define HEIGHT_NUM	(2)		// 縦の分割数
+#define STANDARDSCORE  (5000)   // ノルマの基準点
 
 //===============================================
 // 静的メンバ変数
@@ -102,6 +104,7 @@ CGame::CGame()
 	m_nStartCnt = 0;
 	m_bPause = false;
 	m_pPause = nullptr;
+	m_bQuota = false;
 }
 
 //===============================================
@@ -121,6 +124,7 @@ CGame::CGame(int nNumPlayer)
 	m_nStartCnt = 0;
 	m_bPause = false;
 	m_pPause = nullptr;
+	m_bQuota = false;
 
 	// 人数設定
 	m_nNumPlayer = nNumPlayer;
@@ -439,6 +443,11 @@ HRESULT CGame::Init(void)
 
 	CGimmick::SwitchOn();
 
+	int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
+
+	// ノルマの設定
+	CResult::SetQuata(QuataScore);
+
 	return S_OK;
 }
 
@@ -604,7 +613,10 @@ void CGame::Update(void)
 		CScene::Update();
 	}
 
-
+	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
+	{
+		CGimmick::SwitchOn();
+	}
 }
 
 //===============================================
