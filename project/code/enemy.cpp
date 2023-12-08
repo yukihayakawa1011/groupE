@@ -41,7 +41,7 @@ namespace
 {
 	const float MOVE = 2.0f;			// 移動量
 	const float GRAVITY = -0.9f;		// 敵重力
-	const float JUMP = 25.0f;			// 敵ジャンプ力
+	const float JUMP = 20.0f;			// 敵ジャンプ力
 	const float ROT_MULTI = 0.1f;		// 向き補正倍率
 	const float INER = 0.3f;			// 慣性
 	const float BLOW_INER = 0.1f;		// 吹き飛ばし中慣性
