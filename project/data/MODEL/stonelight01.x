@@ -1001,7 +1001,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "stone-white00.png";
+    "data\\TEXTURE\\stone-white00.png";
    }
   }
   Material {
@@ -1010,7 +1010,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "cicle00 (1).png";
+    "data\\TEXTURE\\cicle00 (1).png";
    }
   }
   Material {
@@ -1019,7 +1019,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "cicle00 (1).png";
+    "data\\TEXTURE\\cicle00 (1).png";
    }
   }
   Material {

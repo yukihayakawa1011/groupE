@@ -20,7 +20,7 @@ TEXTURE_FILENAME = data/TEXTURE/rotatedoor001.jpg			# [1]川水(上)
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 13
+NUM_MODEL = 15
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -38,6 +38,8 @@ MODEL_FILENAME = data/MODEL/house.x  	   # [9]家
 MODEL_FILENAME = data/MODEL/warehouse.x    # [10]倉庫
 MODEL_FILENAME = data/MODEL/fence.x		   # [11]壁みたいなフェンス
 MODEL_FILENAME = data/MODEL/fence_corner.x # [12]壁みたいなフェンスの角
+MODEL_FILENAME = data/MODEL/tatehuda.x     # [13]立札
+MODEL_FILENAME = data/MODEL/post.x         # [14]ポスト
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1979,6 +1981,22 @@ MODELSET
 	POS = -1950 0 -50
 	ROT = 0 90 0
 	SHADOW = 0
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = 180.0 0 -300
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -170.0 80 -190
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
 END_MODELSET
 
 END_SCRIPT		# この行は絶対消さないこと！

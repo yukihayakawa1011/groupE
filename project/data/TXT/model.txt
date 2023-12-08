@@ -26,7 +26,7 @@ TEXTURE_FILENAME = data/TEXTURE/gold000.jpg			# [7]金の掛け軸
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 19
+NUM_MODEL = 21
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -50,6 +50,8 @@ MODEL_FILENAME = data/MODEL/5x15x5mCube.x # [15]高いキューブ
 MODEL_FILENAME = data\MODEL\15x15x5mCube.x # [16]高いキューブ
 MODEL_FILENAME = data\MODEL\25x15x5mCube.x # [17]高いキューブ
 MODEL_FILENAME = data\MODEL\50x15x5mCube.x # [18]高いキューブ
+MODEL_FILENAME = data\MODEL\stonelight01.x # [19]石灯篭
+MODEL_FILENAME = data\MODEL\shrub.x        # [20]低木
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1121,6 +1123,70 @@ END_MODELSET
 MODELSET
 	TYPE = 16
 	POS = 500 0 -4500
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -1500 -0 1100
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -1600 -0 1100
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -1600 -0 800
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -1400 -0 1100
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -1400 -0 800
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 19
+	POS = -1500 -0 800
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 20
+	POS = -1300 0 830
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 20
+	POS = -1300 0 1070
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
