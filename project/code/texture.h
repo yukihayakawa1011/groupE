@@ -41,7 +41,9 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_RANK_ONE,		// 個人スコア
 		TYPE_RANK_TEAM,		// チームスコア
 		TYPE_RANK_NEW,		// スコア更新
-		TYPE_RESULTRANK,			// リザルト
+		TYPE_RESULTRANK,		// リザルト
+		TYPE_RESULTCLEAR,		// ノルマ達成
+		TYPE_RESULTFAILED,	// ノルマ失敗
 		TYPE_MAX				   
 	};
 
