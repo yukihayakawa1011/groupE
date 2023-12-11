@@ -60,13 +60,13 @@ HRESULT CTime::Init(void)
 
 	// テクスチャの読み込み
 	m_nIdxTexture = pTexture->Regist(CTexture::GetFileName(CTexture::TYPE_TIMER));
-	CObject2D *pObj = CObject2D::Create(7);
+	CObject2D *pObj = CObject2D::Create(6);
 	pObj->SetPosition(D3DXVECTOR3(m_pos.x + X_SPACE * 1.0f + NUM_WIDTH * 1.25f, m_pos.y, 0.0f));
 	pObj->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.75f));
 	pObj->SetSize(NUM_WIDTH * 5.0f, NUM_HEIGHT * 0.7f);
 	pObj->BindTexture(pTexture->Regist("data\\TEXTURE\\map001.png"));
 
-	pObj = CObject2D::Create(7);
+	pObj = CObject2D::Create(6);
 	pObj->SetPosition(D3DXVECTOR3(m_pos.x + X_SPACE * 1.0f + NUM_WIDTH * 1.4f, m_pos.y, 0.0f));
 	pObj->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 	pObj->SetSize(NUM_WIDTH * 0.4f, NUM_HEIGHT * 0.45f);

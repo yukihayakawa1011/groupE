@@ -19,14 +19,15 @@ public:	// 誰でもアクセス可能な定義
 	// 種類列挙
 	typedef enum
 	{
-		LABEL_BGM_TITLE = 0,		// BGMタイトル
+		LABEL_BGM_TITLE = 0,	// BGMタイトル
 		LABEL_BGM_TUTORIAL,		// BGMチュートリアル
 		LABEL_BGM_GAME,			// BGMゲーム
-		LABEL_BGM_RESULT,			// BGMリザルト
+		LABEL_BGM_RESULT_CLEAR,	// BGMリザルトクリア
+		LABEL_BGM_RESULT_FAILED,// BGMリザルト失敗
 		LABEL_BGM_RANKING,		// BGMランキング
 		LABEL_SE_CLICK,			// Enter
 		LABEL_SE_STEP,			// ステップ音
-		LABEL_SE_DAMAGE,			// ダメージ音
+		LABEL_SE_DAMAGE,		// ダメージ音
 		LABEL_SE_SPAWN,			// 復活音
 		LABEL_MAX,
 	} LABEL;
