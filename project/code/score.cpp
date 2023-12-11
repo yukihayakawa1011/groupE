@@ -1,7 +1,7 @@
 //===============================================
 //
 // 数字全般の処理 [score.cpp]
-// Author : Ryosuke Ohara
+// Author : Ryosuke Ohhara
 //
 //===============================================
 #include "score.h"
@@ -40,7 +40,8 @@ CScore::~CScore()
 
 //===============================================
 // 初期化処理
-//===============================================
+//==============================================
+
 HRESULT CScore::Init(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, float fHeight)
 {
 	m_pos = pos;
@@ -48,12 +49,14 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, floa
 	m_fHeight = fHeight;
 	m_nDesit = nDesit;
 
+	
 	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] == nullptr)
 		{// 使用されていない場合
 
 			// 生成
+			
 			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * (fWidth + fWidth * fGap), pos.y, pos.z), fWidth, fHeight);
 
 			if (m_apNumber[nCount] != nullptr)
@@ -73,6 +76,7 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, floa
 //===============================================
 HRESULT CScore::Init()
 {
+	
 	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] == nullptr)
@@ -98,16 +102,16 @@ HRESULT CScore::Init()
 //===============================================
 void CScore::Uninit(void)
 {
-	for (int nCount = 0; nCount < m_nDesit; nCount++)
+	
+	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{
 		if (m_apNumber[nCount] != nullptr)
 		{// 使用されていた場合
 
 			// 終了処理
 			m_apNumber[nCount]->Uninit();
-
-			//破棄処理
 			delete m_apNumber[nCount];
+			
 
 			// 使用していない状態にする
 			m_apNumber[nCount] = nullptr;
@@ -120,6 +124,7 @@ void CScore::Uninit(void)
 //===============================================
 void CScore::Update(void)
 {
+	
 	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] != nullptr)
@@ -169,6 +174,7 @@ CScore *CScore::Create(void)
 //===============================================
 // 生成
 //===============================================
+
 CScore *CScore::Create(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, float fHeight)
 {
 	CScore *pNum = NULL;
@@ -182,6 +188,7 @@ CScore *CScore::Create(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, fl
 		{// 使用されている場合
 
 			// 初期化処理
+
 			pNum->Init(pos, nDesit, fGap, fWidth, fHeight);
 		}
 	}
@@ -195,6 +202,7 @@ CScore *CScore::Create(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, fl
 void CScore::AddScore(int nScore)
 {
 	m_nNumScore += nScore;
+
 
 	//スコアを各配列に格納
 	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
@@ -222,6 +230,7 @@ void CScore::LowerScore(int nScore)
 {
 	m_nNumScore -= nScore;
 
+
 	//スコアを各配列に格納
 	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
 	{
@@ -243,6 +252,7 @@ void CScore::SetScore(int nScore)
 {
 	m_nNumScore = nScore;
 
+
 	//スコアを各配列に格納
 	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
 	{
@@ -262,6 +272,7 @@ void CScore::SetScore(int nScore)
 //===============================================
 void CScore::SetClo(D3DXCOLOR col)
 {
+
 	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
 	{
 		if (m_apNumber[nCnt] != NULL)
@@ -276,6 +287,7 @@ void CScore::SetClo(D3DXCOLOR col)
 //===============================================
 void CScore::SetPosition(const D3DXVECTOR3& pos) {
 	m_pos = pos;
+
 
 	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{

@@ -46,6 +46,7 @@
 #include "gimmick_pull.h"
 #include "pause.h"
 #include "quataui.h"
+#include <assert.h>
 
 // 無名名前空間を定義
 namespace {
@@ -147,7 +148,39 @@ CGame::CGame(int nNumPlayer)
 //===============================================
 CGame::~CGame()
 {
-
+	if (m_pFileLoad != nullptr) {
+		assert(false);
+	}
+	if (m_ppPlayer != nullptr) {
+		assert(false);
+	}
+	if (m_ppCamera != nullptr) {
+		assert(false);
+	}
+	if (m_pMeshDome != nullptr) {
+		assert(false);
+	}
+	if (m_pTimer != nullptr) {
+		assert(false);
+	}
+	if (m_pMiniMap != nullptr) {
+		assert(false);
+	}
+	if (m_pClient != nullptr) {
+		assert(false);
+	}
+	if (m_QuataScore != nullptr) {
+		assert(false);
+	}
+	if (m_QuataUI != nullptr) {
+		assert(false);
+	}
+	if (m_pClient != nullptr) {
+		assert(false);
+	}
+	if (m_pClient != nullptr) {
+		assert(false);
+	}
 }
 
 //===============================================
@@ -190,6 +223,8 @@ HRESULT CGame::Init(void)
 
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
+			m_ppPlayer[nCnt] = nullptr;
+
 			char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
 			char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
 
@@ -473,7 +508,6 @@ HRESULT CGame::Init(void)
 //===============================================
 void CGame::Uninit(void)
 {
-	m_ppPlayer = nullptr;
 	m_bEnd = true;
 
 	while (1)
@@ -513,6 +547,12 @@ void CGame::Uninit(void)
 		m_pClient = nullptr;
 	}
 
+	if (m_QuataScore != nullptr) {
+		m_QuataScore->Uninit();
+		delete m_QuataScore;
+		m_QuataScore = nullptr;
+	}
+
 	if (m_ppPlayer != nullptr) { // 使用していた場合
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
@@ -530,6 +570,7 @@ void CGame::Uninit(void)
 		{
 			// 終了処理
 			m_ppCamera[nCnt]->Uninit();
+			delete m_ppCamera[nCnt];
 			m_ppCamera[nCnt] = nullptr;	// 使用していない状態にする
 		}
 
@@ -598,7 +639,9 @@ void CGame::Update(void)
 			if (m_ppPlayer != nullptr) { // 使用していた場合
 				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 				{
-					m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+					if (m_ppPlayer[nCnt] != nullptr) {
+						m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+					}
 				}
 
 				if (m_QuataUI == nullptr)
@@ -686,7 +729,9 @@ void CGame::Update(void)
 //===============================================
 void CGame::Draw(void)
 {
-	m_pMiniMap->ExploredMap();
+	if (m_pMiniMap != nullptr) {
+		m_pMiniMap->ExploredMap();
+	}
 
 	CScene::Draw();
 }

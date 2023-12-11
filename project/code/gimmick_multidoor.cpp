@@ -86,6 +86,18 @@ void CGimmickMultiDoor::Uninit(void)
 		}
 	}
 
+	if (m_ppButton != nullptr) {	// 生成前に使用されていた
+		// 前回の数繰り返し
+		for (int nCnt = 0; nCnt < m_nNumSwitch; nCnt++) {
+
+			if (m_ppButton[nCnt] != nullptr) {	// 使用されている
+				m_ppButton[nCnt] = nullptr;
+			}
+		}
+		delete[] m_ppButton;	// ポインタの開放
+		m_ppButton = nullptr;	// 使用していない状態にする
+	}
+
 	// リリース
 	Release();
 }

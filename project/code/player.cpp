@@ -671,7 +671,9 @@ void CPlayer::Controller(void)
 
 	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
 	{
-		m_pUI->SetLife(m_nLife);
+		if (m_pUI != nullptr) {
+			m_pUI->SetLife(m_nLife);
+		}
 	}
 
 	// ƒMƒ~ƒbƒN‚Æ‚Ì”»’è
