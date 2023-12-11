@@ -185,8 +185,6 @@ HRESULT CGame::Init(void)
 			m_nNumPlayer = 1;
 		}
 
-		m_nNumPlayer = 4;
-
 		// 人数分ポインタ生成
 		m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -227,11 +225,11 @@ HRESULT CGame::Init(void)
 				fData2 = 0.0f;
 			}
 
-			//UIの生成
+			// UIの生成
 			CUI *pUI = CUI::Create(D3DXVECTOR3(130.0f + fData, 50.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
 			m_ppPlayer[nCnt]->BindUI(pUI);
 			
-
+			// スコアの生成
 			CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}

@@ -28,6 +28,7 @@
 #include "gimmick_multidoor.h"
 #include "gimmick_button.h"
 #include "gimmick_spear.h"
+#include "gimmick_pull.h"
 #include "object3D.h"
 #include "enemy.h"
 #include "item.h"
@@ -127,8 +128,11 @@ HRESULT CTutorial::Init(void)
 	pMultiDoor->SetNumButton(1);
 	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-1700.0f, 0.0f, -600.0f));
 	pMultiDoor->BindButton(pButton);
-	/*pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -1500.0f));
-	pMultiDoor->BindButton(pButton);*/
+	
+	// šâ
+	CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CGimmickPull::Create(D3DXVECTOR3(-200.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CGimmickPull::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	// ’n–Ê‚©‚ç‚Ì‘„
 	CGimmickSpear::Create(D3DXVECTOR3(-850.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
