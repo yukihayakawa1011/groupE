@@ -1,7 +1,7 @@
 //===============================================
 //
-// 数字全般の処理 [number.h]
-// Author : Ibuki Okusada
+// 数字全般の処理 [score.h]
+// Author : Ryosuke Ohara
 //
 //===============================================
 #ifndef _SCORE_H_		// このマクロが定義されていない場合
@@ -26,13 +26,13 @@ public:	// 誰でもアクセス可能
 	~CScore();	// デストラクタ
 
 	// メンバ関数
-	HRESULT Init(D3DXVECTOR3 pos, float fWidth, float fHeight);
+	HRESULT Init(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, float fHeight);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	void Draw(void);
 	static CScore *Create(void);
-	static CScore *Create(D3DXVECTOR3 pos, float fWidth, float fHeight);
+	static CScore *Create(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, float fHeight);
 	//CObject2D *GetObject2D(void) { return m_pObject2D; }
 	void PolygonDelete(void);
 
@@ -58,9 +58,10 @@ private:	// 自分だけがアクセス可能
 	CNumber *m_apNumber[NUM_SCORE];	// ナンバーへのポインタ
 	D3DXVECTOR3 m_pos;				// 位置
 	float m_fHeight;				// 高さ
-	float m_fWidth;				// 幅
-	int m_nIdx;					// 数字の番号
-	int m_nNumScore;				// スコア
+	float m_fWidth;				    // 幅
+	int m_nDesit;                   // 桁数
+	int m_nIdx;					    // 数字の番号
+	int m_nNumScore;			    // スコア
 };
 
 #endif

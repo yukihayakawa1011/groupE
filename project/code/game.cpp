@@ -51,6 +51,7 @@
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
 	const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
+	const D3DXVECTOR2 SCORE_SIZE = { 12.0f, 16.0f };	// ノルマのUIのサイズ
 	const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
@@ -184,6 +185,8 @@ HRESULT CGame::Init(void)
 			m_nNumPlayer = 1;
 		}
 
+		m_nNumPlayer = 4;
+
 		// 人数分ポインタ生成
 		m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -215,7 +218,7 @@ HRESULT CGame::Init(void)
 			if (nCnt == 2 || nCnt == 3)
 			{
 				fData1 = 620.0f;
-				fData2 = 60.0f;
+				fData2 = 50.0f;
 
 			}
 			else
@@ -229,7 +232,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindUI(pUI);
 			
 
-			CScore * pScore = CScore::Create(D3DXVECTOR3(70.0f + fData, 25.0f + fData1 + fData2, 0.0f), 16.0f, 20.0f);
+			CScore * pScore = CScore::Create(D3DXVECTOR3(65.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.75f, SCORE_SIZE.x, SCORE_SIZE.y);
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 
@@ -613,7 +616,7 @@ void CGame::Update(void)
 				// ノルマの点数
 				if (m_QuataScore == nullptr)
 				{
-					m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 5.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 16.0f, 20.0f);
+					m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 35.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 6, 0.75f, 16.0f, 20.0f);
 					m_QuataScore->SetScore(QuataScore);
 				}
 			}

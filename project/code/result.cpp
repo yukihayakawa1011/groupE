@@ -126,7 +126,7 @@ HRESULT CResult::Init(void)
 
 	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
-		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(SCORE_POS.x + (-((m_nNumPlayer - 1) * SCORE_MOVESIZE) + nCount * SCORE_SPACE), SCORE_POS.y, 0.0f), 15.0f, 20.0f);
+		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(SCORE_POS.x + (-((m_nNumPlayer - 1) * SCORE_MOVESIZE) + nCount * SCORE_SPACE), SCORE_POS.y, 0.0f), 6, 0.75f, 15.0f, 20.0f);
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
 	}
 
@@ -193,7 +193,7 @@ HRESULT CResult::Init(void)
 	// 合計スコアの取得
 	m_nTotalScore = SumScore();
 
-	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 25.0f, 45.0f);
+	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 8, 0.75f, 25.0f, 45.0f);
 	m_pTotalScore->SetScore(m_nNowScore);
 	CRanking::SetTotalScore(m_nTotalScore);
 
