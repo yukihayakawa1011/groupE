@@ -135,7 +135,7 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 	{	
 		m_pObject[1]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y + MONEY_POSY, m_pos.z)); //単位
 		m_pObject[2]->SetPosition(D3DXVECTOR3(m_pos.x + 90.0f, m_pos.y - 20.0f, m_pos.z));	//顔
-		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f , m_pos.z), m_rot);
+		CLife *pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f , m_pos.z), m_rot);
 		pLife->SetLife(m_nLife);
 	}
 
@@ -206,37 +206,26 @@ void CUI::SetLife(int nLife)
 	m_nLife = nLife;
 
 	//タイプごとの位置設定
-	if (m_nNumPlayer == 0)
+	if (m_pLife == NULL)
 	{
-
-		if (m_pLife == NULL)
+		if (m_nNumPlayer == 0)
 		{
 			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 			m_pLife->SetLife(m_nLife);
 		}
-
-	}
-	else if (m_nNumPlayer == 1)
-	{
-		if (m_pLife == NULL)
+		else if (m_nNumPlayer == 1)
 		{
 			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y + 20.0f, m_pos.z), m_rot);
 			m_pLife->SetLife(m_nLife);
 		}
-	}
-	else if (m_nNumPlayer == 2)
-	{
-		if (m_pLife == NULL)
+		else if (m_nNumPlayer == 2)
 		{
 			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
 			m_pLife->SetLife(m_nLife);
 		}
-	}
-	else if (m_nNumPlayer == 3)
-	{
-		if (m_pLife == NULL)
+		else if (m_nNumPlayer == 3)
 		{
-			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 70.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
+			m_pLife = CLife::Create(D3DXVECTOR3(m_pos.x - 50.0f, m_pos.y - 20.0f, m_pos.z), m_rot);
 			m_pLife->SetLife(m_nLife);
 		}
 	}
