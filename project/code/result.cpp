@@ -31,24 +31,40 @@
 
 // 無名名前空間
 namespace {
-	const float PLAYER_MOVESIZE = (100.0f);
-	const float PLAYER_SPACE = (200.0f);
-	const float PLAYER_POSY = (2000.0f);
-	const float PLAYER_RANK_POSY = (-350.0f);
-	const float PLAYER_UPPOSY = (300.0f);
-	const float PLAYER_RANKMOVEPOS_Y = (900.0f);
-	const float CAMERA_MOVESTARTPOSY = (1400.0f);
-	const float PLAYER_GRAVITY = (-15.0f);
-	const float RANK_DOWNSPEED = (20.0f);
-	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.4f, SCREEN_HEIGHT * 0.9f, 0.0f};	// 合計スコアの設置座標
+	const float PLAYER_MOVESIZE = (100.0f);	// プレイヤーの横移動サイズ
+	const float PLAYER_SPACE = (200.0f);	// プレイヤー同士の間の距離
+	const float PLAYER_POSY = (2000.0f);	// プレイヤー配置基本Y座標
+	const float PLAYER_RANK_POSY = (-350.0f);	// プレイヤーの順位ごとに上げるY座標
+	const float PLAYER_UPPOSY = (300.0f);	// 最大人数によって変わるプレイヤーの設置Y座標
+	const float PLAYER_RANKMOVEPOS_Y = (900.0f);	// ランクとスコアがついてくる確認Y座標
+	const float CAMERA_MOVESTARTPOSY = (1400.0f);	// カメラ動き始めY座標
+	const float PLAYER_GRAVITY = (-15.0f);	// プレイヤーの落下速度
+	const float RANK_DOWNSPEED = (20.0f);	// ランクとスコアの落下速度
+	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.375f, SCREEN_HEIGHT * 0.9f, 0.0f};	// 合計スコアの設置座標
 	const D3DXVECTOR3 SCORE_POS = {SCREEN_WIDTH * 0.425f, -SCREEN_HEIGHT * 1.4f, 0.0f};		// 合計スコアの設置座標
-	const float SCORE_MOVESIZE = (130.0f);
-	const float SCORE_SPACE = (270.0f);
+	const float SCORE_MOVESIZE = (130.0f);	// スコアの配置移動サイズ
+	const float SCORE_SPACE = (270.0f);		// スコア間の空間
 	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.5f, -SCREEN_HEIGHT * 1.3f, 0.0f };		// 合計スコアの設置座標
-	const float RANK_MOVESIZE = (135.0f);
-	const float RANK_SPACE = (270.0f);
-	const D3DXVECTOR2 RANK_SIZE = { 50.0f, 30.0f };
-	const int PLAYER_MAXMOTION = (13);
+	const float RANK_MOVESIZE = (135.0f);	// ランクの配置移動サイズ
+	const float RANK_SPACE = (270.0f);		// ランク間の空間
+	const D3DXVECTOR2 RANK_SIZE = { 50.0f, 30.0f };	// ランクポリゴンサイズ
+	const D3DXVECTOR3 CLEAR_SETPOS = { -SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.9f, 0.0f};	// clearの配置座標
+	const D3DXVECTOR2 CLEAR_SIZE = {500.0f, 100.0f };	// クリアのサイズ
+	const D3DXVECTOR3 CLEAR_POS = { SCREEN_WIDTH * 0.35f, SCREEN_HEIGHT * 0.9f, 0.0f };	// clearの配置座標
+	const float SCORE_MOVEX = (SCREEN_WIDTH * 0.2f);
+	const float FAILED_ROTATE = (D3DX_PI * 0.125f);
+	const float CLEAR_MOVE = (20.0f);
+	const float CLEAR_ROTMOVEZ = (D3DX_PI * 0.015f);
+	const float FAILED_UPY = (-2.5f);
+	const float FAILED_NOBINOBISPEED = (0.025f);
+	const float FAILED_NOBINOBISIZE = (10.0f);
+	const float CLEAR_NOBINOBISPEED = (0.075f);	// クリアした際の伸び縮みする速度
+	const float CLEAR_NOBINOBISIZE = (50.0f);	// 伸びる倍率
+	const int PLAYER_MAXMOTION = (13);			// プレイヤーの最大モーション数
+	const int SCORE_MINTORURURURU = (60);		// とぅるとぅるの差分最低値
+	const int SCORE_TORURURUSPEED = (13);		// とぅるとぅるの差分補正速度
+	const D3DXCOLOR CLEAR_COL = { 0.0f, 0.0f, 1.0f, 1.0f };
+	const D3DXCOLOR FAILED_COL = { 1.0f, 0.0f, 0.0f, 1.0f };
 }
 
 // 静的メンバ変数
@@ -73,6 +89,9 @@ CResult::CResult()
 	m_bClear = false;
 	m_ppRank = nullptr;
 	m_nWorst = 0;
+	m_nNowScore = 0;
+	m_nTotalScore = 0;
+	m_pObjClear = nullptr;
 }
 
 //===============================================
@@ -172,11 +191,11 @@ HRESULT CResult::Init(void)
 
 
 	// 合計スコアの取得
-	int nTotalScore = SumScore();
+	m_nTotalScore = SumScore();
 
 	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 25.0f, 45.0f);
-	m_pTotalScore->SetScore(nTotalScore);
-	CRanking::SetTotalScore(nTotalScore);
+	m_pTotalScore->SetScore(m_nNowScore);
+	CRanking::SetTotalScore(m_nTotalScore);
 
 	// 
 	CManager::GetInstance()->GetCamera()->Update();
@@ -193,12 +212,38 @@ HRESULT CResult::Init(void)
 			continue;
 		}
 
-		if (nTotalScore < m_nQuota || m_pScore[nCnt] <= 0) {	// ノルマを達成していない
+		if (m_nTotalScore < m_nQuota || m_pScore[nCnt] <= 0) {	// ノルマを達成していない
 			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION);
 		}
 		else {
 			m_ppPlayer[nCnt]->SetMotion(PLAYER_MAXMOTION - 1);
 		}
+	}
+
+	// 達成したか確認する
+	if (m_nTotalScore >= m_nQuota) {	// ノルマ達成
+		m_bClear = true;
+	}
+
+	// ノルマ達成のポリゴン設定
+	m_pObjClear = CObject2D::Create(NUM_PRIORITY - 1);
+
+	// clearごとにテクスチャ変更
+	if (m_pObjClear != nullptr) {
+		switch (m_bClear) {
+		case false:
+			m_pObjClear->BindTexture(CTexture::TYPE_RESULTFAILED);
+			break;
+		case true:
+			m_pObjClear->BindTexture(CTexture::TYPE_RESULTCLEAR);
+			break;
+		}
+	}
+
+	// 座標とサイズ設定
+	if (m_pObjClear != nullptr) {
+		m_pObjClear->SetPosition(CLEAR_SETPOS);
+		m_pObjClear->SetLength(CLEAR_SIZE.x, CLEAR_SIZE.y);
 	}
 
 	return S_OK;
@@ -275,6 +320,90 @@ void CResult::Update(void)
 {
 	int nLandPlayer = 0;	// 着地プレイヤー数
 	bool bCamera = false;
+
+	if (m_nNowScore < m_nTotalScore) {	// 総合スコアに表示スコアが到達していない
+
+		if (m_nTotalScore - m_nNowScore > SCORE_MINTORURURURU) {	// 補正するために必要な差分がある
+			m_nNowScore += static_cast <int>(static_cast <float>(m_nTotalScore - m_nNowScore) * 0.015f) + SCORE_TORURURUSPEED;
+		}
+		else {	// 無い
+			m_nNowScore += SCORE_TORURURUSPEED;
+		}
+
+		// 表示の数値を変更
+		if (m_nNowScore >= m_nTotalScore) {	// 到達した
+			m_nNowScore = m_nTotalScore;
+
+			if (m_pTotalScore != nullptr) {
+				if (m_bClear) {
+					m_pTotalScore->SetClo(CLEAR_COL);
+				}
+				else {
+					m_pTotalScore->SetClo(FAILED_COL);
+				}
+			}
+		}
+		if (m_pTotalScore != nullptr) {	// 使用している
+			m_pTotalScore->SetScore(m_nNowScore);
+		}
+
+		CScene::Update();
+		return;
+	}
+
+	// ノルマ成功失敗更新
+	if (m_pObjClear != nullptr) {
+		D3DXVECTOR3 pos = m_pObjClear->GetPosition();
+		D3DXVECTOR2 size = CLEAR_SIZE;
+		D3DXVECTOR3 rot = m_pObjClear->GetRotation();
+
+		// まだ座標が規定値に達していない
+		if (pos.x < CLEAR_POS.x) {
+			pos.x += CLEAR_MOVE;
+
+			if (m_pTotalScore != nullptr) {	// 合計スコアが使用されている
+				if (pos.x >= SCORE_MOVEX) {	// スコアも移動し始める
+					// 移動
+					D3DXVECTOR3 ScorePos = m_pTotalScore->GetPosition();
+					ScorePos.x += CLEAR_MOVE;
+					m_pTotalScore->SetPosition(ScorePos);
+				}
+			}
+
+			if (pos.x > CLEAR_POS.x) {	// 到着した
+				pos.x = CLEAR_POS.x;	// 補正
+			}
+		}
+		else {
+
+			// 回転
+			if (!m_bClear) {	// 失敗した場合
+				if (rot.z < FAILED_ROTATE) {
+					rot.z += CLEAR_ROTMOVEZ;
+					pos.y += FAILED_UPY;
+				}
+				else {
+					m_ClearHeight += FAILED_NOBINOBISPEED;
+					float fSin = sinf(m_ClearHeight);
+					size.x = CLEAR_SIZE.x - fSin * FAILED_NOBINOBISIZE;
+					size.y = CLEAR_SIZE.y + fSin * FAILED_NOBINOBISIZE;
+				}
+			}
+			else {	// 成功
+				m_ClearHeight += CLEAR_NOBINOBISPEED;
+				float fSin = sinf(m_ClearHeight);
+				if (fSin < 0.0f) {
+					fSin = 0.0f;
+				}
+				pos.y = CLEAR_POS.y - fSin * CLEAR_NOBINOBISIZE;
+				size.y = CLEAR_SIZE.y + fSin * CLEAR_NOBINOBISIZE;
+			}
+		}
+
+		m_pObjClear->SetRotation(rot);
+		m_pObjClear->SetPosition(pos);
+		m_pObjClear->SetLength(size.x, size.y);
+	}
 
 	// プレイヤーの更新
 	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
@@ -375,7 +504,7 @@ void CResult::SetScore(CPlayer **ppPlayer)
 
 	for (int i = 0; i < m_nNumPlayer; i++)
 	{
-		if (ppPlayer[i]->GetGoal())
+		if (!ppPlayer[i]->GetGoal())
 		{
 			m_pScore[i] = ppPlayer[i]->GetScore()->GetScore();
 		}

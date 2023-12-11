@@ -124,6 +124,7 @@ private:	// 自分だけがアクセス可能
 	void CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
 	CPlayer* SearchNearPlayer(float fRadiusRest, float* pLength = nullptr);
 	D3DXVECTOR3 CollisionAllEnemy(D3DXVECTOR3 pos);
+	void Warp(void);
 
 	// メンバ変数
 	static CEnemy *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -147,6 +148,7 @@ private:	// 自分だけがアクセス可能
 	TYPE m_type;	// 種類
 	int m_nPointID;	//ポイントID
 	int m_nPointNum;	//ポイントNo
+	int m_nLimitReturn;	//帰って来るまでの制限時間
 	static int m_nNumCount;
 
 };

@@ -34,6 +34,8 @@ const char *CTexture::m_apDefFileName[TYPE_MAX] =
 	"data\\TEXTURE\\ranking_team00.png",
 	"data\\TEXTURE\\new_record00.png",
 	"data\\TEXTURE\\rank01.png",
+	"data\\TEXTURE\\clear000.png",
+	"data\\TEXTURE\\clear001.png",
 };
 
 //===============================================

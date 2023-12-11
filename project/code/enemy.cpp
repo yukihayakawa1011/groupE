@@ -61,6 +61,7 @@ namespace
 	const int DROP_COIN = 3;			// コインのドロップ量
 	const char* BODY_FILENAME = "data\\TXT\\enemy\\motion_ninjabody.txt";	// 上半身のモーションファイルパス
 	const char* LEG_FILENAME = "data\\TXT\\enemy\\motion_ninjaleg.txt";		// 下半身のモーションファイルパス
+	const int RETURN_TIME_LIMIT = 120;	//帰って来るまでの制限時間
 }
 
 //===============================================
@@ -528,6 +529,22 @@ void CEnemy::Trace(void)
 		if (D3DXVec3Length(&(posPoint - m_Info.pos)) < NEXTPOINT_LENGTH)
 		{
 			m_nPointNum = (m_nPointNum + 1) % pPoint->GetRegistPointNum();
+
+			//ワープ時間カウント中ならカウント停止
+			if (m_nLimitReturn > 0)
+			{
+				m_nLimitReturn = -1;
+			}
+		}
+
+		//カウント中ならカウント減らす
+		if (m_nLimitReturn > 0)
+		{
+			m_nLimitReturn--;
+			if (m_nLimitReturn == 0)
+			{//ドロン
+				Warp();
+			}
 		}
 	}
 	else
@@ -623,6 +640,9 @@ void CEnemy::Chace(void)
 			}
 			//次の移動先を設定
 			m_nPointNum = nPointNear;
+
+			//元の軌道に戻るまでの制限時間設定
+			m_nLimitReturn = RETURN_TIME_LIMIT;
 		}
 		else
 		{//一応ぬるぽの時はぐるぐるするようにする
@@ -700,6 +720,30 @@ D3DXVECTOR3 CEnemy::CollisionAllEnemy(D3DXVECTOR3 pos)
 	}
 
 	return pos;
+}
+
+//===============================================
+// 復帰用ワープ（ドロン）
+//===============================================
+void CEnemy::Warp(void)
+{
+	//ポイント取得
+	CPoint* pPoint = CPoint::GetTop();
+	for (int cnt = 0; cnt < m_nPointID; cnt++)
+	{
+		pPoint = pPoint->GetNext();
+	}
+
+	//移動（同じものを生成）する
+	CEnemy* pNewEnemy = Create(pPoint->GetPoint(m_nPointNum), this->m_Info.rot, this->m_Info.move, nullptr, nullptr, this->m_nPointID);
+	pNewEnemy->m_nPointNum = m_nPointNum + 1;
+	pNewEnemy->m_nLimitReturn = -1;
+
+	//ドロン（今の敵を破棄）する
+	this->Uninit();
+	CParticle::Create(this->m_Info.pos, CEffect::TYPE_SMAKE);
+
+
 }
 
 //===============================================
