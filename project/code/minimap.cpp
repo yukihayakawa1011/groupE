@@ -116,7 +116,7 @@ void CMiniMap::Uninit(void)
 			m_ppPlayerIcon[cnt]->Uninit();
 		}
 		//入れ物破棄
-		delete m_ppPlayerIcon;
+		delete[] m_ppPlayerIcon;
 	}
 
 	//探索済みドット用フラグ破棄

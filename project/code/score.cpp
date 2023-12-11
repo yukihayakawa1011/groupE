@@ -104,7 +104,7 @@ void CScore::Uninit(void)
 
 			// I—¹ˆ—
 			m_apNumber[nCount]->Uninit();
-
+			delete m_apNumber[nCount];
 			// g—p‚µ‚Ä‚¢‚È‚¢ó‘Ô‚É‚·‚é
 			m_apNumber[nCount] = nullptr;
 		}

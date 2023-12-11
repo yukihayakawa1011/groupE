@@ -309,6 +309,14 @@ void CResult::Uninit(void)
 		m_pScore = nullptr;
 	}
 
+	if (m_pFileLoad != nullptr)
+	{
+		m_pFileLoad->Uninit();
+
+		delete m_pFileLoad;		// メモリの開放
+		m_pFileLoad = nullptr;
+	}
+
 	CManager::GetInstance()->GetCamera()->SetActive(true);
 	m_nNumPlayer = 0;
 }
@@ -348,7 +356,9 @@ void CResult::Update(void)
 		}
 
 		CScene::Update();
-		return;
+		if (m_nNumPlayer > 0) {
+			return;
+		}
 	}
 
 	// ノルマ成功失敗更新
@@ -497,6 +507,10 @@ void CResult::Draw(void)
 //===============================================
 void CResult::SetScore(CPlayer **ppPlayer)
 {
+	if (ppPlayer == nullptr) {
+		return;
+	}
+
 	CPlayer *pPlayer = CPlayer::GetTop();
 	int nNumGoal = 0;
 
@@ -504,7 +518,10 @@ void CResult::SetScore(CPlayer **ppPlayer)
 
 	for (int i = 0; i < m_nNumPlayer; i++)
 	{
-		if (!ppPlayer[i]->GetGoal())
+		if (ppPlayer[i] == nullptr) {
+			continue;
+		}
+		if (ppPlayer[i]->GetGoal())
 		{
 			m_pScore[i] = ppPlayer[i]->GetScore()->GetScore();
 		}

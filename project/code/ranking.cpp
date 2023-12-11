@@ -51,6 +51,14 @@ CRanking::CRanking()
 	m_bTotal = false;
 	m_nOne = -1;
 	m_nTotal = -1;
+
+	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
+	{
+		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
+		{
+			m_apScore[nCntRanking][nCntRank] = nullptr;
+		}
+	}
 }
 
 //===============================================
@@ -89,7 +97,7 @@ HRESULT CRanking::Init(void)
 		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
 		{
 			m_pObjectRank[nCntRanking][nCnt] = CObject2D::Create(7);
-			m_pObjectRank[nCntRanking][nCnt]->SetPosition(D3DXVECTOR3(200.0f + nCntRanking * 600.0f, 400.0f + (nCnt* 100.0f), 0.0f));
+			m_pObjectRank[nCntRanking][nCnt]->SetPosition(D3DXVECTOR3(600.0f + nCntRanking * 600.0f, 400.0f + (nCnt* 100.0f), 0.0f));
 			m_pObjectRank[nCntRanking][nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
 		}
 	}
@@ -216,7 +224,11 @@ void CRanking::Uninit(void)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
-			m_apScore[nCntRanking][nCntRank]->Uninit();
+			if (m_apScore[nCntRanking][nCntRank] != nullptr) {
+				m_apScore[nCntRanking][nCntRank]->Uninit();
+				delete m_apScore[nCntRanking][nCntRank];
+				m_apScore[nCntRanking][nCntRank] = nullptr;
+			}
 		}
 	}
 
@@ -224,20 +236,35 @@ void CRanking::Uninit(void)
 	{
 		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
 		{
-			m_pObjectRank[nCntRanking][nCnt]->Uninit();
+			if (m_pObjectRank[nCntRanking][nCnt] != nullptr) {
+				m_pObjectRank[nCntRanking][nCnt]->Uninit();
+			}
 		}
 	}
 
 	for (int nCnt = 0; nCnt < 2; nCnt++)
 	{
-		m_apNowScore[nCnt]->Uninit();
+		if (m_apNowScore[nCnt] != nullptr) {
+			m_apNowScore[nCnt]->Uninit();
+			delete m_apNowScore[nCnt];
+			m_apNowScore[nCnt] = nullptr;
+		}
 	}
 
 	for (int nCnt = 0; nCnt < MAX_RANKING; nCnt++)
 	{
-		m_pObject[nCnt]->Uninit();
+		if (m_pObject[nCnt] != nullptr) {
+			m_pObject[nCnt]->Uninit();
+		}
 	}
 
+	if (m_pFileLoad != nullptr)
+	{
+		m_pFileLoad->Uninit();
+
+		delete m_pFileLoad;		// ÉÅÉÇÉäÇÃäJï˙
+		m_pFileLoad = nullptr;
+	}
 }
 
 //===============================================

@@ -46,6 +46,7 @@
 #include "gimmick_pull.h"
 #include "pause.h"
 #include "quataui.h"
+#include <assert.h>
 
 // 無名名前空間を定義
 namespace {
@@ -146,7 +147,39 @@ CGame::CGame(int nNumPlayer)
 //===============================================
 CGame::~CGame()
 {
-
+	if (m_pFileLoad != nullptr) {
+		assert(false);
+	}
+	if (m_ppPlayer != nullptr) {
+		assert(false);
+	}
+	if (m_ppCamera != nullptr) {
+		assert(false);
+	}
+	if (m_pMeshDome != nullptr) {
+		assert(false);
+	}
+	if (m_pTimer != nullptr) {
+		assert(false);
+	}
+	if (m_pMiniMap != nullptr) {
+		assert(false);
+	}
+	if (m_pClient != nullptr) {
+		assert(false);
+	}
+	if (m_QuataScore != nullptr) {
+		assert(false);
+	}
+	if (m_QuataUI != nullptr) {
+		assert(false);
+	}
+	if (m_pClient != nullptr) {
+		assert(false);
+	}
+	if (m_pClient != nullptr) {
+		assert(false);
+	}
 }
 
 //===============================================
@@ -189,6 +222,8 @@ HRESULT CGame::Init(void)
 
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
+			m_ppPlayer[nCnt] = nullptr;
+
 			char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
 			char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
 
@@ -244,81 +279,81 @@ HRESULT CGame::Init(void)
 			p->SetLever(l);
 		}
 
-		// 槍(ボタン式)
-		CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
-		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_PRESS);
+		//// 槍(ボタン式)
+		//CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		//CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
+		//pSpear->BindButton(pButton);
+		//pSpear->BindType(CGimmickSpear::TYPE_PRESS);
 
-		// 槍(ボタン押したら自動)
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
-		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
+		//// 槍(ボタン押したら自動)
+		//pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
+		//pSpear->BindButton(pButton);
+		//pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
-		// 槍(センサー式)
-		//pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+		//// 槍(センサー式)
+		////pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 
-		// 地面からの槍
-		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		//// 地面からの槍
+		//CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 
-		// 回転扉
-		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -1650.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-300.0f, 0.0f, -3950.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//// 回転扉
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -1650.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(-300.0f, 0.0f, -3950.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-		// 落とし穴
-		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
-		pFall->BindButton(pButton);
+		//// 落とし穴
+		//CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
+		//pFall->BindButton(pButton);
 
-		// 協力扉
-		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		pMultiDoor->SetNumButton(4);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -1500.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
-		pMultiDoor->BindButton(pButton);
-		pMultiDoor->SetActiveButton(2);
+		//// 協力扉
+		//CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//pMultiDoor->SetNumButton(4);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -1500.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pMultiDoor->SetActiveButton(2);
 
-		pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		pMultiDoor->SetNumButton(4);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -4300.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-150.0f, 0.0f, -4300.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
-		pMultiDoor->BindButton(pButton);
-		pMultiDoor->SetActiveButton(3);
+		//pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//pMultiDoor->SetNumButton(4);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -4300.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-150.0f, 0.0f, -4300.0f));
+		//pMultiDoor->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
+		//pMultiDoor->BindButton(pButton);
+		//pMultiDoor->SetActiveButton(3);
 
-		// ツボ
-		CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickPull::Create(D3DXVECTOR3(500.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//// ツボ
+		//CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CGimmickPull::Create(D3DXVECTOR3(500.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-		// ゴール
-		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+		//// ゴール
+		//CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-		CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+		//CItem::Create(D3DXVECTOR3(-200.0f, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
 	}
 		break;
 
@@ -430,9 +465,9 @@ HRESULT CGame::Init(void)
 	}
 
 	// タイムの生成
-	m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
+	/*m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
 	m_pTimer->Set(START_TIMER);
-	m_pTimer->SetActive(true);
+	m_pTimer->SetActive(true);*/
 
 	// スポットライトをオン
 	CManager::GetInstance()->GetLight()->EnablePointLight(true);
@@ -495,8 +530,8 @@ void CGame::Uninit(void)
 
 	if (m_pMiniMap != nullptr)
 	{
-		/*m_pMiniMap->Uninit();
-		m_pMiniMap = nullptr;*/
+		m_pMiniMap->Uninit();
+		m_pMiniMap = nullptr;
 	}
 
 	if (m_pFileLoad != nullptr)
@@ -512,6 +547,12 @@ void CGame::Uninit(void)
 		m_pClient->Uninit();
 		delete m_pClient;
 		m_pClient = nullptr;
+	}
+
+	if (m_QuataScore != nullptr) {
+		m_QuataScore->Uninit();
+		delete m_QuataScore;
+		m_QuataScore = nullptr;
 	}
 
 	if (m_ppPlayer != nullptr) { // 使用していた場合
@@ -531,6 +572,7 @@ void CGame::Uninit(void)
 		{
 			// 終了処理
 			m_ppCamera[nCnt]->Uninit();
+			delete m_ppCamera[nCnt];
 			m_ppCamera[nCnt] = nullptr;	// 使用していない状態にする
 		}
 
@@ -599,7 +641,9 @@ void CGame::Update(void)
 			if (m_ppPlayer != nullptr) { // 使用していた場合
 				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 				{
-					m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+					if (m_ppPlayer[nCnt] != nullptr) {
+						m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+					}
 				}
 
 				if (m_QuataUI == nullptr)
@@ -663,7 +707,9 @@ void CGame::Update(void)
 //===============================================
 void CGame::Draw(void)
 {
-	m_pMiniMap->ExploredMap();
+	if (m_pMiniMap != nullptr) {
+		m_pMiniMap->ExploredMap();
+	}
 
 	CScene::Draw();
 }

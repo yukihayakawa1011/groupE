@@ -23,6 +23,7 @@
 #include "slow.h"
 #include "task_manager.h"
 #include "object_manager.h"
+#include "camera_manager.h"
 
 //===============================================
 // 静的メンバ変数
@@ -209,7 +210,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// モードの生成
-	SetMode(CScene::MODE_TITLE);
+	SetMode(CScene::MODE_RESULT);
 
 	return S_OK;
 }
@@ -348,6 +349,7 @@ void CManager::Uninit(void)
 	//各種マネージャの破棄
 	CTaskManager::Release();
 	CObjectManager::Release();
+	CCameraManager::Release();
 }
 
 //===================================================
