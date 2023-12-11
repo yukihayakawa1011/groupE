@@ -23,7 +23,7 @@ namespace {
 //==========================================================
 // コンストラクタ
 //==========================================================
-CQuataUI::CQuataUI()
+CQuataUI::CQuataUI(int nPriority)
 {
 	// 値のクリア
 	m_Info.m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -65,7 +65,7 @@ HRESULT CQuataUI::Init(float fWidth, float fHeight)
 	if (m_pObject == nullptr)
 	{// 使用されていない場合
 
-		m_pObject = CObject2D::Create(7);
+		m_pObject = CObject2D::Create(6);
 		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(FILENAME[m_Info.m_type]));
 		m_pObject->SetPosition(m_Info.m_pos);
 		m_pObject->SetSize(m_Info.m_fWidht, m_Info.m_fHeight);
@@ -138,11 +138,11 @@ void CQuataUI::Update(void)
 
 		if (m_Info.m_pos.y <= SCREEN_HEIGHT * 0.2f)
 		{
-			m_Info.m_state = STATE_LOST;
+			m_Info.m_state = STATE_CLEAR;
 		}
 		break;
 
-	case STATE_LOST:
+	case STATE_CLEAR:
 
 		m_Info.m_col.a -= 0.05f;
 
@@ -150,9 +150,30 @@ void CQuataUI::Update(void)
 
 		if (m_Info.m_col.a <= 0.5f)
 		{
-			m_Info.m_state = STATE_NONE;
+			m_Info.m_state = STATE_CHANGE;
 		}
 
+		break;
+
+	case STATE_CHANGE:
+
+		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(FILENAME[TYPE_FRAME]));
+
+		m_Info.m_state = STATE_SET;
+		break;
+
+	case STATE_SET:
+
+		m_Info.m_pos.y -= MOVESPEED.y * 0.13f;
+		m_Info.m_fWidht -= 0.5f;
+		m_Info.m_fHeight -= 0.7f;
+		m_pObject->SetPosition(m_Info.m_pos);
+
+
+		if (m_Info.m_fHeight <= 35.0f)
+		{
+			m_Info.m_state = STATE_NONE;
+		}
 		break;
 
 	case STATE_MAX:

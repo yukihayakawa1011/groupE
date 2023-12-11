@@ -50,7 +50,7 @@
 // 無名名前空間を定義
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
-	const D3DXVECTOR2 QUATAUI_SIZE = { 200.0f, 100.0f };	// ノルマのUIのサイズ
+	const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
 	const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
@@ -446,17 +446,6 @@ HRESULT CGame::Init(void)
 		m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
 	}
 
-	// ノルマの設定
-	int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
-	CResult::SetQuata(QuataScore);
-
-	// ノルマの点数
-	if (m_QuataScore == nullptr)
-	{
-		m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.14f, 0.0f), 16.0f, 20.0f);
-		m_QuataScore->SetScore(QuataScore);
-	}
-
 	// ポーズの生成
 	m_pPause = CPause::Create();
 	if (m_pPause != nullptr) {
@@ -605,8 +594,19 @@ void CGame::Update(void)
 
 				if (m_QuataUI == nullptr)
 				{
-					m_QuataUI = CQuataUI::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, SCREEN_HEIGHT * 0.5f, 0.0f), CQuataUI::TYPE_START, QUATAUI_SIZE.x, QUATAUI_SIZE.y);
+					m_QuataUI = CQuataUI::Create(D3DXVECTOR3(SCREEN_WIDTH + 100.0f, SCREEN_HEIGHT * 0.5f, 0.0f), CQuataUI::TYPE_START, CQuataUI::STATE_MOVE, QUATAUI_SIZE.x, QUATAUI_SIZE.y);
 					m_bDispQuataUI = true;
+				}
+
+				// ノルマの設定
+				int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
+				CResult::SetQuata(QuataScore);
+
+				// ノルマの点数
+				if (m_QuataScore == nullptr)
+				{
+					m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 5.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 16.0f, 20.0f);
+					m_QuataScore->SetScore(QuataScore);
 				}
 			}
 		}
@@ -634,16 +634,29 @@ void CGame::Update(void)
 		}
 	}
 
-	if (m_bDispQuataUI == true)
+	if (m_QuataScore != nullptr)
 	{
-		m_nCntLostQuataUI--;
-
-		if (m_nCntLostQuataUI <= 0)
+		if (m_QuataUI != nullptr)
 		{
-			if (m_QuataUI != nullptr)
+			if (m_QuataUI->GetState() == CQuataUI::STATE_MOVE)
 			{
-				m_QuataUI->Uninit();
-				m_QuataUI = nullptr;
+				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+				pos.x -= 8.0f;
+				m_QuataScore->SetPosition(pos);
+			}
+
+			if (m_QuataUI->GetState() == CQuataUI::STATE_UP)
+			{
+				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+				pos.y -= 5.0f;
+				m_QuataScore->SetPosition(pos);
+			}
+
+			if (m_QuataUI->GetState() == CQuataUI::STATE_SET)
+			{
+				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+				pos.y -= 5.0f * 0.13f;
+				m_QuataScore->SetPosition(pos);
 			}
 		}
 	}

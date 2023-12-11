@@ -89,7 +89,7 @@ HRESULT CUI::Init(int nFrame, int nIcon)
 {
 	for (int nCnt = 0; nCnt < NUM_OBJ; nCnt++)
 	{
-		m_pObject[nCnt] = CObject2D::Create(7);
+		m_pObject[nCnt] = CObject2D::Create(6);
 	}
 
 	m_nLife = GetLife();

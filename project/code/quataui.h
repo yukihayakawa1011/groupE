@@ -36,7 +36,9 @@ public:	// 誰でもアクセス可能
 		STATE_MOVE,     // 動いている
 		STATE_SCALING,  // 拡縮
 		STATE_UP,       // 上に上がる
-		STATE_LOST,     // 色薄くする
+		STATE_CLEAR,    // α値が下がる
+		STATE_CHANGE,   // テクスチャ切り替え
+		STATE_SET,      // タイマーの下
 		STATE_MAX
 	};
 
@@ -51,7 +53,7 @@ public:	// 誰でもアクセス可能
 		float m_fWidht;
 	};
 
-	CQuataUI();	// コンストラクタ(オーバーロード)
+	CQuataUI(int nPriority = 6);	// コンストラクタ(オーバーロード)
 	~CQuataUI();	// デストラクタ
 
 	// メンバ関数
