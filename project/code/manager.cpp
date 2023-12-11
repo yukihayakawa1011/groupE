@@ -35,19 +35,19 @@ CManager *CManager::m_pManager = NULL;
 //===================================================
 CManager::CManager()
 {
-	m_pRenderer = NULL;			// レンダラーのポインタ
+	m_pRenderer = NULL;		// レンダラーのポインタ
 	m_pInputKeyboard = NULL;	// 入力デバイス(キーボード)へのポインタ
 	m_pInputMouse = NULL;		// 入力デバイス(マウス)のポインタ
 	m_pInputPad = NULL;
-	m_pDebugProc = NULL;			// デバッグ表示のポインタ
-	m_pSound = NULL;					// サウンドのポインタ
-	m_pCamera = NULL;				// カメラのポインタ
-	m_pLight = NULL;					// ライトのポインタ
-	m_pTexture = NULL;				// テクスチャのポインタ
-	m_pModelFile = NULL;				// Xファイル情報のポインタ
-	m_pSlow = NULL;					// スロー状態へのポインタ
-	m_pScene = NULL;					// シーンのポインタ
-	m_pFade = NULL;					// フェードへのポインタ
+	m_pDebugProc = NULL;		// デバッグ表示のポインタ
+	m_pSound = NULL;			// サウンドのポインタ
+	m_pCamera = NULL;			// カメラのポインタ
+	m_pLight = NULL;			// ライトのポインタ
+	m_pTexture = NULL;		// テクスチャのポインタ
+	m_pModelFile = NULL;		// Xファイル情報のポインタ
+	m_pSlow = NULL;			// スロー状態へのポインタ
+	m_pScene = NULL;			// シーンのポインタ
+	m_pFade = NULL;			// フェードへのポインタ
 }
 
 //===================================================
@@ -210,6 +210,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// モードの生成
+	SetMode(CScene::MODE_TITLE);
 
 	return S_OK;
 }

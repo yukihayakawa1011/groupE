@@ -103,7 +103,7 @@ HRESULT CScore::Init()
 void CScore::Uninit(void)
 {
 	
-	for (int nCount = 0; nCount < m_nDesit; nCount++)
+	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{
 		if (m_apNumber[nCount] != nullptr)
 		{// Žg—p‚³‚ê‚Ä‚¢‚½ê‡

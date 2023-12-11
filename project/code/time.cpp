@@ -78,7 +78,7 @@ HRESULT CTime::Init(void)
 		{// g—p‚µ‚Ä‚¢‚È‚¢ê‡
 			D3DXVECTOR3 pos = m_pos;	// İ’èÀ•W
 			pos.x += nCnt * X_SPACE + 1.0f;	// ‰¡ˆÚ“®
-			m_apNumber[nCnt] = CNumber::Create(pos, NUM_WIDTH, NUM_HEIGHT);
+			m_apNumber[nCnt] = CNumber::Create(pos, NUM_WIDTH * 0.75f, NUM_HEIGHT * 0.5f);
 
 
 			if (m_apNumber[nCnt] != NULL)
