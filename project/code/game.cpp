@@ -257,7 +257,7 @@ HRESULT CGame::Init(void)
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
 		// 槍(センサー式)
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+		//pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 
 		// 地面からの槍
 		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
@@ -487,16 +487,17 @@ void CGame::Uninit(void)
 		}
 	}
 
+	if (m_QuataScore != nullptr)
+	{
+		m_QuataScore->Uninit();
+		delete m_QuataScore;
+		m_QuataScore = nullptr;
+	}
+
 	if (m_pPause != nullptr) {
 		m_pPause->Uninit();
 		delete m_pPause;
 		m_pPause = nullptr;
-	}
-
-	if (m_pMiniMap != nullptr)
-	{
-		/*m_pMiniMap->Uninit();
-		m_pMiniMap = nullptr;*/
 	}
 
 	if (m_pFileLoad != nullptr)

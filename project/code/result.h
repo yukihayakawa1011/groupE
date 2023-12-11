@@ -64,12 +64,16 @@ private:
 	CTime *m_pTime;			// タイマー
 	CScore *m_pTotalScore;		// 合計スコアオブジェクト
 	CObject2D **m_ppRank;
+	CObject2D *m_pObjClear;	// clearしたかどうか
 	static CScore **m_apScore;	// スコアのポインタ(順位分)
 	static CPlayer **m_ppPlayer;	// プレイヤーのポインタ
 	int m_nTimer;				// 遷移タイマー
 	int m_nWorst;				// 最下位の順位
 	int *m_pRank;				// ランク
+	int m_nNowScore;
+	int m_nTotalScore;
 	bool m_bClear;			// 達成かどうか
+	float m_ClearHeight;
 	static int *m_pScore;		// 今回のスコア
 	static int m_nTopScore;   // 一位のスコア
 	static TYPE m_type;		// 種類
