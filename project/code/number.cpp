@@ -39,7 +39,7 @@ HRESULT CNumber::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 {
 	if (m_pObject2D == NULL)
 	{// 使用されていない場合
-		m_pObject2D = CObject2D::Create(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
+		m_pObject2D = CObject2D::Create(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6);
 
 		if (m_pObject2D != NULL)
 		{// 使用されている場合
@@ -54,7 +54,7 @@ HRESULT CNumber::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 			CTexture *pTexture = CManager::GetInstance()->GetTexture();
 
 			// テクスチャをバインド
-			m_pObject2D->BindTexture(pTexture->Regist("data\\TEXTURE\\number000.png"));
+			m_pObject2D->BindTexture(pTexture->Regist("data\\TEXTURE\\number005.png"));
 
 			// テクスチャ設定
 			SetIdx(m_nIdx);

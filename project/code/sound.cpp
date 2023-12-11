@@ -15,12 +15,13 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/BGM/title.wav", -1 },		// BGMタイトル
 	{ "data/BGM/tutorial.wav", -1 },	// BGMチュートリアル
 	{ "data/BGM/game.wav", -1 },		// BGMゲーム
-	{ "data/BGM/result.wav", -1 },		// BGMリザルト
+	{ "data/BGM/clear.wav", -1 },		// BGMリザルト
+	{ "data/BGM/failed.wav", -1 },		// BGMリザルト
 	{ "data/BGM/ranking.wav", -1 },		// BGMランキング
-	{ "data/SE/click.wav", 0 },		// Enter
-	{ "data/SE/dash.wav", 0 },			// 移動音
+	{ "data/SE/coin00.wav", 0 },		// Enter
+	{ "data/SE/walk02.wav", 0 },		// 移動音
 	{ "data/SE/damage.wav", 0 },		// ジャンプ音
-	{ "data/SE/spawn.wav", 0 },		// 着地音
+	{ "data/SE/spawn.wav", 0 },			// 着地音
 };										
 
 //=============================================================================

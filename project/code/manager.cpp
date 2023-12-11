@@ -210,7 +210,6 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	}
 
 	// ÉÇÅ[ÉhÇÃê∂ê¨
-	SetMode(CScene::MODE_RESULT);
 
 	return S_OK;
 }

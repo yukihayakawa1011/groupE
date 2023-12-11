@@ -26,32 +26,60 @@ public:	// 誰でもアクセス可能
 	enum QUATATYPE
 	{
 		TYPE_START = 0,	// 〇〇点盗め
-		TYPE_CLEAR,		// ノルマ達成
-		TYPE_FIAL,			// ノルマ失敗
+		TYPE_FRAME,		// ノルマ達成
 		TYPE_MAX
 	};
 
-	CQuataUI();	// コンストラクタ(オーバーロード)
+	enum STATE
+	{
+		STATE_NONE = 0, // なんもない
+		STATE_MOVE,     // 動いている
+		STATE_SCALING,  // 拡縮
+		STATE_UP,       // 上に上がる
+		STATE_CLEAR,    // α値が下がる
+		STATE_CHANGE,   // テクスチャ切り替え
+		STATE_SET,      // タイマーの下
+		STATE_MAX
+	};
+
+	struct INFO
+	{
+		D3DXVECTOR3 m_pos;
+	    D3DXVECTOR3 m_rot;
+		D3DXCOLOR m_col;
+	    QUATATYPE m_type;
+		STATE m_state;
+		float m_fHeight;
+		float m_fWidht;
+	};
+
+	CQuataUI(int nPriority = 6);	// コンストラクタ(オーバーロード)
 	~CQuataUI();	// デストラクタ
 
-			// メンバ関数
+	// メンバ関数
 	HRESULT Init(void);
 	HRESULT Init(float fWidth, float fHeight);
 	void Uninit(void);
 	void Update(void);
-	static CQuataUI *Create(D3DXVECTOR3 pos, QUATATYPE type, float fWidth, float fHeight);
-	void LostCount(void);
+	static CQuataUI *Create(D3DXVECTOR3 pos, QUATATYPE type, STATE state, float fWidth, float fHeight);
 
 	// メンバ関数(取得)
-	D3DXVECTOR3 GetPosition(void) { return m_pos; }
-	D3DXVECTOR3 GetRotation(void) { return m_rot; }
-	QUATATYPE GetType(void) { return m_type; }
-	int GetLife(void) { return m_nLife; }
+	D3DXVECTOR3 GetPosition(void) { return m_Info.m_pos; }
+	D3DXVECTOR3 GetRotation(void) { return m_Info.m_rot; }
+	D3DXCOLOR GetColor(void) { return m_Info.m_col; }
+	STATE GetState(void) { return m_Info.m_state; }
+	float GetHeight(void) { return m_Info.m_fHeight; }
+	float GetWight(void) { return m_Info.m_fWidht; }
+	QUATATYPE GetType(void) { return m_Info.m_type; }
 
 	// メンバ関数(設定)
-	void SetPosition(D3DXVECTOR3 pos) { m_pos = pos; }
-	void SetRotation(D3DXVECTOR3 rot) { m_rot = rot; }
-	void SetType(QUATATYPE type) { m_type = type; }
+	void SetPosition(D3DXVECTOR3 pos) { m_Info.m_pos = pos; }
+	void SetRotation(D3DXVECTOR3 rot) { m_Info.m_rot = rot; }
+	void SetColor(D3DXCOLOR col) { m_Info.m_col = col; }
+	void SetState(STATE state) { m_Info.m_state = state; }
+	void SetHeight(float fHeight) { m_Info.m_fHeight = fHeight; }
+	void SetWight(float fWight) { m_Info.m_fWidht = fWight; }
+	void SetType(QUATATYPE type) { m_Info.m_type = type; }
 
 private:	// 自分だけがアクセス可能
 
@@ -59,11 +87,8 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	CObject2D *m_pObject;
-	D3DXVECTOR3 m_pos;
-	D3DXVECTOR3 m_rot;
-	QUATATYPE m_type;
+	INFO m_Info;
 	const static char *m_apQuataFileName[TYPE_MAX];	// 初期読み込みファイル名
-	int m_nLife;
 	int m_nNumPlayer;
 };
 

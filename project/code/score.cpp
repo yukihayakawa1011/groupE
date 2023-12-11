@@ -40,20 +40,24 @@ CScore::~CScore()
 
 //===============================================
 // 初期化処理
-//===============================================
-HRESULT CScore::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
+//==============================================
+
+HRESULT CScore::Init(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, float fHeight)
 {
 	m_pos = pos;
 	m_fWidth = fWidth;
 	m_fHeight = fHeight;
+	m_nDesit = nDesit;
 
-	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+	
+	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] == nullptr)
 		{// 使用されていない場合
 
 			// 生成
-			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * (fWidth + fWidth * 0.75f), pos.y, pos.z), fWidth, fHeight);
+			
+			m_apNumber[nCount] = CNumber::Create(D3DXVECTOR3(pos.x + nCount * (fWidth + fWidth * fGap), pos.y, pos.z), fWidth, fHeight);
 
 			if (m_apNumber[nCount] != nullptr)
 			{// 使用されている場合
@@ -72,7 +76,8 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, float fWidth, float fHeight)
 //===============================================
 HRESULT CScore::Init()
 {
-	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+	
+	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] == nullptr)
 		{// 使用していない場合
@@ -97,7 +102,8 @@ HRESULT CScore::Init()
 //===============================================
 void CScore::Uninit(void)
 {
-	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+	
+	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] != nullptr)
 		{// 使用されていた場合
@@ -105,6 +111,8 @@ void CScore::Uninit(void)
 			// 終了処理
 			m_apNumber[nCount]->Uninit();
 			delete m_apNumber[nCount];
+			
+
 			// 使用していない状態にする
 			m_apNumber[nCount] = nullptr;
 		}
@@ -116,7 +124,8 @@ void CScore::Uninit(void)
 //===============================================
 void CScore::Update(void)
 {
-	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+	
+	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] != nullptr)
 		{// 使用されている場合
@@ -165,7 +174,8 @@ CScore *CScore::Create(void)
 //===============================================
 // 生成
 //===============================================
-CScore *CScore::Create(D3DXVECTOR3 pos, float fWidth, float fHeight)
+
+CScore *CScore::Create(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, float fHeight)
 {
 	CScore *pNum = NULL;
 
@@ -178,7 +188,8 @@ CScore *CScore::Create(D3DXVECTOR3 pos, float fWidth, float fHeight)
 		{// 使用されている場合
 
 			// 初期化処理
-			pNum->Init(pos, fWidth, fHeight);
+
+			pNum->Init(pos, nDesit, fGap, fWidth, fHeight);
 		}
 	}
 
@@ -192,14 +203,19 @@ void CScore::AddScore(int nScore)
 {
 	m_nNumScore += nScore;
 
-	m_apNumber[0]->SetIdx(m_nNumScore % 100000000 / 10000000);
-	m_apNumber[1]->SetIdx(m_nNumScore % 10000000 / 1000000);
-	m_apNumber[2]->SetIdx(m_nNumScore % 1000000 / 100000);
-	m_apNumber[3]->SetIdx(m_nNumScore % 100000 / 10000);
-	m_apNumber[4]->SetIdx(m_nNumScore % 10000 / 1000);
-	m_apNumber[5]->SetIdx(m_nNumScore % 1000 / 100);
-	m_apNumber[6]->SetIdx(m_nNumScore % 100 / 10);
-	m_apNumber[7]->SetIdx(m_nNumScore % 10 / 1);
+
+	//スコアを各配列に格納
+	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
+	{
+		// 現在の桁の値を求める
+		int nNum = m_nNumScore % (int)pow(10, (m_nDesit - nCnt)) / (int)pow(10, (m_nDesit - nCnt) - 1);
+
+		if (m_apNumber[nCnt] != NULL)
+		{// 使用されている場合
+		 // 値を設定
+			m_apNumber[nCnt]->SetIdx(nNum);
+		}
+	}
 
 	/*for (int nCount = 0; nCount < NUM_SCORE; nCount++)
 	{
@@ -214,14 +230,19 @@ void CScore::LowerScore(int nScore)
 {
 	m_nNumScore -= nScore;
 
-	m_apNumber[0]->SetIdx(m_nNumScore % 100000000 / 10000000);
-	m_apNumber[1]->SetIdx(m_nNumScore % 10000000 / 1000000);
-	m_apNumber[2]->SetIdx(m_nNumScore % 1000000 / 100000);
-	m_apNumber[3]->SetIdx(m_nNumScore % 100000 / 10000);
-	m_apNumber[4]->SetIdx(m_nNumScore % 10000 / 1000);
-	m_apNumber[5]->SetIdx(m_nNumScore % 1000 / 100);
-	m_apNumber[6]->SetIdx(m_nNumScore % 100 / 10);
-	m_apNumber[7]->SetIdx(m_nNumScore % 10 / 1);
+
+	//スコアを各配列に格納
+	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
+	{
+		// 現在の桁の値を求める
+		int nNum = m_nNumScore % (int)pow(10, (m_nDesit - nCnt)) / (int)pow(10, (m_nDesit - nCnt) - 1);
+
+		if (m_apNumber[nCnt] != NULL)
+		{// 使用されている場合
+		 // 値を設定
+			m_apNumber[nCnt]->SetIdx(nNum);
+		}
+	}
 }
 
 //===============================================
@@ -231,14 +252,19 @@ void CScore::SetScore(int nScore)
 {
 	m_nNumScore = nScore;
 
-	m_apNumber[0]->SetIdx(m_nNumScore % 100000000 / 10000000);
-	m_apNumber[1]->SetIdx(m_nNumScore % 10000000 / 1000000);
-	m_apNumber[2]->SetIdx(m_nNumScore % 1000000 / 100000);
-	m_apNumber[3]->SetIdx(m_nNumScore % 100000 / 10000);
-	m_apNumber[4]->SetIdx(m_nNumScore % 10000 / 1000);
-	m_apNumber[5]->SetIdx(m_nNumScore % 1000 / 100);
-	m_apNumber[6]->SetIdx(m_nNumScore % 100 / 10);
-	m_apNumber[7]->SetIdx(m_nNumScore % 10 / 1);
+
+	//スコアを各配列に格納
+	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
+	{
+		// 現在の桁の値を求める
+		int nNum = m_nNumScore % (int)pow(10, (m_nDesit - nCnt)) / (int)pow(10, (m_nDesit - nCnt) - 1);
+
+		if (m_apNumber[nCnt] != NULL)
+		{// 使用されている場合
+		 // 値を設定
+			m_apNumber[nCnt]->SetIdx(nNum);
+		}
+	}
 }
 
 //===============================================
@@ -246,7 +272,8 @@ void CScore::SetScore(int nScore)
 //===============================================
 void CScore::SetClo(D3DXCOLOR col)
 {
-	for (int nCnt = 0; nCnt < NUM_SCORE; nCnt++)
+
+	for (int nCnt = 0; nCnt < m_nDesit; nCnt++)
 	{
 		if (m_apNumber[nCnt] != NULL)
 		{// 使用していない場合
@@ -261,7 +288,8 @@ void CScore::SetClo(D3DXCOLOR col)
 void CScore::SetPosition(const D3DXVECTOR3& pos) {
 	m_pos = pos;
 
-	for (int nCount = 0; nCount < NUM_SCORE; nCount++)
+
+	for (int nCount = 0; nCount < m_nDesit; nCount++)
 	{
 		if (m_apNumber[nCount] != nullptr)
 		{// 使用されていない場合
