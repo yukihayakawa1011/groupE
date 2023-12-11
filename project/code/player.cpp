@@ -233,7 +233,7 @@ HRESULT CPlayer::Init(void)
 
 	if (m_pScore == nullptr)
 	{
-		m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 100.0f, 0.0f), 30.0f, 30.0f);
+		m_pScore = CScore::Create(D3DXVECTOR3(100.0f, 100.0f, 0.0f), 6, 0.75f, 30.0f, 30.0f);
 	}
 	
 	if (m_pScore != nullptr)

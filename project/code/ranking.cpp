@@ -148,7 +148,7 @@ HRESULT CRanking::Init(void)
 	//ç°âÒÇÃÉXÉRÉA
 	for (int nCnt = 0; nCnt < NUM_NOWSCORE; nCnt++)
 	{
-		m_apNowScore[nCnt] = CScore::Create(D3DXVECTOR3(300.0f + nCnt * 600.0f, 200.0f, 0.0f), 15.0f, 25.0f);
+		m_apNowScore[nCnt] = CScore::Create(D3DXVECTOR3(300.0f + nCnt * 600.0f, 200.0f, 0.0f), 6, 0.75f, 15.0f, 25.0f);
 	}
 
 	m_apNowScore[0]->SetScore(m_nScore);
@@ -158,7 +158,7 @@ HRESULT CRanking::Init(void)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
-			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 15.0f, 25.0f);
+			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 6, 0.75f, 15.0f, 25.0f);
 		}
 	}
 
