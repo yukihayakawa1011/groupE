@@ -83,6 +83,7 @@ HRESULT CTitle::Init(void)
 
 	//ƒJƒƒ‰‰Šú‰»
 	{
+		CManager::GetInstance()->GetCamera()->SetLength(2200.0f);
 		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(387.0f, 793.0f, -2328.0f));
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-400.0f, 441.0f, -304.0f));
 		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -1.20f, 1.41f));
