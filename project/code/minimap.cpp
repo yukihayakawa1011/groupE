@@ -169,8 +169,8 @@ void CMiniMap::DrawTexture(void)
 	int nHeight = static_cast<int>(m_fHeight);
 
 	//専用カメラ
-	D3DXVECTOR3 posR = D3DXVECTOR3(0.0f, 1.0f, -2000.0f);
-	D3DXVECTOR3 posV = D3DXVECTOR3(-50.0f, 3500.0f, -2000.0f);
+	D3DXVECTOR3 posR = D3DXVECTOR3(0.0f, 1.0f, -1700.0f);
+	D3DXVECTOR3 posV = D3DXVECTOR3(-50.0f, 3500.0f, -1700.0f);
 	D3DXVECTOR3 vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	//プロジェクションマトリの初期化
 	D3DXMatrixIdentity(&m_mtxProj);
