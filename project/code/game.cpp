@@ -51,14 +51,14 @@
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
 	const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
-	const D3DXVECTOR2 SCORE_SIZE = { 12.0f, 16.0f };	// ノルマのUIのサイズ
+	const D3DXVECTOR2 SCORE_SIZE = { 14.0f, 18.0f };	// スコアのサイズ
 	const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
 	const int START_TIMER = (90);				// 開始制限時間
 	const int START_WAITCNT = (180);
-	const int SCORE = (5000);
+	const int SCORE = (5000);                   // 初期のスコア
 	const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 }
 
@@ -208,7 +208,7 @@ HRESULT CGame::Init(void)
 
 			if (nCnt == 1 || nCnt == 3)
 			{
-				fData = 1025.0f;
+				fData = 1035.0f;
 			}
 			else
 			{
@@ -232,7 +232,7 @@ HRESULT CGame::Init(void)
 			m_ppPlayer[nCnt]->BindUI(pUI);
 			
 
-			CScore * pScore = CScore::Create(D3DXVECTOR3(65.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.75f, SCORE_SIZE.x, SCORE_SIZE.y);
+			CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
 			m_ppPlayer[nCnt]->BindScore(pScore);
 		}
 
