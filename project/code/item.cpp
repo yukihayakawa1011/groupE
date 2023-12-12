@@ -11,6 +11,7 @@
 #include "texture.h"
 #include "model.h"
 #include "objectX.h"
+#include "meshfield.h"
 
 // マクロ定義
 #define COLLISION_SIZE	(50.0f)
@@ -307,9 +308,20 @@ void CItem::Update(void)
 	// 当たり判定
 	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{
-		CObjectX::Collision(m_pos, m_posOld, m_move,
-			D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE),
-			D3DXVECTOR3(COLLISION_SIZE, COLLISION_SIZE, COLLISION_SIZE));
+		//当たり判定生成
+		CXFile* pFile = CManager::GetInstance()->GetModelFile();
+		D3DXVECTOR3 vtxObjMax = pFile->GetMax(m_pObject->GetId());
+		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
+
+		//オブジェクト
+		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMax, vtxObjMin);
+
+		//起伏
+		float fHeight = CMeshField::GetHeight(m_pos);
+		if (m_pos.y <= fHeight - vtxObjMin.y)
+		{
+			m_pos.y = fHeight - vtxObjMin.y;
+		}
 	}
 }
 
@@ -475,7 +487,7 @@ bool CItem::CollisionCheck(D3DXVECTOR3 &pos)
 		return false;
 	}
 
-	if (pos.y >= ObjPos.y && pos.y <= ObjPos.y + fSize)
+	if (pos.y >= ObjPos.y - fSize && pos.y <= ObjPos.y + fSize)
 	{// 高さも一緒
 		return true;
 	}
