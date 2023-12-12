@@ -53,9 +53,9 @@ namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
 	const D3DXVECTOR3 LEVERPOS[4] =
 	{
-		D3DXVECTOR3(130.0f, 100.0f, -5150.0f),
-		D3DXVECTOR3(-1000.0f, 100.0f, -4450.0f),
-		D3DXVECTOR3(470.0f, 100.0f, -550.0f),
+		D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
+		D3DXVECTOR3(-1000.0f, 100.0f, -4440.0f),
+		D3DXVECTOR3(470.0f, 100.0f, -560.0f),
 		D3DXVECTOR3(360.0f, 100.0f, -2050.0f),
 	};
 
@@ -73,7 +73,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (90);				// 開始制限時間
+	const int START_TIMER = (1000);				// 開始制限時間
 	const int START_WAITCNT = (180);
 	const int SCORE = (5000);                   // 初期のスコア
 	const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
@@ -234,6 +234,8 @@ HRESULT CGame::Init(void)
 			m_nNumPlayer = 1;
 		}
 
+		m_nNumPlayer = 4;
+
 		// 人数分ポインタ生成
 		m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -307,17 +309,21 @@ HRESULT CGame::Init(void)
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
 		pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
-		pSpear->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
+		//pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
-		// 槍(センサー式)
-		//pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(700.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+		CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+		CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 
+		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_NOTPRESS);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-1100.0f, 0.0f, -800.0f));
+		pSpear->BindButton(pButton);
+		pSpear->BindType(CGimmickSpear::TYPE_NOTPRESS);
+
+		// 槍(センサー式)
+		
 		// 地面からの槍
-		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		CGimmickSpear::Create(D3DXVECTOR3(0.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 
 		// 回転扉
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
