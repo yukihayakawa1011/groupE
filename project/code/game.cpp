@@ -57,7 +57,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (90);				// 開始制限時間
+	const int START_TIMER = (0);				// 開始制限時間
 	const int START_WAITCNT = (180);
 	const int SCORE = (5000);                   // 初期のスコア
 	const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
@@ -215,7 +215,7 @@ HRESULT CGame::Init(void)
 	{// ローカルの場合
 		if (m_nNumPlayer <= 0)
 		{// 人数が指定されていない
-			m_nNumPlayer = 1;
+			m_nNumPlayer = 4;
 		}
 
 		// 人数分ポインタ生成
