@@ -25,6 +25,7 @@ public:	// 誰でもアクセス可能な定義
 	{
 		TYPE_NONE = 0,	// 通常
 		TYPE_SMAKE,		// 煙
+		TYPE_ITEMGET,		// アイテム獲得
 		TYPE_MAX
 	}TYPE;
 
@@ -65,6 +66,7 @@ private:	// 自分だけがアクセス可能
 	void RadiusSet(void);
 	void ColorSet(void);
 	void InfoSet(void);
+	void DrawSet(void);
 	CTexture::TYPE SetTex(TYPE type);
 
 	// メンバ変数

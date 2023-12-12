@@ -22,10 +22,12 @@ namespace {
 	const float LIFE = (30.0f); // 寿命
 
 	const D3DXCOLOR COLINFO[CEffect::TYPE_MAX] = {	// 種類別初期色の設定
-		{1.0f, 1.0f, 1.0f, 1.0f,},
+		{1.0f, 1.0f, 1.0f, 1.0f},
+		{ 1.0f, 1.0f, 0.0f, 1.0f },
 	};
 
 	const float RADIUSINFO[CEffect::TYPE_MAX] = {	// 種類別半径の設定
+		100.0f,
 		100.0f,
 	};
 }
@@ -124,6 +126,14 @@ void CEffect::Update(void)
 		m_Info.move.z -= m_Info.move.z * 0.07f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
+	case TYPE_ITEMGET:	// 煙
+
+		m_Info.col.a -= 0.055f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.01f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.01f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
@@ -152,8 +162,6 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, TYPE type)
 
 		// 座標設定
 		pEffect->SetPosition(pos);
-
-		// オブジェクトの種類の設定
 
 		// 種類の設定
 		pEffect->SetType(type);
@@ -218,6 +226,9 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float
 		pEffect->Init();
 
 		pEffect->InfoSet();
+
+		// 描画方法設定
+		pEffect->DrawSet();
 	}
 	else
 	{// 生成に失敗した場合
@@ -303,4 +314,42 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 	}
 
 	return CTexture::TYPE();
+}
+
+//===============================================
+// 描画設定
+//===============================================
+void CEffect::DrawSet(void)
+{
+	if (m_pObjectBilBoard == nullptr) {
+		return;
+	}
+
+	switch (m_Info.Type)
+	{
+	case TYPE_NONE:
+	{
+
+	}
+	break;
+
+	case TYPE_SMAKE:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_ITEMGET:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	}
 }

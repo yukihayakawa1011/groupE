@@ -652,6 +652,9 @@ void CPlayer::Controller(void)
 		if (m_pScore != nullptr)
 		{
 			m_pScore->AddScore(pItem->GetEachScore());
+
+			// パーティクルの設定
+			CParticle::Create(m_Info.pos, CEffect::TYPE_ITEMGET);
 		}
 
 		for (int i = 0; i < MAX_ITEM; i++)

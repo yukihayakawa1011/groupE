@@ -35,6 +35,7 @@ CItem::CItem()
 	m_type = TYPE_COIN;
 	m_pPrev = nullptr;
 	m_pNext = nullptr;
+	m_nBound = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != nullptr)
@@ -112,6 +113,13 @@ HRESULT CItem::Init(const char *pFileName, int type)
 	m_pObject = CModel::Create(pFileName);
 	m_pObject->SetRotation(m_rot);
 	m_type = type;
+
+	if (m_nState == STATE_DROP) {
+		//当たり判定生成
+		CXFile* pFile = CManager::GetInstance()->GetModelFile();
+		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
+		m_pos.y = m_pos.y - vtxObjMin.y;
+	}
 
 	return S_OK;
 }
@@ -220,10 +228,13 @@ void CItem::Update(void)
 		m_pos += m_move;
 		m_rot.y += sinf(D3DX_PI * (0.02f + (BOUND_COUNT - m_nBound) * 0.01f));
 
-		if (m_pos.y <= 0.0f)
+		CXFile* pFile = CManager::GetInstance()->GetModelFile();
+		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
+
+		if (m_pos.y + vtxObjMin.y <= 0.0f)
 		{
-			m_pos.y = 0.0f;
-			m_move *= 0.8f;
+			m_pos.y = 0.0f - vtxObjMin.y;
+			m_move *= 0.9f;
 			m_move.y *= -1.0f;
 			m_nBound++;
 
@@ -314,7 +325,7 @@ void CItem::Update(void)
 		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
 
 		//オブジェクト
-		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMin, vtxObjMax);
+		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMax, vtxObjMin);
 
 		//起伏
 		float fHeight = CMeshField::GetHeight(m_pos);
