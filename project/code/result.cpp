@@ -41,9 +41,11 @@ namespace {
 	const float PLAYER_GRAVITY = (-15.0f);	// プレイヤーの落下速度
 	const float RANK_DOWNSPEED = (20.0f);	// ランクとスコアの落下速度
 	const D3DXVECTOR3 TOTALSCORE_POS = {SCREEN_WIDTH * 0.375f, SCREEN_HEIGHT * 0.9f, 0.0f};	// 合計スコアの設置座標
-	const D3DXVECTOR3 SCORE_POS = {SCREEN_WIDTH * 0.425f, -SCREEN_HEIGHT * 1.4f, 0.0f};		// 合計スコアの設置座標
+	const D3DXVECTOR3 SCORE_POS = {SCREEN_WIDTH * 0.43f, -SCREEN_HEIGHT * 1.4f, 0.0f};		// 個人スコアの設置座標
 	const float SCORE_MOVESIZE = (130.0f);	// スコアの配置移動サイズ
 	const float SCORE_SPACE = (270.0f);		// スコア間の空間
+	const float TOTALSCORE_SPACE = (1.0f);	// 合計スコアの数字間
+	const float SCORE_NUMSPACE = (1.0f);
 	const D3DXVECTOR3 RANK_POS = { SCREEN_WIDTH * 0.5f, -SCREEN_HEIGHT * 1.3f, 0.0f };		// 合計スコアの設置座標
 	const float RANK_MOVESIZE = (135.0f);	// ランクの配置移動サイズ
 	const float RANK_SPACE = (270.0f);		// ランク間の空間
@@ -125,7 +127,7 @@ HRESULT CResult::Init(void)
 
 	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
-		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(SCORE_POS.x + (-((m_nNumPlayer - 1) * SCORE_MOVESIZE) + nCount * SCORE_SPACE), SCORE_POS.y, 0.0f), 6, 0.75f, 15.0f, 20.0f);
+		m_apScore[nCount] = CScore::Create(D3DXVECTOR3(SCORE_POS.x + (-((m_nNumPlayer - 1) * SCORE_MOVESIZE) + nCount * SCORE_SPACE), SCORE_POS.y, 0.0f), 6, SCORE_NUMSPACE, 15.0f, 20.0f);
 		m_apScore[nCount]->SetScore(m_pScore[nCount]);
 	}
 
@@ -192,7 +194,7 @@ HRESULT CResult::Init(void)
 	// 合計スコアの取得
 	m_nTotalScore = SumScore();
 
-	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 8, 0.75f, 25.0f, 45.0f);
+	m_pTotalScore = CScore::Create(TOTALSCORE_POS, 8, TOTALSCORE_SPACE, 25.0f, 45.0f);
 	m_pTotalScore->SetScore(m_nNowScore);
 	CRanking::SetTotalScore(m_nTotalScore);
 

@@ -48,6 +48,7 @@ HRESULT CScore::Init(D3DXVECTOR3 pos, int nDesit, float fGap, float fWidth, floa
 	m_fWidth = fWidth;
 	m_fHeight = fHeight;
 	m_nDesit = nDesit;
+	m_fGap = fGap;
 
 	
 	for (int nCount = 0; nCount < m_nDesit; nCount++)
@@ -295,7 +296,7 @@ void CScore::SetPosition(const D3DXVECTOR3& pos) {
 		{// Žg—p‚³‚ê‚Ä‚¢‚È‚¢ê‡
 
 			// ¶¬
-			m_apNumber[nCount]->SetPosition(D3DXVECTOR3(m_pos.x + nCount * (m_fWidth + m_fWidth * 0.75f), m_pos.y, m_pos.z));
+			m_apNumber[nCount]->SetPosition(D3DXVECTOR3(m_pos.x + nCount * (m_fWidth + m_fWidth * m_fGap), m_pos.y, m_pos.z));
 		}
 	}
 }
