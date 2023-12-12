@@ -1453,6 +1453,12 @@ void CPlayer::Attack(void)
 		return;
 	}
 
+	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK &&
+		m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 3)
+	{// UŒ‚”»’è’†
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_ATTACK);
+	}
+
 	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK && 
 		m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 	{// UŒ‚”»’è’†
