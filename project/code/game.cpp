@@ -222,6 +222,7 @@ HRESULT CGame::Init(void)
 			m_pFileLoad->Init();
 			m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
 			m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
+			m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
 		}
 	}
 
@@ -324,7 +325,7 @@ HRESULT CGame::Init(void)
 		// 地面からの槍
 
 		// 回転扉
-		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 		CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
