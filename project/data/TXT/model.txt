@@ -26,7 +26,7 @@ TEXTURE_FILENAME = data/TEXTURE/gold000.jpg			# [7]金の掛け軸
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 21
+NUM_MODEL = 23
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -52,6 +52,8 @@ MODEL_FILENAME = data\MODEL\25x15x5mCube.x # [17]高いキューブ
 MODEL_FILENAME = data\MODEL\50x15x5mCube.x # [18]高いキューブ
 MODEL_FILENAME = data\MODEL\stonelight01.x # [19]石灯篭
 MODEL_FILENAME = data\MODEL\shrub.x        # [20]低木
+MODEL_FILENAME = data\MODEL\sicletyoutin.x # [21]丸提灯
+MODEL_FILENAME = data\MODEL\tyoutin.x      # [22]提灯
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1188,6 +1190,150 @@ MODELSET
 	TYPE = 20
 	POS = -1300 0 1070
 	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = -530 400 -300
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = -530 400 -600
+	ROT = 0 -1.118 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = 230 400 -1500
+	ROT = 0 1.872 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = -232 400 -3800
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = -232 400 -4100
+	ROT = 0 -1.218 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = -100 400 -4433
+	ROT = 0 1.768 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = 400 400 -4433
+	ROT = 0 -2.69 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = -500 400 -1730
+	ROT = 0 1.94 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 21
+	POS = 0 400 -1730
+	ROT = 0 -2.792 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = -1137 400 800
+	ROT = 0 -0.998 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = -1137 400 1100
+	ROT = 0 2.972 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = 235 400 600
+	ROT = 0 1.942 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = 235 400 300
+	ROT = 0 0.052 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = 500 400 137
+	ROT = 0 0.652 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = 800 400 137
+	ROT = 0 -1.598 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = 900 400 -2770
+	ROT = 0 0.59 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = 0 400 -1865
+	ROT = 0 -1.54 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 22
+	POS = -500 400 -1865
+	ROT = 0 0.38 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET

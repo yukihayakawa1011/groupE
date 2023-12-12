@@ -134,22 +134,23 @@ void CQuataUI::Update(void)
 		break;
 
 	case STATE_UP:
+	{
 
-		if (m_Info.m_pos.y > SCREEN_HEIGHT * 0.2f)
+		m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.fStateCounter <= 0.0f)
 		{
 			m_Info.m_pos.y -= MOVESPEED.y;
 			m_Info.m_fWidht -= 0.45f;
 			m_Info.m_fHeight -= 0.35f;
 			m_pObject->SetPosition(m_Info.m_pos);
-		}
-		else {
-			m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
-
-			if (m_Info.fStateCounter <= 0.0f)
+			if (m_Info.m_pos.y <= SCREEN_HEIGHT * 0.2f)
 			{
 				m_Info.m_state = STATE_CLEAR;
+
 			}
 		}
+	}
 		break;
 
 	case STATE_CLEAR:

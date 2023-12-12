@@ -59,6 +59,7 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_pos;				// 位置
 	float m_fHeight;				// 高さ
 	float m_fWidth;				    // 幅
+	float m_fGap;
 	int m_nDesit;                   // 桁数
 	int m_nIdx;					    // 数字の番号
 	int m_nNumScore;			    // スコア
