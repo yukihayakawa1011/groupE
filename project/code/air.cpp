@@ -19,7 +19,7 @@ namespace {
 	const float RANGE_UPSPEED = (5.0f);	// 1フレーム間の範囲増加量
 	const float FLYAWAY_SPEED = (100.0f);	// 吹っ飛ぶ速度(かっけえ変数名)
 	const float ITEMAWAY_SPEED = (18.0f);	// アイテムの吹っ飛ぶ速度
-	const float ITEMAWAY_JUMP = (19.0f);
+	const float ITEMAWAY_JUMP = (15.0f);
 	const float AIROBJ_HEIGHT = (40.0f);	// オブジェクトの高さ
 	const int OBJ_NUMWIDTH = (10);		// 横枚数
 	const float FLYAWAY_JUMP = (20.0f);	// 吹っ飛ぶ高さ
@@ -242,7 +242,7 @@ void CAir::Collision(void)
 			float fLength = sqrtf((m_Info.pos.x - ObjPos.x) * (m_Info.pos.x - ObjPos.x)
 				+ (m_Info.pos.z - ObjPos.z) * (m_Info.pos.z - ObjPos.z));
 
-			if (fLength > m_Info.fRange) {	// 風の範囲内ではない場合
+			if (fLength > m_Info.fRange || m_Info.pos.y + AIROBJ_HEIGHT <= ObjPos.y) {	// 風の範囲内ではない場合
 				pItem = pItemNext;
 				continue;
 			}
@@ -250,7 +250,7 @@ void CAir::Collision(void)
 			D3DXVECTOR3 move = pItem->GetMove();
 			float fRot = atan2f(ObjPos.x - m_Info.pos.x, ObjPos.z - m_Info.pos.z);	//目標までの移動差分
 
-																					// 移動方向を設定
+			// 移動方向を設定
 			move.x = sinf(fRot) * ITEMAWAY_SPEED;
 			if (move.y <= 0.0f)
 			{

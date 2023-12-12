@@ -14,7 +14,7 @@
 #include "meshfield.h"
 
 // マクロ定義
-#define COLLISION_SIZE	(50.0f)
+#define COLLISION_SIZE	(75.0f)
 #define BOUND_COUNT	(4)
 #define GRAVITY	(-1.0f)		//プレイヤー重力
 
@@ -101,7 +101,6 @@ CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, in
 //==========================================================
 HRESULT CItem::Init(void)
 {
-
 	return S_OK;
 }
 
@@ -114,12 +113,10 @@ HRESULT CItem::Init(const char *pFileName, int type)
 	m_pObject->SetRotation(m_rot);
 	m_type = type;
 
-	if (m_nState == STATE_DROP) {
-		//当たり判定生成
-		CXFile* pFile = CManager::GetInstance()->GetModelFile();
-		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
-		m_pos.y = m_pos.y - vtxObjMin.y;
-	}
+	//当たり判定生成
+	CXFile* pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
+	m_pos.y = m_pos.y - vtxObjMin.y;
 
 	return S_OK;
 }
@@ -234,7 +231,7 @@ void CItem::Update(void)
 		if (m_pos.y + vtxObjMin.y <= 0.0f)
 		{
 			m_pos.y = 0.0f - vtxObjMin.y;
-			m_move *= 0.9f;
+			m_move *= 0.4f;
 			m_move.y *= -1.0f;
 			m_nBound++;
 
@@ -325,14 +322,7 @@ void CItem::Update(void)
 		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
 
 		//オブジェクト
-		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMax, vtxObjMin);
-
-		//起伏
-		float fHeight = CMeshField::GetHeight(m_pos);
-		if (m_pos.y <= fHeight - vtxObjMin.y)
-		{
-			m_pos.y = fHeight - vtxObjMin.y;
-		}
+		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMin, vtxObjMax);
 	}
 }
 
@@ -355,8 +345,6 @@ CItem *CItem::Collision(D3DXVECTOR3 &pos)
 	while (pObj != NULL)
 	{
 		CItem* pObjNext = pObj->m_pNext;
-		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		if (pObj->CollisionCheck(pos))
 		{
 			if (pObj->m_pObject != nullptr)
