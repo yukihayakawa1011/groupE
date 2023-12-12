@@ -652,6 +652,9 @@ void CPlayer::Controller(void)
 		if (m_pScore != nullptr)
 		{
 			m_pScore->AddScore(pItem->GetEachScore());
+
+			// パーティクルの設定
+			CParticle::Create(m_Info.pos, CEffect::TYPE_ITEMGET);
 		}
 
 		for (int i = 0; i < MAX_ITEM; i++)
@@ -1162,6 +1165,7 @@ void CPlayer::Damage(int nDamage)
 
 	if (m_nLife != nOldLife)
 	{
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
 		m_Info.fStateCounter = DAMAGE_INTERVAL;
 		m_Info.state = STATE_DAMAGE;
 
@@ -1367,6 +1371,7 @@ void CPlayer::MotionSet(void)
 		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 		{
 			BulletSet();
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_KUNAI);
 		}
 
 		if (m_pBody->GetMotion()->GetEnd())
@@ -1382,6 +1387,7 @@ void CPlayer::MotionSet(void)
 		if (m_pBody->GetMotion()->GetNowFrame() == 0 && m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 2)
 		{
 			CAir::Create(m_Info.pos, m_nId);
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_AIR);
 		}
 
 		if (m_pBody->GetMotion()->GetEnd())
@@ -1448,6 +1454,12 @@ void CPlayer::Attack(void)
 
 	if (m_pBody->GetMotion() == nullptr){	// モーションがない
 		return;
+	}
+
+	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK &&
+		m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 3)
+	{// 攻撃判定中
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_ATTACK);
 	}
 
 	if (m_pBody->GetMotion()->GetNowMotion() == ACTION_ATK && 
@@ -2098,6 +2110,7 @@ void CPlayer::DamageCollision(D3DXVECTOR3 pos)
 			if (pos.y >= ObjPos.y && pos.y <= ObjPos.y + HeadPos.y + HeadMax.y)
 			{// 高さ判定内
 				pPlayer->Damage(1);
+
 			}
 		}
 

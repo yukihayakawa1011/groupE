@@ -51,13 +51,29 @@
 // 無名名前空間を定義
 namespace {
 	const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
+	const D3DXVECTOR3 LEVERPOS[4] =
+	{
+		D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
+		D3DXVECTOR3(-1000.0f, 100.0f, -4440.0f),
+		D3DXVECTOR3(470.0f, 100.0f, -560.0f),
+		D3DXVECTOR3(360.0f, 100.0f, -2050.0f),
+	};
+
+	const D3DXVECTOR3 LEVERROT[4] =
+	{
+		D3DXVECTOR3(0.0f, D3DX_PI, 0.0f),
+		D3DXVECTOR3(0.0f, D3DX_PI, 0.0f),
+		D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+		D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f),
+	};
+
 	const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
 	const D3DXVECTOR2 SCORE_SIZE = { 14.0f, 18.0f };	// スコアのサイズ
 	const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (1000);				// 開始制限時間
+	const int START_TIMER = (90);				// 開始制限時間
 	const int START_WAITCNT = (180);
 	const int SCORE = (5000);                   // 初期のスコア
 	const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
@@ -273,8 +289,8 @@ HRESULT CGame::Init(void)
 
 		// 開始扉(人数分)
 		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(360.0f, 100.0f, -2050.0f + nCnt * 50.0f));
-			l->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * -0.5f, 0.0f));
+			CGimmickLever *l = CGimmickLever::Create(LEVERPOS[nCnt]);
+			l->SetRotation(LEVERROT[nCnt]);
 			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
 			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 			p->SetLever(l);
@@ -291,17 +307,21 @@ HRESULT CGame::Init(void)
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
 		pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
-		pSpear->BindButton(pButton);
+		//pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
+		//pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
-		// 槍(センサー式)
-		//pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(700.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+		CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+		CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 
+		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_NOTPRESS);
+		pButton = CGimmickButton::Create(D3DXVECTOR3(-1100.0f, 0.0f, -800.0f));
+		pSpear->BindButton(pButton);
+		pSpear->BindType(CGimmickSpear::TYPE_NOTPRESS);
+
+		// 槍(センサー式)
+		
 		// 地面からの槍
-		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		CGimmickSpear::Create(D3DXVECTOR3(0.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 
 		// 回転扉
 		CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -367,19 +387,23 @@ HRESULT CGame::Init(void)
 		CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
 		
 		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
 
 		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
 
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SCROLL, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_GEM00, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+		CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
 	}
 		break;
 

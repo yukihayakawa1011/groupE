@@ -221,6 +221,7 @@ private:	// 自分だけがアクセス可能
 	CGage *m_pGage;		// 忍術ゲージ
 	CThrowItem *m_pThrowItem; // 頭の上に出るアイテムのアイコン
 	CHeadUI *m_pHeadUI;
+	bool m_bAttack;
 };
 
 #endif

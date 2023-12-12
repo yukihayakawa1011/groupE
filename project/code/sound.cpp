@@ -20,8 +20,11 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/BGM/ranking.wav", -1 },		// BGMランキング
 	{ "data/SE/coin00.wav", 0 },		// Enter
 	{ "data/SE/walk02.wav", 0 },		// 移動音
-	{ "data/SE/damage.wav", 0 },		// ジャンプ音
+	{ "data/SE/attack.wav", 0 },		// ジャンプ音
 	{ "data/SE/spawn.wav", 0 },			// 着地音
+	{ "data/SE/futon.wav", 0 },			// 風の術
+	{ "data/SE/kunai.wav", 0 },			// クナイ
+	{ "data/SE/jab.wav", 0 },			// クナイ
 };										
 
 //=============================================================================

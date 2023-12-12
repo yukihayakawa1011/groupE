@@ -29,6 +29,9 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_STEP,			// ステップ音
 		LABEL_SE_DAMAGE,		// ダメージ音
 		LABEL_SE_SPAWN,			// 復活音
+		LABEL_SE_AIR,			// 風の術
+		LABEL_SE_KUNAI,			// クナイ
+		LABEL_SE_ATTACK,			// クナイ
 		LABEL_MAX,
 	} LABEL;
 
