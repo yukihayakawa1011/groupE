@@ -313,20 +313,12 @@ HRESULT CGame::Init(void)
 		pSpear->BindButton(pButton);
 		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
-		CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-		CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
-		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_NOTPRESS);
-
 		// 槍(センサー式)
 		//pSpear = CGimmickSpear::Create(D3DXVECTOR3(-700.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 		pSpear = CGimmickSpear::Create(D3DXVECTOR3(700.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 
 		// 地面からの槍
-		//CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 		CGimmickSpear::Create(D3DXVECTOR3(0.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 
 		// 回転扉
