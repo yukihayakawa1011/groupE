@@ -1165,6 +1165,7 @@ void CPlayer::Damage(int nDamage)
 
 	if (m_nLife != nOldLife)
 	{
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
 		m_Info.fStateCounter = DAMAGE_INTERVAL;
 		m_Info.state = STATE_DAMAGE;
 
@@ -2102,7 +2103,6 @@ void CPlayer::DamageCollision(D3DXVECTOR3 pos)
 		{// ¶‰E”»’è“à
 			if (pos.y >= ObjPos.y && pos.y <= ObjPos.y + HeadPos.y + HeadMax.y)
 			{// ‚‚³”»’è“à
-				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
 				pPlayer->Damage(1);
 
 			}
