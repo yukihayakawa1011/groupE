@@ -76,7 +76,7 @@ void CBullet::Uninit(void)
 //==========================================================
 void CBullet::Update(void)
 {
-	m_Info.posOld = m_Info.posOld;
+	m_Info.posOld = m_Info.pos;
 
 	// ëÄçÏä÷òA
 	Controller();

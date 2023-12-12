@@ -303,7 +303,7 @@ void CItem::Update(void)
 	}
 
 	// “–‚½‚è”»’è
-	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING)
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{
 		CObjectX::Collision(m_pos, m_posOld, m_move,
 			D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE),

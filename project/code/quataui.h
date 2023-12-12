@@ -51,6 +51,7 @@ public:	// 誰でもアクセス可能
 		STATE m_state;
 		float m_fHeight;
 		float m_fWidht;
+		float fStateCounter;
 	};
 
 	CQuataUI(int nPriority = 6);	// コンストラクタ(オーバーロード)
