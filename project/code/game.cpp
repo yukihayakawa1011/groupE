@@ -690,7 +690,15 @@ void CGame::Update(void)
 			else
 			{
 				if (m_pTimer != nullptr) {
-					m_pTimer->Update();
+
+					if (m_QuataUI != nullptr) {
+						if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
+							m_pTimer->Update();
+						}
+					}
+					else {
+						m_pTimer->Update();
+					}
 
 					if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
 						CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
