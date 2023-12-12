@@ -9,11 +9,13 @@
 #include "manager.h"
 #include "texture.h"
 #include "life.h"
+#include "slow.h"
 
 // 無名名前空間
 namespace {
 	const int DEF_PRI = (7);                        // 優先順位
-	const D3DXVECTOR2 MOVESPEED = { 8.0f, 5.0f };	// 動く速さ
+	const D3DXVECTOR2 MOVESPEED = { 8.0f, 2.5f };	// 動く速さ
+	const float STATEUP_COUNTER = (120.0f);
 	const char* FILENAME[CQuataUI::TYPE_MAX] = {	// テクスチャファイル名
 		"data\\TEXTURE\\quataui000.png",
 		"data\\TEXTURE\\quataui001.png",
@@ -33,6 +35,7 @@ CQuataUI::CQuataUI(int nPriority)
 	m_Info.m_type = TYPE_START;
 	m_Info.m_fHeight = 0.0f;
 	m_Info.m_fWidht = 0.0f;
+	m_Info.fStateCounter = 0.0f;
 	m_nNumPlayer = 0;
 }
 
@@ -126,20 +129,28 @@ void CQuataUI::Update(void)
 		if (m_Info.m_fHeight >= 100.0f && m_Info.m_fWidht >= 200.0f)
 		{
 			m_Info.m_state = STATE_UP;
+			m_Info.fStateCounter = STATEUP_COUNTER;
 		}
 		break;
 
 	case STATE_UP:
+	{
 
-		m_Info.m_pos.y -= MOVESPEED.y;
-		m_Info.m_fWidht -= 0.9f;
-		m_Info.m_fHeight -= 0.7f;
-		m_pObject->SetPosition(m_Info.m_pos);
+		m_Info.fStateCounter -= CManager::GetInstance()->GetSlow()->Get();
 
-		if (m_Info.m_pos.y <= SCREEN_HEIGHT * 0.2f)
+		if (m_Info.fStateCounter <= 0.0f)
 		{
-			m_Info.m_state = STATE_CLEAR;
+			m_Info.m_pos.y -= MOVESPEED.y;
+			m_Info.m_fWidht -= 0.45f;
+			m_Info.m_fHeight -= 0.35f;
+			m_pObject->SetPosition(m_Info.m_pos);
+			if (m_Info.m_pos.y <= SCREEN_HEIGHT * 0.2f)
+			{
+				m_Info.m_state = STATE_CLEAR;
+
+			}
 		}
+	}
 		break;
 
 	case STATE_CLEAR:
@@ -165,12 +176,12 @@ void CQuataUI::Update(void)
 	case STATE_SET:
 
 		m_Info.m_pos.y -= MOVESPEED.y * 0.13f;
-		m_Info.m_fWidht -= 0.5f;
-		m_Info.m_fHeight -= 0.7f;
+		m_Info.m_fWidht -= 0.35f;
+		m_Info.m_fHeight -= 0.35f;
 		m_pObject->SetPosition(m_Info.m_pos);
 
 
-		if (m_Info.m_fHeight <= 35.0f)
+		if (m_Info.m_fHeight <= 30.0f)
 		{
 			m_Info.m_state = STATE_NONE;
 		}

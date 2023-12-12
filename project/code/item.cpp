@@ -182,7 +182,7 @@ void CItem::Update(void)
 	case STATE_NORMAL:
 	{
 		D3DXVECTOR3 pos = m_pos;
-		m_posOld = m_pObject->GetPosition();
+		m_posOld = m_pos;
 		m_pos = m_pObject->GetPosition();
 		m_rot = m_pObject->GetRotation();
 
@@ -298,12 +298,14 @@ void CItem::Update(void)
 
 	// 使用オブジェクト更新
 	if (nullptr != m_pObject) {
-		m_pObject->SetPosition(m_pos);
+		D3DXVECTOR3 ObjPos = m_pos;
+		ObjPos.y += 10.0f;
+		m_pObject->SetPosition(ObjPos);
 		m_pObject->SetRotation(m_rot);
 	}
 
 	// 当たり判定
-	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING)
+	if (CManager::GetInstance()->GetMode() != CScene::MODE_RANKING && CManager::GetInstance()->GetMode() != CScene::MODE_TITLE)
 	{
 		CObjectX::Collision(m_pos, m_posOld, m_move,
 			D3DXVECTOR3(-COLLISION_SIZE, -COLLISION_SIZE, -COLLISION_SIZE),

@@ -13,6 +13,7 @@
 #include "player.h"
 #include "object2D.h"
 #include "object2DMap.h"
+#include "object2DScroll.h"
 #include <assert.h>
 
 //===================================================
@@ -91,7 +92,7 @@ HRESULT CMiniMap::Init(void)
 	}
 
 	//マップオブジェ生成
-	CObject2D* pObjScroll = CObject2D::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CObject2DScroll* pObjScroll = CObject2DScroll::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	pObjScroll->SetSize((m_fHeight * 0.8f) * 2.0f, (m_fHeight * 0.8f));
 	pObjScroll->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\scroll_minimap.png"));
 	if (m_pObjMap == nullptr)
@@ -116,7 +117,7 @@ void CMiniMap::Uninit(void)
 			m_ppPlayerIcon[cnt]->Uninit();
 		}
 		//入れ物破棄
-		delete m_ppPlayerIcon;
+		delete[] m_ppPlayerIcon;
 	}
 
 	//探索済みドット用フラグ破棄

@@ -51,6 +51,7 @@ public:	// 誰でもアクセス可能
 		STATE m_state;
 		float m_fHeight;
 		float m_fWidht;
+		float fStateCounter;
 	};
 
 	CQuataUI(int nPriority = 6);	// コンストラクタ(オーバーロード)
@@ -70,6 +71,7 @@ public:	// 誰でもアクセス可能
 	STATE GetState(void) { return m_Info.m_state; }
 	float GetHeight(void) { return m_Info.m_fHeight; }
 	float GetWight(void) { return m_Info.m_fWidht; }
+	float GetCounter(void) { return m_Info.fStateCounter; }
 	QUATATYPE GetType(void) { return m_Info.m_type; }
 
 	// メンバ関数(設定)

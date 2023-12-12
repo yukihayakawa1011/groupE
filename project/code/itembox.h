@@ -43,8 +43,8 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	static CItemBox *m_pTop;	// 先頭のオブジェクトへのポインタ
 	static CItemBox *m_pCur;	// 最後尾のオブジェクトへのポインタ
-	CItemBox *m_pPrev;			// 前のオブジェクトへのポインタ
-	CItemBox *m_pNext;			// 次のオブジェクトへのポインタ
+	CItemBox *m_pPrev;		// 前のオブジェクトへのポインタ
+	CItemBox *m_pNext;		// 次のオブジェクトへのポインタ
 	CObjectX* m_pObj;			// オブジェクト
 
 	int m_nCounter;				//排出CT

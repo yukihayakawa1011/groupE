@@ -27,6 +27,7 @@ public:
 	{
 		TYPE_AUTO = 0,	// Ž©“®ì“®
 		TYPE_PRESS,		// ì“®Ž®
+		TYPE_NOTPRESS,	// ‰Ÿ‚µ‚Ä‚¢‚È‚¢‚Æ‚«ì“®
 		TYPE_PRESSAUTO,	// ì“®‚µ‚½ŒãŽ©“®Ž®
 		TYPE_SENSOR,		// ƒZƒ“ƒT[Ž®
 		TYPE_MAX

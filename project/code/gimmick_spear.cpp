@@ -277,6 +277,26 @@ void CGimmickSpear::UpdateType(void)
 	}
 	break;
 
+	case TYPE_NOTPRESS:
+	{
+		if (m_pInObj == nullptr) {
+			return;
+		}
+
+		if (m_pInObj->GetState() == CGimmickButton::STATE_PRESS) {	// ‰Ÿ‚³‚ê‚Ä‚¢‚é
+			if (m_state == STATE_NONE) {
+				m_bActive = false;
+			}
+		}
+		else
+		{
+			if (m_state == STATE_NONE) {
+				m_bActive = true;
+			}
+		}
+	}
+	break;
+
 	case TYPE_PRESSAUTO:
 	{
 		if (m_pInObj == nullptr) {
