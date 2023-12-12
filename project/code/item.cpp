@@ -314,7 +314,7 @@ void CItem::Update(void)
 		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
 
 		//オブジェクト
-		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMax, vtxObjMin);
+		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMin, vtxObjMax);
 
 		//起伏
 		float fHeight = CMeshField::GetHeight(m_pos);
