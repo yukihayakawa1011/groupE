@@ -73,7 +73,7 @@ namespace {
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (90);				// 開始制限時間
+	const int START_TIMER = (1000);				// 開始制限時間
 	const int START_WAITCNT = (180);
 	const int SCORE = (5000);                   // 初期のスコア
 	const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
@@ -335,6 +335,10 @@ HRESULT CGame::Init(void)
 		// 落とし穴
 		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
 		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
+		pFall->BindButton(pButton);
+
+		pFall = CGimmickPitFall::Create(D3DXVECTOR3(430.0f, 1.0f, -2100.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
 		pFall->BindButton(pButton);
 
 		// 協力扉
