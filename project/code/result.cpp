@@ -24,6 +24,7 @@
 #include "player.h"
 #include "ranking.h"
 #include "object_manager.h"
+#include "particle.h"
 
 // マクロ定義
 #define RANKING_FILE	"data\\FILE\\ranking.bin"	// ランキングファイル
@@ -483,6 +484,13 @@ void CResult::Update(void)
 
 		if (pos.y <= 0.0f) {	// 地面に埋まった
 			pos.y = 0.0f;
+			if (m_ppPlayer[nCnt]->GetMotion() == PLAYER_MAXMOTION) {
+				CParticle::Create(pos, CEffect::TYPE_LANDFAILED);
+			}
+			else {
+				CParticle::Create(pos, CEffect::TYPE_LANDCLEAR);
+			}
+
 			m_ppPlayer[nCnt]->SetMotion(m_ppPlayer[nCnt]->GetMotion() - 2);
 		}
 
