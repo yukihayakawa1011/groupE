@@ -724,15 +724,17 @@ void CGame::Update(void)
 
 			if (m_QuataUI->GetState() == CQuataUI::STATE_UP)
 			{
-				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-				pos.y -= 5.0f;
-				m_QuataScore->SetPosition(pos);
+				if (m_QuataUI->GetCounter() <= 0.0f) {
+					D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+					pos.y -= 2.5f;
+					m_QuataScore->SetPosition(pos);
+				}
 			}
 
 			if (m_QuataUI->GetState() == CQuataUI::STATE_SET)
 			{
 				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-				pos.y -= 5.0f * 0.13f;
+				pos.y -= 2.5f * 0.13f;
 				m_QuataScore->SetPosition(pos);
 			}
 		}
