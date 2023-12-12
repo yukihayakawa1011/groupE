@@ -234,8 +234,6 @@ HRESULT CGame::Init(void)
 			m_nNumPlayer = 1;
 		}
 
-		m_nNumPlayer = 2;
-
 		// 人数分ポインタ生成
 		m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
