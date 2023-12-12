@@ -128,7 +128,7 @@ void CEffect::Update(void)
 		break;
 	case TYPE_ITEMGET:	// ‰Œ
 
-		m_Info.col.a -= 0.055f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.15f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.x -= m_Info.move.x * 0.01f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.z -= m_Info.move.z * 0.01f * CManager::GetInstance()->GetSlow()->Get();
@@ -309,6 +309,11 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_SMOOK;
 	}
 
+	case TYPE_ITEMGET:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+
 	break;
 		
 	}
@@ -347,7 +352,7 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetAlphaText(true);
 		m_pObjectBilBoard->SetZTest(true);
 		m_pObjectBilBoard->SetLighting(true);
-		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_MINUS);
 	}
 	break;
 
