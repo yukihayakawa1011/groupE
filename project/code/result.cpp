@@ -107,7 +107,6 @@ CResult::~CResult()
 //===============================================
 HRESULT CResult::Init(void)
 {
-	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RESULT_CLEAR);
 	CTexture *pTexture = CManager::GetInstance()->GetTexture();
 	CMeshDome::Create(D3DXVECTOR3(0.0f, -1000.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 10000.0f, 10.0f, 3, 10, 10);
 
@@ -200,7 +199,7 @@ HRESULT CResult::Init(void)
 	// 
 	CManager::GetInstance()->GetCamera()->Update();
 	CManager::GetInstance()->GetCamera()->SetActive(false);
-	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
+	//CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RANKING);
 
 	if (m_ppPlayer == nullptr) {
 		return S_OK;
@@ -232,9 +231,12 @@ HRESULT CResult::Init(void)
 	if (m_pObjClear != nullptr) {
 		switch (m_bClear) {
 		case false:
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RESULT_FAILED);
 			m_pObjClear->BindTexture(CTexture::TYPE_RESULTFAILED);
+
 			break;
 		case true:
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_RESULT_CLEAR);
 			m_pObjClear->BindTexture(CTexture::TYPE_RESULTCLEAR);
 			break;
 		}
@@ -294,6 +296,12 @@ void CResult::Uninit(void)
 
 		delete[] m_ppRank;	// ポインタの開放
 		m_ppRank = nullptr;	// 使用していない状態にする
+	}
+	
+	if (m_pRank != nullptr)
+	{
+		delete[] m_pRank;
+		m_pRank = nullptr;
 	}
 
 	if (m_pTotalScore != nullptr) {

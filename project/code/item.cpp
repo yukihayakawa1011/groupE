@@ -187,13 +187,13 @@ void CItem::Update(void)
 		m_rot = m_pObject->GetRotation();
 
 		//Šp“x‚ð‹‚ß‚é
-		//m_fCurve += (D3DX_PI * 0.02f);
+		m_fCurve += (D3DX_PI * 0.02f);
 
 		//ˆÊ’u‚ð‘ã“ü‚·‚é
 		m_pos.y = m_posOld.y + sinf(m_fCurve) * 1.5f;
 
 		if (m_pObject->GetMtxParent() == nullptr) {
-			//m_rot.y += sinf(D3DX_PI * 0.02f);
+			m_rot.y += sinf(D3DX_PI * 0.02f);
 		}
 		else {
 
