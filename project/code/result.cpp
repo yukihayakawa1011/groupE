@@ -297,6 +297,12 @@ void CResult::Uninit(void)
 		delete[] m_ppRank;	// ポインタの開放
 		m_ppRank = nullptr;	// 使用していない状態にする
 	}
+	
+	if (m_pRank != nullptr)
+	{
+		delete[] m_pRank;
+		m_pRank = nullptr;
+	}
 
 	if (m_pTotalScore != nullptr) {
 		m_pTotalScore->Uninit();
