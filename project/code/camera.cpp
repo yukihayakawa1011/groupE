@@ -273,22 +273,20 @@ void CCamera::MoveV(void)
 	{//YƒL[“ü—Í
 		//Šp“x‚Ì•ÏX
 		m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
-		if (m_rot.z < MIN_CAMERA_ROTZ)
+		if (m_rot.z > MAX_CAMERA_ROTZ)
 		{//Šp“x‚ªŒÀŠE‚ð’´‚¦‚½ê‡
-			m_rot.z = MIN_CAMERA_ROTZ;
+			m_rot.z = MAX_CAMERA_ROTZ;
 		}
-		
 	}
 	else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
 	{//NƒL[“ü—Í
 		//Šp“x‚Ì•ÏX
 		m_rot.z += PAD_ROTATE * 2 * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_MINUS) * fMultiSlow;
 
-		if (m_rot.z > MAX_CAMERA_ROTZ)
+		if (m_rot.z < MIN_CAMERA_ROTZ)
 		{//Šp“x‚ªŒÀŠE‚ð’´‚¦‚½ê‡
-			m_rot.z = MAX_CAMERA_ROTZ;
+			m_rot.z = MIN_CAMERA_ROTZ;
 		}
-
 	}
 
 	//zŽ²‚ÌˆÚ“®
