@@ -485,6 +485,7 @@ void CPlayer::Update(void)
 	// ƒJƒƒ‰’Ç]
 	if (m_pMyCamera != nullptr) {
 		// ’Ç]ˆ—
+		m_pMyCamera->CollisionObj();
 		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
 
