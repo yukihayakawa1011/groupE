@@ -312,7 +312,7 @@ HRESULT CGame::Init(void)
 		CItem::Create(D3DXVECTOR3(-1060.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
         
         CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
-        CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+        CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
         CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
         CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
         CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);

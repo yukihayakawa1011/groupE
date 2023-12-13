@@ -204,6 +204,18 @@ void CEffect::Update(void)
 		}
 
 		break;
+
+	case TYPE_KUNAI:	// ‰Œ
+
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.4f * CManager::GetInstance()->GetSlow()->Get();
+		break;
+
+	case TYPE_BUTTON:	// ‰Œ
+
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += (rand() % 10 - 5) * 1.0f * CManager::GetInstance()->GetSlow()->Get();
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
@@ -415,6 +427,12 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_WALK;
 	}
 	break;
+
+	case TYPE_KUNAI:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -501,6 +519,15 @@ void CEffect::DrawSet(void)
 	break;
 
 	case TYPE_WALK:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_KUNAI:
 	{
 		m_pObjectBilBoard->SetAlphaText(true);
 		m_pObjectBilBoard->SetZTest(false);
