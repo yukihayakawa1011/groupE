@@ -53,6 +53,7 @@ public:	// 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	static CGimmickSpear *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot, TYPE type);
+	virtual void IdSetButton(void) override;
 
 	// メンバ関数(取得)
 	STATE GetState(void) { return m_state; }

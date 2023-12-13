@@ -49,7 +49,8 @@ public:	// 誰でもアクセス可能
 	void Switch(bool bUse) override;
 
 	// メンバ関数(取得)
-	STATE GetState(void) { return m_state; }
+	STATE GetState(void);
+	CGimmickButton *GetButton(void) override { return this; }
 
 	// メンバ関数(設定)
 

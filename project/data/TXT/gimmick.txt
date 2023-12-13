@@ -15,6 +15,26 @@ BUTTONSET
 END_BUTTONSET
 
 BUTTONSET
+	POS = -400.0 0.0 0.0
+	ID = 1
+END_BUTTONSET
+
+BUTTONSET
+	POS = -500.0 0.0 0.0
+	ID = 1
+END_BUTTONSET
+
+BUTTONSET
+	POS = -600.0 0.0 0.0
+	ID = 1
+END_BUTTONSET
+
+BUTTONSET
+	POS = -700.0 0.0 0.0
+	ID = 1
+END_BUTTONSET
+
+BUTTONSET
 	POS = 800.0 0.0 0.0
 	ID = 2
 END_BUTTONSET
@@ -65,7 +85,7 @@ END_ROTATEDOORSET
 SPEARSET
 	POS = -300.0 0.0 0.0
 	ROT = 0.0 0.0 0.0
-	TYPE = 0 # 1,自動作動 2,ボタン作動 3,押していないとき作動 4,作動した後自動式 5, センサー式
+	TYPE = 1 # 1,自動作動 2,ボタン作動 3,押していないとき作動 4,作動した後自動式 5, センサー式
 	ID = 0
 END_SPEARSET
 

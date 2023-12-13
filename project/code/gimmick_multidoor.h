@@ -57,6 +57,7 @@ public:	// 誰でもアクセス可能
 	void BindButton(CGimmickButton *pButton);
 	void SetNumButton(const int nNum);
 	void SetActiveButton(const int nNum);
+	virtual void IdSetButton(void) override;
 	
 	// メンバ関数(取得)
 

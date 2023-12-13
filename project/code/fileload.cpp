@@ -870,6 +870,7 @@ void CFileLoad::LoadMultiDoorData(FILE *pFile)
 	pMulti->SetNumButton(nNum);
 	pMulti->SetActiveButton(nActive);
 	pMulti->SetActionId(nIdx);
+	pMulti->IdSetButton();
 }
 
 //==========================================================
@@ -959,7 +960,7 @@ void CFileLoad::LoadRotateDoorData(FILE *pFile)
 }
 
 //==========================================================
-// ギミック回転ドアデータ
+// ギミック落とし穴データ
 //==========================================================
 void CFileLoad::LoadPitFallData(FILE *pFile)
 {
@@ -1017,8 +1018,12 @@ void CFileLoad::LoadPitFallData(FILE *pFile)
 	//フィールドの配置
 	CGimmickPitFall *pMulti = CGimmickPitFall::Create(pos);
 	pMulti->SetActionId(nIdx);
+	pMulti->IdSetButton();
 }
 
+//==========================================================
+// 槍データ
+//==========================================================
 void CFileLoad::LoadSpearData(FILE *pFile)
 {
 	char aStr[256];	//余分な文章読み込み用
@@ -1069,4 +1074,5 @@ void CFileLoad::LoadSpearData(FILE *pFile)
 	//フィールドの配置
 	CGimmickSpear *pMulti = CGimmickSpear::Create(pos, D3DXToRadian(rot), static_cast<CGimmickSpear::TYPE>(nType));
 	pMulti->SetActionId(nIdx);
+	pMulti->IdSetButton();
 }

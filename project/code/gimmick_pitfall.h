@@ -36,6 +36,7 @@ public:	// 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	static CGimmickPitFall *Create(const D3DXVECTOR3 pos);
+	virtual void IdSetButton(void) override;
 
 	// メンバ関数(取得)
 

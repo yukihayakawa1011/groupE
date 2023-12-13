@@ -101,8 +101,6 @@ void CGimmickButton::Update(void)
 
 		break;
 	}
-
-	m_state = STATE_NONE;
 }
 
 //==========================================================
@@ -165,4 +163,14 @@ void CGimmickButton::Switch(bool bUse)
 		m_state = STATE_PRESS;
 		break;
 	}
+}
+
+//==========================================================
+// èÛë‘ÇéÊìæ
+//==========================================================
+CGimmickButton::STATE CGimmickButton::GetState(void)
+{
+	STATE stateOld = m_state;
+	m_state = STATE_NONE;
+	return stateOld;
 }

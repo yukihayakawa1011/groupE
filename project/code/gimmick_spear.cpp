@@ -328,3 +328,30 @@ void CGimmickSpear::UpdateType(void)
 		break;
 	}
 }
+
+//==========================================================
+// 使用ボタン割り当て
+//==========================================================
+void CGimmickSpear::IdSetButton(void)
+{
+	CGimmick *pGimk = CGimmick::GetTop();
+
+	// 最後まで繰り返し
+	while (pGimk != nullptr) {
+		CGimmick *pGimkNext = pGimk->GetNext();
+
+		if (pGimk->GetButton() == nullptr) {	// ボタンではない
+			pGimk = pGimkNext;
+			continue;
+		}
+
+		if (pGimk->GetId() != GetId()) {	// IDが不一致
+			pGimk = pGimkNext;
+			continue;
+		}
+
+		// 割り当て
+		BindButton(pGimk->GetButton());
+		break;
+	}
+}
