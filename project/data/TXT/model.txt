@@ -1446,7 +1446,7 @@ END_MODELSET
 MODELSET
 	TYPE = 14
 	POS = 100 160 -5150
-	ROT = 0 3.14159 0
+	ROT = 0 180 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
