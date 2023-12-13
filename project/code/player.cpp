@@ -1439,6 +1439,7 @@ void CPlayer::MotionSet(void)
 		if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
 		{
 			CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
 		}
 	}
 	else
