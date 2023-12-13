@@ -9,44 +9,64 @@ SCRIPT			# この行は絶対消さないこと！
 #============================================================
 # ボタン配置
 #============================================================
-BUTTONSET
+BUTTONSET # 槍
 	POS = -300.0 0.0 0.0
 	ID = 0
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 協力扉
 	POS = 150.0 0.0 -1500.0
 	ID = 1
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 協力扉
 	POS = -800.0 0.0 -1500.0
 	ID = 1
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 協力扉
 	POS = 150.0 0.0 -2000.0
 	ID = 1
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 協力扉
 	POS = -600.0 0.0 -2000.0
 	ID = 1
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 落とし穴
 	POS = 800.0 0.0 0.0
 	ID = 2
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 落とし穴
 	POS = 900.0 0.0 0.0
 	ID = 3
 END_BUTTONSET
 
-BUTTONSET
+BUTTONSET # 落とし穴
 	POS = 1000.0 0.0 0.0
 	ID = 4
+END_BUTTONSET
+
+BUTTONSET # 協力扉
+	POS = 600.0 0.0 -4300.0
+	ID = 5
+END_BUTTONSET
+
+BUTTONSET # 協力扉
+	POS = -800.0 0.0 -4300.0
+	ID = 5
+END_BUTTONSET
+
+BUTTONSET # 協力扉
+	POS = -150.0 0.0 -4300.0
+	ID = 5
+END_BUTTONSET
+
+BUTTONSET # 協力扉
+	POS = -400.0 0.0 -4700.0
+	ID = 5
 END_BUTTONSET
 
 #============================================================
@@ -62,6 +82,14 @@ MULTIDOORSET
 	NUM = 4
 	ACTIVE = 2
 	ID = 1
+END_MULTIDOORSET
+
+MULTIDOORSET
+	POS = 150.0 0.0 -4500.0
+	ROT = 0.0 0.0 0.0
+	NUM = 4
+	ACTIVE = 2
+	ID = 5
 END_MULTIDOORSET
 
 #============================================================
@@ -93,11 +121,46 @@ PULLSET
 	ROT = 0.0 0.0 0.0
 END_PULLSET
 
+PULLSET
+	POS = -400.0 0.0 -4400.0
+	ROT = 0.0 0.0 0.0
+END_PULLSET
+
+PULLSET
+	POS = 500.0 0.0 -4400.0
+	ROT = 0.0 0.0 0.0
+END_PULLSET
+
 #============================================================
 # 回転ドア配置
 #============================================================
 ROTATEDOORSET
 	POS = 650.0 0.0 200.0
+	ROT = 0.0 0.0 0.0
+END_ROTATEDOORSET
+
+ROTATEDOORSET
+	POS = 280.0 0.0 450.0
+	ROT = 0.0 90 0.0
+END_ROTATEDOORSET
+
+ROTATEDOORSET
+	POS = -600.0 0.0 -450.0
+	ROT = 0.0 90 0.0
+END_ROTATEDOORSET
+
+ROTATEDOORSET
+	POS = 300.0 0.0 -1650.0
+	ROT = 0.0 90 0.0
+END_ROTATEDOORSET
+
+ROTATEDOORSET
+	POS = -300.0 0.0 -3950.0
+	ROT = 0.0 90 0.0
+END_ROTATEDOORSET
+
+ROTATEDOORSET
+	POS = 1050.0 0.0 -2700.0
 	ROT = 0.0 0.0 0.0
 END_ROTATEDOORSET
 

@@ -674,6 +674,11 @@ void CEnemy::Death(void)
 		}
 	}
 
+	CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+	// 煙のパーティクル生成
+	CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_BLACKSMAKE);
+
 	//自滅
 	Uninit();
 }
