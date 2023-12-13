@@ -62,6 +62,7 @@ namespace
 	const char* BODY_FILENAME = "data\\TXT\\enemy\\motion_ninjabody.txt";	// 上半身のモーションファイルパス
 	const char* LEG_FILENAME = "data\\TXT\\enemy\\motion_ninjaleg.txt";		// 下半身のモーションファイルパス
 	const int RETURN_TIME_LIMIT = 120;	//帰って来るまでの制限時間
+	const int HEADPARTS_IDX = (1);
 }
 
 //===============================================
@@ -936,6 +937,16 @@ void CEnemy::Damage(int nDamage)
 { 
 	int nOldLife = m_nLife;
 	m_nLife = MINUS_GUARD(m_nLife - nDamage);
+
+	// エフェクトの生成
+	if (m_pBody != nullptr) {
+		if (m_pBody->GetParts(HEADPARTS_IDX) != nullptr) {
+			D3DXVECTOR3 pos = D3DXVECTOR3(m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_41, 
+				m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_42, 
+				m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_43);
+			CParticle::Create(pos, CEffect::TYPE_HIT);
+		}
+	}
 
 	if (m_nLife <= 0)
 	{//死

@@ -28,6 +28,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_ITEMGET,		// アイテム獲得
 		TYPE_LANDCLEAR,	// 着地成功
 		TYPE_LANDFAILED,	// 失敗
+		TYPE_HIT,		// 攻撃ヒット
 		TYPE_MAX
 	}TYPE;
 
