@@ -308,7 +308,8 @@ HRESULT CGame::Init(void)
         
         CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
         CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-        CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+        CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+		CItem::Create(D3DXVECTOR3(-1060.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
         
         CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
         CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
@@ -334,6 +335,9 @@ HRESULT CGame::Init(void)
         CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
         CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
         CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1050, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
     }
         break;
 
@@ -365,8 +369,9 @@ HRESULT CGame::Init(void)
     }
 
     //šâ
-    CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
+    CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-1000.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	
     //ƒJƒƒ‰‰Šú‰»
     {
         //CManager::GetInstance()->GetCamera()->Init();
