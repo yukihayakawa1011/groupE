@@ -127,8 +127,13 @@ void CEffect::Update(void)
 		break;
 	case TYPE_ITEMGET:	// ‰Œ
 
-		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.03f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.15f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
 
 		break;
 
@@ -152,7 +157,42 @@ void CEffect::Update(void)
 		m_Info.move.x -= m_Info.move.x * 0.045f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.z -= m_Info.move.z * 0.045f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.fRadius += 0.3f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.45f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
+
+	case TYPE_SPEAR:	// ‰Œ
+
+		m_Info.col.a -= 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += -0.5f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.pos.y <= 0.0f)
+		{
+			m_Info.move.y = 0.0f;
+			return;
+		}
+		else
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.2f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+		break;
+
+	case TYPE_BLACKSMAKE:	// ‰Œ
+
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+		break;
+
+	case TYPE_WALK:	// ‰Œ
+
+		m_Info.col.a -= 0.03f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.045f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.045f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.45f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
 	}
@@ -231,9 +271,6 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float
 		// ”¼ŒaÝ’è
 		pEffect->m_Info.fRadius = fRadius;
 
-		// Žõ–½Ý’è
-		pEffect->m_Info.fLife = fLife;
-
 		// ˆÚ“®—ÊÝ’è
 		pEffect->SetMove(move);
 
@@ -245,6 +282,9 @@ CEffect *CEffect::Create(D3DXVECTOR3 pos, D3DXVECTOR3 move, D3DXCOLOR col, float
 
 		// ‰Šú‰»ˆ—
 		pEffect->Init();
+
+		// Žõ–½Ý’è
+		pEffect->m_Info.fLife = fLife;
 
 		pEffect->InfoSet();
 
@@ -355,6 +395,11 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 	}
 	break;
 		
+	case TYPE_SPEAR:
+	{
+		return CTexture::TYPE_WOODPOW;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -422,5 +467,22 @@ void CEffect::DrawSet(void)
 	}
 	break;
 
+	case TYPE_SPEAR:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_BLACKSMAKE:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_MINUS);
+	}
+	break;
 	}
 }

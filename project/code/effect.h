@@ -29,6 +29,9 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_LANDCLEAR,	// 着地成功
 		TYPE_LANDFAILED,	// 失敗
 		TYPE_HIT,		// 攻撃ヒット
+		TYPE_SPEAR,		// 槍
+		TYPE_BLACKSMAKE,	// 黒い煙
+		TYPE_WALK,		// 歩き
 		TYPE_MAX
 	}TYPE;
 

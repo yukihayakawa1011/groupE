@@ -78,6 +78,7 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_PosDest;		// 目標の座標
 	CGimmickButton *m_pInObj;	// 入力オブジェクト
 	bool m_bActive;			// 動作可能かどうか
+	bool m_bParticle;			// パーティクル使用したかどうか
 	int m_nStateCounter;		// 状態管理カウンター
 	float m_fDiffMulti;		// 差分補正の倍率
 	static char *m_pFileName;	// モデルファイルネーム

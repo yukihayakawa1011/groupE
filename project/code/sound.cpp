@@ -25,6 +25,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/futon.wav", 0 },			// 風の術
 	{ "data/SE/kunai.wav", 0 },			// クナイ
 	{ "data/SE/jab.wav", 0 },			// クナイ
+	{ "data/SE/catch.wav", 0 },			// クナイ
 };										
 
 //=============================================================================
