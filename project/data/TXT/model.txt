@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 9
+NUM_TEXTURE = 10
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -23,11 +23,12 @@ TEXTURE_FILENAME = data/TEXTURE/zabuton000.jpg		# [5]座布団
 TEXTURE_FILENAME = data/TEXTURE/sumdorr.jpg			# [6]ドア左(和)
 TEXTURE_FILENAME = data/TEXTURE/gold00.jpg			# [7]金の掛け軸
 TEXTURE_FILENAME = data/TEXTURE/af18.jpg            # [8]木のテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tanuki_paint.png    # [9]たぬきテクスチャ
 
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 23
+NUM_MODEL = 24
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -55,6 +56,7 @@ MODEL_FILENAME = data\MODEL\stonelight01.x # [19]石灯篭
 MODEL_FILENAME = data\MODEL\shrub.x        # [20]低木
 MODEL_FILENAME = data\MODEL\sicletyoutin.x # [21]丸提灯
 MODEL_FILENAME = data\MODEL\tyoutin.x      # [22]提灯
+MODEL_FILENAME = data\MODEL\tanuki.x       # [23]たぬき
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1447,6 +1449,14 @@ MODELSET
 	TYPE = 14
 	POS = 100 160 -5150
 	ROT = 0 180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 23
+	POS = -1050 0 -4400
+	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
