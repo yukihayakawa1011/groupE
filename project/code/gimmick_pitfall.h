@@ -37,6 +37,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CGimmickPitFall *Create(const D3DXVECTOR3 pos);
 	virtual void IdSetButton(void) override;
+	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned) { return false; }
 
 	// メンバ関数(取得)
 

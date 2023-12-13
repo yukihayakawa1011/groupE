@@ -47,6 +47,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CGimmickLever *Create(const D3DXVECTOR3 pos);
 	void Switch(bool bUse) override;
+	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned) { return false; }
 
 	// メンバ関数(取得)
 	STATE GetState(void) { return m_state; }
