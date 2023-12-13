@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 10
+NUM_TEXTURE = 14
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -24,6 +24,10 @@ TEXTURE_FILENAME = data/TEXTURE/sumdorr.jpg			# [6]ドア左(和)
 TEXTURE_FILENAME = data/TEXTURE/gold00.jpg			# [7]金の掛け軸
 TEXTURE_FILENAME = data/TEXTURE/af18.jpg            # [8]木のテクスチャ
 TEXTURE_FILENAME = data/TEXTURE/tanuki_paint.png    # [9]たぬきテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/ash000.jpg          # [10]いろり
+TEXTURE_FILENAME = data/TEXTURE/floor001.jpg        # [11]囲炉裏の木
+TEXTURE_FILENAME = data/TEXTURE/yakifish.jpg        # [12]焼き魚
+TEXTURE_FILENAME = data/TEXTURE/onabe.jpg           # [13]お鍋
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -1478,6 +1482,22 @@ MODELSET
 	TYPE = 14
 	POS = 100 160 -5150
 	ROT = 0 180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = -700 70 -2800
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = -900 70 1600
+	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
