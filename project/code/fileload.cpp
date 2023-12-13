@@ -17,6 +17,12 @@
 #include "item.h"
 #include "title_enter.h"
 #include "point.h"
+#include "gimmick_pull.h"
+#include "gimmick_button.h"
+#include "gimmick_multidoor.h"
+#include "gimmick_rotatedoor.h"
+#include "gimmick_pitfall.h"
+#include "gimmick_spear.h"
 
 //==========================================================
 // マクロ定義
@@ -38,6 +44,21 @@
 #define ENDITEMSET_TXT	"END_ITEMSET"			// アイテム読み込み終了
 #define POINTSET_TXT	"SET_POINTLIST"			// アイテム読み込み終了
 #define ENDPOINTSET_TXT	"END_SET_POINTLIST"			// アイテム読み込み終了
+#define PULLSET_TXT	"PULLSET"
+#define ENDPULLSET_TXT "END_PULLSET"
+#define BUTTONSET_TXT "BUTTONSET"
+#define ENDBUTTONSET_TXT "END_BUTTONSET"
+#define MULTIDOORSET_TXT "MULTIDOORSET"
+#define ENDMULTIDOORSET_TXT "END_MULTIDOORSET"
+#define ROTATEDOORSET_TXT "ROTATEDOORSET"
+#define ENDROTATEDOORSET_TXT "END_ROTATEDOORSET"
+#define PITFALLSET_TXT "PITFALLSET"
+#define ENDPITFALLSET_TXT "END_PITFALLSET"
+#define SPEARSET_TXT "SPEARSET"
+#define ENDSPEARSET_TXT "END_SPEARSET"
+#define LOAD_ID "ID"
+#define LOAD_ACTIVE "ACTIVE"
+#define LOAD_SWITCHNUM "NUM"
 #define LOAD_POS		"POS"				// 座標
 #define LOAD_ROT		"ROT"				// 向き
 #define LOAD_TEXTYPE	"TEXTYPE"			// テクスチャ番号
@@ -197,6 +218,30 @@ void CFileLoad::LoadFileData(FILE *pFile)
 		else if (strcmp(&aStr[0], POINTSET_TXT) == 0)
 		{
 			LoadPointData(pFile);
+		}
+		else if (strcmp(&aStr[0], PULLSET_TXT) == 0)
+		{
+			LoadPullData(pFile);
+		}
+		else if (strcmp(&aStr[0], BUTTONSET_TXT) == 0)
+		{
+			LoadButtonData(pFile);
+		}
+		else if (strcmp(&aStr[0], MULTIDOORSET_TXT) == 0)
+		{
+			LoadMultiDoorData(pFile);
+		}
+		else if (strcmp(&aStr[0], ROTATEDOORSET_TXT) == 0)
+		{
+			LoadRotateDoorData(pFile);
+		}
+		else if (strcmp(&aStr[0], PITFALLSET_TXT) == 0)
+		{
+			LoadPitFallData(pFile);
+		}
+		else if (strcmp(&aStr[0], SPEARSET_TXT) == 0)
+		{
+			LoadSpearData(pFile);
 		}
 
 		//終了確認
@@ -721,4 +766,307 @@ void CFileLoad::LoadVtxMinData(FILE *pFile, int nIdx)
 	fscanf(pFile, "%f", &VtxMin.z);	//z座標読み込み
 
 	CManager::GetInstance()->GetModelFile()->SetSizeVtxMin(nIdx, VtxMin);
+}
+
+//==========================================================
+// ギミックボタン読み込み
+//==========================================================
+void CFileLoad::LoadButtonData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nIdx = -1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ID) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nIdx);	// ID
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDBUTTONSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CGimmickButton *pButton = CGimmickButton::Create(pos);
+	pButton->SetActionId(nIdx);
+}
+
+//==========================================================
+// ギミック協力ドア読み込み
+//==========================================================
+void CFileLoad::LoadMultiDoorData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nIdx = -1;
+	int nActive = 1;
+	int nNum = 1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ROT) == 0)
+		{//向き
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &rot.x);	//x座標読み込み
+			fscanf(pFile, "%f", &rot.y);	//y座標読み込み
+			fscanf(pFile, "%f", &rot.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ID) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nIdx);	// ID
+		}
+		else if (strcmp(&aStr[0], LOAD_SWITCHNUM) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nNum);	// ID
+		}
+		else if (strcmp(&aStr[0], LOAD_ACTIVE) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nActive);	// ID
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDMULTIDOORSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CGimmickMultiDoor *pMulti = CGimmickMultiDoor::Create(pos, D3DXToRadian(rot));
+	pMulti->SetNumButton(nNum);
+	pMulti->SetActiveButton(nActive);
+	pMulti->SetActionId(nIdx);
+}
+
+//==========================================================
+// ギミック引くオブジェクト読み込み
+//==========================================================
+void CFileLoad::LoadPullData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nIdx = -1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ROT) == 0)
+		{//向き
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &rot.x);	//x座標読み込み
+			fscanf(pFile, "%f", &rot.y);	//y座標読み込み
+			fscanf(pFile, "%f", &rot.z);	//z座標読み込み
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDPULLSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CGimmickPull::Create(pos, D3DXToRadian(rot));
+}
+
+//==========================================================
+// ギミック回転ドアデータ
+//==========================================================
+void CFileLoad::LoadRotateDoorData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nIdx = -1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ROT) == 0)
+		{//向き
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &rot.x);	//x座標読み込み
+			fscanf(pFile, "%f", &rot.y);	//y座標読み込み
+			fscanf(pFile, "%f", &rot.z);	//z座標読み込み
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDROTATEDOORSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CGimmickRotateDoor::Create(pos, D3DXToRadian(rot));
+}
+
+//==========================================================
+// ギミック回転ドアデータ
+//==========================================================
+void CFileLoad::LoadPitFallData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nIdx = -1;
+	int nActive = 1;
+	int nNum = 1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ROT) == 0)
+		{//向き
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &rot.x);	//x座標読み込み
+			fscanf(pFile, "%f", &rot.y);	//y座標読み込み
+			fscanf(pFile, "%f", &rot.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ID) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nIdx);	// ID
+		}
+		else if (strcmp(&aStr[0], LOAD_SWITCHNUM) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nNum);	// ID
+		}
+		else if (strcmp(&aStr[0], LOAD_ACTIVE) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nActive);	// ID
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDPITFALLSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CGimmickPitFall *pMulti = CGimmickPitFall::Create(pos);
+	pMulti->SetActionId(nIdx);
+}
+
+void CFileLoad::LoadSpearData(FILE *pFile)
+{
+	char aStr[256];	//余分な文章読み込み用
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 rot = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	int nIdx = -1;
+	int nType = 1;
+
+	//終了文字まで読み込み
+	while (1)
+	{
+		fscanf(pFile, "%s", &aStr[0]);
+
+		//配置情報確認
+		if (strcmp(&aStr[0], LOAD_POS) == 0)
+		{//座標
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &pos.x);	//x座標読み込み
+			fscanf(pFile, "%f", &pos.y);	//y座標読み込み
+			fscanf(pFile, "%f", &pos.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ROT) == 0)
+		{//向き
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%f", &rot.x);	//x座標読み込み
+			fscanf(pFile, "%f", &rot.y);	//y座標読み込み
+			fscanf(pFile, "%f", &rot.z);	//z座標読み込み
+		}
+		else if (strcmp(&aStr[0], LOAD_ID) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nIdx);	// ID
+		}
+		else if (strcmp(&aStr[0], LOAD_MODELTYPE) == 0)
+		{//ID
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nType);	// ID
+		}
+
+		//終了
+		if (strcmp(&aStr[0], ENDSPEARSET_TXT) == 0)
+		{//終了文字
+			break;
+		}
+	}
+
+	//フィールドの配置
+	CGimmickSpear *pMulti = CGimmickSpear::Create(pos, D3DXToRadian(rot), static_cast<CGimmickSpear::TYPE>(nType));
+	pMulti->SetActionId(nIdx);
 }

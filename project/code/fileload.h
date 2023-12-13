@@ -63,7 +63,12 @@ private:	// 自分だけがアクセス可能
 	void LoadCylinderData(FILE *pFile);
 	void LoadVtxMaxData(FILE *pFile, int nIdx);
 	void LoadVtxMinData(FILE *pFile, int nIdx);
-	void LoadGimmickData(FILE *pFile, int nIdx);
+	void LoadButtonData(FILE *pFile);
+	void LoadPullData(FILE *pFile);
+	void LoadMultiDoorData(FILE *pFile);
+	void LoadPitFallData(FILE *pFile);
+	void LoadSpearData(FILE *pFile);
+	void LoadRotateDoorData(FILE *pFile);
 	void LoadPointData(FILE *pFile);
 
 	// メンバ変数

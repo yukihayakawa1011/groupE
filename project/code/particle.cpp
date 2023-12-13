@@ -113,10 +113,60 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.05f;
 
 			//色の設定
-			col = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+			col = D3DXCOLOR(1.0f, rand() % 10 * 0.1f + 0.0f, 0.0f, 1.0f);
 
 			//半径の設定
 			fRadius = 10.0f;
+
+			//寿命の設定
+			fLife = 500.0f;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+
+	case CEffect::TYPE_LANDCLEAR:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 10; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.05f;
+			move.y = ((float)(rand() % 50)) * 0.2f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.05f;
+
+			//色の設定
+			col = D3DXCOLOR(0.3f, 0.3f, 0.1f, 1.0f);
+
+			//半径の設定
+			fRadius = 10.0f;
+
+			//寿命の設定
+			fLife = 500.0f;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+
+	case CEffect::TYPE_LANDFAILED:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 60; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.1f;
+			move.y = 0.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.1f;
+
+			//色の設定
+			col = D3DXCOLOR(0.025f, 0.02f, 0.015f, 1.0f);
+
+			//半径の設定
+			fRadius = 30.0f;
 
 			//寿命の設定
 			fLife = 500.0f;
