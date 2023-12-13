@@ -297,17 +297,6 @@ HRESULT CGame::Init(void)
             p->SetLever(l);
         }
 
-        CGimmickSpear *pSpear = nullptr;
-        CGimmickButton *pButton = nullptr;
-       
-        CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-        CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-
-        pSpear = CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_NOTPRESS);
-        pButton = CGimmickButton::Create(D3DXVECTOR3(-1100.0f, 0.0f, -800.0f));
-        pSpear->BindButton(pButton);
-        pSpear->BindType(CGimmickSpear::TYPE_NOTPRESS);
-
         // ÉSÅ[Éã
         CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
