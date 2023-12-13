@@ -90,6 +90,7 @@ namespace {
 	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
 	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
+	const int HEADPARTS_IDX = (1);
 }
 
 // 前方宣言
@@ -1150,6 +1151,16 @@ void CPlayer::Damage(int nDamage)
 		if (m_Info.state != STATE_CATCH)
 		{
 			return;
+		}
+	}
+
+	// エフェクトの生成
+	if (m_pBody != nullptr) {
+		if (m_pBody->GetParts(HEADPARTS_IDX) != nullptr) {
+			D3DXVECTOR3 pos = D3DXVECTOR3(m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_41,
+				m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_42,
+				m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_43);
+			CParticle::Create(pos, CEffect::TYPE_HIT);
 		}
 	}
 
