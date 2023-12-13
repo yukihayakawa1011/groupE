@@ -18,7 +18,7 @@ NUM_TEXTURE = 0
 #==============================================================================
 # モデル数
 #==============================================================================
-NUM_MODEL = 29
+NUM_MODEL = 30
 
 #==============================================================================
 # モデルファイル名
@@ -52,6 +52,7 @@ MODEL_FILENAME = data\MODEL\Cyabudai.x
 MODEL_FILENAME = data\MODEL\zabuton.x
 MODEL_FILENAME = data\MODEL\Irori.x
 MODEL_FILENAME = data\MODEL\kakeziku000.x
+MODEL_FILENAME = data\MODEL\tanuki.x
 
 #==============================================================================
 # カメラ情報
@@ -1294,6 +1295,14 @@ MODELSET
 	TYPE = 28
 	POS = 100 160 -5150
 	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 29
+	POS = -1050 0 -4400
+	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
