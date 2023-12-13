@@ -297,20 +297,22 @@ HRESULT CGame::Init(void)
 			p->SetLever(l);
 		}
 
-		// 槍(ボタン式)
-		CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
-		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_PRESS);
+		CGimmickSpear *pSpear = nullptr;
+		CGimmickButton *pButton = nullptr;
+		//// 槍(ボタン式)
+		//CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		//CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
+		//pSpear->BindButton(pButton);
+		//pSpear->BindType(CGimmickSpear::TYPE_PRESS);
 
 		// 槍(ボタン押したら自動)
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+		/*pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
 		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
+		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);*/
 		//pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
 		//pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
+		//pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
 		CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 		CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
@@ -339,6 +341,18 @@ HRESULT CGame::Init(void)
 		pFall->BindButton(pButton);
 
 		pFall = CGimmickPitFall::Create(D3DXVECTOR3(430.0f, 1.0f, -2100.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
+		pFall->BindButton(pButton);
+
+		pFall = CGimmickPitFall::Create(D3DXVECTOR3(-240.0f, 1.0f, -1800.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
+		pFall->BindButton(pButton);
+
+		pFall = CGimmickPitFall::Create(D3DXVECTOR3(450.0f, 1.0f, 450.0f));
+		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
+		pFall->BindButton(pButton);
+
+		pFall = CGimmickPitFall::Create(D3DXVECTOR3(150.0f, 1.0f, -4500.0f));
 		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
 		pFall->BindButton(pButton);
 
