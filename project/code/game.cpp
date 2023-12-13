@@ -50,33 +50,33 @@
 
 // 無名名前空間を定義
 namespace {
-	const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
-	const D3DXVECTOR3 LEVERPOS[4] =
-	{
-		D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
-		D3DXVECTOR3(-1000.0f, 100.0f, -4440.0f),
-		D3DXVECTOR3(470.0f, 100.0f, -560.0f),
-		D3DXVECTOR3(360.0f, 100.0f, -2050.0f),
-	};
+    const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
+    const D3DXVECTOR3 LEVERPOS[4] =
+    {
+        D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
+        D3DXVECTOR3(-1000.0f, 100.0f, -4440.0f),
+        D3DXVECTOR3(470.0f, 100.0f, -560.0f),
+        D3DXVECTOR3(360.0f, 100.0f, -2050.0f),
+    };
 
-	const D3DXVECTOR3 LEVERROT[4] =
-	{
-		D3DXVECTOR3(0.0f, D3DX_PI, 0.0f),
-		D3DXVECTOR3(0.0f, D3DX_PI, 0.0f),
-		D3DXVECTOR3(0.0f, 0.0f, 0.0f),
-		D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f),
-	};
+    const D3DXVECTOR3 LEVERROT[4] =
+    {
+        D3DXVECTOR3(0.0f, D3DX_PI, 0.0f),
+        D3DXVECTOR3(0.0f, D3DX_PI, 0.0f),
+        D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+        D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f),
+    };
 
-	const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
-	const D3DXVECTOR2 SCORE_SIZE = { 14.0f, 18.0f };	// スコアのサイズ
-	const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
-	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
-	const char* FILEEXT = ".txt";				// ファイルの拡張子
-	const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-	const int START_TIMER = (1000);				// 開始制限時間
-	const int START_WAITCNT = (180);
-	const int SCORE = (5000);                   // 初期のスコア
-	const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
+    const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
+    const D3DXVECTOR2 SCORE_SIZE = { 14.0f, 18.0f };	// スコアのサイズ
+    const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
+    const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
+    const char* FILEEXT = ".txt";				// ファイルの拡張子
+    const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
+    const int START_TIMER = (1000);				// 開始制限時間
+    const int START_WAITCNT = (180);
+    const int SCORE = (5000);                   // 初期のスコア
+    const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 }
 
 //===============================================
@@ -113,23 +113,23 @@ int CGame::m_nNumPlayer = 0;
 //===============================================
 CGame::CGame()
 {
-	// 値のクリア
-	m_ppCamera = nullptr;
-	m_ppPlayer = nullptr;
-	m_pFileLoad = nullptr;
-	m_pMeshDome = nullptr;
-	m_pClient = nullptr;
-	m_pTimer = nullptr;
-	m_QuataScore = nullptr;
-	m_QuataUI = nullptr;
-	m_nSledCnt = 0;
-	m_bEnd = false;
-	m_nStartCnt = 0;
-	m_nCntLostQuataUI = 0;
-	m_bPause = false;
-	m_pPause = nullptr;
-	m_bQuota = false;
-	m_bDispQuataUI = false;
+    // 値のクリア
+    m_ppCamera = nullptr;
+    m_ppPlayer = nullptr;
+    m_pFileLoad = nullptr;
+    m_pMeshDome = nullptr;
+    m_pClient = nullptr;
+    m_pTimer = nullptr;
+    m_QuataScore = nullptr;
+    m_QuataUI = nullptr;
+    m_nSledCnt = 0;
+    m_bEnd = false;
+    m_nStartCnt = 0;
+    m_nCntLostQuataUI = 0;
+    m_bPause = false;
+    m_pPause = nullptr;
+    m_bQuota = false;
+    m_bDispQuataUI = false;
 }
 
 //===============================================
@@ -137,26 +137,26 @@ CGame::CGame()
 //===============================================
 CGame::CGame(int nNumPlayer)
 {
-	// 値のクリア
-	m_ppCamera = nullptr;
-	m_ppPlayer = nullptr;
-	m_pFileLoad = nullptr;
-	m_pMeshDome = nullptr;
-	m_pClient = nullptr;
-	m_pTimer = nullptr;
-	m_QuataScore = nullptr;
-	m_QuataUI = nullptr;
-	m_nSledCnt = 0;
-	m_bEnd = false;
-	m_nStartCnt = 0;
-	m_nCntLostQuataUI = 0;
-	m_bPause = false;
-	m_pPause = nullptr;
-	m_bQuota = false;
-	m_bDispQuataUI = false;
+    // 値のクリア
+    m_ppCamera = nullptr;
+    m_ppPlayer = nullptr;
+    m_pFileLoad = nullptr;
+    m_pMeshDome = nullptr;
+    m_pClient = nullptr;
+    m_pTimer = nullptr;
+    m_QuataScore = nullptr;
+    m_QuataUI = nullptr;
+    m_nSledCnt = 0;
+    m_bEnd = false;
+    m_nStartCnt = 0;
+    m_nCntLostQuataUI = 0;
+    m_bPause = false;
+    m_pPause = nullptr;
+    m_bQuota = false;
+    m_bDispQuataUI = false;
 
-	// 人数設定
-	m_nNumPlayer = nNumPlayer;
+    // 人数設定
+    m_nNumPlayer = nNumPlayer;
 }
 
 //===============================================
@@ -164,39 +164,39 @@ CGame::CGame(int nNumPlayer)
 //===============================================
 CGame::~CGame()
 {
-	if (m_pFileLoad != nullptr) {
-		assert(false);
-	}
-	if (m_ppPlayer != nullptr) {
-		assert(false);
-	}
-	if (m_ppCamera != nullptr) {
-		assert(false);
-	}
-	if (m_pMeshDome != nullptr) {
-		assert(false);
-	}
-	if (m_pTimer != nullptr) {
-		assert(false);
-	}
-	if (m_pMiniMap != nullptr) {
-		assert(false);
-	}
-	if (m_pClient != nullptr) {
-		assert(false);
-	}
-	if (m_QuataScore != nullptr) {
-		assert(false);
-	}
-	if (m_QuataUI != nullptr) {
-		assert(false);
-	}
-	if (m_pClient != nullptr) {
-		assert(false);
-	}
-	if (m_pClient != nullptr) {
-		assert(false);
-	}
+    if (m_pFileLoad != nullptr) {
+        assert(false);
+    }
+    if (m_ppPlayer != nullptr) {
+        assert(false);
+    }
+    if (m_ppCamera != nullptr) {
+        assert(false);
+    }
+    if (m_pMeshDome != nullptr) {
+        assert(false);
+    }
+    if (m_pTimer != nullptr) {
+        assert(false);
+    }
+    if (m_pMiniMap != nullptr) {
+        assert(false);
+    }
+    if (m_pClient != nullptr) {
+        assert(false);
+    }
+    if (m_QuataScore != nullptr) {
+        assert(false);
+    }
+    if (m_QuataUI != nullptr) {
+        assert(false);
+    }
+    if (m_pClient != nullptr) {
+        assert(false);
+    }
+    if (m_pClient != nullptr) {
+        assert(false);
+    }
 }
 
 //===============================================
@@ -204,363 +204,346 @@ CGame::~CGame()
 //===============================================
 HRESULT CGame::Init(void)
 {
-	memset(&m_aAddress[0], '\0', sizeof(m_aAddress));
-	int nErr = WSAStartup(WINSOCK_VERSION, &m_wsaData);	// winsockの初期化関数
+    memset(&m_aAddress[0], '\0', sizeof(m_aAddress));
+    int nErr = WSAStartup(WINSOCK_VERSION, &m_wsaData);	// winsockの初期化関数
 
-	if (nErr != 0)
-	{// 初期化に失敗した場合
-		
-	}
+    if (nErr != 0)
+    {// 初期化に失敗した場合
+        
+    }
 
-	// 外部ファイル読み込みの生成
-	if (nullptr == m_pFileLoad)
-	{// 使用していない場合
-		m_pFileLoad = new CFileLoad;
+    // 外部ファイル読み込みの生成
+    if (nullptr == m_pFileLoad)
+    {// 使用していない場合
+        m_pFileLoad = new CFileLoad;
 
-		if (m_pFileLoad != NULL)
-		{
-			m_pFileLoad->Init();
-			m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
-			m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
-			m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
-		}
-	}
+        if (m_pFileLoad != NULL)
+        {
+            m_pFileLoad->Init();
+            m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
+            m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
+            m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
+        }
+    }
 
-	switch (m_state)
-	{
-	case STATE_LOCAL:
-	{// ローカルの場合
-		if (m_nNumPlayer <= 0)
-		{// 人数が指定されていない
-			m_nNumPlayer = 1;
-		}
+    switch (m_state)
+    {
+    case STATE_LOCAL:
+    {// ローカルの場合
+        if (m_nNumPlayer <= 0)
+        {// 人数が指定されていない
+            m_nNumPlayer = 1;
+        }
 
-		// 人数分ポインタ生成
-		m_ppPlayer = new CPlayer*[m_nNumPlayer];
+        // 人数分ポインタ生成
+        m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
-		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-		{
-			m_ppPlayer[nCnt] = nullptr;
+        for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+        {
+            m_ppPlayer[nCnt] = nullptr;
 
-			char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
-			char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
+            char aBodyPass[FILEPASS_SIZE] = "";		// 胴体パス
+            char aLegPass[FILEPASS_SIZE] = "";		// 下半身パス
 
-			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
-			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
+            sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
+            sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-2250.0f, 0.0f, 1000.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
-			m_ppPlayer[nCnt]->BindId(nCnt);
+            m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-130.0f, 0.0f, -2600.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+            m_ppPlayer[nCnt]->BindId(nCnt);
 
-			//スコアとUIの高さと間隔の調整用
-			float fData = 0.0f;
-			float fData1 = 0.0f;
-			float fData2 = 0.0f;
+            //スコアとUIの高さと間隔の調整用
+            float fData = 0.0f;
+            float fData1 = 0.0f;
+            float fData2 = 0.0f;
 
-			if (nCnt == 1 || nCnt == 3)
-			{
-				fData = 1035.0f;
-			}
-			else
-			{
-				fData = 0.0f;
-			}
+            if (nCnt == 1 || nCnt == 3)
+            {
+                fData = 1035.0f;
+            }
+            else
+            {
+                fData = 0.0f;
+            }
 
-			if (nCnt == 2 || nCnt == 3)
-			{
-				fData1 = 620.0f;
-				fData2 = 50.0f;
+            if (nCnt == 2 || nCnt == 3)
+            {
+                fData1 = 620.0f;
+                fData2 = 50.0f;
 
-			}
-			else
-			{
-				fData1 = 0.0f;
-				fData2 = 0.0f;
-			}
+            }
+            else
+            {
+                fData1 = 0.0f;
+                fData2 = 0.0f;
+            }
 
-			// UIの生成
-			CUI *pUI = CUI::Create(D3DXVECTOR3(130.0f + fData, 50.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
-			m_ppPlayer[nCnt]->BindUI(pUI);
-			
-			// スコアの生成
-			CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
-			m_ppPlayer[nCnt]->BindScore(pScore);
-		}
+            // UIの生成
+            CUI *pUI = CUI::Create(D3DXVECTOR3(130.0f + fData, 50.0f + fData1, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), nCnt, nCnt, CUI::TYPE_LEFTUP);
+            m_ppPlayer[nCnt]->BindUI(pUI);
+            
+            // スコアの生成
+            CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
+            m_ppPlayer[nCnt]->BindScore(pScore);
+        }
 
-		// ギミックの生成
+        // ギミックの生成
 
-		// 開始扉(人数分)
-		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-			CGimmickLever *l = CGimmickLever::Create(LEVERPOS[nCnt]);
-			l->SetRotation(LEVERROT[nCnt]);
-			CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
-			p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-			p->SetLever(l);
-		}
+        // 開始扉(人数分)
+        for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+            CGimmickLever *l = CGimmickLever::Create(LEVERPOS[nCnt]);
+            l->SetRotation(LEVERROT[nCnt]);
+            CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
+            p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+            p->SetLever(l);
+        }
 
-		CGimmickSpear *pSpear = nullptr;
-		CGimmickButton *pButton = nullptr;
-		//// 槍(ボタン式)
-		//CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		//CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
-		//pSpear->BindButton(pButton);
-		//pSpear->BindType(CGimmickSpear::TYPE_PRESS);
+        CGimmickSpear *pSpear = nullptr;
+        CGimmickButton *pButton = nullptr;
+        //// 槍(ボタン式)
+        //CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+        //CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-500.0f, 0.0f, 0.0f));		
+        //pSpear->BindButton(pButton);
+        //pSpear->BindType(CGimmickSpear::TYPE_PRESS);
 
-		// 槍(ボタン押したら自動)
-		/*pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
-		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);*/
-		//pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
-		//pSpear->BindButton(pButton);
-		//pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
+        // 槍(ボタン押したら自動)
+        /*pSpear = CGimmickSpear::Create(D3DXVECTOR3(-300.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-300.0f, 0.0f, 500.0f));
+        pSpear->BindButton(pButton);
+        pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);*/
+        //pButton = CGimmickButton::Create(D3DXVECTOR3(-100.0f, 0.0f, -3500.0f));
+        //pSpear->BindButton(pButton);
+        //pSpear->BindType(CGimmickSpear::TYPE_PRESSAUTO);
 
-		CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
-		CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+        CGimmickSpear::Create(D3DXVECTOR3(-1050.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
+        CGimmickSpear::Create(D3DXVECTOR3(-750.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_SENSOR);
 
-		pSpear = CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_NOTPRESS);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-1100.0f, 0.0f, -800.0f));
-		pSpear->BindButton(pButton);
-		pSpear->BindType(CGimmickSpear::TYPE_NOTPRESS);
+        pSpear = CGimmickSpear::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_NOTPRESS);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-1100.0f, 0.0f, -800.0f));
+        pSpear->BindButton(pButton);
+        pSpear->BindType(CGimmickSpear::TYPE_NOTPRESS);
 
-		// 槍(センサー式)
-		
-		// 地面からの槍
+        // 槍(センサー式)
+        
+        // 地面からの槍
 
-		// 回転扉
-		//CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -1650.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(-300.0f, 0.0f, -3950.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-		CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+        // 回転扉
+        //CGimmickRotateDoor::Create(D3DXVECTOR3(650.0f, 0.0f, 200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+        CGimmickRotateDoor::Create(D3DXVECTOR3(280.0f, 0.0f, 450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+        CGimmickRotateDoor::Create(D3DXVECTOR3(-1200.0f, 0.0f, -550.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+        CGimmickRotateDoor::Create(D3DXVECTOR3(-600.0f, 0.0f, -450.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+        CGimmickRotateDoor::Create(D3DXVECTOR3(300.0f, 0.0f, -1650.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+        CGimmickRotateDoor::Create(D3DXVECTOR3(-300.0f, 0.0f, -3950.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+        CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-		// 落とし穴
-		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
-		pFall->BindButton(pButton);
+        // 落とし穴
+        CGimmickPitFall *pFall = nullptr;
 
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(430.0f, 1.0f, -2100.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
+        // 協力扉
+        /*CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+        pMultiDoor->SetNumButton(4);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
+        pMultiDoor->BindButton(pButton);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -1500.0f));
+        pMultiDoor->BindButton(pButton);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
+        pMultiDoor->BindButton(pButton);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
+        pMultiDoor->BindButton(pButton);
+        pMultiDoor->SetActiveButton(2);*/
 
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(-240.0f, 1.0f, -1800.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
+        /*pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+        pMultiDoor->SetNumButton(4);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
+        pMultiDoor->BindButton(pButton);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -4300.0f));
+        pMultiDoor->BindButton(pButton);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-150.0f, 0.0f, -4300.0f));
+        pMultiDoor->BindButton(pButton);
+        pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
+        pMultiDoor->BindButton(pButton);
+        pMultiDoor->SetActiveButton(3);*/
 
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(450.0f, 1.0f, 450.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
+        // ツボ
 
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(150.0f, 1.0f, -4500.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
-
-		// 協力扉
-		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		pMultiDoor->SetNumButton(4);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -1500.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -2000.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
-		pMultiDoor->BindButton(pButton);
-		pMultiDoor->SetActiveButton(2);
-
-		pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-		pMultiDoor->SetNumButton(4);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-800.0f, 0.0f, -4300.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-150.0f, 0.0f, -4300.0f));
-		pMultiDoor->BindButton(pButton);
-		pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
-		pMultiDoor->BindButton(pButton);
-		pMultiDoor->SetActiveButton(3);
-
-		// ツボ
-		CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickPull::Create(D3DXVECTOR3(500.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-		// ゴール
-		CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
+        // ゴール
+        CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
-		// アイテム
-		CItem::Create(D3DXVECTOR3(560.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(660.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(760.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(860.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
-		
-		CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
-		CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-		
-		CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
-		CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
-		CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-		
-		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+        // アイテム
+        CItem::Create(D3DXVECTOR3(560.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+        CItem::Create(D3DXVECTOR3(660.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+        CItem::Create(D3DXVECTOR3(760.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+        CItem::Create(D3DXVECTOR3(860.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+        
+        CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+        CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+        CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+        
+        CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
+        CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+        CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+        CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+        CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+        
+        CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+        CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
+        CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+        CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
+        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
 
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+        CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+        CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+        CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+        CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
-		CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-	}
-		break;
+        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+        CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+        CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+    }
+        break;
 
-	case STATE_ONLINE:
-	{// オンライン通信の場合
-		m_pClient = new CClient;
-		AddressLoad(&m_aAddress[0]);
+    case STATE_ONLINE:
+    {// オンライン通信の場合
+        m_pClient = new CClient;
+        AddressLoad(&m_aAddress[0]);
 
-		if (m_pClient->Init(&m_aAddress[0], DEF_PORT))
-		{// 初期接続成功
-			// オンライン関数をマルチスレッド
-			std::thread th(&CGame::Online, this);
-			th.detach();
-		}
-	}
-		break;
+        if (m_pClient->Init(&m_aAddress[0], DEF_PORT))
+        {// 初期接続成功
+            // オンライン関数をマルチスレッド
+            std::thread th(&CGame::Online, this);
+            th.detach();
+        }
+    }
+        break;
 
-	default:
+    default:
 
-		break;
-	}
+        break;
+    }
 
-	//敵マネージャ生成（投げっぱ）
-	//CEnemyManager::Create();
+    //敵マネージャ生成（投げっぱ）
+    CEnemyManager::Create();
 
-	for (int nCnt = 0; nCnt < 9; nCnt++)
-	{
-		CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 1.0f, -4700.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_NORMAL);
-	}
+    for (int nCnt = 0; nCnt < 9; nCnt++)
+    {
+        CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 1.0f, -4700.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_NORMAL);
+    }
 
-	//壺
-	CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+    //壺
+    CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
-	//カメラ初期化
-	{
-		//CManager::GetInstance()->GetCamera()->Init();
+    //カメラ初期化
+    {
+        //CManager::GetInstance()->GetCamera()->Init();
 
-		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
-		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
-		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
+        CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+        CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+        CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.1f));
 
-		D3DVIEWPORT9 viewport;
-		//プレイヤー追従カメラの画面位置設定
-		viewport.X = 0;
-		viewport.Y = 0;
-		viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
-		viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
-		viewport.MinZ = 0.0f;
-		viewport.MaxZ = 1.0f;
-		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
-	}
+        D3DVIEWPORT9 viewport;
+        //プレイヤー追従カメラの画面位置設定
+        viewport.X = 0;
+        viewport.Y = 0;
+        viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+        viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+        viewport.MinZ = 0.0f;
+        viewport.MaxZ = 1.0f;
+        CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+    }
 
-	// 分割カメラ生成
-	{
-		// defaultカメラオフ
-		CManager::GetInstance()->GetCamera()->SetDraw(false);
+    // 分割カメラ生成
+    {
+        // defaultカメラオフ
+        CManager::GetInstance()->GetCamera()->SetDraw(false);
 
-		// 人数分ポインタ生成
-		m_ppCamera = new CMultiCamera*[m_nNumPlayer];
+        // 人数分ポインタ生成
+        m_ppCamera = new CMultiCamera*[m_nNumPlayer];
 
-		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-		{
-			m_ppCamera[nCnt] = new CMultiCamera;
-			m_ppCamera[nCnt]->Init();
-			m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
-			m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
-			m_ppCamera[nCnt]->SetLength(400.0f);
-			m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f));
+        for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+        {
+            m_ppCamera[nCnt] = new CMultiCamera;
+            m_ppCamera[nCnt]->Init();
+            m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
+            m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
+            m_ppCamera[nCnt]->SetLength(400.0f);
+            m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f));
 
-			D3DVIEWPORT9 viewport;
-			//プレイヤー追従カメラの画面位置設定
-			viewport.X = (DWORD)((SCREEN_WIDTH * 0.5f) * (nCnt % WIDTH_NUM));
-			viewport.Y = (DWORD)((SCREEN_HEIGHT * 0.5f) * (nCnt / WIDTH_NUM));
+            D3DVIEWPORT9 viewport;
+            //プレイヤー追従カメラの画面位置設定
+            viewport.X = (DWORD)((SCREEN_WIDTH * 0.5f) * (nCnt % WIDTH_NUM));
+            viewport.Y = (DWORD)((SCREEN_HEIGHT * 0.5f) * (nCnt / WIDTH_NUM));
 
-			if (m_nNumPlayer < WIDTH_NUM) {
-				viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
-			}
-			else
-			{
-				viewport.Width = (DWORD)(SCREEN_WIDTH * 0.5f);
-			}
+            if (m_nNumPlayer < WIDTH_NUM) {
+                viewport.Width = (DWORD)(SCREEN_WIDTH * 1.0f);
+            }
+            else
+            {
+                viewport.Width = (DWORD)(SCREEN_WIDTH * 0.5f);
+            }
 
-			if (m_nNumPlayer <= WIDTH_NUM) {
-				viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
-			}
-			else
-			{
-				viewport.Height = (DWORD)(SCREEN_HEIGHT * 0.5f);
-			}
-			
-			viewport.MinZ = 0.0f;
-			viewport.MaxZ = 1.0f;
-			m_ppCamera[nCnt]->SetViewPort(viewport);
+            if (m_nNumPlayer <= WIDTH_NUM) {
+                viewport.Height = (DWORD)(SCREEN_HEIGHT * 1.0f);
+            }
+            else
+            {
+                viewport.Height = (DWORD)(SCREEN_HEIGHT * 0.5f);
+            }
+            
+            viewport.MinZ = 0.0f;
+            viewport.MaxZ = 1.0f;
+            m_ppCamera[nCnt]->SetViewPort(viewport);
 
-			CPlayer *pPlayer = CPlayer::GetTop();
+            CPlayer *pPlayer = CPlayer::GetTop();
 
-			while (pPlayer != nullptr) {
-				CPlayer *pPlayerNext = pPlayer->GetNext();
+            while (pPlayer != nullptr) {
+                CPlayer *pPlayerNext = pPlayer->GetNext();
 
-				if (pPlayer->GetId() == nCnt) {
-					pPlayer->SetCamera(m_ppCamera[nCnt]);
-					m_ppCamera[nCnt]->BindId(pPlayer->GetId());
-					break;
-				}
+                if (pPlayer->GetId() == nCnt) {
+                    pPlayer->SetCamera(m_ppCamera[nCnt]);
+                    m_ppCamera[nCnt]->BindId(pPlayer->GetId());
+                    break;
+                }
 
-				pPlayer = pPlayerNext;
-			}
-		}
-	}
+                pPlayer = pPlayerNext;
+            }
+        }
+    }
 
-	// タイムの生成
-	m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
-	m_pTimer->Set(START_TIMER);
-	m_pTimer->SetActive(true);
+    // タイムの生成
+    m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
+    m_pTimer->Set(START_TIMER);
+    m_pTimer->SetActive(true);
 
-	// スポットライトをオン
-	CManager::GetInstance()->GetLight()->EnablePointLight(true);
+    // スポットライトをオン
+    CManager::GetInstance()->GetLight()->EnablePointLight(true);
 
-	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
+    CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
-	//ミニマップ生成
-	if (m_pMiniMap == nullptr)
-	{
-		m_pMiniMap = CMiniMap::Create(m_nNumPlayer, 10, 10);	//生成
-		m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
-	}
+    //ミニマップ生成
+    if (m_pMiniMap == nullptr)
+    {
+        m_pMiniMap = CMiniMap::Create(m_nNumPlayer, 10, 10);	//生成
+        m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
+    }
 
-	// ポーズの生成
-	m_pPause = CPause::Create();
-	if (m_pPause != nullptr) {
-		m_pPause->SetDraw(m_bPause);
-	}
+    // ポーズの生成
+    m_pPause = CPause::Create();
+    if (m_pPause != nullptr) {
+        m_pPause->SetDraw(m_bPause);
+    }
 
-	CGimmick::SwitchOn();
+    CGimmick::SwitchOn();
 
-	m_nCntLostQuataUI = UNINITCOUNT;
+    m_nCntLostQuataUI = UNINITCOUNT;
 
-	return S_OK;
+    return S_OK;
 }
 
 //===============================================
@@ -568,89 +551,89 @@ HRESULT CGame::Init(void)
 //===============================================
 void CGame::Uninit(void)
 {
-	m_bEnd = true;
+    m_bEnd = true;
 
-	while (1)
-	{
-		OnlineEnd();
-		if (m_nSledCnt <= 0)
-		{
-			break;
-		}
-	}
+    while (1)
+    {
+        OnlineEnd();
+        if (m_nSledCnt <= 0)
+        {
+            break;
+        }
+    }
 
-	if (m_QuataScore != nullptr)
-	{
-		m_QuataScore->Uninit();
-		delete m_QuataScore;
-		m_QuataScore = nullptr;
-	}
+    if (m_QuataScore != nullptr)
+    {
+        m_QuataScore->Uninit();
+        delete m_QuataScore;
+        m_QuataScore = nullptr;
+    }
 
-	if (m_pPause != nullptr) {
-		m_pPause->Uninit();
-		delete m_pPause;
-		m_pPause = nullptr;
-	}
+    if (m_pPause != nullptr) {
+        m_pPause->Uninit();
+        delete m_pPause;
+        m_pPause = nullptr;
+    }
 
-	if (m_pFileLoad != nullptr)
-	{
-		m_pFileLoad->Uninit();
+    if (m_pFileLoad != nullptr)
+    {
+        m_pFileLoad->Uninit();
 
-		delete m_pFileLoad;		// メモリの開放
-		m_pFileLoad = nullptr;
-	}
+        delete m_pFileLoad;		// メモリの開放
+        m_pFileLoad = nullptr;
+    }
 
-	if (m_pClient != nullptr)
-	{
-		m_pClient->Uninit();
-		delete m_pClient;
-		m_pClient = nullptr;
-	}
+    if (m_pClient != nullptr)
+    {
+        m_pClient->Uninit();
+        delete m_pClient;
+        m_pClient = nullptr;
+    }
 
-	if (m_QuataScore != nullptr) {
-		m_QuataScore->Uninit();
-		delete m_QuataScore;
-		m_QuataScore = nullptr;
-	}
+    if (m_QuataScore != nullptr) {
+        m_QuataScore->Uninit();
+        delete m_QuataScore;
+        m_QuataScore = nullptr;
+    }
 
-	if (m_ppPlayer != nullptr) { // 使用していた場合
-		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-		{
-			// 終了処理
-			m_ppPlayer[nCnt]->Uninit();
-			m_ppPlayer[nCnt] = nullptr;	// 使用していない状態にする
-		}
+    if (m_ppPlayer != nullptr) { // 使用していた場合
+        for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+        {
+            // 終了処理
+            m_ppPlayer[nCnt]->Uninit();
+            m_ppPlayer[nCnt] = nullptr;	// 使用していない状態にする
+        }
 
-		delete[] m_ppPlayer;	// ポインタの開放
-		m_ppPlayer = nullptr;	// 使用していない状態にする
-	}
+        delete[] m_ppPlayer;	// ポインタの開放
+        m_ppPlayer = nullptr;	// 使用していない状態にする
+    }
 
-	if (m_ppCamera != nullptr) { // 使用していた場合
-		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-		{
-			// 終了処理
-			m_ppCamera[nCnt]->Uninit();
-			delete m_ppCamera[nCnt];
-			m_ppCamera[nCnt] = nullptr;	// 使用していない状態にする
-		}
+    if (m_ppCamera != nullptr) { // 使用していた場合
+        for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+        {
+            // 終了処理
+            m_ppCamera[nCnt]->Uninit();
+            delete m_ppCamera[nCnt];
+            m_ppCamera[nCnt] = nullptr;	// 使用していない状態にする
+        }
 
-		delete[] m_ppCamera;	// ポインタの開放
-		m_ppCamera = nullptr;	// 使用していない状態にする
-	}
+        delete[] m_ppCamera;	// ポインタの開放
+        m_ppCamera = nullptr;	// 使用していない状態にする
+    }
 
-	if (m_pTimer != nullptr) {
-		m_pTimer->Uninit();
-		delete m_pTimer;
-		m_pTimer = nullptr;
-	}
+    if (m_pTimer != nullptr) {
+        m_pTimer->Uninit();
+        delete m_pTimer;
+        m_pTimer = nullptr;
+    }
 
-	// defaultカメラオン
-	CManager::GetInstance()->GetCamera()->SetDraw(true);
+    // defaultカメラオン
+    CManager::GetInstance()->GetCamera()->SetDraw(true);
 
-	//Winsock終了処理
-	WSACleanup();	// WSACleanup関数 : winsockの終了処理
+    //Winsock終了処理
+    WSACleanup();	// WSACleanup関数 : winsockの終了処理
 
-	m_state = STATE_LOCAL;
+    m_state = STATE_LOCAL;
 }
 
 //===============================================
@@ -658,140 +641,140 @@ void CGame::Uninit(void)
 //===============================================
 void CGame::Update(void)
 {
-	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
-	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
+    CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+    CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
-	if (pInputKey->GetTrigger(DIK_P) == true || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
-	{//ポーズキー(Pキー)が押された
-		m_bPause = m_bPause ? false : true;
+    if (pInputKey->GetTrigger(DIK_P) == true || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
+    {//ポーズキー(Pキー)が押された
+        m_bPause = m_bPause ? false : true;
 
-		if (m_pPause != nullptr) {
-			m_pPause->SetDraw(m_bPause);
-		}
-	}
+        if (m_pPause != nullptr) {
+            m_pPause->SetDraw(m_bPause);
+        }
+    }
 
-	if (m_bPause == true)
-	{
-		if (m_pPause != nullptr) {
-			if (m_pPause->Update()) {
-				m_bPause = false;
-				m_pPause->SetDraw(m_bPause);
-			}
-		}
-		return;
-	}
+    if (m_bPause == true)
+    {
+        if (m_pPause != nullptr) {
+            if (m_pPause->Update()) {
+                m_bPause = false;
+                m_pPause->SetDraw(m_bPause);
+            }
+        }
+        return;
+    }
 
-	// 開始タイマー
-	if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
-		m_nStartCnt++;
+    // 開始タイマー
+    if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
+        m_nStartCnt++;
 
-		if (m_ppCamera != nullptr) { // 使用していた場合
-			for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-			{
-				m_ppCamera[nCnt]->SetLength(m_ppCamera[nCnt]->GetLength() + 1.5f);
-			}
-		}
+        if (m_ppCamera != nullptr) { // 使用していた場合
+            for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+            {
+                m_ppCamera[nCnt]->SetLength(m_ppCamera[nCnt]->GetLength() + 1.5f);
+            }
+        }
 
-		if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
-			CGimmick::SwitchOff();
-		}
-		else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
-			if (m_ppPlayer != nullptr) { // 使用していた場合
-				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-				{
-					if (m_ppPlayer[nCnt] != nullptr) {
-						m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
-					}
-				}
+        if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
+            CGimmick::SwitchOff();
+        }
+        else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
+            if (m_ppPlayer != nullptr) { // 使用していた場合
+                for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+                {
+                    if (m_ppPlayer[nCnt] != nullptr) {
+                        m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+                    }
+                }
 
-				if (m_QuataUI == nullptr)
-				{
-					m_QuataUI = CQuataUI::Create(D3DXVECTOR3(SCREEN_WIDTH + 100.0f, SCREEN_HEIGHT * 0.5f, 0.0f), CQuataUI::TYPE_START, CQuataUI::STATE_MOVE, QUATAUI_SIZE.x, QUATAUI_SIZE.y);
-					m_bDispQuataUI = true;
-				}
+                if (m_QuataUI == nullptr)
+                {
+                    m_QuataUI = CQuataUI::Create(D3DXVECTOR3(SCREEN_WIDTH + 100.0f, SCREEN_HEIGHT * 0.5f, 0.0f), CQuataUI::TYPE_START, CQuataUI::STATE_MOVE, QUATAUI_SIZE.x, QUATAUI_SIZE.y);
+                    m_bDispQuataUI = true;
+                }
 
-				// ノルマの設定
-				int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
-				CResult::SetQuata(QuataScore);
+                // ノルマの設定
+                int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
+                CResult::SetQuata(QuataScore);
 
-				// ノルマの点数
-				if (m_QuataScore == nullptr)
-				{
-					m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 35.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 6, 0.75f, 16.0f, 20.0f);
-					m_QuataScore->SetScore(QuataScore);
-				}
-			}
-		}
-	}
-	else
-	{	// 時間切れ
-		if (m_state != STATE_END) {	// 終了状態以外
-			if (EndCheck()) {	// 全員ゴールしている
-				CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-				m_state = STATE_END;
-			}
-			else
-			{
-				if (m_pTimer != nullptr) {
+                // ノルマの点数
+                if (m_QuataScore == nullptr)
+                {
+                    m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 35.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 6, 0.75f, 16.0f, 20.0f);
+                    m_QuataScore->SetScore(QuataScore);
+                }
+            }
+        }
+    }
+    else
+    {	// 時間切れ
+        if (m_state != STATE_END) {	// 終了状態以外
+            if (EndCheck()) {	// 全員ゴールしている
+                CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+                m_state = STATE_END;
+            }
+            else
+            {
+                if (m_pTimer != nullptr) {
 
-					if (m_QuataUI != nullptr) {
-						if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
-							m_pTimer->Update();
-						}
-					}
-					else {
-						m_pTimer->Update();
-					}
+                    if (m_QuataUI != nullptr) {
+                        if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
+                            m_pTimer->Update();
+                        }
+                    }
+                    else {
+                        m_pTimer->Update();
+                    }
 
-					if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
-						CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-						CResult::SetNumPlayer(m_nNumPlayer);
-						CResult::SetScore(m_ppPlayer);
-						m_state = STATE_END;
-					}
-				}
-			}
-		}
-	}
+                    if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+                        CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+                        CResult::SetNumPlayer(m_nNumPlayer);
+                        CResult::SetScore(m_ppPlayer);
+                        m_state = STATE_END;
+                    }
+                }
+            }
+        }
+    }
 
-	if (m_QuataScore != nullptr)
-	{
-		if (m_QuataUI != nullptr)
-		{
-			if (m_QuataUI->GetState() == CQuataUI::STATE_MOVE)
-			{
-				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-				pos.x -= 8.0f;
-				m_QuataScore->SetPosition(pos);
-			}
+    if (m_QuataScore != nullptr)
+    {
+        if (m_QuataUI != nullptr)
+        {
+            if (m_QuataUI->GetState() == CQuataUI::STATE_MOVE)
+            {
+                D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+                pos.x -= 8.0f;
+                m_QuataScore->SetPosition(pos);
+            }
 
-			if (m_QuataUI->GetState() == CQuataUI::STATE_UP)
-			{
-				if (m_QuataUI->GetCounter() <= 0.0f) {
-					D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-					pos.y -= 2.5f;
-					m_QuataScore->SetPosition(pos);
-				}
-			}
+            if (m_QuataUI->GetState() == CQuataUI::STATE_UP)
+            {
+                if (m_QuataUI->GetCounter() <= 0.0f) {
+                    D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+                    pos.y -= 2.5f;
+                    m_QuataScore->SetPosition(pos);
+                }
+            }
 
-			if (m_QuataUI->GetState() == CQuataUI::STATE_SET)
-			{
-				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-				pos.y -= 2.5f * 0.13f;
-				m_QuataScore->SetPosition(pos);
-			}
-		}
-	}
+            if (m_QuataUI->GetState() == CQuataUI::STATE_SET)
+            {
+                D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+                pos.y -= 2.5f * 0.13f;
+                m_QuataScore->SetPosition(pos);
+            }
+        }
+    }
 
-	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
-	{
-		CScene::Update();
-	}
+    if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
+    {
+        CScene::Update();
+    }
 
-	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
-	{
-		CGimmick::SwitchOn();
-	}
+    if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
+    {
+        CGimmick::SwitchOn();
+    }
 }
 
 //===============================================
@@ -799,11 +782,11 @@ void CGame::Update(void)
 //===============================================
 void CGame::Draw(void)
 {
-	if (m_pMiniMap != nullptr) {
-		m_pMiniMap->ExploredMap();
-	}
+    if (m_pMiniMap != nullptr) {
+        m_pMiniMap->ExploredMap();
+    }
 
-	CScene::Draw();
+    CScene::Draw();
 }
 
 //===================================================
@@ -811,7 +794,7 @@ void CGame::Draw(void)
 //===================================================
 CPlayer *CGame::GetPlayer(void)
 {
-	return *m_ppPlayer;
+    return *m_ppPlayer;
 }
 
 //===================================================
@@ -819,7 +802,7 @@ CPlayer *CGame::GetPlayer(void)
 //===================================================
 CFileLoad *CGame::GetFileLoad(void)
 {
-	return m_pFileLoad;
+    return m_pFileLoad;
 }
 
 //===================================================
@@ -827,31 +810,31 @@ CFileLoad *CGame::GetFileLoad(void)
 //===================================================
 bool CGame::EndCheck(void)
 {
-	CPlayer *pPl = CPlayer::GetTop();	// プレイヤー
-	int nNumGoal = 0;
+    CPlayer *pPl = CPlayer::GetTop();	// プレイヤー
+    int nNumGoal = 0;
 
-	// ゴールしている人数を判定
-	while (pPl != nullptr) {
+    // ゴールしている人数を判定
+    while (pPl != nullptr) {
 
-		CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
+        CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
 
-		if (!pPl->GetGoal()) {	// ゴールしていない
-			break;
-		}
+        if (!pPl->GetGoal()) {	// ゴールしていない
+            break;
+        }
 
-		nNumGoal++;
-		pPl = pPlNext;	// 次に移動
-	}
+        nNumGoal++;
+        pPl = pPlNext;	// 次に移動
+    }
 
-	if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
+    if (nNumGoal >= CPlayer::GetNum()) {	// 全員ゴール
 
-		CResult::SetNumPlayer(m_nNumPlayer);
-		CResult::SetScore(m_ppPlayer);
+        CResult::SetNumPlayer(m_nNumPlayer);
+        CResult::SetScore(m_ppPlayer);
 
-		return true;
-	}
+        return true;
+    }
 
-	return false;
+    return false;
 }
 
 //===================================================
@@ -859,26 +842,26 @@ bool CGame::EndCheck(void)
 //===================================================
 void CGame::Online(void)
 {
-	m_nSledCnt = 1;
+    m_nSledCnt = 1;
 
-	while (1)
-	{
-		if (m_ppPlayer == NULL || m_bEnd == true)
-		{
-			break;
-		}
+    while (1)
+    {
+        if (m_ppPlayer == NULL || m_bEnd == true)
+        {
+            break;
+        }
 
-		char aRecvData[MAX_STRING] = {};	// 受信用
+        char aRecvData[MAX_STRING] = {};	// 受信用
 
-		// 受信
-		int nRecvByte = m_pClient->Recv(&aRecvData[0], MAX_STRING);
+        // 受信
+        int nRecvByte = m_pClient->Recv(&aRecvData[0], MAX_STRING);
 
-		// マルチスレッド
-		std::thread th(&CGame::ByteCheck, this, &aRecvData[0], nRecvByte);
-		th.detach();
-	}
+        // マルチスレッド
+        std::thread th(&CGame::ByteCheck, this, &aRecvData[0], nRecvByte);
+        th.detach();
+    }
 
-	m_nSledCnt--;
+    m_nSledCnt--;
 }
 
 //===================================================
@@ -886,180 +869,180 @@ void CGame::Online(void)
 //===================================================
 void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 {
-	m_mutex.lock();
+    m_mutex.lock();
 
-	m_nSledCnt++;
-	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
-	int nType = COMMAND_TYPE_NONE;	// コマンド番号
-	int nId = -1;		// ID
-	int nByte = 0;	// バイト数
-	int nDamage = 0;	// ダメージ数
-	CPlayer *pPlayer = NULL;		// 先頭を取得
-	CPlayer *pPlayerNext = NULL;	// 次を保持
+    m_nSledCnt++;
+    D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+    D3DXCOLOR col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
+    int nType = COMMAND_TYPE_NONE;	// コマンド番号
+    int nId = -1;		// ID
+    int nByte = 0;	// バイト数
+    int nDamage = 0;	// ダメージ数
+    CPlayer *pPlayer = NULL;		// 先頭を取得
+    CPlayer *pPlayerNext = NULL;	// 次を保持
 
-	if (nRecvByte <= 0)
-	{
-		m_nSledCnt--;
-		m_mutex.unlock();
-		return;
-	}
+    if (nRecvByte <= 0)
+    {
+        m_nSledCnt--;
+        m_mutex.unlock();
+        return;
+    }
 
-	pPlayer = CPlayer::GetTop();	// 先頭を取得
+    pPlayer = CPlayer::GetTop();	// 先頭を取得
 
-	// 終端文字まで確認する
-	while (nByte < nRecvByte)
-	{
-		bool bIn = false;	// 既にいるかどうか
-		memcpy(&nId, &pRecvData[nByte], sizeof(int));
-		nByte += sizeof(int);
+    // 終端文字まで確認する
+    while (nByte < nRecvByte)
+    {
+        bool bIn = false;	// 既にいるかどうか
+        memcpy(&nId, &pRecvData[nByte], sizeof(int));
+        nByte += sizeof(int);
 
-		// コマンド取得
-		memcpy(&nType, &pRecvData[nByte], sizeof(int));
-		nByte += sizeof(int);
+        // コマンド取得
+        memcpy(&nType, &pRecvData[nByte], sizeof(int));
+        nByte += sizeof(int);
 
-		if (nId != -1)
-		{
-			// コマンドごとに分ける
-			switch (nType)
-			{
+        if (nId != -1)
+        {
+            // コマンドごとに分ける
+            switch (nType)
+            {
 
-			case COMMAND_TYPE_SETPOSITION:
+            case COMMAND_TYPE_SETPOSITION:
 
-				memcpy(&pos, &pRecvData[nByte], sizeof(D3DXVECTOR3));
-				nByte += sizeof(D3DXVECTOR3);
-				break;
+                memcpy(&pos, &pRecvData[nByte], sizeof(D3DXVECTOR3));
+                nByte += sizeof(D3DXVECTOR3);
+                break;
 
-			case COMMAND_TYPE_SETROTATION:
+            case COMMAND_TYPE_SETROTATION:
 
-				memcpy(&pos, &pRecvData[nByte], sizeof(D3DXVECTOR3));
-				nByte += sizeof(D3DXVECTOR3);
-				break;
+                memcpy(&pos, &pRecvData[nByte], sizeof(D3DXVECTOR3));
+                nByte += sizeof(D3DXVECTOR3);
+                break;
 
-			case COMMAND_TYPE_SETLIFE:
+            case COMMAND_TYPE_SETLIFE:
 
-				memcpy(&nDamage, &pRecvData[nByte], sizeof(int));
-				nByte += sizeof(int);
-				break;
+                memcpy(&nDamage, &pRecvData[nByte], sizeof(int));
+                nByte += sizeof(int);
+                break;
 
-			case COMMAND_TYPE_START_OK:
+            case COMMAND_TYPE_START_OK:
 
-				break;
+                break;
 
-			case COMMAND_TYPE_CREATE:
-				break;
+            case COMMAND_TYPE_CREATE:
+                break;
 
-			case COMMAND_TYPE_DAMAGE:
+            case COMMAND_TYPE_DAMAGE:
 
-				memcpy(&nDamage, &pRecvData[nByte], sizeof(int));
-				nByte += sizeof(int);
-				break;
+                memcpy(&nDamage, &pRecvData[nByte], sizeof(int));
+                nByte += sizeof(int);
+                break;
 
-			case COMMAND_TYPE_DELETE:
-				break;
+            case COMMAND_TYPE_DELETE:
+                break;
 
-			case COMMAND_TYPE_GETID:
-				break;
-			}
-		}
+            case COMMAND_TYPE_GETID:
+                break;
+            }
+        }
 
-		if (m_ppPlayer == NULL)
-		{
-			m_nSledCnt--;
-			m_mutex.unlock();
-			return;
-		}
+        if (m_ppPlayer == NULL)
+        {
+            m_nSledCnt--;
+            m_mutex.unlock();
+            return;
+        }
 
-		if (nId != -1 && (*m_ppPlayer)->GetId() != -1)
-		{// IDを受信できた
+        if (nId != -1 && (*m_ppPlayer)->GetId() != -1)
+        {// IDを受信できた
 
-			pPlayer = CPlayer::GetTop();	// 先頭を取得
+            pPlayer = CPlayer::GetTop();	// 先頭を取得
 
-			while (pPlayer != NULL)
-			{// 使用されている間繰り返し
-				pPlayerNext = pPlayer->GetNext();	// 次を保持
+            while (pPlayer != NULL)
+            {// 使用されている間繰り返し
+                pPlayerNext = pPlayer->GetNext();	// 次を保持
 
-				if (nId == pPlayer->GetId() && (*m_ppPlayer)->GetId() != nId)
-				{// 自分以外かつ操作していない
+                if (nId == pPlayer->GetId() && (*m_ppPlayer)->GetId() != nId)
+                {// 自分以外かつ操作していない
 
-				 // コマンドごとに分ける
-					switch (nType)
-					{
-					case COMMAND_TYPE_SETPOSITION:
+                 // コマンドごとに分ける
+                    switch (nType)
+                    {
+                    case COMMAND_TYPE_SETPOSITION:
 
-						pPlayer->SetDiffPosition(pos);
-						break;
+                        pPlayer->SetDiffPosition(pos);
+                        break;
 
-					case COMMAND_TYPE_SETROTATION:
+                    case COMMAND_TYPE_SETROTATION:
 
-						pPlayer->SetRotation(pos);
-						break;
+                        pPlayer->SetRotation(pos);
+                        break;
 
-					case COMMAND_TYPE_SETLIFE:
+                    case COMMAND_TYPE_SETLIFE:
 
-						pPlayer->SetLife(nDamage);
-						break;
+                        pPlayer->SetLife(nDamage);
+                        break;
 
-					case COMMAND_TYPE_START_OK:
+                    case COMMAND_TYPE_START_OK:
 
-						break;
+                        break;
 
-					case COMMAND_TYPE_CREATE:
+                    case COMMAND_TYPE_CREATE:
 
-						break;
+                        break;
 
-					case COMMAND_TYPE_DAMAGE:
+                    case COMMAND_TYPE_DAMAGE:
 
-						pPlayer->Damage(nDamage);
-						break;
+                        pPlayer->Damage(nDamage);
+                        break;
 
-					case COMMAND_TYPE_GOAL:
+                    case COMMAND_TYPE_GOAL:
 
-						break;
+                        break;
 
-					case COMMAND_TYPE_DELETE:
+                    case COMMAND_TYPE_DELETE:
 
-						pPlayer->Uninit();
-						break;
+                        pPlayer->Uninit();
+                        break;
 
-					case COMMAND_TYPE_GETID:
+                    case COMMAND_TYPE_GETID:
 
-						break;
-					}
+                        break;
+                    }
 
-					bIn = true;	// いる状態にする
-					break;
-				}
-				else if (nId == pPlayer->GetId() && (*m_ppPlayer)->GetId() == nId)
-				{// 自分以外かつ操作キャラ
+                    bIn = true;	// いる状態にする
+                    break;
+                }
+                else if (nId == pPlayer->GetId() && (*m_ppPlayer)->GetId() == nId)
+                {// 自分以外かつ操作キャラ
 
-					bIn = true;	// いる状態にする
-					break;
-				}
+                    bIn = true;	// いる状態にする
+                    break;
+                }
 
-				pPlayer = pPlayerNext;	// 次に移動
-			}
+                pPlayer = pPlayerNext;	// 次に移動
+            }
 
-			if (bIn == false && (*m_ppPlayer)->GetId() != -1 && nType > COMMAND_TYPE_NONE && nType < COMMAND_TYPE_MAX)
-			{// まだ存在していない場合
-				pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
-				pPlayer->BindId(nId);
-				pPlayer->SetType(CPlayer::TYPE_NONE);
-			}
-		}
-		else if (nId == -1 && (*m_ppPlayer)->GetId() == -1)
-		{// IDが受信できていないかつ自分自身のIDも存在していない
-			nId = nType;
+            if (bIn == false && (*m_ppPlayer)->GetId() != -1 && nType > COMMAND_TYPE_NONE && nType < COMMAND_TYPE_MAX)
+            {// まだ存在していない場合
+                pPlayer = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+                pPlayer->BindId(nId);
+                pPlayer->SetType(CPlayer::TYPE_NONE);
+            }
+        }
+        else if (nId == -1 && (*m_ppPlayer)->GetId() == -1)
+        {// IDが受信できていないかつ自分自身のIDも存在していない
+            nId = nType;
 
-			// 自分のIDを設定
-			(*m_ppPlayer)->BindId(nId);
+            // 自分のIDを設定
+            (*m_ppPlayer)->BindId(nId);
 
-			break;
-		}
-	}
+            break;
+        }
+    }
 
-	m_nSledCnt--;
-	m_mutex.unlock();
+    m_nSledCnt--;
+    m_mutex.unlock();
 }
 
 //===================================================
@@ -1067,20 +1050,20 @@ void CGame::ByteCheck(char *pRecvData, int nRecvByte)
 //===================================================
 void CGame::SendPosition(D3DXVECTOR3& pos)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_SETPOSITION;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_SETPOSITION;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// 座標を挿入
-		memcpy(&aSendData[sizeof(int)], &pos, sizeof(D3DXVECTOR3));
+        // 座標を挿入
+        memcpy(&aSendData[sizeof(int)], &pos, sizeof(D3DXVECTOR3));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(D3DXVECTOR3));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(D3DXVECTOR3));
+    }
 }
 
 //===================================================
@@ -1088,20 +1071,20 @@ void CGame::SendPosition(D3DXVECTOR3& pos)
 //===================================================
 void CGame::SendRotation(D3DXVECTOR3& rot)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_SETROTATION;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_SETROTATION;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// 座標を挿入
-		memcpy(&aSendData[sizeof(int)], &rot, sizeof(D3DXVECTOR3));
+        // 座標を挿入
+        memcpy(&aSendData[sizeof(int)], &rot, sizeof(D3DXVECTOR3));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(D3DXVECTOR3));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(D3DXVECTOR3));
+    }
 }
 
 //===================================================
@@ -1109,20 +1092,20 @@ void CGame::SendRotation(D3DXVECTOR3& rot)
 //===================================================
 void CGame::SendDamage(int nDamage)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_DAMAGE;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_DAMAGE;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// ダメージを挿入
-		memcpy(&aSendData[sizeof(int)], &nDamage, sizeof(int));
+        // ダメージを挿入
+        memcpy(&aSendData[sizeof(int)], &nDamage, sizeof(int));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(int));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(int));
+    }
 }
 
 //===================================================
@@ -1130,20 +1113,20 @@ void CGame::SendDamage(int nDamage)
 //===================================================
 void CGame::SendLife(int nLife)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_SETLIFE;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_SETLIFE;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// ダメージを挿入
-		memcpy(&aSendData[sizeof(int)], &nLife, sizeof(int));
+        // ダメージを挿入
+        memcpy(&aSendData[sizeof(int)], &nLife, sizeof(int));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(int));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int) + sizeof(int));
+    }
 }
 
 //===================================================
@@ -1151,17 +1134,17 @@ void CGame::SendLife(int nLife)
 //===================================================
 void CGame::OnlineEnd(void)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_DELETE;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_DELETE;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int));
+    }
 }
 
 //===============================================
@@ -1169,17 +1152,17 @@ void CGame::OnlineEnd(void)
 //===============================================
 void CGame::SendSetUp(void)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_START_OK;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_START_OK;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int));
+    }
 }
 
 //===============================================
@@ -1187,17 +1170,17 @@ void CGame::SendSetUp(void)
 //===============================================
 void CGame::SendGoal(void)
 {
-	if (m_pClient != nullptr)
-	{
-		char aSendData[MAX_STRING] = {};	// 送信用
-		int nProt = COMMAND_TYPE_GOAL;
+    if (m_pClient != nullptr)
+    {
+        char aSendData[MAX_STRING] = {};	// 送信用
+        int nProt = COMMAND_TYPE_GOAL;
 
-		// protocolを挿入
-		memcpy(&aSendData[0], &nProt, sizeof(int));
+        // protocolを挿入
+        memcpy(&aSendData[0], &nProt, sizeof(int));
 
-		// 送信
-		m_pClient->Send(&aSendData[0], sizeof(int));
-	}
+        // 送信
+        m_pClient->Send(&aSendData[0], sizeof(int));
+    }
 }
 
 //===================================================
@@ -1205,21 +1188,21 @@ void CGame::SendGoal(void)
 //===================================================
 void CGame::AddressLoad(char *pAddrss)
 {
-	FILE *pFile;	// ファイルへのポインタ
+    FILE *pFile;	// ファイルへのポインタ
 
-	pFile = fopen(ADDRESSFILE, "r");
+    pFile = fopen(ADDRESSFILE, "r");
 
-	if (pFile != NULL)
-	{//ファイルが開けた場合
-		
-		//テキスト読み込み
-		fscanf(pFile, "%s", pAddrss);
+    if (pFile != NULL)
+    {//ファイルが開けた場合
+        
+        //テキスト読み込み
+        fscanf(pFile, "%s", pAddrss);
 
-		//ファイルを閉じる
-		fclose(pFile);
-	}
-	else
-	{//ファイルが開けなかった場合
-		return;
-	}
+        //ファイルを閉じる
+        fclose(pFile);
+    }
+    else
+    {//ファイルが開けなかった場合
+        return;
+    }
 }
