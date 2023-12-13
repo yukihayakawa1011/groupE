@@ -248,7 +248,7 @@ HRESULT CGame::Init(void)
 			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
 			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-2250.0f, 0.0f, 1000.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+			m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-130.0f, 0.0f, -2600.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nCnt]->BindId(nCnt);
 
 			//スコアとUIの高さと間隔の調整用
@@ -336,28 +336,10 @@ HRESULT CGame::Init(void)
 		CGimmickRotateDoor::Create(D3DXVECTOR3(1050.0f, 0.0f, -2700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 		// 落とし穴
-		CGimmickPitFall *pFall = CGimmickPitFall::Create(D3DXVECTOR3(0.0f, 1.0f, 0.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(800.0f, 0.0f, 0.0f));
-		pFall->BindButton(pButton);
-
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(430.0f, 1.0f, -2100.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
-
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(-240.0f, 1.0f, -1800.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
-
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(450.0f, 1.0f, 450.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
-
-		pFall = CGimmickPitFall::Create(D3DXVECTOR3(150.0f, 1.0f, -4500.0f));
-		pButton = CGimmickButton::Create(D3DXVECTOR3(500.0f, 0.0f, -2400.0f));
-		pFall->BindButton(pButton);
+		CGimmickPitFall *pFall = nullptr;
 
 		// 協力扉
-		CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		/*CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-250.0f, 0.0f, -1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		pMultiDoor->SetNumButton(4);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(150.0f, 0.0f, -1500.0f));
 		pMultiDoor->BindButton(pButton);
@@ -367,9 +349,9 @@ HRESULT CGame::Init(void)
 		pMultiDoor->BindButton(pButton);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-600.0f, 0.0f, -2000.0f));
 		pMultiDoor->BindButton(pButton);
-		pMultiDoor->SetActiveButton(2);
+		pMultiDoor->SetActiveButton(2);*/
 
-		pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		/*pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(150.0f, 0.0f, -4500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		pMultiDoor->SetNumButton(4);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(600.0f, 0.0f, -4300.0f));
 		pMultiDoor->BindButton(pButton);
@@ -379,10 +361,10 @@ HRESULT CGame::Init(void)
 		pMultiDoor->BindButton(pButton);
 		pButton = CGimmickButton::Create(D3DXVECTOR3(-400.0f, 0.0f, -4700));
 		pMultiDoor->BindButton(pButton);
-		pMultiDoor->SetActiveButton(3);
+		pMultiDoor->SetActiveButton(3);*/
 
 		// ツボ
-		CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		//CGimmickPull::Create(D3DXVECTOR3(-1010.0f, 0.0f, -1300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		CGimmickPull::Create(D3DXVECTOR3(500.0f, 0.0f, -4400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 

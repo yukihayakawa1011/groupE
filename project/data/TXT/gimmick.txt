@@ -15,28 +15,38 @@ BUTTONSET
 END_BUTTONSET
 
 BUTTONSET
-	POS = -400.0 0.0 0.0
+	POS = 150.0 0.0 -1500.0
 	ID = 1
 END_BUTTONSET
 
 BUTTONSET
-	POS = -500.0 0.0 0.0
+	POS = -800.0 0.0 -1500.0
 	ID = 1
 END_BUTTONSET
 
 BUTTONSET
-	POS = -600.0 0.0 0.0
+	POS = 150.0 0.0 -2000.0
 	ID = 1
 END_BUTTONSET
 
 BUTTONSET
-	POS = -700.0 0.0 0.0
+	POS = -600.0 0.0 -2000.0
 	ID = 1
 END_BUTTONSET
 
 BUTTONSET
 	POS = 800.0 0.0 0.0
 	ID = 2
+END_BUTTONSET
+
+BUTTONSET
+	POS = 900.0 0.0 0.0
+	ID = 3
+END_BUTTONSET
+
+BUTTONSET
+	POS = 1000.0 0.0 0.0
+	ID = 4
 END_BUTTONSET
 
 #============================================================
@@ -58,9 +68,21 @@ END_MULTIDOORSET
 # —Ž‚Æ‚µŒŠ”z’u
 #============================================================
 PITFALLSET
-	POS = 0.0 1.0 0.0
+	POS = 430.0 0.0 -2100.0
 	ROT = 0.0 0.0 0.0
 	ID = 2
+END_PITFALLSET
+
+PITFALLSET
+	POS = -240.0 0.0 -1800.0
+	ROT = 0.0 0.0 0.0
+	ID = 3
+END_PITFALLSET
+
+PITFALLSET
+	POS = 150.0 0.0 -4500.0
+	ROT = 0.0 0.0 0.0
+	ID = 4
 END_PITFALLSET
 
 #============================================================
