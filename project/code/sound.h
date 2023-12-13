@@ -32,6 +32,7 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_AIR,			// 風の術
 		LABEL_SE_KUNAI,			// クナイ
 		LABEL_SE_ATTACK,			// クナイ
+		LABEL_SE_CATCH,			// つかむ
 		LABEL_MAX,
 	} LABEL;
 

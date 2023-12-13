@@ -11,6 +11,7 @@
 #include "player.h"
 #include "Xfile.h"
 #include "gimmick_button.h"
+#include "particle.h"
 
 // マクロ定義
 #define COLLISION_RANGE	(300.0f)		// 当たり判定サイズ
@@ -43,6 +44,7 @@ CGimmickSpear::CGimmickSpear()
 {
 	// 値のクリア
 	m_pObj = nullptr;
+	m_bParticle = false;
 	m_pInObj = nullptr;
 	m_state = STATE_NONE;
 }
@@ -172,6 +174,7 @@ void CGimmickSpear::StateSet(void)
 	{
 		m_state = STATE_BACK;
 		m_PosDest.y = SET_POSY;
+		m_bParticle = false;
 	}
 	break;
 
@@ -237,6 +240,14 @@ bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 		&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z) {	// 範囲内
 
 		if (pos.y + vtxMin.y >= ObjPos.y + vtxObjMin.y + vtxMin.y && pos.y <= ObjPos.y + vtxObjMax.y) {	// 高さも範囲内
+
+			ObjPos = pos;
+			ObjPos.y += vtxObjMax.y;
+			if (!m_bParticle)
+			{
+				CParticle::Create(ObjPos, CEffect::TYPE_SPEAR);
+				m_bParticle = true;
+			}
 			bValue = true;
 		}
 	}

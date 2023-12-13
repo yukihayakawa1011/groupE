@@ -90,6 +90,7 @@ namespace {
 	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
 	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
+	const int HEADPARTS_IDX = (1);
 }
 
 // 前方宣言
@@ -694,6 +695,7 @@ void CPlayer::Controller(void)
 			{// 掴むことができるモーションタイミング
 				m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
 				m_action = ACTION_CATCH;
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CATCH);
 			}
 			else 
 			{
@@ -1104,6 +1106,11 @@ void CPlayer::StateSet(void)
 			if (m_pLeg != nullptr) {
 				m_pLeg->SetDraw();
 			}
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
 		}
 	}
 		break;
@@ -1154,6 +1161,16 @@ void CPlayer::Damage(int nDamage)
 		}
 	}
 
+	// エフェクトの生成
+	if (m_pBody != nullptr) {
+		if (m_pBody->GetParts(HEADPARTS_IDX) != nullptr) {
+			D3DXVECTOR3 pos = D3DXVECTOR3(m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_41,
+				m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_42,
+				m_pBody->GetParts(HEADPARTS_IDX)->GetMtx()->_43);
+			CParticle::Create(pos, CEffect::TYPE_HIT);
+		}
+	}
+
 	int nOldLife = m_nLife;
 	m_nLife -= nDamage;
 
@@ -1175,6 +1192,11 @@ void CPlayer::Damage(int nDamage)
 			m_nLife = 0;
 			m_Info.state = STATE_DEATH;
 			m_Info.fStateCounter = DAMAGE_APPEAR;
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_BLACKSMAKE);
 
 			if (m_pBody != nullptr){
 				m_pBody->SetDraw(false);
@@ -1307,7 +1329,6 @@ void CPlayer::MotionSet(void)
 	else if (m_action == ACTION_CATCH)
 	{// 持った
 		m_pBody->GetMotion()->BlendSet(m_action);
-
 		if (m_pBody->GetMotion()->GetEnd())
 		{// モーション終了
 			if (m_Catch.pPlayer == nullptr && m_Catch.pGimmick == nullptr)
@@ -1416,6 +1437,11 @@ void CPlayer::MotionSet(void)
 	else if (m_bMove)
 	{
 		m_pLeg->GetMotion()->BlendSet(ACTION_WALK);
+		if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
+		{
+			CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
+		}
 	}
 	else
 	{
@@ -1504,6 +1530,7 @@ void CPlayer::Catch(void)
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// 相手の状態が変わった場合
 			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
 			m_Catch.pPlayer = nullptr;
+			
 		}
 		else
 		{
@@ -1535,6 +1562,7 @@ void CPlayer::Catch(void)
 				m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
 				m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
 				m_Catch.pPlayer = nullptr;
+				
 			}
 		}
 	}
@@ -2241,6 +2269,7 @@ void CPlayer::PlayerCatch(D3DXVECTOR3 pos)
 					pPlayer->m_Catch.pPlayer = this;		// 相手に自分を指定
 					m_Catch.pPlayer = pPlayer;				// 自分のポインタに相手を指定
 					m_Catch.nMoveCnt = 0;
+					CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CATCH);
 				}
 			}
 		}

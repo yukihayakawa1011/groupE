@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 9
+NUM_TEXTURE = 16
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -21,13 +21,20 @@ TEXTURE_FILENAME = data/TEXTURE/WoodDesign.jpg		# [3]ちゃぶ台
 TEXTURE_FILENAME = data/TEXTURE/WoodDesign001.jpg	# [4]ちゃぶ台(脚)
 TEXTURE_FILENAME = data/TEXTURE/zabuton000.jpg		# [5]座布団
 TEXTURE_FILENAME = data/TEXTURE/sumdorr.jpg			# [6]ドア左(和)
-TEXTURE_FILENAME = data/TEXTURE/gold000.jpg			# [7]金の掛け軸
+TEXTURE_FILENAME = data/TEXTURE/gold00.jpg			# [7]金の掛け軸
 TEXTURE_FILENAME = data/TEXTURE/af18.jpg            # [8]木のテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/tanuki_paint.png    # [9]たぬきテクスチャ
+TEXTURE_FILENAME = data/TEXTURE/ash000.jpg          # [10]いろり
+TEXTURE_FILENAME = data/TEXTURE/floor001.jpg        # [11]囲炉裏の木
+TEXTURE_FILENAME = data/TEXTURE/yakifish.jpg        # [12]焼き魚
+TEXTURE_FILENAME = data/TEXTURE/onabe.jpg           # [13]お鍋
+TEXTURE_FILENAME = data/TEXTURE/darkwood00.jpg      # [14]木材(暗い)
+TEXTURE_FILENAME = data/TEXTURE/tance00.jpg         # [15]たんす
 
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 23
+NUM_MODEL = 26
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -55,6 +62,9 @@ MODEL_FILENAME = data\MODEL\stonelight01.x # [19]石灯篭
 MODEL_FILENAME = data\MODEL\shrub.x        # [20]低木
 MODEL_FILENAME = data\MODEL\sicletyoutin.x # [21]丸提灯
 MODEL_FILENAME = data\MODEL\tyoutin.x      # [22]提灯
+MODEL_FILENAME = data\MODEL\tanuki.x       # [23]たぬき
+MODEL_FILENAME = data\MODEL\tance00.x      # [24]たんす
+MODEL_FILENAME = data\MODEL\MInitance.x    # [25]ミニたんす
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -97,22 +107,24 @@ MOUNTAINSET
 	TEXTYPE = 1
 END_MOUNTAINSET
 
+#------------------------------------------------------------------------------
 # 床配置情報
+#------------------------------------------------------------------------------
 
 FIELDSET
 	TEXTYPE = 1
 	POS = -900.0 1.0 900.0
 	ROT = 0 0 0
-	BLOCK = 10 8
+	BLOCK = 13 8
 	SIZE = 100 100
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = 900.0 1.0 -900.0
+	POS = 950.0 1.0 -1000.0
 	ROT = 0 0 0
-	BLOCK = 10 8
+	BLOCK = 10 11
 	SIZE = 100 100
 	MOVE = -0.0005 0.0
 END_FIELDSET
@@ -128,7 +140,7 @@ END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = 900.0 1.0 900.0
+	POS = 900.0 1.0 1350.0
 	ROT = 0 0 0
 	BLOCK = 8 10
 	SIZE = 100 100
@@ -137,74 +149,101 @@ END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = 900.0 1.0 -2650.0
+	POS = 1150.0 1.0 325.0
 	ROT = 0 0 0
-	BLOCK = 10 8
+	BLOCK = 2 6
+	SIZE = 113 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 125.0 1.0 325.0
+	ROT = 0 0 0
+	BLOCK = 2 4
+	SIZE = 113 113
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 600.0 1.0 0.0
+	ROT = 0 0 0
+	BLOCK = 1 7
 	SIZE = 100 100
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = -700.0 1.0 -2650.0
+	POS = -1340.0 1.0 -2700.0
 	ROT = 0 0 0
-	BLOCK = 10 8
+	BLOCK = 10 10
 	SIZE = 100 100
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = 900.0 1.0 -4500.0
+	POS = -50.0 1.0 -2900.0
 	ROT = 0 0 0
-	BLOCK = 10 8
+	BLOCK = 10 4
 	SIZE = 100 100
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = -700.0 1.0 -4500.0
+	POS = 750.0 1.0 -3200.0
 	ROT = 0 0 0
-	BLOCK = 10 8
+	BLOCK = 10 4
 	SIZE = 100 100
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = -2150.0 1.0 900.0
+	POS = 1030.0 1.0 -2100.0
 	ROT = 0 0 0
-	BLOCK = 5 5
+	BLOCK = 1 5
 	SIZE = 100 100
-	MOVE = 0.0 0.0
+	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = 800.0 1.0 2000.0
+	POS = 1250.0 1.0 -4800.0
 	ROT = 0 0 0
-	BLOCK = 5 5
+	BLOCK = 10 10
 	SIZE = 100 100
-	MOVE = 0.0 0.0
+	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = -200.0 1.0 2000.0
+	POS = -950.0 1.0 -4700.0
 	ROT = 0 0 0
-	BLOCK = 5 5
+	BLOCK = 10 10
 	SIZE = 100 100
-	MOVE = 0.0 0.0
+	MOVE = -0.0005 0.0
 END_FIELDSET
 
 FIELDSET
 	TEXTYPE = 1
-	POS = -900.0 1.0 2000.0
+	POS = 100.0 1.0 -4100.0
 	ROT = 0 0 0
-	BLOCK = 5 5
+	BLOCK = 3 2 
 	SIZE = 100 100
-	MOVE = 0.0 0.0
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 200.0 1.0 -4900.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
 END_FIELDSET
 
 #==============================================================================
@@ -1414,6 +1453,110 @@ END_MODELSET
 MODELSET
 	TYPE = 12
 	POS = -750 -0 1600
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 1150 160 1200
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 1148 160 -1200
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1150 160 -1000
+	ROT = 0 -90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 100 160 -5150
+	ROT = 0 180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = -700 70 -2800
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = -900 70 1600
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 23
+	POS = -1050 0 -4400
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = 50 0 1930
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = 170 0 1930
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = -1120 0 -3300
+	ROT = 0 -90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = -1120 0 -3450
+	ROT = 0 -90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 25
+	POS = 1030 0 270
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 25
+	POS = 1100 0 270
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1

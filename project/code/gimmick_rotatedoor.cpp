@@ -10,6 +10,8 @@
 #include "debugproc.h"
 #include "player.h"
 #include "Xfile.h"
+#include "manager.h"
+#include "sound.h"
 
 // –³–¼–¼‘O‹óŠÔ
 namespace {
@@ -247,6 +249,8 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_state = STATE_ROTATE;
 				m_RotDest.y += D3DX_PI;
 
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
 				}
@@ -268,6 +272,8 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 			if ((D3DX_PI * 0.5f == GetRotation().y || -D3DX_PI * 0.5f == GetRotation().y) && nAction == CPlayer::ACTION_ATK && m_state == STATE_NONE) {	// UŒ‚‚µ‚½
 				m_state = STATE_ROTATE;
 				m_RotDest.y += D3DX_PI;
+
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -299,6 +305,8 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_state = STATE_ROTATE;
 				m_RotDest.y += D3DX_PI;
 
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
 				}
@@ -320,6 +328,8 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 			if ((D3DX_PI * 1.0f == GetRotation().y || -D3DX_PI * 1.0f == GetRotation().y || 0.0f == GetRotation().y) && nAction == CPlayer::ACTION_ATK && m_state == STATE_NONE) {	// UŒ‚‚µ‚½
 				m_state = STATE_ROTATE;
 				m_RotDest.y += D3DX_PI;
+
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
