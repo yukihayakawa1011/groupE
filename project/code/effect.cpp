@@ -24,9 +24,11 @@ namespace {
 	const D3DXCOLOR COLINFO[CEffect::TYPE_MAX] = {	// Ží—Þ•Ê‰ŠúF‚ÌÝ’è
 		{1.0f, 1.0f, 1.0f, 1.0f},
 		{ 1.0f, 1.0f, 0.0f, 1.0f },
+		{ 1.0f, 1.0f, 0.0f, 1.0f },
 	};
 
 	const float RADIUSINFO[CEffect::TYPE_MAX] = {	// Ží—Þ•Ê”¼Œa‚ÌÝ’è
+		100.0f,
 		100.0f,
 		100.0f,
 	};
@@ -67,7 +69,6 @@ HRESULT CEffect::Init(void)
 	m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 
 	m_Info.fLife = LIFE;	// ‘Ì—Í‚Ì‰Šú‰»
-	m_Info.Type = TYPE_NONE;
 
 	return S_OK;
 }
@@ -120,36 +121,38 @@ void CEffect::Update(void)
 
 	case TYPE_SMAKE:	// ‰Œ
 
-		m_Info.col.a -= 0.035f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x -= m_Info.move.x * 0.07f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.y -= m_Info.move.y * 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.z -= m_Info.move.z * 0.07f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
 	case TYPE_ITEMGET:	// ‰Œ
 
-		m_Info.col.a -= 0.15f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x -= m_Info.move.x * 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.y -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.z -= m_Info.move.z * 0.01f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
 
 	case TYPE_LANDCLEAR:	// ‰Œ
 
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x -= m_Info.move.x * 0.07f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.y -= m_Info.move.y * 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.z -= m_Info.move.z * 0.07f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
 
 	case TYPE_LANDFAILED:	// ‰Œ
 
-		m_Info.col.a -= 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.x -= m_Info.move.x * 0.07f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.y -= m_Info.move.y * 0.01f * CManager::GetInstance()->GetSlow()->Get();
-		m_Info.move.z -= m_Info.move.z * 0.07f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
+
+	case TYPE_HIT:	// ‰Œ
+
+		m_Info.col.a -= 0.03f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.045f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.045f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.3f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
 	}
@@ -326,22 +329,30 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 	{
 		return CTexture::TYPE_SMOOK;
 	}
+	break;
 
 	case TYPE_ITEMGET:
 	{
 		return CTexture::TYPE_ITEMGET_EF;
 	}
+	break;
 
 	case TYPE_LANDCLEAR:
 	{
 		return CTexture::TYPE_SMOOK;
 	}
+	break;
 
 	case TYPE_LANDFAILED:
 	{
 		return CTexture::TYPE_SMOOK;
 	}
+	break;
 
+	case TYPE_HIT:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
 	break;
 		
 	}
@@ -380,23 +391,34 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetAlphaText(true);
 		m_pObjectBilBoard->SetZTest(true);
 		m_pObjectBilBoard->SetLighting(true);
-		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_MINUS);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 	}
+	break;
 
 	case TYPE_LANDCLEAR:
 	{
 		m_pObjectBilBoard->SetAlphaText(true);
 		m_pObjectBilBoard->SetZTest(true);
 		m_pObjectBilBoard->SetLighting(true);
-		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 	}
+	break;
 
 	case TYPE_LANDFAILED:
 	{
 		m_pObjectBilBoard->SetAlphaText(true);
 		m_pObjectBilBoard->SetZTest(true);
 		m_pObjectBilBoard->SetLighting(true);
-		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_MINUS);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_HIT:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
 	}
 	break;
 
