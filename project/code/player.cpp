@@ -1104,6 +1104,11 @@ void CPlayer::StateSet(void)
 			if (m_pLeg != nullptr) {
 				m_pLeg->SetDraw();
 			}
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
 		}
 	}
 		break;
@@ -1185,6 +1190,11 @@ void CPlayer::Damage(int nDamage)
 			m_nLife = 0;
 			m_Info.state = STATE_DEATH;
 			m_Info.fStateCounter = DAMAGE_APPEAR;
+
+			CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_BLACKSMAKE);
 
 			if (m_pBody != nullptr){
 				m_pBody->SetDraw(false);

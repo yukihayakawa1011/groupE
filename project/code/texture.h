@@ -45,6 +45,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_RESULTCLEAR,		// ノルマ達成
 		TYPE_RESULTFAILED,	// ノルマ失敗
 		TYPE_ITEMGET_EF,		// アイテム獲得エフェクト
+		TYPE_WOODPOW,			// 木っ端
 		TYPE_MAX				   
 	};
 
