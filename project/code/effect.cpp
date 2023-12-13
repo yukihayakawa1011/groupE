@@ -185,6 +185,16 @@ void CEffect::Update(void)
 		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 		break;
+
+	case TYPE_WALK:	// ‰Œ
+
+		m_Info.col.a -= 0.03f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.045f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.045f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.45f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)

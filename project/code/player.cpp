@@ -1436,6 +1436,11 @@ void CPlayer::MotionSet(void)
 	else if (m_bMove)
 	{
 		m_pLeg->GetMotion()->BlendSet(ACTION_WALK);
+
+		if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
+		{
+			CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
+		}
 	}
 	else
 	{
