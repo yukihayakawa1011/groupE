@@ -49,6 +49,7 @@ private:	// 自分だけがアクセス可能
 	CObjectX* m_pObj;			// オブジェクト
 
 	int m_nCounter;				//排出CT
+	int m_nParticleCounter;		// パーティクルカウンター
 };
 
 #endif
