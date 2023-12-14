@@ -177,7 +177,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\book00.jpg";
+    "data\\TEXTURE\\book00.jpg";
    }
   }
   Material {
