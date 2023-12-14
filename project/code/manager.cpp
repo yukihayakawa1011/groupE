@@ -722,6 +722,9 @@ void CScene::Update(void)
 	{// 使用している場合
 		CManager::GetInstance()->GetRenderer()->Update();
 	}
+
+	// タスクの全更新
+	CTaskManager::GetInstance()->Update();
 }
 
 //===================================================

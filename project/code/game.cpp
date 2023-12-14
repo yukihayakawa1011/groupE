@@ -223,7 +223,6 @@ HRESULT CGame::Init(void)
             m_pFileLoad->Init();
             m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
             m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
-            m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
         }
     }
 
@@ -286,6 +285,11 @@ HRESULT CGame::Init(void)
             CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
             m_ppPlayer[nCnt]->BindScore(pScore);
         }
+
+		if (m_pFileLoad != NULL)
+		{
+			m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
+		}
 
         // ギミックの生成
 
@@ -582,6 +586,7 @@ void CGame::Uninit(void)
 //===============================================
 void CGame::Update(void)
 {
+
     CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
     CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
@@ -712,10 +717,7 @@ void CGame::Update(void)
         CScene::Update();
     }
 
-    if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
-    {
-        CGimmick::SwitchOn();
-    }
+	CGimmick::Buttonoff();
 }
 
 //===============================================

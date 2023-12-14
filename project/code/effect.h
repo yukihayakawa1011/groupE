@@ -40,6 +40,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_RESULTZITABATA,	// リザルト失敗じたばた
 		TYPE_PULLSTAR,	// 引くオブジェクト表示
 		TYPE_PULLNOW,		// 引いている時
+		TYPE_AIR,		// 風神の術
 		TYPE_MAX
 	}TYPE;
 
