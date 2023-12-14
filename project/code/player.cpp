@@ -1921,11 +1921,13 @@ void CPlayer::SelectItem(void)
 	if (pInputPad->GetTrigger(CInputPad::BUTTON_RIGHT, m_nId))
 	{
 		m_nItemId++;
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SELECT);
 	}
 
 	if (pInputPad->GetTrigger(CInputPad::BUTTON_LEFT, m_nId))
 	{
 		m_nItemId--;
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SELECT);
 	}
 
 	if (m_nItemId > 10)
