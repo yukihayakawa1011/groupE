@@ -99,17 +99,31 @@ bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 bool CGimmick::CollisionCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 * posCollisioned)
 {
 	CGimmick *pObj = m_pTop;	// æ“ªŽæ“¾
+	D3DXVECTOR3 posNear = D3DXVECTOR3(FLT_MAX, 0.0f, 0.0f);
 	bool bValue = false;	// ‚²‚Á‚Â‚ñ‚µ‚½‚©
 
 	while (pObj != nullptr)
 	{
 		CGimmick *pObjNext = pObj->m_pNext;
-		if (pObj->CollisionCheckCloss(pos, posOld, posCollisioned))
+		D3DXVECTOR3 posObjColl = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		if (pObj->CollisionCheckCloss(pos, posOld, &posObjColl))
 		{
+			float fLength = D3DXVec3Length(&(posOld - posObjColl));
+
+			if (D3DXVec3Length(&(posOld - posNear)) > fLength)
+			{
+				posNear = posObjColl;
+			}
+
 			bValue = true;
 		}
 
 		pObj = pObjNext;
+	}
+
+	if (posCollisioned != nullptr)
+	{
+		*posCollisioned = posNear;
 	}
 
 	return bValue;

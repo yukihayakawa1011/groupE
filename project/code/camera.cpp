@@ -834,13 +834,23 @@ void CCamera::CollisionObj(void)
 		m_posR.y + cosf(m_rot.z) * DEFAULT_LENGTH,
 		m_posR.z + (sinf(m_rot.z) * sinf(m_rot.y)) * DEFAULT_LENGTH);
 
-	if (CObjectX::CollisionCloss(m_posR, posVDef, &posCollisioned))
+	if (CObjectX::CollisionCloss(posVDef, m_posR, &posCollisioned))
 	{
-		fLengthNew = D3DXVec3Length(&(m_posR - posCollisioned));
+		float fLength = D3DXVec3Length(&(m_posR - posCollisioned));
+
+		if (fLengthNew > fLength)
+		{
+			fLengthNew = fLength;
+		}
 	}
-	if (CGimmick::CollisionCloss(m_posR, posVDef, &posCollisioned))
+	if (CGimmick::CollisionCloss(posVDef, m_posR, &posCollisioned))
 	{
-		fLengthNew = D3DXVec3Length(&(m_posR - posCollisioned));
+		float fLength = D3DXVec3Length(&(m_posR - posCollisioned));
+
+		if (fLengthNew > fLength)
+		{
+			fLengthNew = fLength;
+		}
 	}
 
 	m_fLength = fLengthNew;
