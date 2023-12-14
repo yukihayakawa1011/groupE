@@ -622,6 +622,7 @@ void CPlayer::Controller(void)
 	Adjust();
 
 	m_Info.pos = pos;
+	bool bOld = m_bJump;
 	m_bJump = true;	// ジャンプ状態リセット
 
 	// 起伏との当たり判定
@@ -642,6 +643,10 @@ void CPlayer::Controller(void)
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
 		m_bJump = false;
+	}
+
+	if (bOld && !m_bJump) {
+		CParticle::Create(m_Info.pos, CEffect::TYPE_LAND);
 	}
 
 	// アイテムとの当たり判定
@@ -972,13 +977,15 @@ void CPlayer::Jump(void)
 
 			if(m_Catch.pPlayer != nullptr)
 			{
-				m_Info.move.y = JUMP * 0.5f;
+				m_Info.move.y = JUMP * 0.5f;	
+				// 少なめのパーティクルに
+				CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
 			}
 			else
 			{
 				m_Info.move.y = JUMP;
+				CParticle::Create(m_Info.pos, CEffect::TYPE_JUMP);
 			}
-
 		}
 	}
 }
@@ -1300,6 +1307,17 @@ void CPlayer::MotionSet(void)
 	if (m_Info.state == STATE_CATCH && m_Catch.pPlayer != nullptr) {	// 掴まれている
 		m_pBody->GetMotion()->Set(ACTION_FLUTTERING);
 		m_pLeg->GetMotion()->Set(ACTION_FLUTTERING);
+
+		// 汗の生成
+		if (m_pBody->GetMotion()->GetNowFrame() == 0) {	// タイミングがあった
+			if (m_pBody->GetParts(1) != nullptr) {	// パーツが存在している
+				D3DXVECTOR3 pos = D3DXVECTOR3(m_pBody->GetParts(1)->GetMtx()->_41,
+					m_pBody->GetParts(1)->GetMtx()->_42 + 20.0f,
+					m_pBody->GetParts(1)->GetMtx()->_43);
+				CParticle::Create(pos, CEffect::TYPE_CATCH);
+				
+			}
+		}
 
 		return;
 	}

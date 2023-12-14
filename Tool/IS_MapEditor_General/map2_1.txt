@@ -18,7 +18,7 @@ NUM_TEXTURE = 0
 #==============================================================================
 # モデル数
 #==============================================================================
-NUM_MODEL = 32
+NUM_MODEL = 33
 
 #==============================================================================
 # モデルファイル名
@@ -55,6 +55,7 @@ MODEL_FILENAME = data\MODEL\kakeziku000.x
 MODEL_FILENAME = data\MODEL\tanuki.x
 MODEL_FILENAME = data\MODEL\tance00.x
 MODEL_FILENAME = data\MODEL\bookcace00.x
+MODEL_FILENAME = data\MODEL\yakan.x
 
 #==============================================================================
 # カメラ情報
@@ -1279,14 +1280,6 @@ END_MODELSET
 
 MODELSET
 	TYPE = 30
-	POS = 100 0 1920
-	ROT = 0 0 0
-#	影設定はエディタ未実装のため手動で入力してください
-	SHADOW = 1
-END_MODELSET
-
-MODELSET
-	TYPE = 30
 	POS = 1120 0 700
 	ROT = 0 1.57 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1432,7 +1425,7 @@ END_MODELSET
 MODELSET
 	TYPE = 31
 	POS = -1120 0 1100
-	ROT = 0 -180 0
+	ROT = 0 -3.14159 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
@@ -1569,6 +1562,54 @@ MODELSET
 	TYPE = 31
 	POS = -1120 0 490
 	ROT = 0 -3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 30
+	POS = 100 0 1920
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 30
+	POS = 210 0 1600
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 30
+	POS = 210 0 1350
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = 210 0 750
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = 210 0 1000
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 32
+	POS = 930 70 -4200
+	ROT = 0 1.572 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET

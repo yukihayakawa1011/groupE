@@ -35,7 +35,7 @@ TEXTURE_FILENAME = data/TEXTURE/book00.jpg          # [16]本棚
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 27
+NUM_MODEL = 28
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -67,6 +67,7 @@ MODEL_FILENAME = data\MODEL\tanuki.x       # [23]たぬき
 MODEL_FILENAME = data\MODEL\tance00.x      # [24]たんす
 MODEL_FILENAME = data\MODEL\MInitance.x    # [25]ミニたんす
 MODEL_FILENAME = data\MODEL\bookcace00.x   # [26]本棚
+MODEL_FILENAME = data\MODEL\yakan.x        # [27]やかん
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1629,6 +1630,22 @@ MODELSET
 END_MODELSET
 
 MODELSET
+	TYPE = 24
+	POS = 210 0 1600
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = 210 0 1350
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
 	TYPE = 26
 	POS = -680 0 -1330
 	ROT = 0 0 0
@@ -1755,6 +1772,31 @@ MODELSET
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = 210 0 750
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = 210 0 1000
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 27
+	POS = 900 70 -4350
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
 
 MODELSET
 	TYPE = 9

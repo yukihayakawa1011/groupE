@@ -74,7 +74,7 @@ namespace {
     const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
     const char* FILEEXT = ".txt";				// ファイルの拡張子
     const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-    const int START_TIMER = (90);				// 開始制限時間
+    const int START_TIMER = (180);				// 開始制限時間
     const int START_WAITCNT = (180);            // スタート時の走ってる時間
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
@@ -232,7 +232,7 @@ HRESULT CGame::Init(void)
     {// ローカルの場合
         if (m_nNumPlayer <= 0)
         {// 人数が指定されていない
-            m_nNumPlayer = 1;
+            m_nNumPlayer = 2;
         }
 
 		m_nNumPlayer = 4;
@@ -681,7 +681,7 @@ void CGame::Update(void)
 
                     if (m_QuataUI != nullptr) {
                         if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
-                            //m_pTimer->Update();
+                            m_pTimer->Update();
                         }
                     }
                     else {

@@ -293,6 +293,74 @@ void CEffect::Update(void)
 		m_Info.fRadius += 0.5f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
+
+	case TYPE_AIR:	// ‰Œ
+
+		m_Info.col.a -= 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x += m_Info.move.x * 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z += m_Info.move.z * 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.pos.y <= 0.0f)
+		{
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		else
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.05f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_CATCH:	// ‰Œ
+
+		m_Info.col.a -= 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x += m_Info.move.x * 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z += m_Info.move.z * 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.pos.y <= 0.0f)
+		{
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		else
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.05f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_JUMP:	// ‰Œ
+
+		m_Info.col.a -= 0.0035f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += -0.3f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.pos.y <= 0.0f)
+		{
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		else
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * (rand() % 50 * 0.0001f + 0.065f);
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_LAND:	// ‰Œ
+
+		m_Info.col.a -= (rand() % 100) * 0.00065f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
@@ -546,6 +614,30 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_SMOOK;
 	}
 	break;
+
+	case TYPE_AIR:
+	{
+		return CTexture::TYPE_AIRWOOD;
+	}
+	break;
+
+	case TYPE_CATCH:
+	{
+		return CTexture::TYPE_EFFECT;
+	}
+	break;
+
+	case TYPE_JUMP:
+	{
+		return CTexture::TYPE_AIRWOOD;
+	}
+	break;
+
+	case TYPE_LAND:
+	{
+		return CTexture::TYPE_SMOOK;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -700,6 +792,43 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetZTest(false);
 		m_pObjectBilBoard->SetLighting(true);
 		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_AIR:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_CATCH:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_JUMP:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+		m_pObjectBilBoard->SetRotation(D3DXVECTOR3(0.0f, (rand() % 629 - 314) * 0.01f, 0.0f));
+	}
+	break;
+
+	case TYPE_LAND:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 	}
 	break;
 	}

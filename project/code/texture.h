@@ -47,6 +47,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_ITEMGET_EF,		// アイテム獲得エフェクト
 		TYPE_WOODPOW,			// 木っ端
 		TYPE_WALK,			// 歩き
+		TYPE_AIRWOOD,			// 風で舞った木っ端
 		TYPE_MAX				   
 	};
 
