@@ -33,7 +33,9 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_BLACKSMAKE,	// 黒い煙
 		TYPE_WALK,		// 歩き
 		TYPE_KUNAI,		// クナイ
-		TYPE_BUTTON,	// ボタン
+		TYPE_BUTTON,		// ボタン
+		TYPE_ROTATEDOOR,	// 回転ドア
+		TYPE_RESULTZITABATA,	// リザルト失敗じたばた
 		TYPE_MAX
 	}TYPE;
 
