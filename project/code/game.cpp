@@ -361,7 +361,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    CEnemyManager::Create();
+    //CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
