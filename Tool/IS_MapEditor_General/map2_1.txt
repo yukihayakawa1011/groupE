@@ -1431,8 +1431,8 @@ END_MODELSET
 
 MODELSET
 	TYPE = 31
-	POS = -1120 0 490
-	ROT = 0 -3.14159 0
+	POS = -1120 0 1100
+	ROT = 0 -180 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
@@ -1440,6 +1440,14 @@ END_MODELSET
 MODELSET
 	TYPE = 31
 	POS = -1120 0 -2000
+	ROT = 0 -3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = -1120 0 -2300
 	ROT = 0 -3.14159 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
@@ -1505,6 +1513,62 @@ MODELSET
 	TYPE = 31
 	POS = 1120 0 -3750
 	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = 1120 0 -4660
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = 1120 0 -5040
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 30
+	POS = -1120 1 -5040
+	ROT = 0 -1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 30
+	POS = -1120 1 -4660
+	ROT = 0 -1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = 460 0 1450
+	ROT = 0 -1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = 1040 0 1450
+	ROT = 0 -1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 31
+	POS = -1120 0 490
+	ROT = 0 -3.14159 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
