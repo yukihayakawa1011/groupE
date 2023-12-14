@@ -28,6 +28,8 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/catch.wav", 0 },			// つかむ
 	{ "data/SE/drop.wav", 0 },			// 落とす
 	{ "data/SE/item.wav", 0 },			// 取得
+	{ "data/SE/select.wav", 0 },		// アイテム選択
+	{ "data/SE/lever.wav", 0 },			// レバー
 };										
 
 //=============================================================================

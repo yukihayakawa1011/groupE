@@ -35,6 +35,8 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_CATCH,			// つかむ
 		LABEL_SE_DROP,			// 落とす
 		LABEL_SE_GET,			// 取得
+		LABEL_SE_SELECT,		// アイテム選択
+		LABEL_SE_LEVER,			// レバー
 		LABEL_MAX,
 	} LABEL;
 

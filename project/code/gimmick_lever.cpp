@@ -9,6 +9,7 @@
 #include "manager.h"
 #include "debugproc.h"
 #include "player.h"
+#include "sound.h"
 
 // マクロ定義
 #define COLLISION_RANGE	(50.0f)
@@ -170,6 +171,7 @@ bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 	
 	m_state = (STATE)(m_state ^ 1);	// 押された状態にする
 	m_nInterval = INTERVAL;			// インターバル
+	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_LEVER);
 
 	return bValue;
 }
