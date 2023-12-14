@@ -262,6 +262,37 @@ void CEffect::Update(void)
 		}
 
 		break;
+
+	case TYPE_RESULTZITABATA:	// ‰Œ
+
+		m_Info.col.a -= 0.015f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += 0.025f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
+
+	case TYPE_PULLSTAR:	// ‰Œ
+
+		m_Info.col.a -= 0.02f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.75f * CManager::GetInstance()->GetSlow()->Get();
+
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.005f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_PULLNOW:	// ‰Œ
+
+		m_Info.col.a -= 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.5f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
@@ -497,6 +528,24 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_ITEMGET_EF;
 	}
 	break;
+
+	case TYPE_RESULTZITABATA:
+	{
+		return CTexture::TYPE_SMOOK;
+	}
+	break;
+
+	case TYPE_PULLSTAR:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+	break;
+
+	case TYPE_PULLNOW:
+	{
+		return CTexture::TYPE_SMOOK;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -619,6 +668,33 @@ void CEffect::DrawSet(void)
 	break;
 
 	case TYPE_ITEMBOXSTAR:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_RESULTZITABATA:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_PULLSTAR:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_PULLNOW:
 	{
 		m_pObjectBilBoard->SetAlphaText(true);
 		m_pObjectBilBoard->SetZTest(false);

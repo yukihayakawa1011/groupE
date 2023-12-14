@@ -1225,6 +1225,11 @@ void CPlayer::Damage(int nDamage)
 		m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
 		m_Catch.pPlayer = nullptr;
 	}
+
+	if (m_Catch.pGimmick != nullptr) {	// 他のプレイヤーを持っている
+		m_Catch.pGimmick->SetMtxParent(nullptr);
+		m_Catch.pGimmick = nullptr;
+	}
 }
 
 //===============================================
@@ -1442,6 +1447,11 @@ void CPlayer::MotionSet(void)
 		{
 			CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
+		}
+
+		if (m_Catch.pGimmick != nullptr) {	// ギミックを持っている
+			CParticle::Create(D3DXVECTOR3(m_Catch.pGimmick->GetMtxWorld()->_41, m_Catch.pGimmick->GetMtxWorld()->_42, m_Catch.pGimmick->GetMtxWorld()->_43),
+				CEffect::TYPE_PULLNOW);
 		}
 	}
 	else
@@ -2689,4 +2699,43 @@ int CPlayer::GetMotion(void) {
 	}
 
 	return m_pBody->GetMotion()->GetNowMotion();
+}
+
+//===============================================
+// リザルト失敗時のパーティクル
+//===============================================
+void CPlayer::SetFailedParticle(void)
+{
+	if (m_pBody == nullptr) {	// 体がない
+		return;
+	}
+
+	if (m_pBody->GetMotion() == nullptr) {	// モーションが無い
+		return;
+	}
+
+	if (m_pBody->GetMotion()->GetNowFrame() != 0)	// 現在0フレームではない
+	{
+		return;
+		CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
+	}
+
+	CModel *pModel = nullptr;
+
+	if (m_pBody->GetMotion()->GetNowKey() == 0)
+	{
+		pModel = m_pBody->GetParts(4);
+	}
+	else if (m_pBody->GetMotion()->GetNowKey() == 1)
+	{
+		pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+	}
+
+	if (pModel == nullptr) {	// 使われていない
+		return;
+	}
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
+	CParticle::Create(pos, CEffect::TYPE_RESULTZITABATA);
 }

@@ -15,7 +15,7 @@ NUM_TEXTURE = 3
 # テクスチャファイル名
 #------------------------------------------------------------------------------
 TEXTURE_FILENAME = data/TEXTURE/river000.jpg			# [0]川水(下)
-TEXTURE_FILENAME = data/TEXTURE/rotatedoor001.jpg			# [1]川水(上)
+TEXTURE_FILENAME = data/TEXTURE/field000.jpg			# [1]川水(上)
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -25,21 +25,21 @@ NUM_MODEL = 15
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/5mcube.x	   # [0]5mキューブ
-MODEL_FILENAME = data/MODEL/botan.x        # [1]ボタン
-MODEL_FILENAME = data/MODEL/camera000.x    # [2]監視カメラ
-MODEL_FILENAME = data/MODEL/desk.x         # [3]机
-MODEL_FILENAME = data/MODEL/gate.x         # [4]ドア
-MODEL_FILENAME = data/MODEL/gate001.x      # [5]ドア
-MODEL_FILENAME = data/MODEL/roundchair.x   # [6]丸椅子
-MODEL_FILENAME = data/MODEL/wall000.x      # [7]壁
-MODEL_FILENAME = data/MODEL/coin_mini.x    # [8]コイン
-MODEL_FILENAME = data/MODEL/house.x  	   # [9]家
-MODEL_FILENAME = data/MODEL/warehouse.x    # [10]倉庫
-MODEL_FILENAME = data/MODEL/fence.x		   # [11]壁みたいなフェンス
+MODEL_FILENAME = data/MODEL/5mcube.x	  # [0]5mキューブ
+MODEL_FILENAME = data/MODEL/botan.x       # [1]ボタン
+MODEL_FILENAME = data/MODEL/camera000.x   # [2]監視カメラ
+MODEL_FILENAME = data/MODEL/desk.x        # [3]机
+MODEL_FILENAME = data/MODEL/gate.x        # [4]ドア
+MODEL_FILENAME = data/MODEL/gate001.x     # [5]ドア
+MODEL_FILENAME = data/MODEL/roundchair.x  # [6]丸椅子
+MODEL_FILENAME = data/MODEL/wall000.x     # [7]壁
+MODEL_FILENAME = data/MODEL/coin_mini.x   # [8]コイン
+MODEL_FILENAME = data/MODEL/house.x  	  # [9]家
+MODEL_FILENAME = data/MODEL/warehouse.x   # [10]倉庫
+MODEL_FILENAME = data/MODEL/fence.x		  # [11]壁みたいなフェンス
 MODEL_FILENAME = data/MODEL/fence_corner.x # [12]壁みたいなフェンスの角
-MODEL_FILENAME = data/MODEL/tatehuda.x     # [13]立札
-MODEL_FILENAME = data/MODEL/post.x         # [14]ポスト
+MODEL_FILENAME = data/MODEL/ido.x		   # [13]井戸
+MODEL_FILENAME = data/MODEL/tree_01.x	   # [14]木
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1984,8 +1984,8 @@ MODELSET
 END_MODELSET
 
 MODELSET
-	TYPE = 13
-	POS = 180.0 0 -300
+	TYPE = 14
+	POS = -2231 1 742
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
@@ -1993,7 +1993,215 @@ END_MODELSET
 
 MODELSET
 	TYPE = 14
-	POS = -170.0 80 -190
+	POS = -2231 1 -304
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2231 1 30
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2231 1 384
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2435 1 -140
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2412 1 289
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2578 0 98
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2340 0 581
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2547 0 437
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2494 1 754
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2225 1 996
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2484 0 1031
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1972 0 1125
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1525 0 1147
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1692 0 1250
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1893 0 1393
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2206 1 1193
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2155 1 1431
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -2454 0 1275
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1480 1 1347
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = -1641 0 1456
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 13
+	POS = -938 0 -136
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 929 -0 1068
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 601 1 1058
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 1180 1 1075
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 650 0 1266
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 856 0 1324
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 14
+	POS = 1072 1 1361
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1

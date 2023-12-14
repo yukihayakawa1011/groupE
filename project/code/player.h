@@ -145,6 +145,7 @@ public:	// 誰でもアクセス可能
 	ACTION GetAction(void) const { return m_action; }
 	int GetThrowItemId(void) { return m_nItemId; }
 	int GetMotion(void);
+	void SetFailedParticle(void);
 
 private:	// 自分だけがアクセス可能
 

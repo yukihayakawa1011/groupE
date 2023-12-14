@@ -64,7 +64,7 @@ private:	// 自分だけがアクセス可能
 	STATE m_state;			// 状態
 	D3DXVECTOR3 m_RotDest;		// 目標の角度
 	static char *m_pFileName;	// モデルファイルネーム
-
+	int m_nParticleTimer;
 };
 
 #endif

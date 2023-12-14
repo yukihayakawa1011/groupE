@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 16
+NUM_TEXTURE = 17
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -30,11 +30,12 @@ TEXTURE_FILENAME = data/TEXTURE/yakifish.jpg        # [12]焼き魚
 TEXTURE_FILENAME = data/TEXTURE/onabe.jpg           # [13]お鍋
 TEXTURE_FILENAME = data/TEXTURE/darkwood00.jpg      # [14]木材(暗い)
 TEXTURE_FILENAME = data/TEXTURE/tance00.jpg         # [15]たんす
+TEXTURE_FILENAME = data/TEXTURE/book00.jpg          # [16]本棚
 
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 26
+NUM_MODEL = 27
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -65,6 +66,7 @@ MODEL_FILENAME = data\MODEL\tyoutin.x      # [22]提灯
 MODEL_FILENAME = data\MODEL\tanuki.x       # [23]たぬき
 MODEL_FILENAME = data\MODEL\tance00.x      # [24]たんす
 MODEL_FILENAME = data\MODEL\MInitance.x    # [25]ミニたんす
+MODEL_FILENAME = data\MODEL\bookcace00.x   # [26]本棚
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -1524,6 +1526,14 @@ END_MODELSET
 
 MODELSET
 	TYPE = 23
+	POS = 1033 0 -1626
+	ROT = 0 -1.57 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 23
 	POS = -900 0 -1670
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
@@ -1532,7 +1542,7 @@ END_MODELSET
 
 MODELSET
 	TYPE = 24
-	POS = 50 0 1930
+	POS = -200 0 1920
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
@@ -1540,7 +1550,7 @@ END_MODELSET
 
 MODELSET
 	TYPE = 24
-	POS = 170 0 1930
+	POS = 100 0 1920
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
@@ -1548,7 +1558,23 @@ END_MODELSET
 
 MODELSET
 	TYPE = 24
-	POS = -1120 0 -3300
+	POS = 1120 0 700
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = 1120 0 380
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = -1120 0 -3100
 	ROT = 0 -90 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
@@ -1556,23 +1582,111 @@ END_MODELSET
 
 MODELSET
 	TYPE = 24
-	POS = -1120 0 -3450
+	POS = -1120 0 700
 	ROT = 0 -90 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 25
-	POS = 1030 0 270
+	TYPE = 24
+	POS = 1120 1 -3750
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 24
+	POS = -1120 0 -3400
+	ROT = 0 -90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = -680 0 -1330
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
 
 MODELSET
-	TYPE = 25
-	POS = 1100 0 270
+	TYPE = 26
+	POS = -680 0 -1630
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = -1120 0 490
+	ROT = 0 -180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = -1120 0 -2000
+	ROT = 0 -180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = -1120 0 -2300
+	ROT = 0 -180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 26
+	POS = 1120 0 -3500
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 9
+	POS = 930 40 -4200
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 12
+	POS = 1050 0 -4200
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 12
+	POS = 930 0 -4300
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 12
+	POS = 800 0 -4200
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 12
+	POS = 930 0 -4100
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
