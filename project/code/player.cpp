@@ -1225,6 +1225,11 @@ void CPlayer::Damage(int nDamage)
 		m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
 		m_Catch.pPlayer = nullptr;
 	}
+
+	if (m_Catch.pGimmick != nullptr) {	// 他のプレイヤーを持っている
+		m_Catch.pGimmick->SetMtxParent(nullptr);
+		m_Catch.pGimmick = nullptr;
+	}
 }
 
 //===============================================
@@ -1442,6 +1447,11 @@ void CPlayer::MotionSet(void)
 		{
 			CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
 			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
+		}
+
+		if (m_Catch.pGimmick != nullptr) {	// ギミックを持っている
+			CParticle::Create(D3DXVECTOR3(m_Catch.pGimmick->GetMtxWorld()->_41, m_Catch.pGimmick->GetMtxWorld()->_42, m_Catch.pGimmick->GetMtxWorld()->_43),
+				CEffect::TYPE_PULLNOW);
 		}
 	}
 	else
