@@ -369,7 +369,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    CEnemyManager::Create();
+    //CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
@@ -379,6 +379,8 @@ HRESULT CGame::Init(void)
     //壺
     CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-1000.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-500.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-680.0f, 0.0f, 1775.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	
     //カメラ初期化
     {
