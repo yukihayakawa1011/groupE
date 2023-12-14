@@ -12,6 +12,7 @@
 #include "Xfile.h"
 #include "manager.h"
 #include "sound.h"
+#include "particle.h"
 
 // –³–¼–¼‘O‹óŠÔ
 namespace {
@@ -250,6 +251,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -274,6 +276,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -306,6 +309,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -330,6 +334,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
