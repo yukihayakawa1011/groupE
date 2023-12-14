@@ -24,7 +24,7 @@ namespace {
 	const float AIROBJ_HEIGHT = (40.0f);	// オブジェクトの高さ
 	const int OBJ_NUMWIDTH = (10);		// 横枚数
 	const float FLYAWAY_JUMP = (20.0f);	// 吹っ飛ぶ高さ
-	const int PARTICLE_CT = (10);		// パーティクルのカウンター
+	const int PARTICLE_CT = (1);		// パーティクルのカウンター
 	const char* FILENAME[CAir::TYPE_MAX] = {	// テクスチャファイル名
 		"data\\TEXTURE\\wind000.png",
 		"data\\TEXTURE\\wind001.png"
@@ -97,8 +97,11 @@ void CAir::Update(void)
 	{
 		m_nParticleCounter--;
 
+		// パーティクルの生成
 		if (m_nParticleCounter <= 0) {
-			CParticle::Create(GetPosition(), CEffect::TYPE_AIR);
+			float fRange = (rand() % 629 - 314) * 0.01f;
+			D3DXVECTOR3 pos = D3DXVECTOR3(m_Info.pos.x + sinf(fRange) * m_Info.fRange, 0.0f, m_Info.pos.z + cosf(fRange) * m_Info.fRange);
+			CParticle::Create(pos, CEffect::TYPE_AIR);
 			m_nParticleCounter = PARTICLE_CT;
 		}
 

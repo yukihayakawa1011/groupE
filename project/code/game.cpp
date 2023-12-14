@@ -74,7 +74,7 @@ namespace {
     const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
     const char* FILEEXT = ".txt";				// ファイルの拡張子
     const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-    const int START_TIMER = (90);				// 開始制限時間
+    const int START_TIMER = (180);				// 開始制限時間
     const int START_WAITCNT = (180);            // スタート時の走ってる時間
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
@@ -232,7 +232,7 @@ HRESULT CGame::Init(void)
     {// ローカルの場合
         if (m_nNumPlayer <= 0)
         {// 人数が指定されていない
-            m_nNumPlayer = 1;
+            m_nNumPlayer = 2;
         }
 
         // 人数分ポインタ生成
@@ -350,6 +350,18 @@ HRESULT CGame::Init(void)
 		CItem::Create(D3DXVECTOR3(900, 1.0f, -4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
 		CItem::Create(D3DXVECTOR3(900, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
 		CItem::Create(D3DXVECTOR3(900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3140.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3360.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3440.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2260.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
     }
         break;
 
@@ -667,7 +679,7 @@ void CGame::Update(void)
 
                     if (m_QuataUI != nullptr) {
                         if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
-                            //m_pTimer->Update();
+                            m_pTimer->Update();
                         }
                     }
                     else {
