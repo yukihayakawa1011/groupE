@@ -24,8 +24,10 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/spawn.wav", 0 },			// 着地音
 	{ "data/SE/futon.wav", 0 },			// 風の術
 	{ "data/SE/kunai.wav", 0 },			// クナイ
-	{ "data/SE/jab.wav", 0 },			// クナイ
-	{ "data/SE/catch.wav", 0 },			// クナイ
+	{ "data/SE/jab.wav", 0 },			// 攻撃
+	{ "data/SE/catch.wav", 0 },			// つかむ
+	{ "data/SE/drop.wav", 0 },			// 落とす
+	{ "data/SE/item.wav", 0 },			// 取得
 };										
 
 //=============================================================================

@@ -40,6 +40,7 @@ namespace
 #define MESSAGERAND			(120)
 #define SLOW_CAMERAROT		(0.7f)
 #define TITLE_ROTATESPD		(0.0025f)	// タイトル回転量
+#define CAMERA_PADMAX	(D3DX_PI * 0.5f)
 
 //==========================================================
 // コンストラクタ
@@ -281,9 +282,9 @@ void CCamera::MoveV(void)
 	{//Yキー入力
 		//角度の変更
 		m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
-		if (m_rot.z > MAX_CAMERA_ROTZ)
+		if (m_rot.z > CAMERA_PADMAX)
 		{//角度が限界を超えた場合
-			m_rot.z = MAX_CAMERA_ROTZ;
+			m_rot.z = CAMERA_PADMAX;
 		}
 	}
 	else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
