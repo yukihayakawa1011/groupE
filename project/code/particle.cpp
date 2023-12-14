@@ -579,5 +579,31 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 		}
 	}
 	break;
+
+	case CEffect::TYPE_LAND:	// ‰Œ
+	{
+		for (int nCnt = 0; nCnt < 15; nCnt++)
+		{
+			// À•W‚ÌÝ’è
+			pos = Defpos;
+
+			//ˆÚ“®—Ê‚ÌÝ’è
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.045f;
+			move.y = rand() % 20 * 0.01f * -1.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.045f;
+
+			//F‚ÌÝ’è
+			col = D3DXCOLOR(0.7f, 0.7f, 0.7f, 1.0f);
+
+			//”¼Œa‚ÌÝ’è
+			fRadius = 30.0f + rand() % 10;
+
+			//Žõ–½‚ÌÝ’è
+			fLife = 100.0f + rand() % 50;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+	break;
 	}
 }
