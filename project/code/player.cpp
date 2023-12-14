@@ -74,9 +74,6 @@
 #define CATCH_MOVE	(2.0f)
 #define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
 #define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
-#define POS_WARP_X		(760.0f)					//ワープ位置のX
-#define POS_WARP_Y		(1000.0f)					//ワープ位置のY
-#define POS_WARP_Z		(-500.0f)					//ワープ位置のZ
 #define MAX_GAGE		(100.0f)		// ゲージ最大
 
 namespace {
@@ -91,6 +88,7 @@ namespace {
 	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
 	const int HEADPARTS_IDX = (1);
+	const D3DXVECTOR3 POS_WARP = D3DXVECTOR3(-760.0f, 1000.0f, 1400.0f);
 }
 
 // 前方宣言
@@ -714,9 +712,9 @@ void CPlayer::Controller(void)
 	if (pos.y <= -1000.0f)
 	{
 		m_Info.move.y = 0.0f;
-		m_Info.pos.x = POS_WARP_X;
-		m_Info.pos.y = POS_WARP_Y;
-		m_Info.pos.z = POS_WARP_Z;
+		m_Info.pos.x = POS_WARP.x;
+		m_Info.pos.y = POS_WARP.y;
+		m_Info.pos.z = POS_WARP.z;
 	}
 
 	// ゴールとの判定
