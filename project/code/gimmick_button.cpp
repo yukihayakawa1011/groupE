@@ -171,7 +171,5 @@ void CGimmickButton::Switch(bool bUse)
 //==========================================================
 CGimmickButton::STATE CGimmickButton::GetState(void)
 {
-	STATE stateOld = m_state;
-	m_state = STATE_NONE;
-	return stateOld;
+	return m_state;
 }

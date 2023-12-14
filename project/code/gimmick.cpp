@@ -189,3 +189,21 @@ void CGimmick::SwitchOn(void)
 		pObj = pObjNext;
 	}
 }
+
+//=========================================================
+// ボタンをオフにする
+//==========================================================
+void CGimmick::Buttonoff(void)
+{
+	CGimmick *pObj = m_pTop;	// 先頭取得
+
+	while (pObj != nullptr)
+	{
+		CGimmick *pObjNext = pObj->m_pNext;
+
+		if (pObj->GetButton() != nullptr) {
+			pObj->Switch(false);
+		}
+		pObj = pObjNext;
+	}
+}

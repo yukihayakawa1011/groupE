@@ -223,7 +223,6 @@ HRESULT CGame::Init(void)
             m_pFileLoad->Init();
             m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
             m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
-            m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
         }
     }
 
@@ -286,6 +285,11 @@ HRESULT CGame::Init(void)
             CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
             m_ppPlayer[nCnt]->BindScore(pScore);
         }
+
+		if (m_pFileLoad != NULL)
+		{
+			m_pFileLoad->OpenFile("data\\TXT\\gimmick.txt");	//敵周回ポイント
+		}
 
         // ギミックの生成
 
@@ -369,7 +373,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    CEnemyManager::Create();
+    //CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
@@ -379,6 +383,8 @@ HRESULT CGame::Init(void)
     //壺
     CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-1000.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-500.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-680.0f, 0.0f, 1775.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	
     //カメラ初期化
     {
@@ -582,6 +588,7 @@ void CGame::Uninit(void)
 //===============================================
 void CGame::Update(void)
 {
+
     CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
     CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
@@ -712,10 +719,7 @@ void CGame::Update(void)
         CScene::Update();
     }
 
-    if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN))
-    {
-        CGimmick::SwitchOn();
-    }
+	CGimmick::Buttonoff();
 }
 
 //===============================================
