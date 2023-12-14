@@ -1653,7 +1653,7 @@ const char *CPlayer::ItemFileName(int type)
 
 	case CItem::TYPE_JAR:
 	{
-		return  "data\\MODEL\\jar.x";
+		return  "data\\MODEL\\jar001.x";
 	}
 
 	break;
