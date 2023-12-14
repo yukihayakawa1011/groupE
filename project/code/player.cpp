@@ -1301,6 +1301,17 @@ void CPlayer::MotionSet(void)
 		m_pBody->GetMotion()->Set(ACTION_FLUTTERING);
 		m_pLeg->GetMotion()->Set(ACTION_FLUTTERING);
 
+		// 汗の生成
+		if (m_pBody->GetMotion()->GetNowFrame() == 0) {	// タイミングがあった
+			if (m_pBody->GetParts(1) != nullptr) {	// パーツが存在している
+				D3DXVECTOR3 pos = D3DXVECTOR3(m_pBody->GetParts(1)->GetMtx()->_41,
+					m_pBody->GetParts(1)->GetMtx()->_42 + 20.0f,
+					m_pBody->GetParts(1)->GetMtx()->_43);
+				CParticle::Create(pos, CEffect::TYPE_CATCH);
+				
+			}
+		}
+
 		return;
 	}
 
