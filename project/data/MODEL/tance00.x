@@ -186,7 +186,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "Cdata\\TEXTURE\\darkwood00.jpg";
+    "data\\TEXTURE\\darkwood00.jpg";
    }
   }
  }

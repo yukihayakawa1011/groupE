@@ -57,7 +57,7 @@ namespace {
         D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
         D3DXVECTOR3(-1000.0f, 100.0f, -4440.0f),
         D3DXVECTOR3(470.0f, 100.0f, -560.0f),
-        D3DXVECTOR3(360.0f, 100.0f, -2050.0f),
+        D3DXVECTOR3(360.0f, 100.0f, -1900.0f),
     };
 
     const D3DXVECTOR3 LEVERROT[4] =
@@ -74,8 +74,8 @@ namespace {
     const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
     const char* FILEEXT = ".txt";				// ファイルの拡張子
     const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-    const int START_TIMER = (1000);				// 開始制限時間
-    const int START_WAITCNT = (180);
+    const int START_TIMER = (90);				// 開始制限時間
+    const int START_WAITCNT = (180);            // スタート時の走ってる時間
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 }
@@ -339,6 +339,13 @@ HRESULT CGame::Init(void)
 
 		CItem::Create(D3DXVECTOR3(-1050, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
 		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-900, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+
+		CItem::Create(D3DXVECTOR3(900, 1.0f, -4200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(900, 1.0f, -4100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(900, 1.0f, -4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(900, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
     }
         break;
 
@@ -362,7 +369,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    //CEnemyManager::Create();
+    CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
@@ -653,7 +660,7 @@ void CGame::Update(void)
 
                     if (m_QuataUI != nullptr) {
                         if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
-                            m_pTimer->Update();
+                            //m_pTimer->Update();
                         }
                     }
                     else {

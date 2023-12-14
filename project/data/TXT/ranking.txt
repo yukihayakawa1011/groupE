@@ -20,24 +20,12 @@ TEXTURE_FILENAME = data/TEXTURE/rotatedoor001.jpg			# [1]川水(上)
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 13
+NUM_MODEL = 1
 
 #------------------------------------------------------------------------------
 # モデルファイル名
 #------------------------------------------------------------------------------
-MODEL_FILENAME = data/MODEL/5mcube.x	   # [0]5mキューブ
-MODEL_FILENAME = data/MODEL/botan.x        # [1]ボタン
-MODEL_FILENAME = data/MODEL/camera000.x    # [2]監視カメラ
-MODEL_FILENAME = data/MODEL/desk.x         # [3]机
-MODEL_FILENAME = data/MODEL/gate.x         # [4]ドア
-MODEL_FILENAME = data/MODEL/gate001.x      # [5]ドア
-MODEL_FILENAME = data/MODEL/roundchair.x   # [6]丸椅子
-MODEL_FILENAME = data/MODEL/wall000.x      # [7]壁
-MODEL_FILENAME = data/MODEL/coin_mini.x    # [8]コイン
-MODEL_FILENAME = data/MODEL/house.x  	   # [9]家
-MODEL_FILENAME = data/MODEL/warehouse.x    # [10]倉庫
-MODEL_FILENAME = data/MODEL/fence.x		   # [11]壁みたいなフェンス
-MODEL_FILENAME = data/MODEL/fence_corner.x # [12]壁みたいなフェンスの角
+MODEL_FILENAME = data\MODEL\coin_tower00.x # [0]コインタワー
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -130,5 +118,108 @@ END_FIELDSET
 #------------------------------------------------------------------------------
 # モデル配置
 #------------------------------------------------------------------------------
+MODELSET
+	TYPE = 0
+	POS = 0 0 0
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1103 0 536
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1911 0 -21
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2329 0 -571
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 802 1 1164
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 1788 0 541
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -403 1 2099
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 440 1 2194
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -1519 0 1977
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -2659 0 1971
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = -3170 0 1057
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 1969 -0 3468
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 0
+	POS = 1646 0 2522
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
 
 END_SCRIPT		# この行は絶対消さないこと！
