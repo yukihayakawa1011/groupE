@@ -31,8 +31,10 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_SPAWN,			// 復活音
 		LABEL_SE_AIR,			// 風の術
 		LABEL_SE_KUNAI,			// クナイ
-		LABEL_SE_ATTACK,			// クナイ
+		LABEL_SE_ATTACK,		// 攻撃
 		LABEL_SE_CATCH,			// つかむ
+		LABEL_SE_DROP,			// 落とす
+		LABEL_SE_GET,			// 取得
 		LABEL_MAX,
 	} LABEL;
 
