@@ -90,8 +90,6 @@ HRESULT CRanking::Init(void)
 		}
 	}
 
-	CObjectX::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin_tower00.x", NULL);
-
 	for (int nCntRanking = 0; nCntRanking < NUM_RANKING; nCntRanking++)
 	{
 		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
