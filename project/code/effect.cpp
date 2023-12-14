@@ -262,6 +262,14 @@ void CEffect::Update(void)
 		}
 
 		break;
+
+	case TYPE_RESULTZITABATA:	// ‰Œ
+
+		m_Info.col.a -= 0.015f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.1f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += 0.025f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
