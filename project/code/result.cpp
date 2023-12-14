@@ -373,7 +373,7 @@ void CResult::Update(void)
 	}
 
 	// ノルマ成功失敗更新
-	if (m_pObjClear != nullptr) {
+	if (m_pObjClear != nullptr) {	// クリアUiが存在
 		D3DXVECTOR3 pos = m_pObjClear->GetPosition();
 		D3DXVECTOR2 size = CLEAR_SIZE;
 		D3DXVECTOR3 rot = m_pObjClear->GetRotation();
@@ -399,11 +399,13 @@ void CResult::Update(void)
 
 			// 回転
 			if (!m_bClear) {	// 失敗した場合
-				if (rot.z < FAILED_ROTATE) {
+				if (rot.z < FAILED_ROTATE) {	// 角度まで到達していない
 					rot.z += CLEAR_ROTMOVEZ;
 					pos.y += FAILED_UPY;
 				}
-				else {
+				else {	// 到達した
+
+					// ふわふわゆがんでいるように動かす
 					m_ClearHeight += FAILED_NOBINOBISPEED;
 					float fSin = sinf(m_ClearHeight);
 					size.x = CLEAR_SIZE.x - fSin * FAILED_NOBINOBISIZE;
@@ -411,6 +413,8 @@ void CResult::Update(void)
 				}
 			}
 			else {	// 成功
+
+				// 跳んでいるように動かす
 				m_ClearHeight += CLEAR_NOBINOBISPEED;
 				float fSin = sinf(m_ClearHeight);
 				if (fSin < 0.0f) {
@@ -476,6 +480,11 @@ void CResult::Update(void)
 		}
 		else if (pos.y == 0.0f) {	// 着地済み
 			nLandPlayer++;
+
+			if (m_ppPlayer[nCnt]->GetMotion() == PLAYER_MAXMOTION - 2) {
+				m_ppPlayer[nCnt]->SetFailedParticle();
+			}
+
 			continue;
 		}
 
