@@ -42,6 +42,8 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_PULLNOW,		// 引いている時
 		TYPE_AIR,		// 風神の術
 		TYPE_CATCH,		// 掴まれた時の汗
+		TYPE_JUMP,		// ジャンプ
+		TYPE_LAND,		// 着地
 		TYPE_MAX
 	}TYPE;
 

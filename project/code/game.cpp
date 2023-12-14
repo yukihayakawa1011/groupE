@@ -232,7 +232,7 @@ HRESULT CGame::Init(void)
     {// ローカルの場合
         if (m_nNumPlayer <= 0)
         {// 人数が指定されていない
-            m_nNumPlayer = 1;
+            m_nNumPlayer = 2;
         }
 
         // 人数分ポインタ生成

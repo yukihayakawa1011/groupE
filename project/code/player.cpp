@@ -972,13 +972,15 @@ void CPlayer::Jump(void)
 
 			if(m_Catch.pPlayer != nullptr)
 			{
-				m_Info.move.y = JUMP * 0.5f;
+				m_Info.move.y = JUMP * 0.5f;	
+				// 少なめのパーティクルに
+				CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
 			}
 			else
 			{
 				m_Info.move.y = JUMP;
+				CParticle::Create(m_Info.pos, CEffect::TYPE_JUMP);
 			}
-
 		}
 	}
 }
