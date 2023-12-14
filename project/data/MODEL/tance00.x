@@ -177,7 +177,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\tance00.jpg";
+    "data\\TEXTURE\\tance00.jpg";
    }
   }
   Material {
@@ -186,7 +186,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\darkwood00.jpg";
+    "Cdata\\TEXTURE\\darkwood00.jpg";
    }
   }
  }

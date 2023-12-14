@@ -32,6 +32,12 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_SPEAR,		// 槍
 		TYPE_BLACKSMAKE,	// 黒い煙
 		TYPE_WALK,		// 歩き
+		TYPE_KUNAI,		// クナイ
+		TYPE_BUTTON,		// ボタン
+		TYPE_ROTATEDOOR,	// 回転ドア
+		TYPE_ITEMBOX,		// アイテムボックス
+		TYPE_ITEMBOXSTAR,	// アイテムボックスのキラキラ
+		TYPE_RESULTZITABATA,	// リザルト失敗じたばた
 		TYPE_MAX
 	}TYPE;
 

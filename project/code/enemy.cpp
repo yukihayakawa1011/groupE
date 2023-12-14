@@ -1090,6 +1090,13 @@ void CEnemy::MotionSet(void)
 		if (m_pLeg->GetMotion()->GetEnd()) {	// ƒ‚[ƒVƒ‡ƒ“‚ªI—¹‚µ‚Ä‚¢‚é
 			m_pLeg->GetMotion()->BlendSet(MOTION_MOVE);
 		}
+
+		if (m_pLeg->GetMotion()->GetNowMotion() == MOTION_MOVE && 
+			m_pLeg->GetMotion()->GetNowFrame() == 0 && 
+			(m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
+		{
+			CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
+		}
 	}
 }
 

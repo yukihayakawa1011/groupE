@@ -28,6 +28,7 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CItemBox *Create(const D3DXVECTOR3 pos,const D3DXVECTOR3 rot);
 	void Emission(void);
+	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned) { return false; }
 
 	// メンバ関数(取得)
 	static CItemBox* GetTop(void) { return m_pTop; }
@@ -48,6 +49,7 @@ private:	// 自分だけがアクセス可能
 	CObjectX* m_pObj;			// オブジェクト
 
 	int m_nCounter;				//排出CT
+	int m_nParticleCounter;		// パーティクルカウンター
 };
 
 #endif

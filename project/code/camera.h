@@ -48,6 +48,9 @@ public:	// 誰でもアクセス可能
 	void SetPositionR(D3DXVECTOR3 pos);
 	void SetPositionV(D3DXVECTOR3 pos);
 
+	//当たり判定
+	void CollisionObj(void);
+
 	// タイトル用
 	void TitleRotateCamera(void);
 

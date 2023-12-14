@@ -324,14 +324,14 @@ bool CObjectX::Touch(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D
 //==========================================================
 // 当たり判定(外積使用)
 //==========================================================
-bool CObjectX::CollisionCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld)
+bool CObjectX::CollisionCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3* posCollisioned)
 {
 	CObjectX* pObj = m_pTop;	// 先頭取得
 
 	while (pObj != NULL)
 	{
 		CObjectX* pObjNext = pObj->m_pNext;
-		if (pObj->CollisionCheckCloss(pos, posOld))
+		if (pObj->CollisionCheckCloss(pos, posOld, posCollisioned))
 		{
 			return true;
 		}
@@ -510,7 +510,7 @@ bool CObjectX::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3
 //==========================================================
 // 個別判定チェック(外積使用)
 //==========================================================
-bool CObjectX::CollisionCheckCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld)
+bool CObjectX::CollisionCheckCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3* posCollisioned)
 {
 	CXFile* pFile = CManager::GetInstance()->GetModelFile();
 	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
@@ -551,8 +551,22 @@ bool CObjectX::CollisionCheckCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld)
 		if ((vecLine.z * vecToPosOld.x) - (vecLine.x * vecToPosOld.z) >= 0.0f && (vecLine.z * vecToPos.x) - (vecLine.x * vecToPos.z) < 0.0f)
 		{
 			if (fAreaA / fAreaB >= 0.0f && fAreaA / fAreaB <= 1.0f)
-			{//ごっつん
-				return true;
+			{
+				if (pos.y >= m_pos.y + vtxObjMin.y)
+				{//ごっつん
+					//衝突位置（XZのみ。Yはposの値を使用）が欲しければあげる
+					if (posCollisioned != nullptr)
+					{//ほしいみたいなのであげる
+						D3DXVECTOR3 posCulc = posPoint[cnt];
+						posCulc.x += vecLine.x * (fAreaA / fAreaB);
+						posCulc.y = pos.y;
+						posCulc.z += vecLine.z * (fAreaA / fAreaB);
+
+						*posCollisioned = posCulc;
+					}
+
+					return true;
+				}
 			}
 		}
 	}

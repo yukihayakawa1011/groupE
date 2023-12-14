@@ -14,6 +14,14 @@
 #include "debugproc.h"
 #include "camera.h"
 #include "camera_manager.h"
+#include "objectX.h"
+#include "gimmick.h"
+
+//無名名前空間
+namespace
+{
+	const float DEFAULT_LENGTH = 700.0f;
+}
 
 //==========================================================
 // マクロ定義
@@ -32,6 +40,7 @@
 #define MESSAGERAND			(120)
 #define SLOW_CAMERAROT		(0.7f)
 #define TITLE_ROTATESPD		(0.0025f)	// タイトル回転量
+#define CAMERA_PADMAX	(D3DX_PI * 0.5f)
 
 //==========================================================
 // コンストラクタ
@@ -273,9 +282,9 @@ void CCamera::MoveV(void)
 	{//Yキー入力
 		//角度の変更
 		m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
-		if (m_rot.z > MAX_CAMERA_ROTZ)
+		if (m_rot.z > CAMERA_PADMAX)
 		{//角度が限界を超えた場合
-			m_rot.z = MAX_CAMERA_ROTZ;
+			m_rot.z = CAMERA_PADMAX;
 		}
 	}
 	else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
@@ -557,7 +566,6 @@ void CCamera::Pursue(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot)
 	m_posV.x += VDiff.x * 0.2f;
 	m_posV.y += VDiff.y * 0.1f;
 	m_posV.z += VDiff.z * 0.2f;
-
 }
 
 //==========================================================
@@ -658,10 +666,10 @@ void CCamera::Edit(void)
 	{//距離が最大を超えた場合
 		m_fLength = CAMERA_MAXLENGTH;
 	}
-	else if (m_fLength < CAMERA_MINLENGTH)
-	{//距離が最小を超えた場合
-		m_fLength = CAMERA_MINLENGTH;
-	}
+	//else if (m_fLength < CAMERA_MINLENGTH)
+	//{//距離が最小を超えた場合
+	//	m_fLength = CAMERA_MINLENGTH;
+	//}
 
 	//視点設定
 	SetV();
@@ -809,6 +817,33 @@ void CCamera::SetPositionV(D3DXVECTOR3 pos)
 {
 	m_posV = pos;
 	SetR();
+}
+
+//==========================================================
+// オブジェクトとの当たり判定
+//==========================================================
+void CCamera::CollisionObj(void)
+{
+	float fLengthNew = DEFAULT_LENGTH;
+	D3DXVECTOR3 posCollisioned = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 posVDef = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// デフォルトの視点
+
+	//デフォルトの視点の座標を獲得
+	posVDef = D3DXVECTOR3(
+		m_posR.x + (sinf(m_rot.z) * cosf(m_rot.y)) * DEFAULT_LENGTH,
+		m_posR.y + cosf(m_rot.z) * DEFAULT_LENGTH,
+		m_posR.z + (sinf(m_rot.z) * sinf(m_rot.y)) * DEFAULT_LENGTH);
+
+	if (CObjectX::CollisionCloss(m_posR, posVDef, &posCollisioned))
+	{
+		fLengthNew = D3DXVec3Length(&(m_posR - posCollisioned));
+	}
+	if (CGimmick::CollisionCloss(m_posR, posVDef, &posCollisioned))
+	{
+		fLengthNew = D3DXVec3Length(&(m_posR - posCollisioned));
+	}
+
+	m_fLength = fLengthNew;
 }
 
 //==========================================================

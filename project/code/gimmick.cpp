@@ -94,6 +94,28 @@ bool CGimmick::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 }
 
 //==========================================================
+// 外積当たり判定
+//==========================================================
+bool CGimmick::CollisionCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 * posCollisioned)
+{
+	CGimmick *pObj = m_pTop;	// 先頭取得
+	bool bValue = false;	// ごっつんしたか
+
+	while (pObj != nullptr)
+	{
+		CGimmick *pObjNext = pObj->m_pNext;
+		if (pObj->CollisionCheckCloss(pos, posOld, posCollisioned))
+		{
+			bValue = true;
+		}
+
+		pObj = pObjNext;
+	}
+
+	return bValue;
+}
+
+//==========================================================
 // リストから外す
 //==========================================================
 void CGimmick::ListOut(void)

@@ -12,6 +12,7 @@
 #include "Xfile.h"
 #include "manager.h"
 #include "sound.h"
+#include "particle.h"
 
 // 無名名前空間
 namespace {
@@ -144,6 +145,72 @@ CGimmickRotateDoor *CGimmickRotateDoor::Create(const D3DXVECTOR3 pos, const D3DX
 }
 
 //==========================================================
+// 外積当たり判定
+//==========================================================
+bool CGimmickRotateDoor::CollisionCheckCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 * posCollisioned)
+{
+	CXFile* pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 ObjPos = GetPosition();
+	D3DXVECTOR3 ObjRot = GetRotation();
+	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	// 向きを反映
+	m_pObj->SetRotSize(vtxObjMax,
+		vtxObjMin,
+		pFile->GetMax(m_pObj->GetId()),
+		pFile->GetMin(m_pObj->GetId()),
+		ObjRot.y);
+
+	D3DXVECTOR3 posPoint[4] =
+	{
+		D3DXVECTOR3(ObjPos.x + vtxObjMin.x,0.0f,ObjPos.z + vtxObjMin.z),
+		D3DXVECTOR3(ObjPos.x + vtxObjMax.x,0.0f,ObjPos.z + vtxObjMin.z),
+		D3DXVECTOR3(ObjPos.x + vtxObjMax.x,0.0f,ObjPos.z + vtxObjMax.z),
+		D3DXVECTOR3(ObjPos.x + vtxObjMin.x,0.0f,ObjPos.z + vtxObjMax.z)
+	};
+
+	D3DXVECTOR3 vecMove, vecLine;
+	D3DXVECTOR3 vecToPos, vecToPosOld;
+	float fAreaA = 1.0f, fAreaB = 1.1f;
+
+	for (int cnt = 0; cnt < 4; cnt++)
+	{
+		vecMove = pos - posOld;
+		vecLine = posPoint[(cnt + 1) % 4] - posPoint[cnt];	//境界線ベクトル
+		vecToPos = pos - posPoint[cnt];
+		vecToPos.y = 0.0f;
+		vecToPosOld = posOld - posPoint[cnt];
+		vecToPosOld.y = 0.0f;
+
+		//面積求める
+		fAreaA = (vecToPos.z * vecMove.x) - (vecToPos.x * vecMove.z);
+		fAreaB = (vecLine.z * vecMove.x) - (vecLine.x * vecMove.z);
+
+		if ((vecLine.z * vecToPosOld.x) - (vecLine.x * vecToPosOld.z) >= 0.0f && (vecLine.z * vecToPos.x) - (vecLine.x * vecToPos.z) < 0.0f)
+		{
+			if (fAreaA / fAreaB >= 0.0f && fAreaA / fAreaB <= 1.0f)
+			{//ごっつん
+			 //衝突位置（XZのみ。Yはposの値を使用）が欲しければあげる
+				if (posCollisioned != nullptr)
+				{//ほしいみたいなのであげる
+					D3DXVECTOR3 posCulc = posPoint[cnt];
+					posCulc.x += vecLine.x * (fAreaA / fAreaB);
+					posCulc.y = pos.y;
+					posCulc.z += vecLine.z * (fAreaA / fAreaB);
+
+					*posCollisioned = posCulc;
+				}
+
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+//==========================================================
 // 判定確認
 //==========================================================
 bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 &SetPos, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, int nAction, CGimmick **ppGimmick, bool* bLand)
@@ -184,6 +251,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -208,6 +276,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -240,6 +309,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;
@@ -264,6 +334,7 @@ bool CGimmickRotateDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D
 				m_RotDest.y += D3DX_PI;
 
 				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CParticle::Create(D3DXVECTOR3(GetPosition().x, GetPosition().y + vtxObjMax.y * 0.5f, GetPosition().z), CEffect::TYPE_ROTATEDOOR);
 
 				if (m_RotDest.y > D3DX_PI) {
 					m_RotDest.y += -D3DX_PI * 2;

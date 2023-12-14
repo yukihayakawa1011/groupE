@@ -94,6 +94,11 @@ void CBullet::Update(void)
 
 		// “–‚½‚è”»’è
 		Hit();
+
+		// ˆÚ“®‚µ‚Ä‚¢‚é
+		if (m_bMove) {
+			CParticle::Create(m_Info.pos, CEffect::TYPE_KUNAI);
+		}
 	}
 }
 

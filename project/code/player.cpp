@@ -485,6 +485,7 @@ void CPlayer::Update(void)
 	// カメラ追従
 	if (m_pMyCamera != nullptr) {
 		// 追従処理
+		m_pMyCamera->CollisionObj();
 		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
 
@@ -656,6 +657,7 @@ void CPlayer::Controller(void)
 
 			// パーティクルの設定
 			CParticle::Create(m_Info.pos, CEffect::TYPE_ITEMGET);
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_GET);
 		}
 
 		for (int i = 0; i < MAX_ITEM; i++)
@@ -1652,7 +1654,7 @@ const char *CPlayer::ItemFileName(int type)
 
 	case CItem::TYPE_JAR:
 	{
-		return  "data\\MODEL\\jar.x";
+		return  "data\\MODEL\\jar001.x";
 	}
 
 	break;
@@ -1965,6 +1967,7 @@ void CPlayer::SelectItem(void)
 			SubItemCount(m_nItemId);
 
 			ItemSort();
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DROP);
 		}
 	}
 }

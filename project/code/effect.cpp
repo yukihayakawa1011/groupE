@@ -188,11 +188,78 @@ void CEffect::Update(void)
 
 	case TYPE_WALK:	// ‰Œ
 
-		m_Info.col.a -= 0.03f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.col.a -= 0.005f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += -0.1f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.pos.y <= 0.0f)
+		{
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		else
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.05f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_KUNAI:	// ‰Œ
+
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += 0.4f * CManager::GetInstance()->GetSlow()->Get();
+		break;
+
+	case TYPE_BUTTON:	// ‰Œ
+
+		m_Info.col.a -= 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius += (rand() % 10 - 5) * 1.0f * CManager::GetInstance()->GetSlow()->Get();
+		break;
+
+	case TYPE_ROTATEDOOR:	// ‰Œ
+
+		m_Info.col.a -= 0.02f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.x -= m_Info.move.x * 0.045f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.move.z -= m_Info.move.z * 0.045f * CManager::GetInstance()->GetSlow()->Get();
 		m_Info.fRadius += 0.45f * CManager::GetInstance()->GetSlow()->Get();
+
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.1f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_ITEMBOX:	// ‰Œ
+
+		m_Info.col.a -= 0.02f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.05f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.05f * CManager::GetInstance()->GetSlow()->Get();
+
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.1f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
+
+	case TYPE_ITEMBOXSTAR:	// ‰Œ
+
+		m_Info.col.a -= 0.02f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.05f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
 
 		break;
 	}
@@ -400,6 +467,36 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_WOODPOW;
 	}
 	break;
+
+	case TYPE_WALK:
+	{
+		return CTexture::TYPE_WALK;
+	}
+	break;
+
+	case TYPE_KUNAI:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+	break;
+
+	case TYPE_ROTATEDOOR:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+	break;
+
+	case TYPE_ITEMBOX:
+	{
+		return CTexture::TYPE_EFFECT;
+	}
+	break;
+
+	case TYPE_ITEMBOXSTAR:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -470,7 +567,7 @@ void CEffect::DrawSet(void)
 	case TYPE_SPEAR:
 	{
 		m_pObjectBilBoard->SetAlphaText(true);
-		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetZTest(false);
 		m_pObjectBilBoard->SetLighting(true);
 		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
 	}
@@ -482,6 +579,51 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetZTest(true);
 		m_pObjectBilBoard->SetLighting(true);
 		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_MINUS);
+	}
+	break;
+
+	case TYPE_WALK:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_KUNAI:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_ROTATEDOOR:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_ITEMBOX:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_ITEMBOXSTAR:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
 	}
 	break;
 	}

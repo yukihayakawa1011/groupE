@@ -218,7 +218,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			col = D3DXCOLOR(rand() % 2 * 0.1f + 0.9f, 1.0f, 1.0f, 1.0f);
 
 			//半径の設定
-			fRadius = 13.0f;
+			fRadius = 17.0f;
 
 			//寿命の設定
 			fLife = 250.0f + rand() % 50;
@@ -229,7 +229,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 	break;
 
 	case CEffect::TYPE_BLACKSMAKE:	// 煙
-
+	{
 		for (int nCnt = 0; nCnt < 30; nCnt++)
 		{
 			// 座標の設定
@@ -249,9 +249,171 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 			//寿命の設定
 			fLife = 30.0f;
 
-			CEffect::Create(Defpos + move, move, col, fRadius, fLife, CEffect::TYPE_BLACKSMAKE);
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
 		}
-
+	}
 		break;
+
+	case CEffect::TYPE_WALK:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 3; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.015f;
+			move.y = rand() % 100 * 0.01f * 5.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.015f;
+
+			//色の設定
+			col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.7f);
+
+			//半径の設定
+			fRadius = 17.0f;
+
+			//寿命の設定
+			fLife = 250.0f + rand() % 50;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+		break;
+
+	case CEffect::TYPE_KUNAI:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 1; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.01f;
+			move.y = ((float)(rand() % 50)) * 0.01f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.01f;
+
+			//色の設定
+			col = D3DXCOLOR(0.1f, 0.1f, 0.8f, 1.0f);
+
+			//半径の設定
+			fRadius = 7.0f;
+
+			//寿命の設定
+			fLife = 30.0f;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+	break;
+
+	case CEffect::TYPE_BUTTON:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 1; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.03f;
+			move.y = ((float)(rand() % 50)) * 0.01f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.03f;
+
+			//色の設定
+			col = D3DXCOLOR(0.1f, 0.6f, 0.6f, 0.3f);
+
+			//半径の設定
+			fRadius = 70.0f;
+
+			//寿命の設定
+			fLife = 30.0f + rand() % 10;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+	break;
+
+	case CEffect::TYPE_ROTATEDOOR:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 20; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.15f;
+			move.y = sinf((float)(rand() % 629 - 314) * 0.01f) * 4.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.15f;
+
+			float frand = rand() % 5 * 0.1f;
+
+			//色の設定
+			col = D3DXCOLOR(frand + 0.6f, frand + 0.6f, 1.0f, 1.0f);
+
+			//半径の設定
+			fRadius = 15.0f;
+
+			//寿命の設定
+			fLife = 500.0f;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+	break;
+
+	case CEffect::TYPE_ITEMBOX:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 15; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.05f;
+			move.y = ((float)(rand() % 50)) * 0.2f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.05f;
+
+			float frand = rand() % 2 * 0.1f;
+
+			//色の設定
+			col = D3DXCOLOR(frand + 0.9f, frand + 0.9f, 1.0f, 1.0f);
+
+			//半径の設定
+			fRadius = 6.0f;
+
+			//寿命の設定
+			fLife = 500.0f;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+	break;
+
+	case CEffect::TYPE_ITEMBOXSTAR:	// 煙
+	{
+		for (int nCnt = 0; nCnt < 4; nCnt++)
+		{
+			// 座標の設定
+			pos = Defpos;
+
+			//移動量の設定
+			move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.01f;
+			move.y = ((float)(rand() % 3)) * 2.0f;
+			move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.01f;
+
+			float frand = rand() % 6 * 0.1f;
+
+			//色の設定
+			col = D3DXCOLOR(1.0f, frand, frand * 0.5f, 1.0f);
+
+			//半径の設定
+			fRadius = 18.0f;
+
+			//寿命の設定
+			fLife = 500.0f;
+
+			CEffect::Create(Defpos + move, move, col, fRadius, fLife, type);
+		}
+	}
+	break;
 	}
 }

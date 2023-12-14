@@ -51,6 +51,7 @@
 // 無名名前空間を定義
 namespace {
     const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
+	const D3DXVECTOR3 PLAYERSTARTPOS = { -2500.0f, 0.0f, 950.0f };  // プレイヤーのスタート位置
     const D3DXVECTOR3 LEVERPOS[4] =
     {
         D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
@@ -248,7 +249,7 @@ HRESULT CGame::Init(void)
             sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
             sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-            m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-130.0f, 0.0f, -2600.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+            m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(PLAYERSTARTPOS.x, PLAYERSTARTPOS.y, PLAYERSTARTPOS.z - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
             m_ppPlayer[nCnt]->BindId(nCnt);
 
             //スコアとUIの高さと間隔の調整用
@@ -308,10 +309,11 @@ HRESULT CGame::Init(void)
         
         CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
         CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-        CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+        CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
+		CItem::Create(D3DXVECTOR3(-1060.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
         
         CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
-        CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar.x", CItem::TYPE_JAR, NULL);
+        CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
         CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
         CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
         CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
@@ -334,6 +336,9 @@ HRESULT CGame::Init(void)
         CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
         CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
         CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1050, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
     }
         break;
 
@@ -357,7 +362,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    CEnemyManager::Create();
+    //CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
@@ -365,8 +370,9 @@ HRESULT CGame::Init(void)
     }
 
     //壺
-    CItemBox::Create(D3DXVECTOR3(0.0f, 0.0f, 300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-
+    CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-1000.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	
     //カメラ初期化
     {
         //CManager::GetInstance()->GetCamera()->Init();

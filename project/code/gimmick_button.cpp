@@ -8,6 +8,7 @@
 #include "model.h"
 #include "manager.h"
 #include "debugproc.h"
+#include "particle.h"
 
 // É}ÉNÉçíËã`
 #define COLLISION_RANGE	(50.0f)
@@ -98,7 +99,7 @@ void CGimmickButton::Update(void)
 		break;
 
 	case STATE_PRESS:	// âüÇ≥ÇÍÇƒÇ¢ÇÈ
-
+		CParticle::Create(GetPosition(), CEffect::TYPE_BUTTON);
 		break;
 	}
 }

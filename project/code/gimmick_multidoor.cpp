@@ -433,3 +433,75 @@ void CGimmickMultiDoor::IdSetButton(void)
 		pGimk = pGimkNext;
 	}
 }
+
+//==========================================================
+// 外積当たり判定
+//==========================================================
+bool CGimmickMultiDoor::CollisionCheckCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTOR3 * posCollisioned)
+{
+	CXFile* pFile = CManager::GetInstance()->GetModelFile();
+	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	for (int nCnt = 0; nCnt < TYPE_MAX; nCnt++) 
+	{
+		if (m_aObject[nCnt].pModel != nullptr) 
+		{// モデルを使用されている場合
+			D3DXVECTOR3 ObjPos = D3DXVECTOR3(m_aObject[nCnt].pModel->GetMtx()->_41, m_aObject[nCnt].pModel->GetMtx()->_42, m_aObject[nCnt].pModel->GetMtx()->_43);
+
+			// 向きを反映
+			m_aObject[nCnt].pModel->SetRotSize(vtxObjMax,
+				vtxObjMin,
+				pFile->GetMax(m_aObject[nCnt].pModel->GetId()),
+				pFile->GetMin(m_aObject[nCnt].pModel->GetId()),
+				m_aObject[nCnt].pModel->GetRotation().y);
+
+			D3DXVECTOR3 posPoint[4] =
+			{
+				D3DXVECTOR3(ObjPos.x + vtxObjMin.x,0.0f,ObjPos.z + vtxObjMin.z),
+				D3DXVECTOR3(ObjPos.x + vtxObjMax.x,0.0f,ObjPos.z + vtxObjMin.z),
+				D3DXVECTOR3(ObjPos.x + vtxObjMax.x,0.0f,ObjPos.z + vtxObjMax.z),
+				D3DXVECTOR3(ObjPos.x + vtxObjMin.x,0.0f,ObjPos.z + vtxObjMax.z)
+			};
+
+			D3DXVECTOR3 vecMove, vecLine;
+			D3DXVECTOR3 vecToPos, vecToPosOld;
+			float fAreaA = 1.0f, fAreaB = 1.1f;
+
+			for (int cnt = 0; cnt < 4; cnt++)
+			{
+				vecMove = pos - posOld;
+				vecLine = posPoint[(cnt + 1) % 4] - posPoint[cnt];	//境界線ベクトル
+				vecToPos = pos - posPoint[cnt];
+				vecToPos.y = 0.0f;
+				vecToPosOld = posOld - posPoint[cnt];
+				vecToPosOld.y = 0.0f;
+
+				//面積求める
+				fAreaA = (vecToPos.z * vecMove.x) - (vecToPos.x * vecMove.z);
+				fAreaB = (vecLine.z * vecMove.x) - (vecLine.x * vecMove.z);
+
+				if ((vecLine.z * vecToPosOld.x) - (vecLine.x * vecToPosOld.z) >= 0.0f && (vecLine.z * vecToPos.x) - (vecLine.x * vecToPos.z) < 0.0f)
+				{
+					if (fAreaA / fAreaB >= 0.0f && fAreaA / fAreaB <= 1.0f)
+					{//ごっつん
+					 //衝突位置（XZのみ。Yはposの値を使用）が欲しければあげる
+						if (posCollisioned != nullptr)
+						{//ほしいみたいなのであげる
+							D3DXVECTOR3 posCulc = posPoint[cnt];
+							posCulc.x += vecLine.x * (fAreaA / fAreaB);
+							posCulc.y = pos.y;
+							posCulc.z += vecLine.z * (fAreaA / fAreaB);
+
+							*posCollisioned = posCulc;
+						}
+
+						return true;
+					}
+				}
+			}
+		}
+	}
+
+	return false;
+}
