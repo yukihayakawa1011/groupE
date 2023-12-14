@@ -235,6 +235,8 @@ HRESULT CGame::Init(void)
             m_nNumPlayer = 2;
         }
 
+		m_nNumPlayer = 4;
+
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -395,7 +397,7 @@ HRESULT CGame::Init(void)
     //壺
     CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-1000.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	CItemBox::Create(D3DXVECTOR3(-500.0f, 0.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-500.0f, 0.0f, -3400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-680.0f, 0.0f, 1775.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	
     //カメラ初期化

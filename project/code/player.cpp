@@ -622,6 +622,7 @@ void CPlayer::Controller(void)
 	Adjust();
 
 	m_Info.pos = pos;
+	bool bOld = m_bJump;
 	m_bJump = true;	// ジャンプ状態リセット
 
 	// 起伏との当たり判定
@@ -642,6 +643,10 @@ void CPlayer::Controller(void)
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
 		m_bJump = false;
+	}
+
+	if (bOld && !m_bJump) {
+		CParticle::Create(m_Info.pos, CEffect::TYPE_LAND);
 	}
 
 	// アイテムとの当たり判定
