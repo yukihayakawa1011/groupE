@@ -44,6 +44,8 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_CATCH,		// 掴まれた時の汗
 		TYPE_JUMP,		// ジャンプ
 		TYPE_LAND,		// 着地
+		TYPE_PARTY,		// タイトル
+		TYPE_TUTORIAL,	// チュートリアル
 		TYPE_MAX
 	}TYPE;
 

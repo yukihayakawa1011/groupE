@@ -12,6 +12,7 @@
 #include "texture.h"
 #include "debugproc.h"
 #include "player.h"
+#include "particle.h"
 
 //==========================================================
 //ƒ}ƒNƒ’è‹`
@@ -319,6 +320,14 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 		m_fWidth += fDestWidth;
 
 		m_fHeight += fDestHeight;
+
+		if (fDestWidth >= 10.0f && fDestWidth <= 20.0f)
+		{
+			CParticle::Create(D3DXVECTOR3(m_pos.x + m_fWidth, m_pos.y, m_pos.z + m_fHeight), CEffect::TYPE_TUTORIAL);
+			CParticle::Create(D3DXVECTOR3(m_pos.x - m_fWidth, m_pos.y, m_pos.z + m_fHeight), CEffect::TYPE_TUTORIAL);
+			CParticle::Create(D3DXVECTOR3(m_pos.x + m_fWidth, m_pos.y, m_pos.z - m_fHeight), CEffect::TYPE_TUTORIAL);
+			CParticle::Create(D3DXVECTOR3(m_pos.x - m_fWidth, m_pos.y, m_pos.z - m_fHeight), CEffect::TYPE_TUTORIAL);
+		}
 
 		SetSize(m_fWidth, m_fHeight);
 
