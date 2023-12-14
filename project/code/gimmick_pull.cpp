@@ -10,6 +10,7 @@
 #include "debugproc.h"
 #include "player.h"
 #include "Xfile.h"
+#include "particle.h"
 
 // 無名名前空間
 namespace {
@@ -18,6 +19,7 @@ namespace {
 	const float ROTATE_SPEED = (D3DX_PI * 0.045f);
 	const float SET_POSZ = (75.0f);
 	const float SET_POSX = (50.0f);
+	const int PARTICLE_CT = (5);
 }
 
 // 静的メンバ変数宣言
@@ -94,6 +96,15 @@ void CGimmickPull::Update(void)
 	case STATE_NONE:	// 何もない
 		// マトリックス設定
 		SetMtxWorld();
+
+		m_nParticleTimer--;
+		if (m_nParticleTimer <= 0) {
+			D3DXVECTOR3 pos = GetPosition();
+			pos.y += 40.0f;
+			CParticle::Create(pos, CEffect::TYPE_PULLSTAR);
+			m_nParticleTimer = PARTICLE_CT;
+		}
+
 		break;
 
 	case STATE_PULL:	// 押されている

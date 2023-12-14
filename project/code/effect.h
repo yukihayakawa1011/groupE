@@ -38,6 +38,8 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_ITEMBOX,		// アイテムボックス
 		TYPE_ITEMBOXSTAR,	// アイテムボックスのキラキラ
 		TYPE_RESULTZITABATA,	// リザルト失敗じたばた
+		TYPE_PULLSTAR,	// 引くオブジェクト表示
+		TYPE_PULLNOW,		// 引いている時
 		TYPE_MAX
 	}TYPE;
 
