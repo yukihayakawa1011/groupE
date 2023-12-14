@@ -51,6 +51,7 @@
 // 無名名前空間を定義
 namespace {
     const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
+	const D3DXVECTOR3 PLAYERSTARTPOS = { -2500.0f, 0.0f, 950.0f };  // プレイヤーのスタート位置
     const D3DXVECTOR3 LEVERPOS[4] =
     {
         D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
@@ -248,7 +249,7 @@ HRESULT CGame::Init(void)
             sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s", FILEPASS, nCnt, FILEEXT);
             sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nCnt, FILEEXT);
 
-            m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(-130.0f, 0.0f, -2600.0f - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
+            m_ppPlayer[nCnt] = CPlayer::Create(D3DXVECTOR3(PLAYERSTARTPOS.x, PLAYERSTARTPOS.y, PLAYERSTARTPOS.z - nCnt * 25.0f), D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),&aBodyPass[0], &aLegPass[0]);
             m_ppPlayer[nCnt]->BindId(nCnt);
 
             //スコアとUIの高さと間隔の調整用
@@ -361,7 +362,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    CEnemyManager::Create();
+    //CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
