@@ -74,8 +74,8 @@ namespace {
     const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
     const char* FILEEXT = ".txt";				// ファイルの拡張子
     const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-    const int START_TIMER = (1000);				// 開始制限時間
-    const int START_WAITCNT = (180);
+    const int START_TIMER = (90);				// 開始制限時間
+    const int START_WAITCNT = (180);            // スタート時の走ってる時間
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 }

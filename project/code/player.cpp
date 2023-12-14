@@ -2688,3 +2688,42 @@ int CPlayer::GetMotion(void) {
 
 	return m_pBody->GetMotion()->GetNowMotion();
 }
+
+//===============================================
+// リザルト失敗時のパーティクル
+//===============================================
+void CPlayer::SetFailedParticle(void)
+{
+	if (m_pBody == nullptr) {	// 体がない
+		return;
+	}
+
+	if (m_pBody->GetMotion() == nullptr) {	// モーションが無い
+		return;
+	}
+
+	if (m_pBody->GetMotion()->GetNowFrame() != 0)	// 現在0フレームではない
+	{
+		return;
+		CParticle::Create(m_Info.pos, CEffect::TYPE_WALK);
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_STEP);
+	}
+
+	CModel *pModel = nullptr;
+
+	if (m_pBody->GetMotion()->GetNowKey() == 0)
+	{
+		pModel = m_pBody->GetParts(4);
+	}
+	else if (m_pBody->GetMotion()->GetNowKey() == 1)
+	{
+		pModel = m_pBody->GetParts(m_pBody->GetNumParts() - 1);
+	}
+
+	if (pModel == nullptr) {	// 使われていない
+		return;
+	}
+
+	D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
+	CParticle::Create(pos, CEffect::TYPE_RESULTZITABATA);
+}
