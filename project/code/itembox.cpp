@@ -9,6 +9,9 @@
 #include "item.h"
 #include "player.h"
 #include "objectX.h"
+#include "particle.h"
+#include "Xfile.h"
+#include "manager.h"
 
 //静的メンバ変数
 CItemBox *CItemBox::m_pTop = nullptr;
@@ -17,6 +20,7 @@ CItemBox *CItemBox::m_pCur = nullptr;
 // マクロ定義
 #define COLLISION_RANGE	(70.0f)
 #define EMISSION_CT		(90)
+#define PARTICLE_CT		(45)
 
 //==========================================================
 // コンストラクタ
@@ -26,6 +30,7 @@ CItemBox::CItemBox()
 	// 値のクリア
 	m_pObj = nullptr;
 	m_nCounter = 0;
+	m_nParticleCounter = 0;
 
 	// 自分自身をリストに追加
 	if (m_pTop != NULL)
@@ -122,6 +127,15 @@ void CItemBox::Update(void)
 	{
 		m_nCounter = 0;
 	}
+
+	m_nParticleCounter--;
+
+	if (m_nParticleCounter <= 0) {
+		m_nParticleCounter = PARTICLE_CT;
+		D3DXVECTOR3 ObjPos = GetPosition();
+		CXFile* pFile = CManager::GetInstance()->GetModelFile();
+		CParticle::Create(D3DXVECTOR3(ObjPos.x, ObjPos.y + pFile->GetMax(m_pObj->GetIdx()).y, ObjPos.z), CEffect::TYPE_ITEMBOXSTAR);
+	}
 }
 
 //==========================================================
@@ -187,6 +201,8 @@ bool CItemBox::CollisionCheck(D3DXVECTOR3 & pos, D3DXVECTOR3 & posOld, D3DXVECTO
 	if (fLength < COLLISION_RANGE && nAction == CPlayer::ACTION_ATK && m_nCounter <= 0)
 	{// 範囲内
 		Emission();
+		CXFile* pFile = CManager::GetInstance()->GetModelFile();
+		CParticle::Create(D3DXVECTOR3(ObjPos.x, ObjPos.y + pFile->GetMax(m_pObj->GetIdx()).y, ObjPos.z), CEffect::TYPE_ITEMBOX);
 		m_nCounter = EMISSION_CT;
 	}
 
