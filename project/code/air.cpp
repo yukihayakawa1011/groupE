@@ -12,6 +12,7 @@
 #include "meshcylinder.h"
 #include "texture.h"
 #include "item.h"
+#include "particle.h"
 
 // 無名名前空間
 namespace {
@@ -23,6 +24,7 @@ namespace {
 	const float AIROBJ_HEIGHT = (40.0f);	// オブジェクトの高さ
 	const int OBJ_NUMWIDTH = (10);		// 横枚数
 	const float FLYAWAY_JUMP = (20.0f);	// 吹っ飛ぶ高さ
+	const int PARTICLE_CT = (10);		// パーティクルのカウンター
 	const char* FILENAME[CAir::TYPE_MAX] = {	// テクスチャファイル名
 		"data\\TEXTURE\\wind000.png",
 		"data\\TEXTURE\\wind001.png"
@@ -93,6 +95,12 @@ void CAir::Update(void)
 	}
 	else
 	{
+		m_nParticleCounter--;
+
+		if (m_nParticleCounter <= 0) {
+			CParticle::Create(GetPosition(), CEffect::TYPE_AIR);
+			m_nParticleCounter = PARTICLE_CT;
+		}
 
 		// 当たり判定を取る
 		Collision();

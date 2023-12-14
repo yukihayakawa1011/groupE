@@ -54,6 +54,7 @@ public:	// 誰でもアクセス可能
 	TYPE GetType(void) { return m_type; }
 	static void SwitchOff(void);
 	static void SwitchOn(void);
+	static void Buttonoff(void);
 	static CGimmick *GetTop(void) { return m_pTop; }
 	CGimmick *GetNext(void) { return m_pNext; }
 	int GetId(void) { return m_nActionId; }

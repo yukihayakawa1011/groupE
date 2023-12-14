@@ -191,9 +191,6 @@ void CRenderer::Uninit(void)
 //===================================================
 void CRenderer::Update(void)
 {
-	// タスクの全更新
-	CTaskManager::GetInstance()->Update();
-
 #if _DEBUG	// デバッグ時
 	CInputKeyboard *pKey = CManager::GetInstance()->GetInputKeyboard();
 

@@ -64,6 +64,7 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	int m_nId;	// 使用者ID
 	SInfo m_Info;	// 情報
+	int m_nParticleCounter;	// パーティクルカウンター
 	CMeshCylinder *m_apObject[TYPE_MAX];	// オブジェクト
 };
 
