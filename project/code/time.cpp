@@ -18,6 +18,12 @@
 #define NUM_WIDTH		(20)
 #define NUM_HEIGHT	(50)
 
+namespace {
+	const D3DXVECTOR3 WARNING_SETPOS = { SCREEN_WIDTH * 1.3f, SCREEN_HEIGHT * 0.5f, 0.0f };
+	const D3DXVECTOR3 WARNING_SETROT = { 0.0f, 0.0f, D3DX_PI * 0.1f };
+	const D3DXVECTOR2 WARNING_SIZE = { 100.0f, 50.0f };
+}
+
 //===============================================
 // コンストラクタ
 //===============================================
@@ -39,6 +45,7 @@ CTime::CTime()
 	m_nPauseTimer = 0;
 	m_mode = MODE_MAX;
 	m_bActive = false;
+	m_pWarning = nullptr;
 }
 
 //===============================================
@@ -108,6 +115,12 @@ void CTime::Uninit(void)
 			m_apNumber[nCnt] = NULL;
 		}
 	}
+
+	if (m_pWarning != nullptr)
+	{
+		m_pWarning->Uninit();
+		m_pWarning = nullptr;
+	}
 }
 
 //===============================================
@@ -133,18 +146,18 @@ void CTime::Update(void)
 //===============================================
 CTime *CTime::Create(const D3DXVECTOR3& pos)
 {
-	CTime *pTIme = NULL;
+	CTime *pTime = NULL;
 
 	// オブジェクト2Dの生成
-	pTIme = new CTime;
+	pTime = new CTime;
 
-	if (pTIme != NULL)
+	if (pTime != NULL)
 	{// 生成できた場合
 
-		pTIme->m_pos = pos;
+		pTime->m_pos = pos;
 
 		// 初期化処理
-		pTIme->Init();
+		pTime->Init();
 	}
 	else
 	{// 生成に失敗した場合
@@ -152,7 +165,7 @@ CTime *CTime::Create(const D3DXVECTOR3& pos)
 	}
 
 
-	return pTIme;
+	return pTime;
 }
 
 //===============================================
@@ -165,6 +178,22 @@ void CTime::Add(int nValue)
 
 	// 数値設定
 	SetValue();
+
+	// 警告メッセージ生成確認
+	if (m_nNum != 60) {	// 残り1分ではない
+		return;
+	}
+
+	if (m_pWarning != nullptr) {	// すでに警告が表示中
+		return;
+	}
+
+	// 警告を生成
+	m_pWarning = CObject2D::Create(WARNING_SETPOS, WARNING_SETROT, 6);
+
+	if (m_pWarning != nullptr) {	// 生成できた
+		m_pWarning->SetLength(WARNING_SIZE.x, WARNING_SIZE.y);
+	}
 }
 
 //===============================================

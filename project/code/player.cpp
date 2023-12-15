@@ -466,7 +466,7 @@ void CPlayer::Update(void)
 		CManager::GetInstance()->GetScene()->SendRotation(m_Info.rot);
 		CManager::GetInstance()->GetScene()->SendLife(m_nLife);
 	}
-	else
+	else if (m_type == TYPE_AUTOMOVE)
 	{// ‘€ìƒLƒƒƒ‰‚Å‚Í‚È‚¢
 		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME) {
 			float fIner = INER;

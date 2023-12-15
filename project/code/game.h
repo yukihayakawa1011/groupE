@@ -75,6 +75,7 @@ private:
 	void OnlineEnd(void);
 	void AddressLoad(char *pAddrss);
 	bool EndCheck(void);
+	bool StartDirection(void);
 
 	CFileLoad *m_pFileLoad;		// ファイル読み込みのポインタ
 	CPlayer **m_ppPlayer;		// プレイヤーのポインタ
