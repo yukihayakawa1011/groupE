@@ -1185,8 +1185,11 @@ void CPlayer::Damage(int nDamage)
 		m_nLife = 0;
 	}
 
-	Drop(DROP_CNT * (nOldLife - m_nLife));
-
+	if (m_nLife > 0)
+	{
+		Drop(DROP_CNT * (nOldLife - m_nLife));
+	}
+	
 	if (m_nLife != nOldLife)
 	{
 		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
@@ -2195,10 +2198,6 @@ void CPlayer::Drop(int nDropCnt)
 	// óéÇ∆ÇµÇΩï™ê∂ê¨
 	for (int nCnt = 0; nCnt < nDiff; nCnt++)
 	{
-		char aString[258] = "\n";
-
-		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
-
 		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		if (m_pScore != nullptr)
@@ -2207,9 +2206,9 @@ void CPlayer::Drop(int nDropCnt)
 			m_pScore->LowerScore(pItem->GetEachScore());
 		}
 
-		m_aSaveType[nCnt] = 0;
-
 		SubItemCount(m_aSaveType[nCnt]);
+
+		m_aSaveType[nCnt] = 0;
 
 		if (nullptr != pItem)
 		{
@@ -2235,8 +2234,6 @@ void CPlayer::DropAll(void)
 	for (int nCnt = 0; nCnt < m_nItemCnt; nCnt++)
 	{
 		char aString[258] = "\n";
-
-		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
 
 		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_aSaveType[nCnt], CItem::STATE_DROP);
 
