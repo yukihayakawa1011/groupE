@@ -226,7 +226,7 @@ HRESULT CGame::Init(void)
             m_pFileLoad->Init();
             m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
             m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
-			//m_pFileLoad->OpenFile("data\\TXT\\setitem.txt");	    // アイテムの配置
+			m_pFileLoad->OpenFile("data\\TXT\\setitem.txt");	    // アイテムの配置
         }
     }
 
@@ -308,46 +308,6 @@ HRESULT CGame::Init(void)
 
         // ゴール
         CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
-
-		// アイテム
-		CItem::Create(D3DXVECTOR3(560.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(660.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(760.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(860.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM00, NULL);
-
-		CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM00, NULL);
-		CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_KUNAI, NULL);
-		CItem::Create(D3DXVECTOR3(-1060.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
-
-		CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GOLDBAR, NULL);
-		CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_KUNAI, NULL);
-		CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
-
-		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
-
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
-
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM00, NULL);
-
-        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_SHURIKEN, NULL);
-        CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_KUNAI, NULL);
-        CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
-
-		CItem::Create(D3DXVECTOR3(-1050, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(-900, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CItem::TYPE_SCROLL, NULL);
 
 		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_SCROLL, NULL);
 		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_BRECELET, NULL);
