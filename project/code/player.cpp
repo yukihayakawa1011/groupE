@@ -2752,3 +2752,14 @@ void CPlayer::SetFailedParticle(void)
 	D3DXVECTOR3 pos = D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43);
 	CParticle::Create(pos, CEffect::TYPE_RESULTZITABATA);
 }
+
+void CPlayer::SetDraw(bool bDraw)
+{
+	if (m_pBody != nullptr) {
+		m_pBody->SetDraw(bDraw);
+	}
+
+	if (m_pLeg != nullptr) {
+		m_pLeg->SetDraw(bDraw);
+	}
+}

@@ -52,6 +52,7 @@ CCamera::CCamera()
 	m_bDraw = true;
 	m_nId = 0;
 	m_bActive = true;
+	m_fZoom = 1.0f;
 
 	// リストに挿入
 	CCameraManager::GetInstance()->ListIn(this);
@@ -119,7 +120,7 @@ void CCamera::Update(void)
 
 	//視点の移動
 	MoveV();
-	MouseCamera();
+	//MouseCamera();
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き[%f, %f, %f]\n", m_rot.x, m_rot.y, m_rot.z);
 }
@@ -408,9 +409,9 @@ void CCamera::MoveR(void)
 //==========================================================
 void CCamera::SetV(void)
 {
-	m_posV.y = m_posR.y + cosf(m_rot.z) * m_fLength;
-	m_posV.x = m_posR.x + (sinf(m_rot.z) * cosf(m_rot.y)) * m_fLength;
-	m_posV.z = m_posR.z + (sinf(m_rot.z) * sinf(m_rot.y)) * m_fLength;
+	m_posV.y = m_posR.y + cosf(m_rot.z) * (m_fLength * m_fZoom);
+	m_posV.x = m_posR.x + (sinf(m_rot.z) * cosf(m_rot.y)) * (m_fLength * m_fZoom);
+	m_posV.z = m_posR.z + (sinf(m_rot.z) * sinf(m_rot.y)) * (m_fLength * m_fZoom);
 }
 
 //==========================================================
@@ -418,9 +419,9 @@ void CCamera::SetV(void)
 //==========================================================
 void CCamera::SetR(void)
 {
-	m_posR.y = m_posV.y - cosf(m_rot.z) * m_fLength;
-	m_posR.x = m_posV.x - (sinf(m_rot.z) * cosf(m_rot.y)) * m_fLength;
-	m_posR.z = m_posV.z - (sinf(m_rot.z) * sinf(m_rot.y)) * m_fLength;
+	m_posR.y = m_posV.y - cosf(m_rot.z) * (m_fLength * m_fZoom);
+	m_posR.x = m_posV.x - (sinf(m_rot.z) * cosf(m_rot.y)) * (m_fLength * m_fZoom);
+	m_posR.z = m_posV.z - (sinf(m_rot.z) * sinf(m_rot.y)) * (m_fLength * m_fZoom);
 }
 
 //==========================================================
@@ -547,13 +548,13 @@ void CCamera::Pursue(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot)
 	D3DXVECTOR3 VDiff = D3DXVECTOR3(0.0f, 0.0f, 0.0f);		// 視点の差分
 
 	//目的の注視点の座標を取得
-	posRDest = D3DXVECTOR3(pos.x - sinf(rot.y) * 30.0f, pos.y + 50.0f, pos.z - cosf(rot.y) * 30.0f);
+	posRDest = D3DXVECTOR3(pos.x - sinf(rot.y) * 30.0f, pos.y + 50.0f + (40.0f * (1.0f - m_fZoom)), pos.z - cosf(rot.y) * 30.0f);
 
 	//目的の視点の座標を獲得
 	posVDest = D3DXVECTOR3(
-		posRDest.x + (sinf(m_rot.z) * cosf(m_rot.y)) * m_fLength,
-		posRDest.y + cosf(m_rot.z) * m_fLength,
-		posRDest.z + (sinf(m_rot.z) * sinf(m_rot.y)) * m_fLength);
+		posRDest.x + (sinf(m_rot.z) * cosf(m_rot.y)) * (m_fLength * m_fZoom),
+		posRDest.y + cosf(m_rot.z) * (m_fLength * m_fZoom),
+		posRDest.z + (sinf(m_rot.z) * sinf(m_rot.y)) * (m_fLength * m_fZoom));
 
 	//注視点の補正
 	RDiff = D3DXVECTOR3(posRDest.x - m_posR.x, posRDest.y - m_posR.y, posRDest.z - m_posR.z);
@@ -824,7 +825,7 @@ void CCamera::SetPositionV(D3DXVECTOR3 pos)
 //==========================================================
 void CCamera::CollisionObj(void)
 {
-	float fLengthNew = DEFAULT_LENGTH;
+	float fLengthNew = m_fLength;
 	D3DXVECTOR3 posCollisioned = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 posVDef = D3DXVECTOR3(0.0f, 0.0f, 0.0f);	// デフォルトの視点
 
@@ -853,7 +854,7 @@ void CCamera::CollisionObj(void)
 		}
 	}
 
-	m_fLength = fLengthNew;
+	m_fZoom = fLengthNew / m_fLength;
 }
 
 //==========================================================
