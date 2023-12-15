@@ -38,7 +38,7 @@ public:	// 誰でもアクセス可能
 	void Uninit(void);
 	void Update(void);
 	static CGimmickRotateDoor *Create(const D3DXVECTOR3 pos, const D3DXVECTOR3 rot);
-	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned);
+	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned = nullptr);
 
 	// メンバ関数(取得)
 	STATE GetState(void) { return m_state; }
