@@ -625,7 +625,7 @@ void CFileLoad::LoadItemData(FILE *pFile)
 	}
 
 	//フィールドの配置
-	CItem *pItem = CItem::Create(pos, D3DXToRadian(rot), CItem::TYPE_COIN, CItem::STATE_NORMAL);
+	CItem *pItem = CItem::Create(pos, D3DXToRadian(rot), static_cast<CItem::TYPE>(nIdx), CItem::STATE_NORMAL);
 
 	if(m_pEnter != nullptr){
 		pItem->GetModel()->BindModelFile(CManager::GetInstance()->GetModelFile()->Regist(GetModelFileName(nIdx)));

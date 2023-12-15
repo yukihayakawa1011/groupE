@@ -20,8 +20,11 @@
 
 namespace {
 	const D3DXVECTOR3 WARNING_SETPOS = { SCREEN_WIDTH * 1.3f, SCREEN_HEIGHT * 0.5f, 0.0f };
-	const D3DXVECTOR3 WARNING_SETROT = { 0.0f, 0.0f, D3DX_PI * 0.1f };
-	const D3DXVECTOR2 WARNING_SIZE = { 100.0f, 50.0f };
+	const D3DXVECTOR3 WARNING_SETROT = { 0.0f, 0.0f, D3DX_PI * 0.0f };
+	const D3DXVECTOR2 WARNING_SIZE = { 470.0f, 150.0f };
+	const float WARNING_MOVESPEED = (-1.5f);
+	const float WARNING_MOVESIN = (0.05f);
+	const float WARNING_MOVESIZE = (30.0f);
 }
 
 //===============================================
@@ -139,6 +142,47 @@ void CTime::Update(void)
 		m_fAnimTimer = 0;	// カウンターリセット
 		Add(-1);
 	}
+
+	// 警告更新
+	if (m_pWarning == nullptr) {
+		return;
+	}
+
+	{
+
+		D3DXVECTOR3 pos = m_pWarning->GetPosition();
+
+		// 移動
+		if (pos.x > SCREEN_WIDTH * 0.75f)
+		{
+			pos.x -= 30.0f;
+		}
+		else if (pos.x < SCREEN_WIDTH * 0.35f)
+		{
+			pos.x -= 40.0f;
+			m_pWarning->SetLength(m_pWarning->GetWidth() * 1.7f, m_pWarning->GetHeight() * 1.7f);
+		}
+		else
+		{
+			pos.x += WARNING_MOVESPEED;
+
+			// 大きくしたり小さくする
+			m_fWarningSin += WARNING_MOVESIN;
+			float fSin = sinf(m_fWarningSin);
+			if (fSin >= 0.0f) {
+				m_pWarning->SetLength(WARNING_SIZE.x + fSin * WARNING_MOVESIZE, WARNING_SIZE.y + fSin * WARNING_MOVESIZE);
+			}
+		}
+
+		m_pWarning->SetPosition(pos);
+		m_pWarning->SetVtx();
+
+		if (pos.x < -SCREEN_WIDTH * 0.5f)
+		{
+			m_pWarning->Uninit();
+			m_pWarning = NULL;
+		}
+	}
 }
 
 //===============================================
@@ -193,6 +237,7 @@ void CTime::Add(int nValue)
 
 	if (m_pWarning != nullptr) {	// 生成できた
 		m_pWarning->SetLength(WARNING_SIZE.x, WARNING_SIZE.y);
+		m_pWarning->BindTexture(CTexture::TYPE_WARNING);
 	}
 }
 
