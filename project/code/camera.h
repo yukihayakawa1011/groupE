@@ -98,6 +98,7 @@ private:	// 自分だけがアクセス可能
 	MODE m_mode;				// モード
 	float m_fMulScore;		// スコア倍率
 	float m_fLength;			// 視点と注視点の距離
+	float m_fZoom;				//ズーム率
 	CCamera *m_pNext;			// 次
 	CCamera *m_pPrev;			// 前
 	int m_nId;				// 使用コントローラー番号
