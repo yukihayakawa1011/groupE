@@ -52,7 +52,7 @@ CCamera::CCamera()
 	m_bDraw = true;
 	m_nId = 0;
 	m_bActive = true;
-	m_fZoom = 0.0f;
+	m_fZoom = 1.0f;
 
 	// ƒŠƒXƒg‚É‘}“ü
 	CCameraManager::GetInstance()->ListIn(this);
