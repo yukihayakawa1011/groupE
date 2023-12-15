@@ -235,8 +235,6 @@ HRESULT CGame::Init(void)
             m_nNumPlayer = 2;
         }
 
-		m_nNumPlayer = 4;
-
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -387,7 +385,7 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    //CEnemyManager::Create();
+    CEnemyManager::Create();
 
     for (int nCnt = 0; nCnt < 9; nCnt++)
     {
@@ -485,7 +483,7 @@ HRESULT CGame::Init(void)
     // スポットライトをオン
     CManager::GetInstance()->GetLight()->EnablePointLight(true);
 
-    CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
+    //CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
     //ミニマップ生成
     if (m_pMiniMap == nullptr)
