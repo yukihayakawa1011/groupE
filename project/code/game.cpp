@@ -47,6 +47,7 @@
 #include "pause.h"
 #include "quataui.h"
 #include <assert.h>
+#include "particle.h"
 
 // 無名名前空間を定義
 namespace {
@@ -81,6 +82,7 @@ namespace {
 	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f};
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
+	const int PLAYER_SPWANSTART = (240);
 }
 
 //===============================================
@@ -288,6 +290,7 @@ HRESULT CGame::Init(void)
             // スコアの生成
             CScore * pScore = CScore::Create(D3DXVECTOR3(40.0f + fData, 23.0f + fData1 + fData2, 0.0f), 6, 0.9f, SCORE_SIZE.x, SCORE_SIZE.y);
             m_ppPlayer[nCnt]->BindScore(pScore);
+			m_ppPlayer[nCnt]->SetDraw(false);
         }
 
 		if (m_pFileLoad != NULL)
@@ -1122,7 +1125,18 @@ bool CGame::StartDirection(void)
 		bDirection = true;
 
 		// タイミングごとに動かす
-		if (m_nStartCnt == START_WAITCNT - PLAYER_MOVESTART) {	// プレイヤー移動開始
+		if (m_nStartCnt == START_WAITCNT - PLAYER_SPWANSTART) {	// プレイヤー移動開始
+			if (m_ppPlayer != nullptr) { // 使用していた場合
+				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+					if (m_ppPlayer[nCnt] != nullptr) {
+						m_ppPlayer[nCnt]->SetDraw(true);
+						// 煙のパーティクル生成
+						CParticle::Create(m_ppPlayer[nCnt]->GetPosition(), CEffect::TYPE_SMAKE);
+					}
+				}
+			}
+		}
+		else if (m_nStartCnt == START_WAITCNT - PLAYER_MOVESTART) {	// プレイヤー移動開始
 			if (m_ppPlayer != nullptr) { // 使用していた場合
 				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
 					if (m_ppPlayer[nCnt] != nullptr) {
