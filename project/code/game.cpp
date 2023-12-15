@@ -78,7 +78,7 @@ namespace {
     const int START_WAITCNT = (430);            // スタート時の走ってる時間
 	const int PLAYER_MOVESTART = (180);
 	const int CAMERA_ROTATESTART = (240);
-	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.51f};
+	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f};
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 }
@@ -1177,7 +1177,8 @@ bool CGame::StartDirection(void)
 					m_ppCamera[nCnt]->SetLength(m_ppCamera[nCnt]->GetLength() + 1.5f);
 
 					// カメラを目標の向きまで回転させる
-					D3DXVECTOR3 rotDest = m_ppCamera[nCnt]->GetRotation();
+					D3DXVECTOR3 rotDest = START_CAMERAROT - m_ppCamera[nCnt]->GetRotation();
+					m_ppCamera[nCnt]->SetRotation(m_ppCamera[nCnt]->GetRotation() + rotDest * 0.1f);
 				}
 			}
 		}
