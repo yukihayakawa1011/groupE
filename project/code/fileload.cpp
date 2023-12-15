@@ -23,6 +23,7 @@
 #include "gimmick_rotatedoor.h"
 #include "gimmick_pitfall.h"
 #include "gimmick_spear.h"
+#include "model.h"
 
 //==========================================================
 // ƒ}ƒNƒ’è‹`
@@ -627,6 +628,7 @@ void CFileLoad::LoadItemData(FILE *pFile)
 	CItem *pItem = CItem::Create(pos, D3DXToRadian(rot), CItem::TYPE_COIN, CItem::STATE_NORMAL);
 
 	if(m_pEnter != nullptr){
+		pItem->GetModel()->BindModelFile(CManager::GetInstance()->GetModelFile()->Regist(GetModelFileName(nIdx)));
 		m_pEnter->SetItemParent(pItem);
 	}
 }
