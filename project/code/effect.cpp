@@ -361,6 +361,18 @@ void CEffect::Update(void)
 		m_Info.move.y += 0.1f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
+
+	case TYPE_PARTY:	// ‰Œ
+
+		m_Info.col.a -= (rand() % 100) * 0.00065f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
+
+	case TYPE_TUTORIAL:	// ‰Œ
+
+		m_Info.col.a -= (rand() % 100) * 0.00065f * CManager::GetInstance()->GetSlow()->Get();
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
@@ -638,6 +650,18 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_SMOOK;
 	}
 	break;
+
+	case TYPE_PARTY:
+	{
+		return CTexture::TYPE_SMOOK;
+	}
+	break;
+
+	case TYPE_TUTORIAL:
+	{
+		return CTexture::TYPE_SMOOK;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -829,6 +853,24 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetZTest(false);
 		m_pObjectBilBoard->SetLighting(true);
 		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_PARTY:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
+	}
+	break;
+
+	case TYPE_TUTORIAL:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
 	}
 	break;
 	}

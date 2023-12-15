@@ -154,6 +154,8 @@ bool CGimmickRotateDoor::CollisionCheckCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & po
 	D3DXVECTOR3 ObjRot = GetRotation();
 	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	bool bCollision = false;
+	D3DXVECTOR3 posCulcNear = D3DXVECTOR3(FLT_MAX, 0.0f, 0.0f);
 
 	// 向きを反映
 	m_pObj->SetRotSize(vtxObjMax,
@@ -194,20 +196,29 @@ bool CGimmickRotateDoor::CollisionCheckCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & po
 			 //衝突位置（XZのみ。Yはposの値を使用）が欲しければあげる
 				if (posCollisioned != nullptr)
 				{//ほしいみたいなのであげる
+					float fRate = fAreaA / fAreaB;
 					D3DXVECTOR3 posCulc = posPoint[cnt];
-					posCulc.x += vecLine.x * (fAreaA / fAreaB);
-					posCulc.y = pos.y;
-					posCulc.z += vecLine.z * (fAreaA / fAreaB);
+					posCulc.x += vecLine.x * fRate;
+					posCulc.y = posOld.y;
+					posCulc.z += vecLine.z * fRate;
 
-					*posCollisioned = posCulc;
+					if (D3DXVec3Length(&(posCulc - posOld)) < D3DXVec3Length(&(posCulcNear - posOld)))
+					{
+						posCulcNear = posCulc;
+					}
 				}
 
-				return true;
+				bCollision = true;
 			}
 		}
 	}
 
-	return false;
+	if (bCollision == true)
+	{
+		*posCollisioned = posCulcNear;
+	}
+
+	return bCollision;
 }
 
 //==========================================================
