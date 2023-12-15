@@ -1969,7 +1969,7 @@ void CPlayer::SelectItem(void)
 	{
 		if (m_nItemCnt > 0 && GetSelectItem(m_nItemId) > 0)
 		{
-			CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), ItemFileName(m_nItemId), m_nItemId, CItem::STATE_DROP);
+			CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_nItemId, CItem::STATE_DROP);
 
 			if (m_pScore != nullptr)
 			{
@@ -2199,7 +2199,7 @@ void CPlayer::Drop(int nDropCnt)
 
 		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
 
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		if (m_pScore != nullptr)
 		{
@@ -2238,7 +2238,7 @@ void CPlayer::DropAll(void)
 
 		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
 
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		if (m_pScore != nullptr)
 		{

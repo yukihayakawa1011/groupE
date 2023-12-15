@@ -51,11 +51,11 @@ public:	// 誰でもアクセス可能
 
 	// メンバ関数
 	HRESULT Init(void);
-	HRESULT Init(const char *pFileName, int type);
+	HRESULT Init(int type);
 	void Uninit(void);
 	void Update(void);
 
-	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType = TYPE_COIN);
+	static CItem *Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int type, int nType = TYPE_COIN);
 	static CItem *Collision(D3DXVECTOR3 &pos);
 
 	// メンバ関数(設定)
