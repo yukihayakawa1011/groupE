@@ -70,6 +70,7 @@ private:	// 自分だけがアクセス可能
 	CNumber *m_apNumber[NUM_PLACE];			// 数字のポインタ
 	D3DXVECTOR3 m_pos;	// 座標
 	CObject2D *m_pWarning;	// 警告オブジェクト
+	float m_fWarningSin;
 	int m_nNum;	// 現在の値
 	int m_nSetNum;	// 設定値
 	int m_nMaxNum;	// 最大値
