@@ -1133,7 +1133,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\ash000.jpg";
+    "data\\TEXTURE\\ash000.jpg";
    }
   }
   Material {
@@ -1142,7 +1142,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\stone00.jpg";
+    "data\\TEXTURE\\stone00.jpg";
    }
   }
   Material {
@@ -1151,7 +1151,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\stone00.jpg";
+    "data\\TEXTURE\\stone00.jpg";
    }
   }
   Material {
@@ -1160,7 +1160,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\tance00.jpg";
+    "data\\TEXTURE\\tance00.jpg";
    }
   }
   Material {
@@ -1169,7 +1169,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\darkwood00.jpg";
+    "data\\TEXTURE\\darkwood00.jpg";
    }
   }
   Material {
