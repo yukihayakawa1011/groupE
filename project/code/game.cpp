@@ -345,11 +345,11 @@ HRESULT CGame::Init(void)
 		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
 		CItem::Create(D3DXVECTOR3(-900, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CItem::TYPE_SCROLL, NULL);
 
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -4200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_SCROLL, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -4100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_GEM01, NULL);
 
 		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
 		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3140.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
@@ -362,6 +362,15 @@ HRESULT CGame::Init(void)
 
 		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GOLDBAR, NULL);
 		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+
+		CItem::Create(D3DXVECTOR3(200.0f, 230.0f, 1650.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(200.0f, 230.0f, 1570.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+
+		CItem::Create(D3DXVECTOR3(400.0f, 1.0f, -1900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+		CItem::Create(D3DXVECTOR3(400.0f, 1.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -1900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+
     }
         break;
 
@@ -386,11 +395,6 @@ HRESULT CGame::Init(void)
 
     //敵マネージャ生成（投げっぱ）
     CEnemyManager::Create();
-
-    for (int nCnt = 0; nCnt < 9; nCnt++)
-    {
-        CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 1.0f, -4700.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, CItem::STATE_NORMAL);
-    }
 
     //壺
     CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -484,7 +488,7 @@ HRESULT CGame::Init(void)
     // スポットライトをオン
     CManager::GetInstance()->GetLight()->EnablePointLight(true);
 
-    //CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
+    CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_GAME);
 
     //ミニマップ生成
     if (m_pMiniMap == nullptr)
@@ -680,7 +684,7 @@ void CGame::Update(void)
 
                     if (m_QuataUI != nullptr) {
                         if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
-                            //m_pTimer->Update();
+                            m_pTimer->Update();
                         }
                     }
                     else {
