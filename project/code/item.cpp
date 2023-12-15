@@ -13,6 +13,23 @@
 #include "objectX.h"
 #include "meshfield.h"
 
+// 無名名前空間
+namespace {
+	const char* MODELNAME[CItem::TYPE_MAX] = {	// モデルファイル名
+		"data\\MODEL\\coin.x",
+		"data\\MODEL\\bracelet00.x",
+		"data\\MODEL\\cup00.x",
+		"data\\MODEL\\gem00.x",
+		"data\\MODEL\\gem01.x",
+		"data\\MODEL\\goldbar00.x",
+		"data\\MODEL\\jar001.x",
+		"data\\MODEL\\kunai.x",
+		"data\\MODEL\\ring00.x",
+		"data\\MODEL\\scroll00.x",
+		"data\\MODEL\\shuriken.x",
+	};
+}
+
 // マクロ定義
 #define COLLISION_SIZE	(75.0f)
 #define BOUND_COUNT	(4)
@@ -62,7 +79,7 @@ CItem::~CItem()
 //==========================================================
 // 生成
 //==========================================================
-CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, int type, int nType)
+CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, int type, int nType)
 {
 	CItem *pObjectX = nullptr;
 
@@ -85,7 +102,7 @@ CItem *CItem::Create(D3DXVECTOR3 pos, D3DXVECTOR3 rot, const char *pFileName, in
 		// 種類
 		pObjectX->m_nState = nType;
 		// 初期化処理
-		pObjectX->Init(pFileName, type);
+		pObjectX->Init(type);
 	}
 	else
 	{// 生成に失敗した場合
@@ -107,9 +124,9 @@ HRESULT CItem::Init(void)
 //==========================================================
 // 初期化処理
 //==========================================================
-HRESULT CItem::Init(const char *pFileName, int type)
+HRESULT CItem::Init(int type)
 {
-	m_pObject = CModel::Create(pFileName);
+	m_pObject = CModel::Create(MODELNAME[type]);
 	m_pObject->SetRotation(m_rot);
 	m_type = type;
 

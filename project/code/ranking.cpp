@@ -95,7 +95,8 @@ HRESULT CRanking::Init(void)
 		for (int nCnt = 0; nCnt < NUM_RANK; nCnt++)
 		{
 			m_pObjectRank[nCntRanking][nCnt] = CObject2D::Create(7);
-			m_pObjectRank[nCntRanking][nCnt]->SetPosition(D3DXVECTOR3(600.0f + nCntRanking * 600.0f, 400.0f + (nCnt* 100.0f), 0.0f));
+			m_pObjectRank[nCntRanking][nCnt]->SetPosition(D3DXVECTOR3(150.0f + nCntRanking * 600.0f, 400.0f + (nCnt* 100.0f), 0.0f));
+			m_pObjectRank[nCntRanking][nCnt]->SetLength(150.0f, 75.0f);
 			m_pObjectRank[nCntRanking][nCnt]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\rank00.png"));
 		}
 	}
@@ -154,7 +155,7 @@ HRESULT CRanking::Init(void)
 	//今回のスコア
 	for (int nCnt = 0; nCnt < NUM_NOWSCORE; nCnt++)
 	{
-		m_apNowScore[nCnt] = CScore::Create(D3DXVECTOR3(300.0f + nCnt * 600.0f, 200.0f, 0.0f), 6, 0.75f, 15.0f, 25.0f);
+		m_apNowScore[nCnt] = CScore::Create(D3DXVECTOR3(150.0f + nCnt * 700.0f, 200.0f, 0.0f), 6 + nCnt * 2, 1.0f, 23.0f, 35.0f);
 	}
 
 	m_apNowScore[0]->SetScore(m_nScore);
@@ -164,7 +165,7 @@ HRESULT CRanking::Init(void)
 	{
 		for (int nCntRank = 0; nCntRank < NUM_RANK; nCntRank++)
 		{
-			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 6, 0.75f, 15.0f, 25.0f);
+			m_apScore[nCntRanking][nCntRank] = CScore::Create(D3DXVECTOR3(300.0f + nCntRanking * 600.0f, 400.0f + nCntRank * 100.0f, 0.0f), 6 + nCntRanking * 2, 1.0f, 23.0f, 35.0f);
 		}
 	}
 
@@ -187,6 +188,7 @@ HRESULT CRanking::Init(void)
 
 	//カメラ初期化
 	{
+		CManager::GetInstance()->GetCamera()->SetLength(2200.0f);
 		CManager::GetInstance()->GetCamera()->SetPositionV(D3DXVECTOR3(387.0f, 793.0f, -2328.0f));
 		CManager::GetInstance()->GetCamera()->SetPositionR(D3DXVECTOR3(-400.0f, 441.0f, -304.0f));
 		CManager::GetInstance()->GetCamera()->SetRotation(D3DXVECTOR3(1.0f, -1.20f, 1.41f));
@@ -200,6 +202,7 @@ HRESULT CRanking::Init(void)
 		viewport.MinZ = 0.0f;
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+		CManager::GetInstance()->GetCamera()->SetActive(false);
 	}
 
 	//ドーム追加
@@ -263,6 +266,8 @@ void CRanking::Uninit(void)
 		delete m_pFileLoad;		// メモリの開放
 		m_pFileLoad = nullptr;
 	}
+
+	CManager::GetInstance()->GetCamera()->SetActive(true);
 }
 
 //===============================================
@@ -303,8 +308,8 @@ void CRanking::Update(void)
 		pos.z = ((float)(rand() % 2000 - 1000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
 		pos1.z = ((float)(rand() % 2000 - 1000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
 
-		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
-		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, pos1.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DOWN);
+		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, CItem::STATE_DOWN);
+		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, pos1.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, CItem::STATE_DOWN);
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{
