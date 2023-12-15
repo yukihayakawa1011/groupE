@@ -660,7 +660,7 @@ void CEnemy::Death(void)
 	// —‚Æ‚µ‚½•ª¶¬iplayer‚©‚ç”qØj
 	for (int nCnt = 0; nCnt < DROP_COIN; nCnt++)
 	{
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_DROP);
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, CItem::STATE_DROP);
 
 		if (nullptr != pItem)
 		{
