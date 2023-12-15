@@ -58,7 +58,7 @@ public:	// 誰でもアクセス可能
 	void SetNumButton(const int nNum);
 	void SetActiveButton(const int nNum);
 	virtual void IdSetButton(void) override;
-	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned);
+	bool CollisionCheckCloss(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3* posCollisioned = nullptr);
 	
 	// メンバ関数(取得)
 

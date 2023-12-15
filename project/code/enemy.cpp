@@ -823,9 +823,9 @@ CPlayer* CEnemy::SearchNearPlayer(float fRadiusRest, float* pLength)
 			vecGaze.z = -sinf(this->m_Info.rot.y + 0.5f * D3DX_PI);
 
 			float fRadius = D3DXVec3Dot(&vecGaze, &vecPos) / (D3DXVec3Length(&vecGaze) * D3DXVec3Length(&vecPos));
-			if (fLengthNear > fLength && fRadius >= 1.0f - fRadiusRest)
+			if (fLengthNear > fLength && fRadius >= 1.0f - fRadiusRest 
+				&& CObjectX::CollisionCloss(posPlayer,this->m_Info.pos) == false && CGimmick::CollisionCloss(posPlayer, this->m_Info.pos) == false)
 			{//ˆê”Ô‹ß‚¢‚â‚Â
-
 				pPlayerNear = pPlayer;
 				fLengthNear = fLength;
 			}
