@@ -466,7 +466,7 @@ void CPlayer::Update(void)
 		CManager::GetInstance()->GetScene()->SendRotation(m_Info.rot);
 		CManager::GetInstance()->GetScene()->SendLife(m_nLife);
 	}
-	else
+	else if (m_type == TYPE_AUTOMOVE)
 	{// ëÄçÏÉLÉÉÉâÇ≈ÇÕÇ»Ç¢
 		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME) {
 			float fIner = INER;
@@ -1185,8 +1185,11 @@ void CPlayer::Damage(int nDamage)
 		m_nLife = 0;
 	}
 
-	Drop(DROP_CNT * (nOldLife - m_nLife));
-
+	if (m_nLife > 0)
+	{
+		Drop(DROP_CNT * (nOldLife - m_nLife));
+	}
+	
 	if (m_nLife != nOldLife)
 	{
 		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
@@ -1969,7 +1972,7 @@ void CPlayer::SelectItem(void)
 	{
 		if (m_nItemCnt > 0 && GetSelectItem(m_nItemId) > 0)
 		{
-			CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), ItemFileName(m_nItemId), m_nItemId, CItem::STATE_DROP);
+			CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_nItemId, CItem::STATE_DROP);
 
 			if (m_pScore != nullptr)
 			{
@@ -2195,11 +2198,7 @@ void CPlayer::Drop(int nDropCnt)
 	// óéÇ∆ÇµÇΩï™ê∂ê¨
 	for (int nCnt = 0; nCnt < nDiff; nCnt++)
 	{
-		char aString[258] = "\n";
-
-		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
-
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f ,0.0f), m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		if (m_pScore != nullptr)
 		{
@@ -2207,9 +2206,9 @@ void CPlayer::Drop(int nDropCnt)
 			m_pScore->LowerScore(pItem->GetEachScore());
 		}
 
-		m_aSaveType[nCnt] = 0;
-
 		SubItemCount(m_aSaveType[nCnt]);
+
+		m_aSaveType[nCnt] = 0;
 
 		if (nullptr != pItem)
 		{
@@ -2236,9 +2235,7 @@ void CPlayer::DropAll(void)
 	{
 		char aString[258] = "\n";
 
-		strcpy(aString, ItemFileName(m_aSaveType[nCnt]));
-
-		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), aString, m_aSaveType[nCnt], CItem::STATE_DROP);
+		CItem *pItem = CItem::Create(m_Info.pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), m_aSaveType[nCnt], CItem::STATE_DROP);
 
 		if (m_pScore != nullptr)
 		{

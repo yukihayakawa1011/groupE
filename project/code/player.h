@@ -41,6 +41,7 @@ public:
 		TYPE_NONE,	// 操作不可能
 		TYPE_SEND,	// データ送信
 		TYPE_ACTIVE,	// 操作可能
+		TYPE_AUTOMOVE,	// 自動移動
 		TYPE_MAX
 	};
 

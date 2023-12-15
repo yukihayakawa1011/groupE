@@ -75,7 +75,10 @@ namespace {
     const char* FILEEXT = ".txt";				// ファイルの拡張子
     const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
     const int START_TIMER = (180);				// 開始制限時間
-    const int START_WAITCNT = (180);            // スタート時の走ってる時間
+    const int START_WAITCNT = (430);            // スタート時の走ってる時間
+	const int PLAYER_MOVESTART = (180);
+	const int CAMERA_ROTATESTART = (240);
+	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.5f, D3DX_PI * 0.51f};
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 }
@@ -223,6 +226,7 @@ HRESULT CGame::Init(void)
             m_pFileLoad->Init();
             m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
             m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
+			//m_pFileLoad->OpenFile("data\\TXT\\setitem.txt");	    // アイテムの配置
         }
     }
 
@@ -232,10 +236,8 @@ HRESULT CGame::Init(void)
     {// ローカルの場合
         if (m_nNumPlayer <= 0)
         {// 人数が指定されていない
-            m_nNumPlayer = 2;
+            m_nNumPlayer = 1;
         }
-
-		m_nNumPlayer = 4;
 
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
@@ -307,63 +309,72 @@ HRESULT CGame::Init(void)
         // ゴール
         CGoal::Create(D3DXVECTOR3(STARTDOORPOS.x + PLAYER_MAX * DOOR_SPACE, 2.0f, STARTDOORPOS.z), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f), 100.0f);
 
-        // アイテム
-        CItem::Create(D3DXVECTOR3(560.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-        CItem::Create(D3DXVECTOR3(660.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-        CItem::Create(D3DXVECTOR3(760.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-        CItem::Create(D3DXVECTOR3(860.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
-        
-        CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
-        CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-        CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
-		CItem::Create(D3DXVECTOR3(-1060.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-        
-        CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
-        CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
-        CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
-        CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
-        CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-        
-        CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-        CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
-        CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-        CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+		// アイテム
+		CItem::Create(D3DXVECTOR3(560.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(660.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(760.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(860.0f, 1.0f, 1800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM00, NULL);
 
-        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
-        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(-760.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM00, NULL);
+		CItem::Create(D3DXVECTOR3(-860.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(-960.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_KUNAI, NULL);
+		CItem::Create(D3DXVECTOR3(-1060.0f, 1.0f, 180.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
 
-        CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-        CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-        CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
-        CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem00.x", CItem::TYPE_GEM00, NULL);
+		CItem::Create(D3DXVECTOR3(1000.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GOLDBAR, NULL);
+		CItem::Create(D3DXVECTOR3(900.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(800.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_KUNAI, NULL);
+		CItem::Create(D3DXVECTOR3(700.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(600.0f, 1.0f, -680.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
 
-        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-        CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\kunai.x", CItem::TYPE_KUNAI, NULL);
-        CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(550.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(650.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(750.0f, 1.0f, -2550.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1050, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
-		CItem::Create(D3DXVECTOR3(-900, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(-1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
 
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -4200.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -4100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\bracelet00.x", CItem::TYPE_BRECELET, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -4000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\ring00.x", CItem::TYPE_RING00, NULL);
-		CItem::Create(D3DXVECTOR3(900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -5000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -4700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM00, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\gem01.x", CItem::TYPE_GEM01, NULL);
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3140.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\scroll00.x", CItem::TYPE_SCROLL, NULL);
+        CItem::Create(D3DXVECTOR3(-1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_SHURIKEN, NULL);
+        CItem::Create(D3DXVECTOR3(-900, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_KUNAI, NULL);
+        CItem::Create(D3DXVECTOR3(-800, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3360.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3440.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(-1050, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-750, 1.0f, -1600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-900, 1.0f, -1500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),CItem::TYPE_SCROLL, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\shuriken.x", CItem::TYPE_SHURIKEN, NULL);
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2260.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\jar001.x", CItem::TYPE_JAR, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_SCROLL, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_BRECELET, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3600.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_RING00, NULL);
+		CItem::Create(D3DXVECTOR3(1000, 1.0f, -3500.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),  CItem::TYPE_GEM01, NULL);
 
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\goldbar00.x", CItem::TYPE_GOLDBAR, NULL);
-		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\cup00.x", CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GEM01, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3140.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SCROLL, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3360.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -3440.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_SHURIKEN, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2260.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_JAR, NULL);
+
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -2050.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_GOLDBAR, NULL);
+		CItem::Create(D3DXVECTOR3(-1100, 230.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+
+		CItem::Create(D3DXVECTOR3(200.0f, 230.0f, 1650.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+		CItem::Create(D3DXVECTOR3(200.0f, 230.0f, 1570.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
+
+		CItem::Create(D3DXVECTOR3(400.0f, 1.0f, -1900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+		CItem::Create(D3DXVECTOR3(400.0f, 1.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -1900.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+		CItem::Create(D3DXVECTOR3(450.0f, 1.0f, -1970.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, NULL);
+
     }
         break;
 
@@ -387,18 +398,14 @@ HRESULT CGame::Init(void)
     }
 
     //敵マネージャ生成（投げっぱ）
-    //CEnemyManager::Create();
-
-    for (int nCnt = 0; nCnt < 9; nCnt++)
-    {
-        CItem::Create(D3DXVECTOR3(800.0f - (nCnt / 3) * 100.0f, 1.0f, -4700.0f + (nCnt % 3) * 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), "data\\MODEL\\coin.x", CItem::TYPE_COIN, CItem::STATE_NORMAL);
-    }
+    CEnemyManager::Create();
 
     //壺
     CItemBox::Create(D3DXVECTOR3(-800.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-1000.0f, 0.0f, -4250.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-500.0f, 0.0f, -3400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	CItemBox::Create(D3DXVECTOR3(-680.0f, 0.0f, 1775.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	CItemBox::Create(D3DXVECTOR3(-880.0f, 0.0f, -2610.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 	
     //カメラ初期化
     {
@@ -434,7 +441,7 @@ HRESULT CGame::Init(void)
             m_ppCamera[nCnt]->SetPositionV(D3DXVECTOR3(-874.3f, 1124.15f, 1717.2f));
             m_ppCamera[nCnt]->SetPositionR(D3DXVECTOR3(-320.3f, 1.0f, -91.6f));
             m_ppCamera[nCnt]->SetLength(400.0f);
-            m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f));
+            m_ppCamera[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 1.0f, D3DX_PI * 0.41f));
 
             D3DVIEWPORT9 viewport;
             //プレイヤー追従カメラの画面位置設定
@@ -493,6 +500,23 @@ HRESULT CGame::Init(void)
         m_pMiniMap = CMiniMap::Create(m_nNumPlayer, 10, 10);	//生成
         m_pMiniMap->DrawTexture();	//ミニマップテクスチャの描画
     }
+
+	if (m_QuataUI == nullptr)
+	{
+		m_QuataUI = CQuataUI::Create(D3DXVECTOR3(SCREEN_WIDTH + 100.0f, SCREEN_HEIGHT * 0.5f, 0.0f), CQuataUI::TYPE_START, CQuataUI::STATE_MOVE, QUATAUI_SIZE.x, QUATAUI_SIZE.y);
+		m_bDispQuataUI = true;
+	}
+
+	// ノルマの設定
+	int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
+	CResult::SetQuata(QuataScore);
+
+	// ノルマの点数
+	if (m_QuataScore == nullptr)
+	{
+		m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 35.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 6, 0.75f, 16.0f, 20.0f);
+		m_QuataScore->SetScore(QuataScore);
+	}
 
     // ポーズの生成
     m_pPause = CPause::Create();
@@ -626,49 +650,37 @@ void CGame::Update(void)
         return;
     }
 
+	if (m_QuataScore != nullptr)
+	{
+		if (m_QuataUI != nullptr)
+		{
+			if (m_QuataUI->GetState() == CQuataUI::STATE_MOVE)
+			{
+				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+				pos.x -= 8.0f;
+				m_QuataScore->SetPosition(pos);
+			}
+
+			if (m_QuataUI->GetState() == CQuataUI::STATE_UP)
+			{
+				if (m_QuataUI->GetCounter() <= 0.0f) {
+					D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+					pos.y -= 2.5f;
+					m_QuataScore->SetPosition(pos);
+				}
+			}
+
+			if (m_QuataUI->GetState() == CQuataUI::STATE_SET)
+			{
+				D3DXVECTOR3 pos = m_QuataScore->GetPosition();
+				pos.y -= 2.5f * 0.13f;
+				m_QuataScore->SetPosition(pos);
+			}
+		}
+	}
+
     // 開始タイマー
-    if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
-        m_nStartCnt++;
-
-        if (m_ppCamera != nullptr) { // 使用していた場合
-            for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-            {
-                m_ppCamera[nCnt]->SetLength(m_ppCamera[nCnt]->GetLength() + 1.5f);
-            }
-        }
-
-        if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
-            CGimmick::SwitchOff();
-        }
-        else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
-            if (m_ppPlayer != nullptr) { // 使用していた場合
-                for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-                {
-                    if (m_ppPlayer[nCnt] != nullptr) {
-                        m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
-                    }
-                }
-
-                if (m_QuataUI == nullptr)
-                {
-                    m_QuataUI = CQuataUI::Create(D3DXVECTOR3(SCREEN_WIDTH + 100.0f, SCREEN_HEIGHT * 0.5f, 0.0f), CQuataUI::TYPE_START, CQuataUI::STATE_MOVE, QUATAUI_SIZE.x, QUATAUI_SIZE.y);
-                    m_bDispQuataUI = true;
-                }
-
-                // ノルマの設定
-                int QuataScore = STANDARDSCORE + (m_nNumPlayer * SCORE);
-                CResult::SetQuata(QuataScore);
-
-                // ノルマの点数
-                if (m_QuataScore == nullptr)
-                {
-                    m_QuataScore = CScore::Create(D3DXVECTOR3(SCREEN_WIDTH + 35.0f, SCREEN_HEIGHT * 0.5f, 0.0f), 6, 0.75f, 16.0f, 20.0f);
-                    m_QuataScore->SetScore(QuataScore);
-                }
-            }
-        }
-    }
-    else
+    if(!StartDirection())
     {	// 時間切れ
         if (m_state != STATE_END) {	// 終了状態以外
             if (EndCheck()) {	// 全員ゴールしている
@@ -695,35 +707,6 @@ void CGame::Update(void)
                         m_state = STATE_END;
                     }
                 }
-            }
-        }
-    }
-
-    if (m_QuataScore != nullptr)
-    {
-        if (m_QuataUI != nullptr)
-        {
-            if (m_QuataUI->GetState() == CQuataUI::STATE_MOVE)
-            {
-                D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-                pos.x -= 8.0f;
-                m_QuataScore->SetPosition(pos);
-            }
-
-            if (m_QuataUI->GetState() == CQuataUI::STATE_UP)
-            {
-                if (m_QuataUI->GetCounter() <= 0.0f) {
-                    D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-                    pos.y -= 2.5f;
-                    m_QuataScore->SetPosition(pos);
-                }
-            }
-
-            if (m_QuataUI->GetState() == CQuataUI::STATE_SET)
-            {
-                D3DXVECTOR3 pos = m_QuataScore->GetPosition();
-                pos.y -= 2.5f * 0.13f;
-                m_QuataScore->SetPosition(pos);
             }
         }
     }
@@ -1137,6 +1120,7 @@ void CGame::SendGoal(void)
         // protocolを挿入
         memcpy(&aSendData[0], &nProt, sizeof(int));
 
+
         // 送信
         m_pClient->Send(&aSendData[0], sizeof(int));
     }
@@ -1164,4 +1148,54 @@ void CGame::AddressLoad(char *pAddrss)
     {//ファイルが開けなかった場合
         return;
     }
+}
+
+//===================================================
+// 開始演出
+//===================================================
+bool CGame::StartDirection(void)
+{
+	bool bDirection = false;
+
+	if (m_nStartCnt < START_WAITCNT) {	// 規定値未満
+		m_nStartCnt++;
+		bDirection = true;
+
+		// タイミングごとに動かす
+		if (m_nStartCnt == START_WAITCNT - PLAYER_MOVESTART) {	// プレイヤー移動開始
+			if (m_ppPlayer != nullptr) { // 使用していた場合
+				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
+					if (m_ppPlayer[nCnt] != nullptr) {
+						m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_AUTOMOVE);	// 自動移動状態に変更
+					}
+				}
+			}
+		}
+		else if (m_nStartCnt >= START_WAITCNT - PLAYER_MOVESTART) {	// プレイヤーが移動している
+			if (m_ppCamera != nullptr) { // 使用していた場合
+				for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {	// 全てのカメラの距離を離していく
+					m_ppCamera[nCnt]->SetLength(m_ppCamera[nCnt]->GetLength() + 1.5f);
+
+					// カメラを目標の向きまで回転させる
+					D3DXVECTOR3 rotDest = m_ppCamera[nCnt]->GetRotation();
+				}
+			}
+		}
+
+			if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
+				CGimmick::SwitchOff();
+			}
+			else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
+				if (m_ppPlayer != nullptr) { // 使用していた場合
+					for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+					{
+						if (m_ppPlayer[nCnt] != nullptr) {
+							m_ppPlayer[nCnt]->SetType(CPlayer::TYPE_ACTIVE);
+						}
+					}
+				}
+			}
+	}
+
+	return bDirection;
 }

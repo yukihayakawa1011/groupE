@@ -1,0 +1,177 @@
+#==============================================================================
+#
+# マップ配置スクリプトファイル [model.txt]
+# Author : RYOSUKE OHARA
+#
+#==============================================================================
+SCRIPT			# この行は絶対消さないこと！
+
+ITEMSET
+	TYPE = 1
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 1
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 2
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 3
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 3
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 4
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 7
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 9
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 6
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 7
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 8
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 9
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 10
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 6
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 4
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 1
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 9
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 2
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 8
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 3
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 10
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 7
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 1
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 1
+	POS = -200.0 100.0 600.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+END_SCRIPT		# この行は絶対消さないこと！
