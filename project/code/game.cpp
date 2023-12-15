@@ -226,6 +226,7 @@ HRESULT CGame::Init(void)
             m_pFileLoad->Init();
             m_pFileLoad->OpenFile("data\\TXT\\model.txt");			//モデル類
             m_pFileLoad->OpenFile("data\\TXT\\enemy_point.txt");	//敵周回ポイント
+			//m_pFileLoad->OpenFile("data\\TXT\\setitem.txt");	    // アイテムの配置
         }
     }
 
