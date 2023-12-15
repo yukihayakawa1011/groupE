@@ -40,7 +40,7 @@ HRESULT CLife::Init(void)
 	{
 		if (m_pObject[nCnt] == NULL)
 		{
-			m_pObject[nCnt] = CObject2D::Create(7);
+			m_pObject[nCnt] = CObject2D::Create(6);
 
 			if (nCnt % 2 == 0)
 			{
