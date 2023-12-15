@@ -2,10 +2,10 @@ Metasequoia Document
 Format Text Ver 1.0
 
 Scene {
-	pos -28.3265 -60.4756 2400.0000
+	pos -2.2982 -86.8252 2400.0000
 	lookat 0.0000 0.0000 0.0000
-	head -0.0337
-	pich 0.7908
+	head -0.0137
+	pich 0.2708
 	bank 0.0000
 	ortho 0
 	zoom2 3.1250
@@ -19,7 +19,7 @@ Scene {
 }
 Material 2 {
 	"mat1" col(1.000 1.000 1.000 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00) tex("C:\Users\student\Desktop\groupE\project\data\TEXTURE\stonesand.jpg")
-	"mat2" col(0.769 0.769 0.769 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
+	"mat2" col(0.310 0.310 0.310 1.000) dif(0.800) amb(0.600) emi(0.000) spc(0.000) power(5.00)
 }
 Object "obj1" {
 	visible 15
