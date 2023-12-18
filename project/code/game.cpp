@@ -79,7 +79,7 @@ namespace {
     const int START_WAITCNT = (430);            // スタート時の走ってる時間
 	const int PLAYER_MOVESTART = (180);
 	const int CAMERA_ROTATESTART = (240);
-	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f};
+	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.38f};
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 	const int PLAYER_SPWANSTART = (240);
@@ -697,7 +697,7 @@ bool CGame::EndCheck(void)
 
         CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
 
-        if (!pPl->GetGoal()) {	// ゴールしていない
+        if (!pPl->GetEnd()) {	// ゴールしていない
             break;
         }
 
@@ -1132,7 +1132,7 @@ bool CGame::StartDirection(void)
 		}
 
 			if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
-				CGimmick::SwitchOff();
+				//CGimmick::SwitchOff();
 			}
 			else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
 				if (m_ppPlayer != nullptr) { // 使用していた場合
