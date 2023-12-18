@@ -89,6 +89,8 @@ namespace {
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
 	const int HEADPARTS_IDX = (1);
 	const D3DXVECTOR3 POS_WARP = D3DXVECTOR3(-760.0f, 1000.0f, 1400.0f);
+	const int GOAL_WAITTIME = (120);
+	const int GOAL_QUITTIME = (GOAL_WAITTIME - 60);
 }
 
 // 前方宣言
@@ -145,12 +147,14 @@ CPlayer::CPlayer()
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
 	m_bGoal = false;
+	m_bEnd = false;
 	m_nItemCnt = 0;
 	m_fGage = 0.0f;
 	m_pMyCamera = nullptr;
 	m_pGage = nullptr;
 	m_pThrowItem = nullptr;
 	m_pHeadUI = nullptr;
+	m_nQuitCounter = 0;
 
 	for (int i = 0; i < MAX_ITEM; i++)
 	{
@@ -479,6 +483,11 @@ void CPlayer::Update(void)
 			m_Info.pos = pos;
 		}
 	}
+	else {
+		if (m_bGoal) {	// ゴール状態
+			GoalWait();
+		}
+	}
 
 	// カメラ追従
 	if (m_pMyCamera != nullptr) {
@@ -726,6 +735,7 @@ void CPlayer::Controller(void)
 	if (!m_bGoal) {	// まだゴールしていない
 		if (CGoal::Collision(m_Info.pos, m_Info.posOld)) {	// ゴールを跨いだ
 			m_bGoal = true;
+			m_type = TYPE_NONE;
 		}
 	}
 
@@ -2754,6 +2764,9 @@ void CPlayer::SetFailedParticle(void)
 	CParticle::Create(pos, CEffect::TYPE_RESULTZITABATA);
 }
 
+//===============================================
+// プレイヤーの描画設定
+//===============================================
 void CPlayer::SetDraw(bool bDraw)
 {
 	if (m_pBody != nullptr) {
@@ -2762,5 +2775,50 @@ void CPlayer::SetDraw(bool bDraw)
 
 	if (m_pLeg != nullptr) {
 		m_pLeg->SetDraw(bDraw);
+	}
+}
+
+//===============================================
+// ゴール後待機状態
+//===============================================
+void CPlayer::GoalWait(void)
+{
+	if (m_nQuitCounter >= GOAL_WAITTIME) {	// カウンター規定値の場合
+		return;
+	}
+
+	// カウンター増加
+	m_nQuitCounter++;
+
+	// 自動移動
+	float fSpeed = MOVE;	// 移動量
+	m_Info.move.x = cosf(m_Info.rot.y) * fSpeed;
+	m_Info.move.z = sinf(m_Info.rot.y) * fSpeed;
+	m_Info.pos.x += m_Info.move.x;
+	m_Info.pos.z += m_Info.move.z;
+
+	if (m_nQuitCounter == GOAL_QUITTIME) {	// 退散タイミング
+		// モーションを術の動きに変更
+		if (m_pBody != nullptr) {
+			m_pBody->GetMotion()->Set(ACTION_HENGE);
+		}
+		if (m_pLeg != nullptr) {
+			m_pLeg->GetMotion()->Set(ACTION_HENGE);
+		}
+	}
+
+	if (m_nQuitCounter >= GOAL_WAITTIME) {	// カウンター規定値の場合
+		if (m_pBody != nullptr) {
+			m_pBody->SetDraw(false);
+		}
+		if (m_pLeg != nullptr) {
+			m_pLeg->SetDraw(false);
+		}
+
+		CModel *pModel = m_pLeg->GetParts(0);  // 腰のパーツ
+
+		// 煙のパーティクル生成
+		CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
+		m_bEnd = true;
 	}
 }

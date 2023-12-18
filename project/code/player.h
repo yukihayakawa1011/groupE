@@ -143,6 +143,7 @@ public:	// 誰でもアクセス可能
 	int GetLife(void) { return m_nLife; }
 	STATE GetState(void) { return m_Info.state; }
 	bool GetGoal(void) { return m_bGoal; }
+	bool GetEnd(void) { return m_bEnd; }
 	CScore *GetScore(void) { return m_pScore; }
 	ACTION GetAction(void) const { return m_action; }
 	int GetThrowItemId(void) { return m_nItemId; }
@@ -181,6 +182,7 @@ private:	// 自分だけがアクセス可能
 	void BodySet(void);
 	void ChangeBody(void);
 	void BulletSet(void);
+	void GoalWait(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -201,6 +203,7 @@ private:	// 自分だけがアクセス可能
 	bool m_bMove;			// 移動したかどうか
 	bool m_bJump;			// ジャンプ
 	bool m_bGoal;			// ゴールフラグ
+	bool m_bEnd;
 	int m_nLife;			// 体力
 	int m_nId;				// ID
 	int m_nNumItemCoin;
@@ -219,6 +222,7 @@ private:	// 自分だけがアクセス可能
 	ACTION m_action;		// アクション
 	int m_nItemCnt;		// 
 	static int m_nNumCount;
+	int m_nQuitCounter;	// 脱出から消えるまでのカウンター
 	CCamera *m_pMyCamera;	// 自分用のカメラ
 	CUI *m_pUI;
 	CGage *m_pGage;		// 忍術ゲージ

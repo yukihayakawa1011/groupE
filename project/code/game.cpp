@@ -697,7 +697,7 @@ bool CGame::EndCheck(void)
 
         CPlayer *pPlNext = pPl->GetNext();	// 次を覚える
 
-        if (!pPl->GetGoal()) {	// ゴールしていない
+        if (!pPl->GetEnd()) {	// ゴールしていない
             break;
         }
 
@@ -1132,7 +1132,7 @@ bool CGame::StartDirection(void)
 		}
 
 			if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
-				CGimmick::SwitchOff();
+				//CGimmick::SwitchOff();
 			}
 			else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
 				if (m_ppPlayer != nullptr) { // 使用していた場合
