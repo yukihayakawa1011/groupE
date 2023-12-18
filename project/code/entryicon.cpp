@@ -33,7 +33,8 @@ CEntryIcon::CEntryIcon()
 	m_Info.fPolyHeight = 0.0f;
 	m_Info.bEntry = false;
 	m_pObject = nullptr;
-	m_nIdxPlayer = -1;
+	m_nIdxPlayer = -1; 
+	m_bChangeTex = false;
 }
 
 //==========================================================
@@ -53,6 +54,7 @@ HRESULT CEntryIcon::Init(D3DXVECTOR3 pos)
 	{// 使用していた場合
 
 		m_pObject = CObject2D::Create(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
+		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
 		m_pObject->SetDraw(true);
 		char aTexPass[256] = "";
 		sprintf(&aTexPass[0], FILEPASS[STATE_STANDBY], m_nIdxPlayer);
@@ -71,6 +73,7 @@ HRESULT CEntryIcon::Init(void)
 	{// 使用していた場合
 
 		m_pObject = CObject2D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
+		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f));
 		m_pObject->SetDraw(true);
 		char aTexPass[256] = "";
 		sprintf(&aTexPass[0], FILEPASS[STATE_STANDBY], m_nIdxPlayer);
@@ -139,6 +142,36 @@ CEntryIcon * CEntryIcon::Create(D3DXVECTOR3 Pos, const int nIdx, const float fPo
 	}
 
 	return pEntryIcon;
+}
+
+//==========================================================
+// エントリーした
+//==========================================================
+void CEntryIcon::Entryed(void)
+{
+	if (m_Info.bEntry == true && m_bChangeTex == false)
+	{
+		char aTexPass[256] = "";
+		sprintf(&aTexPass[0], FILEPASS[STATE_ENTRY], m_nIdxPlayer);
+		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(aTexPass));
+		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_bChangeTex = true;
+	}
+}
+
+//==========================================================
+// エントリー解除
+//==========================================================
+void CEntryIcon::NoEntry(void)
+{
+	if(m_Info.bEntry == false && m_bChangeTex == true)
+	{
+		char aTexPass[256] = "";
+		sprintf(&aTexPass[0], FILEPASS[STATE_STANDBY], m_nIdxPlayer);
+		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(aTexPass));
+		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f));
+		m_bChangeTex = false;
+	}
 }
 
 //==========================================================
