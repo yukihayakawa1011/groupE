@@ -229,6 +229,12 @@ void CRenderer::Draw(void)
 
 	 // エディターの描画
 #endif
+		CMiniMap* pMinimap = CManager::GetInstance()->GetScene()->GetMiniMap();
+		if (pMinimap != nullptr)
+		{
+			pMinimap->DrawManual();
+		}
+
 		// デバッグ表示
 		if (pDebugProc != NULL)
 		{

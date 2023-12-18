@@ -15,6 +15,7 @@
 class CMultiCamera;
 class CObject2D;
 class CObject2DMap;
+class CObject2DScroll;
 
 //人数別ミニマップ配置
 namespace PlacePos
@@ -56,6 +57,7 @@ public:
 	void Uninit(void);
 	void Update(void){}
 	void DrawTexture(void);
+	void DrawManual(void);	//3人プレイ用単体描画
 	void ExploredMap(void);
 	void Load(void);		//デバイスロスト対策：ロスト解消したら呼び出してね。初期化にも使える。
 	void UnLoad(void);	//デバイスロスト対策：ロストしたら呼び出してね。終了にも使える。
@@ -76,6 +78,7 @@ private:
 	LPDIRECT3DTEXTURE9 m_pTextureMap;	// テクスチャ
 	LPDIRECT3DTEXTURE9 m_pTextureUnex;	// 未探索場所を黒くしたテクスチャ
 	LPDIRECT3DSURFACE9 m_pZSurface;		// テクスチャの深度バッファ
+	CObject2DScroll* m_pObjScroll;		// 巻物背景オブジェクト
 	CObject2DMap* m_pObjMap;			//マップオブジェ
 	CObject2D** m_ppPlayerIcon;
 	bool** m_ppExplored;//探索済みドット
