@@ -34,6 +34,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/grow.wav", 0 },			// ägëÂ
 	{ "data/SE/fade.wav", 0 },			// èkè¨
 	{ "data/SE/seek.wav", 0 },			// å©Ç¬ÇØÇΩ
+	{ "data/SE/land.wav", 0 },			// íÖín
 };										
 
 //=============================================================================

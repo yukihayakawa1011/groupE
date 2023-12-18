@@ -497,6 +497,13 @@ void CPlayer::Update(void)
 		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
 
+	if (m_Catch.pPlayer != nullptr) {
+		if (m_Catch.pPlayer->m_Info.state == STATE_CATCH && m_Info.state == STATE_CATCH) {	// どっちも掴んでいる場合
+			m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
+			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+			m_Catch.pPlayer = nullptr;
+		}
+	}
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
@@ -651,6 +658,13 @@ void CPlayer::Controller(void)
 	// オブジェクトとの当たり判定
 	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 120.0f, 50.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
+	if (m_Catch.pPlayer != nullptr) {
+		vtxMax.x *= 2;
+		vtxMax.z *= 2;
+		vtxMin.x *= 2;
+		vtxMin.z *= 2;
+	}
+
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
 	{
 		m_bJump = false;
@@ -658,6 +672,8 @@ void CPlayer::Controller(void)
 
 	if (bOld && !m_bJump) {
 		CParticle::Create(m_Info.pos, CEffect::TYPE_LAND);
+		
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_LAND);
 	}
 
 	// アイテムとの当たり判定
@@ -704,6 +720,13 @@ void CPlayer::Controller(void)
 	}
 
 	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
+
+		if (m_Catch.pPlayer != nullptr) {
+			m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
+			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+			m_Catch.pPlayer = nullptr;
+		}
+
 		if (m_Catch.pGimmick->GetPull() != nullptr) 
 		{
 			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
@@ -714,6 +737,7 @@ void CPlayer::Controller(void)
 			}
 			else 
 			{
+				m_Catch.pGimmick->SetMtxParent(nullptr);
 				m_Catch.pGimmick = nullptr;
 			}
 		}
@@ -890,21 +914,21 @@ void CPlayer::MoveController(void)
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
 
-	if (m_Catch.pPlayer != nullptr || m_Catch.pGimmick) {
+	if (m_Catch.pPlayer != nullptr || m_Catch.pGimmick != nullptr) {
 		fSpeed = CATCH_MOVE;
 	}
 
 	fSpeed -= (m_nItemCnt * SPEED_DECAY);
 
-	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.5f, CInputPad::STICK_MINUS) == true)
+	if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_MINUS) == true)
 	{
-		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
+		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.75f)) * fSpeed;
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.25f);
 		}
-		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
+		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (-D3DX_PI * 0.25f)) * fSpeed;
@@ -920,16 +944,16 @@ void CPlayer::MoveController(void)
 		// 移動した状態にする
 		m_bMove = true;
 	}
-	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.5f, CInputPad::STICK_PLUS) == true)
+	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_X, 0.8f, CInputPad::STICK_PLUS) == true)
 	{
-		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
+		if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.75f)) * fSpeed;
 
 			m_fRotDest = (-CamRot.y + D3DX_PI * 0.75f);
 		}
-		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
+		else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
 		{
 			m_Info.move.x += cosf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
 			m_Info.move.z += sinf(CamRot.y + (D3DX_PI * 0.25f)) * fSpeed;
@@ -946,7 +970,7 @@ void CPlayer::MoveController(void)
 		// 移動した状態にする
 		m_bMove = true;
 	}
-	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_PLUS))
+	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_PLUS))
 	{
 		m_Info.move.x += -cosf(CamRot.y) * fSpeed;
 		m_Info.move.z += -sinf(CamRot.y) * fSpeed;
@@ -956,7 +980,7 @@ void CPlayer::MoveController(void)
 		m_bMove = true;
 
 	}
-	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.5f, CInputPad::STICK_MINUS))
+	else if (pInputPad->GetStickPress(m_nId, CInputPad::BUTTON_LEFT_Y, 0.8f, CInputPad::STICK_MINUS))
 	{
 		m_Info.move.x += cosf(CamRot.y) * fSpeed;
 		m_Info.move.z += sinf(CamRot.y) * fSpeed;
@@ -1488,6 +1512,11 @@ void CPlayer::MotionSet(void)
 		if (m_Catch.pGimmick != nullptr) {	// ギミックを持っている
 			CParticle::Create(D3DXVECTOR3(m_Catch.pGimmick->GetMtxWorld()->_41, m_Catch.pGimmick->GetMtxWorld()->_42, m_Catch.pGimmick->GetMtxWorld()->_43),
 				CEffect::TYPE_PULLNOW);
+
+			if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
+			{
+				//CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+			}
 		}
 	}
 	else
@@ -2312,6 +2341,12 @@ void CPlayer::PlayerCatch(D3DXVECTOR3 pos)
 					pPlayer->m_Info.state = STATE_CATCH;	// 相手を掴まれている状態に
 					pPlayer->m_Catch.pPlayer = this;		// 相手に自分を指定
 					m_Catch.pPlayer = pPlayer;				// 自分のポインタに相手を指定
+
+					if (pPlayer->m_Catch.pGimmick != nullptr) {
+						pPlayer->m_Catch.pGimmick->SetMtxParent(nullptr);
+						pPlayer->m_Catch.pGimmick = nullptr;
+					}
+
 					m_Catch.nMoveCnt = 0;
 					CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CATCH);
 				}
