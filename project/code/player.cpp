@@ -83,14 +83,15 @@ namespace {
 	const float AIR_GAGE = (100.0f);	// 風神の術のゲージ必要量
 	const float KAKUREMI_GAGE = (1.0f);	// 隠れ蓑術のゲージ必要量
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
-	const D3DXVECTOR2 GAGE_SIZE = {75.0f, 5.0f};	// ゲージのポリゴンサイズ
+	const D3DXVECTOR2 GAGE_SIZE = { 75.0f, 5.0f };	// ゲージのポリゴンサイズ
 	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
 	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
 	const int HEADPARTS_IDX = (1);
 	const D3DXVECTOR3 POS_WARP = D3DXVECTOR3(-760.0f, 1000.0f, 1400.0f);
-	const int GOAL_WAITTIME = (120);
+	const int GOAL_WAITTIME = (180);
 	const int GOAL_QUITTIME = (GOAL_WAITTIME - 60);
+	const D3DXVECTOR3 GOAL_CAMERAROT = { 0.0f, D3DX_PI * 1.0f, D3DX_PI * 0.46f };
 }
 
 // 前方宣言
@@ -621,6 +622,7 @@ void CPlayer::Controller(void)
 	m_Info.move.y += fGravity;
 	pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
 
+
 	m_Info.move.x += (0.0f - m_Info.move.x) * fIner;	//x座標
 	m_Info.move.z += (0.0f - m_Info.move.z) * fIner;	//x座標
 
@@ -762,6 +764,7 @@ void CPlayer::Move(void)
 		return;
 	}
 
+	//落とし穴に落ちなければ操作可能に
 	if (m_Info.pos.y >= 0.0f || m_Info.pos.y <= -1000.0f)
 	{
 		//プレイヤーの更新
@@ -2793,14 +2796,40 @@ void CPlayer::GoalWait(void)
 	// カウンター増加
 	m_nQuitCounter++;
 
-	// 自動移動
-	float fSpeed = MOVE;	// 移動量
-	m_Info.move.x = cosf(m_Info.rot.y) * fSpeed;
-	m_Info.move.z = sinf(m_Info.rot.y) * fSpeed;
-	m_Info.pos.x += m_Info.move.x;
-	m_Info.pos.z += m_Info.move.z;
+	if (m_nQuitCounter < GOAL_QUITTIME) {	// 退散タイミング
 
-	if (m_nQuitCounter == GOAL_QUITTIME) {	// 退散タイミング
+		// 自動移動
+		float fSpeed = MOVE;	// 移動量
+		m_Info.move.x = -sinf(m_Info.rot.y) * fSpeed;
+		m_Info.move.z = -cosf(m_Info.rot.y) * fSpeed;
+
+		float fGravity = GRAVITY * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += fGravity;
+		m_Info.pos.y += m_Info.move.y * CManager::GetInstance()->GetSlow()->Get();
+
+		m_Info.pos.x += m_Info.move.x;
+		m_Info.pos.z += m_Info.move.z;
+
+		// メッシュフィールドとの判定
+		{
+			float fHeight = CMeshField::GetHeight(m_Info.pos);
+			if (m_Info.pos.y < fHeight)
+			{
+				m_Info.pos.y = fHeight;
+				m_Info.move.y = 0.0f;
+				m_bJump = false;
+			}
+		}
+
+		// モーションを歩きに変更
+		if (m_pBody != nullptr) {
+			m_pBody->GetMotion()->Set(ACTION_WALK);
+		}
+		if (m_pLeg != nullptr) {
+			m_pLeg->GetMotion()->Set(ACTION_WALK);
+		}
+	}
+	else if (m_nQuitCounter == GOAL_QUITTIME) {	// 退散タイミング
 		// モーションを術の動きに変更
 		if (m_pBody != nullptr) {
 			m_pBody->GetMotion()->Set(ACTION_HENGE);
@@ -2808,6 +2837,13 @@ void CPlayer::GoalWait(void)
 		if (m_pLeg != nullptr) {
 			m_pLeg->GetMotion()->Set(ACTION_HENGE);
 		}
+	}
+
+	// カメラの向きを補正
+	if (m_pMyCamera != nullptr) {
+		// カメラを目標の向きまで回転させる
+		D3DXVECTOR3 rotDest = GOAL_CAMERAROT - m_pMyCamera->GetRotation();
+		m_pMyCamera->SetRotation(m_pMyCamera->GetRotation() + rotDest * 0.05f);
 	}
 
 	if (m_nQuitCounter >= GOAL_WAITTIME) {	// カウンター規定値の場合
