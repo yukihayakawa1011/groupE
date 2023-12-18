@@ -33,6 +33,7 @@
 #include "enemy.h"
 #include "item.h"
 #include "particle.h"
+#include "entryicon.h"
 
 // 無名名前空間
 namespace
@@ -57,6 +58,11 @@ CTutorial::CTutorial()
 {
 	// 値のクリア
 	m_pFileLoad = NULL;
+
+	for (int i = 0; i < NUM_PLAYER; i++)
+	{
+		m_apObject[i] = nullptr;
+	}
 
 	for (int i = 0; i < NUM_PORI; i++)
 	{
@@ -154,6 +160,19 @@ HRESULT CTutorial::Init(void)
 			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 		}
 	}
+
+	// エントリーアイコン
+	{
+		for (int i = 0; i < NUM_PLAYER; i++)
+		{
+			if (m_apObject[i] == nullptr)
+			{// 使用されていなかったら
+
+				m_apObject[i] = CEntryIcon::Create(D3DXVECTOR3(190.0f + i * 300.0f, 625.0f, 0.0f), i, 125.0f, 75.0f);
+			}
+		}
+	}
+	
 
 	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
 	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
@@ -261,6 +280,15 @@ void CTutorial::Uninit(void)
 
 		 // 使用していない状態にする
 			m_apEnemy[i] = nullptr;
+		}
+	}
+
+	for (int i = 0; i < NUM_PLAYER; i++)
+	{
+		if (m_apObject[i] != nullptr)
+		{
+			m_apObject[i]->Uninit();
+			m_apObject[i] = nullptr;
 		}
 	}
 
