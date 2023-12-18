@@ -104,6 +104,7 @@ public:	// 誰でもアクセス可能
 	void Blow(void);
 	static int GetNum(void) { return m_nNumCount; }
 	int GetLife(void) { return m_nLife; }
+	int GetPointID(void) { return m_nPointID; }
 
 private:	// 自分だけがアクセス可能
 

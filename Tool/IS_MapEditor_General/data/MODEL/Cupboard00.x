@@ -183,7 +183,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "data\\TEXTURE\\Cupboard.png";
+    "C:\\Users\\student\\Desktop\\groupE\\project\\data\\TEXTURE\\Cupboard.png";
    }
   }
   Material {

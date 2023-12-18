@@ -58,15 +58,36 @@ void CEnemyManager::Update(void)
 	{
 		m_nCounterSpawn = 0;	//カウンターリセット
 
-		if (CEnemy::GetNum() < MAX_SPAWN_ENEMY)
+		if (CEnemy::GetNum() < CPoint::GetNumAll())
 		{
-			int nRand = rand() % CPoint::GetNumAll();
-			CPoint* pPoint = CPoint::GetTop();
-			for (int cnt = 0; cnt < nRand; cnt++)
+			for (int cnt = 0; cnt < CPoint::GetNumAll(); cnt++)
 			{
-				pPoint = pPoint->GetNext();
+				bool bUseID = false;
+				CEnemy* pEnemy = CEnemy::GetTop();
+				while (pEnemy != nullptr)
+				{
+					CEnemy* pEnemyNext = pEnemy->GetNext();
+
+					if (pEnemy->GetPointID() == cnt)
+					{
+						bUseID = true;
+						break;
+					}
+
+					pEnemy = pEnemyNext;
+				}
+
+				if (bUseID == false)
+				{
+					CPoint* pPoint = CPoint::GetTop();
+					for (int cntPoint = 0; cntPoint < cnt; cntPoint++)
+					{
+						pPoint = pPoint->GetNext();
+					}
+					CEnemy::Create(pPoint->GetPoint(0), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL, cnt);
+					break;
+				}
 			}
-			CEnemy::Create(pPoint->GetPoint(0), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL, nRand);
 		}
 	}
 }
