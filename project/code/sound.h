@@ -41,7 +41,8 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_GROW,			// 拡大
 		LABEL_SE_FADE,			// 縮小
 		LABEL_SE_SEEK,			// 見つけた
-		LABEL_SE_LAND,			// 見つけた
+		LABEL_SE_LAND,			// 着地
+		LABEL_SE_DEATH,			// 死亡
 		LABEL_MAX,
 	} LABEL;
 
