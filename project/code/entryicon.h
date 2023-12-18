@@ -12,9 +12,6 @@
 // 前方宣言
 class CObject2D;
 
-// マクロ定義
-#define NUM_PLAYER (4)  // プレイヤーの最大人数
-
 //===============================================
 // ナンバークラスの定義
 //===============================================
@@ -44,13 +41,13 @@ public:	// 誰でもアクセス可能
 	};
 
 	// メンバ関数
-	//HRESULT Init(D3DXVECTOR3 pos, float fWidth, float fHeight);
+	HRESULT Init(D3DXVECTOR3 pos);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	static CEntryIcon *Create(void);
-	static CEntryIcon *Create(D3DXVECTOR3 * pPos, D3DXMATRIX *Matrix, const float fUpHeight, const float fPolyWidth, const float fPolyHeight);
-	CObject2D *GetObjectBill(void) { return m_apObject[0]; }
+	static CEntryIcon *Create(D3DXVECTOR3 Pos, const int nIdx, const float fPolyWidth, const float fPolyHeight);
+	CObject2D *GetObjectBill(void) { return m_pObject; }
 
 	// メンバ関数(設定)
 	void SetIdx(const int nIdx);
@@ -63,8 +60,8 @@ private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	Info m_Info;                        // 情報
-	CObject2D *m_apObject[NUM_PLAYER];	// オブジェクト2Dのポインタ
-	int m_nIdx;                         // インデックス番号
+	CObject2D *m_pObject;	            // オブジェクト2Dのポインタ
+	int m_nIdxPlayer;                   // プレイヤーの番号
 };
 
 #endif
