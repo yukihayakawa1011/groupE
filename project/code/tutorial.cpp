@@ -33,6 +33,7 @@
 #include "enemy.h"
 #include "item.h"
 #include "particle.h"
+#include "entryicon.h"
 
 // 無名名前空間
 namespace
@@ -40,6 +41,7 @@ namespace
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+	const D3DXVECTOR2 PORISIZE = D3DXVECTOR2(200.0f, 50.0f);
 }
 
 //===============================================
@@ -57,6 +59,11 @@ CTutorial::CTutorial()
 {
 	// 値のクリア
 	m_pFileLoad = NULL;
+
+	for (int i = 0; i < NUM_PLAYER; i++)
+	{
+		m_apObject[i] = nullptr;
+	}
 
 	for (int i = 0; i < NUM_PORI; i++)
 	{
@@ -151,8 +158,33 @@ HRESULT CTutorial::Init(void)
 		if (m_apEnemy[i] == nullptr)
 		{// 使用されていない場合
 
-			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 		}
+	}
+
+	// エントリーアイコン
+	{
+		for (int i = 0; i < NUM_PLAYER; i++)
+		{
+			if (m_apObject[i] == nullptr)
+			{// 使用されていなかったら
+
+				m_apObject[i] = CEntryIcon::Create(D3DXVECTOR3(190.0f + i * 300.0f, 570.0f, 0.0f), i, 125.0f, 75.0f);
+			}
+		}
+	}
+
+	CObject2D *pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 680.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
+	pObject2D->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\entrystart.png"));
+	pObject2D->SetSize(PORISIZE.x, PORISIZE.y);
+	
+	// 0番目だけエントリーしている状態にする
+	if (m_apObject[0] != nullptr)
+	{
+		m_apObject[0]->SetbEntry(true);
+		m_apObject[0]->SetState(CEntryIcon::STATE_ENTRY);
+		m_apObject[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_apObject[0]->Entryed();
 	}
 
 	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
@@ -199,7 +231,7 @@ HRESULT CTutorial::Init(void)
 	// お宝関連
 	if (m_pObject3D[3] == nullptr)
 	{
-		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[3]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[3]->SetSize(100.0f, 100.0f);
@@ -264,6 +296,15 @@ void CTutorial::Uninit(void)
 		}
 	}
 
+	for (int i = 0; i < NUM_PLAYER; i++)
+	{
+		if (m_apObject[i] != nullptr)
+		{
+			m_apObject[i]->Uninit();
+			m_apObject[i] = nullptr;
+		}
+	}
+
 	if (m_ppPlayer != NULL)
 	{// 使用していた場合
 		int nNum = CPlayer::GetNum();
@@ -311,6 +352,10 @@ void CTutorial::Update(void)
 			// 煙のパーティクル生成
 			CParticle::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffect::TYPE_SMAKE);
 			bCreate = true;
+			m_apObject[nId]->SetbEntry(true);
+			m_apObject[nId]->SetState(CEntryIcon::STATE_ENTRY);
+			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+			m_apObject[nId]->Entryed();
 		}
 	}
 
@@ -319,6 +364,10 @@ void CTutorial::Update(void)
 			int nId = CPlayer::GetNum() - 1;
 			m_ppPlayer[nId]->Uninit();
 			m_ppPlayer[nId] = 0;
+			m_apObject[nId]->SetbEntry(false);
+			m_apObject[nId]->SetState(CEntryIcon::STATE_STANDBY);
+			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_apObject[nId]->GetCol()));
+			m_apObject[nId]->NoEntry();
 		}
 	}
 

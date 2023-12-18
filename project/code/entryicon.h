@@ -12,9 +12,6 @@
 // 前方宣言
 class CObject2D;
 
-// マクロ定義
-#define NUM_PLAYER (4)  // プレイヤーの最大人数
-
 //===============================================
 // ナンバークラスの定義
 //===============================================
@@ -44,17 +41,25 @@ public:	// 誰でもアクセス可能
 	};
 
 	// メンバ関数
-	//HRESULT Init(D3DXVECTOR3 pos, float fWidth, float fHeight);
+	HRESULT Init(D3DXVECTOR3 pos);
 	HRESULT Init(void);
 	void Uninit(void);
 	void Update(void);
 	static CEntryIcon *Create(void);
-	static CEntryIcon *Create(D3DXVECTOR3 * pPos, D3DXMATRIX *Matrix, const float fUpHeight, const float fPolyWidth, const float fPolyHeight);
-	CObject2D *GetObjectBill(void) { return m_apObject[0]; }
+	static CEntryIcon *Create(D3DXVECTOR3 Pos, const int nIdx, const float fPolyWidth, const float fPolyHeight);
+	void Entryed(void);
+	void NoEntry(void);
 
-	// メンバ関数(設定)
-	void SetIdx(const int nIdx);
-	void SetMixPosition(void);
+	// 設定
+	void SetState(STATE state) { m_Info.state = state; }
+	void SetbEntry(bool bEntry) { m_Info.bEntry = bEntry; }
+	void SetCol(D3DXCOLOR col) { 
+		m_Info.col = col; 
+	}
+
+	// 取得
+	CObject2D *GetObjectBill(void) { return m_pObject; }
+	static float GetCol(void) { return m_Allcol; }
 
 private:	// 自分だけがアクセス可能
 
@@ -62,9 +67,12 @@ private:	// 自分だけがアクセス可能
 	void SetPolySize(const float fWidth, const float fHeight);
 
 	// メンバ変数
+	D3DXCOLOR col;
 	Info m_Info;                        // 情報
-	CObject2D *m_apObject[NUM_PLAYER];	// オブジェクト2Dのポインタ
-	int m_nIdx;                         // インデックス番号
+	CObject2D *m_pObject;	            // オブジェクト2Dのポインタ
+	int m_nIdxPlayer;                   // プレイヤーの番号
+	static float m_Allcol;
+	bool m_bChangeTex;                  // テクスチャが変わっている
 };
 
 #endif
