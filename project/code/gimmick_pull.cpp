@@ -167,6 +167,14 @@ bool CGimmickPull::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVEC
 		return bValue;
 	}
 
+	if (ppGimmick == nullptr) {
+		return bValue;
+	}
+
+	if (*ppGimmick != nullptr) {	// Šù‚É‰½‚©‚ÌƒMƒ~ƒbƒN‚ğG‚ê‚Ä‚¢‚é
+		return bValue;
+	}
+
 	D3DXVECTOR3 ObjPos = GetPosition();
 	D3DXVECTOR3 ObjRot = GetRotation();
 

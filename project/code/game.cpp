@@ -79,7 +79,7 @@ namespace {
     const int START_WAITCNT = (430);            // スタート時の走ってる時間
 	const int PLAYER_MOVESTART = (180);
 	const int CAMERA_ROTATESTART = (240);
-	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f};
+	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.38f};
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 	const int PLAYER_SPWANSTART = (240);
@@ -136,7 +136,6 @@ CGame::CGame()
     m_pPause = nullptr;
     m_bQuota = false;
     m_bDispQuataUI = false;
-	m_bSetOnceAngle = false;
 }
 
 //===============================================
@@ -161,7 +160,6 @@ CGame::CGame(int nNumPlayer)
     m_pPause = nullptr;
     m_bQuota = false;
     m_bDispQuataUI = false;
-	m_bSetOnceAngle = false;
 
     // 人数設定
     m_nNumPlayer = nNumPlayer;
@@ -621,15 +619,6 @@ void CGame::Update(void)
     // 開始タイマー
     if(!StartDirection())
     {	// 時間切れ
-		//1度だけプレイヤーのカメラを調整
-		if (m_bSetOnceAngle == false)
-		{
-			for (int cnt = 0; cnt < m_nNumPlayer; cnt++)
-			{
-				m_ppCamera[cnt]->SetRotation(m_ppCamera[cnt]->GetRotation() - D3DXVECTOR3(0.0f, 0.0f, 0.2f * D3DX_PI));
-			}
-			m_bSetOnceAngle = true;
-		}
         if (m_state != STATE_END) {	// 終了状態以外
             if (EndCheck()) {	// 全員ゴールしている
                 CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
