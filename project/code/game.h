@@ -20,6 +20,7 @@ class CMeshDome;
 class CMiniMap;
 class CPause;
 class CQuataUI;
+class CGimmickLever;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -86,6 +87,7 @@ private:
 	CClient *m_pClient;			// クライアントのポインタ
 	CScore *m_QuataScore;       // ノルマのスコア
 	CQuataUI *m_QuataUI;        // ノルマのUI
+	CGimmickLever **m_ppLever;    // 
 	char m_aAddress[30];		// 接続先サーバーのアドレス
 	static STATE m_state;		// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
@@ -96,6 +98,7 @@ private:
 	bool m_bEnd;
 	int m_nStartCnt;			// 開始タイマー
 	int m_nCntLostQuataUI;      // ノルマのUIが消えるまでのカウント
+	int m_nCntGoal;             // ゴールした人数
 	bool m_bPause;              // ポーズ
 	bool m_bQuota;              // ノルマ達成しているどうか
 	bool m_bDispQuataUI;        // ノルマのUIができるかどうか
