@@ -48,10 +48,9 @@ public:	// 誰でもアクセス可能
 	static CEntryIcon *Create(void);
 	static CEntryIcon *Create(D3DXVECTOR3 Pos, const int nIdx, const float fPolyWidth, const float fPolyHeight);
 	CObject2D *GetObjectBill(void) { return m_pObject; }
-
-	// メンバ関数(設定)
-	void SetIdx(const int nIdx);
-	void SetMixPosition(void);
+	void SetbEntry(bool bEntry) { m_Info.bEntry = bEntry; }
+	void Entryed(void);
+	void NoEntry(void);
 
 private:	// 自分だけがアクセス可能
 
@@ -62,6 +61,7 @@ private:	// 自分だけがアクセス可能
 	Info m_Info;                        // 情報
 	CObject2D *m_pObject;	            // オブジェクト2Dのポインタ
 	int m_nIdxPlayer;                   // プレイヤーの番号
+	bool m_bChangeTex;                  // テクスチャが変わっている
 };
 
 #endif

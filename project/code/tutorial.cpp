@@ -157,7 +157,7 @@ HRESULT CTutorial::Init(void)
 		if (m_apEnemy[i] == nullptr)
 		{// 使用されていない場合
 
-			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 700.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
+			m_apEnemy[i] = CEnemy::Create(D3DXVECTOR3(200.0f - i * 500.0f, 0.0f, 350.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL);
 		}
 	}
 
@@ -173,6 +173,12 @@ HRESULT CTutorial::Init(void)
 		}
 	}
 	
+	// 0番目だけエントリーしている状態にする
+	if (m_apObject[0] != nullptr)
+	{
+		m_apObject[0]->SetbEntry(true);
+		m_apObject[0]->Entryed();
+	}
 
 	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_BRECELET, NULL);
 	CItem::Create(D3DXVECTOR3(-900.0f, 0.0f, 100.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_CUP, NULL);
@@ -218,7 +224,7 @@ HRESULT CTutorial::Init(void)
 	// お宝関連
 	if (m_pObject3D[3] == nullptr)
 	{
-		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, 400.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[3]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[3]->SetSize(100.0f, 100.0f);
@@ -339,6 +345,8 @@ void CTutorial::Update(void)
 			// 煙のパーティクル生成
 			CParticle::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffect::TYPE_SMAKE);
 			bCreate = true;
+			m_apObject[nId]->SetbEntry(true);
+			m_apObject[nId]->Entryed();
 		}
 	}
 
@@ -347,6 +355,8 @@ void CTutorial::Update(void)
 			int nId = CPlayer::GetNum() - 1;
 			m_ppPlayer[nId]->Uninit();
 			m_ppPlayer[nId] = 0;
+			m_apObject[nId]->SetbEntry(false);
+			m_apObject[nId]->NoEntry();
 		}
 	}
 
