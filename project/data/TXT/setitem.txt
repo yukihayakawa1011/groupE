@@ -356,4 +356,46 @@ ITEMSET
 	SHADOW = 0		#使用しない場合は0
 END_ITEMSET
 
+ITEMSET
+	TYPE = 0
+	POS = -1010.0 1.0 500.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 0
+	POS = -1010.0 1.0 400.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 0
+	POS = -910.0 1.0 400.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 0
+	POS = -910.0 1.0 500.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 0
+	POS = -810.0 1.0 400.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
+ITEMSET
+	TYPE = 0
+	POS = -810.0 1.0 500.0
+	ROT = 0.0 0.0 0.0
+	SHADOW = 0		#使用しない場合は0
+END_ITEMSET
+
 END_SCRIPT		# この行は絶対消さないこと！
