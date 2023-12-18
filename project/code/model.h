@@ -48,12 +48,14 @@ public:	// 誰でもアクセス可能
 	void SetCurrentRotation(const D3DXVECTOR3 rot);
 	void SetDraw(bool bDraw = true) { m_bDraw = bDraw; }
 	void SetShadow(bool bShadow = false) { m_bShadow = bShadow; }
+	void SetMaterial(const D3DMATERIAL9& Material) { m_ChangeMat = Material; }
+	void ChangeCol(bool bValue = false) { m_bChangeCol = bValue; }
 
 private:	// 自分だけがアクセス可能
 
 	// メンバ変数
 	int m_nIdxModel;		// モデル番号
-	bool m_bChangeCol;		// 色変更をするかどうか
+	bool m_bChangeCol;	// 色変更をするかどうか
 	bool m_bDraw;
 	D3DMATERIAL9 m_ChangeMat;
 	D3DXVECTOR3 m_pos;		// 位置
