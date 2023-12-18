@@ -569,6 +569,8 @@ void CEnemy::Search(void)
 		{
 			m_pFov->SetLength(CHACE_LENGTH);
 			m_pFov->SetColor(D3DXCOLOR(1.0f, 0.0f, 0.0f, 0.4f));
+
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SEEK);
 		}
 	}
 	else

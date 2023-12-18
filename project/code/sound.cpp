@@ -33,6 +33,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/jump.wav", 0 },			// ƒWƒƒƒ“ƒv
 	{ "data/SE/grow.wav", 0 },			// Šg‘å
 	{ "data/SE/fade.wav", 0 },			// k¬
+	{ "data/SE/seek.wav", 0 },			// Œ©‚Â‚¯‚½
 };										
 
 //=============================================================================
