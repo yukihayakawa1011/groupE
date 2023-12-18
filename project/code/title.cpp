@@ -97,6 +97,7 @@ HRESULT CTitle::Init(void)
 		viewport.MinZ = 0.0f;
 		viewport.MaxZ = 1.0f;
 		CManager::GetInstance()->GetCamera()->SetViewPort(viewport);
+		CManager::GetInstance()->GetCamera()->SetActive(false);
 	}
 
 	//‰‰o—p“G¶¬
