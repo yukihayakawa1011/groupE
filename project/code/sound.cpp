@@ -30,7 +30,10 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/item.wav", 0 },			// 取得
 	{ "data/SE/select.wav", 0 },		// アイテム選択
 	{ "data/SE/lever.wav", 0 },			// レバー
-	{ "data/SE/jump.wav", 0 },			// レバー
+	{ "data/SE/jump.wav", 0 },			// ジャンプ
+	{ "data/SE/grow.wav", 0 },			// 拡大
+	{ "data/SE/fade.wav", 0 },			// 縮小
+	{ "data/SE/seek.wav", 0 },			// 見つけた
 };										
 
 //=============================================================================
