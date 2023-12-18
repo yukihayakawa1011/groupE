@@ -10,14 +10,17 @@
 #include "debugproc.h"
 #include "particle.h"
 
-// マクロ定義
-#define COLLISION_RANGE	(50.0f)
-
 // 静的メンバ変数宣言
 char *CGimmickButton::m_apFileName[MODEL_MAX] = {
 	"data\\MODEL\\trans_button.x",
 	"data\\MODEL\\button_frame.x",
 };
+
+namespace
+{
+	const float COLLISION_RANGE = (50.0f);	// 当たり判定半径
+	const float PRESS_NOWHEIGHT = (-6.0f);	// 押されている際の沈む量
+}
 
 //==========================================================
 // コンストラクタ
@@ -58,6 +61,15 @@ HRESULT CGimmickButton::Init(void)
 		}
 	}
 
+	// ボタンの変更後の色を設定
+	if (m_apObj[MODEL_BUTTON] != nullptr) {
+		D3DMATERIAL9 material = {};
+		material.Ambient = D3DXCOLOR (0.1f, 0.1f, 1.0f, 1.0f);
+		material.Diffuse = D3DXCOLOR (0.1f, 0.1f, 1.0f, 1.0f);
+		material.Emissive = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+		m_apObj[MODEL_BUTTON]->SetMaterial(material);
+	}
+
 	return S_OK;
 }
 
@@ -91,17 +103,35 @@ void CGimmickButton::Update(void)
 	// マトリックス設定
 	SetMtxWorld();
 
+	float fHeight = 0.0f;
+
 	// 状態に合わせてボタンの色を変更
 	switch (m_state)
 	{
 	case STATE_NONE:	// 何もない
 		
+		if (m_apObj[MODEL_BUTTON] != nullptr) {
+			m_apObj[MODEL_BUTTON]->ChangeCol();
+		}
 		break;
 
 	case STATE_PRESS:	// 押されている
 		CParticle::Create(GetPosition(), CEffect::TYPE_BUTTON);
+		fHeight = PRESS_NOWHEIGHT;
+		if (m_apObj[MODEL_BUTTON] != nullptr) {
+			m_apObj[MODEL_BUTTON]->ChangeCol(true);
+		}
 		break;
 	}
+
+	if (m_apObj[MODEL_BUTTON] == nullptr) {
+		return;
+	}
+
+	D3DXVECTOR3 pos = m_apObj[MODEL_BUTTON]->GetCurrentPosition();
+	float fDest = fHeight - pos.y;
+	pos.y += fDest * 0.05f;
+	m_apObj[MODEL_BUTTON]->SetCurrentPosition(pos);
 }
 
 //==========================================================

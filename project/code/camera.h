@@ -85,6 +85,7 @@ private:	// 自分だけがアクセス可能
 	void SetR(void);
 	void Edit(void);
 	void Slow(void);
+	void Zoom(void);
 
 	// メンバ変数
 	D3DXMATRIX m_mtxView;		// ビューマトリックス
@@ -98,7 +99,8 @@ private:	// 自分だけがアクセス可能
 	MODE m_mode;				// モード
 	float m_fMulScore;		// スコア倍率
 	float m_fLength;			// 視点と注視点の距離
-	float m_fZoom;				//ズーム率
+	float m_fZoom;				// ズーム率
+	float m_fDestZoom;			// 目標ズーム率
 	CCamera *m_pNext;			// 次
 	CCamera *m_pPrev;			// 前
 	int m_nId;				// 使用コントローラー番号
