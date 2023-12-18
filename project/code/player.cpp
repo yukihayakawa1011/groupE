@@ -155,6 +155,8 @@ CPlayer::CPlayer()
 	m_pGage = nullptr;
 	m_pThrowItem = nullptr;
 	m_pHeadUI = nullptr;
+	m_pFade = nullptr;
+	m_pEscape = nullptr;
 	m_nQuitCounter = 0;
 
 	for (int i = 0; i < MAX_ITEM; i++)
@@ -436,6 +438,15 @@ void CPlayer::Uninit(void)
 		m_pGage = nullptr;
 	}
 
+	if (m_pFade != nullptr) {
+		m_pFade->Uninit();
+		m_pFade = nullptr;
+	}
+
+	if (m_pEscape != nullptr) {
+		m_pEscape->Uninit();
+		m_pEscape = nullptr;
+	}
 	// 人数を減らす
 	m_nNumCount--;
 
@@ -762,6 +773,37 @@ void CPlayer::Controller(void)
 		if (CGoal::Collision(m_Info.pos, m_Info.posOld)) {	// ゴールを跨いだ
 			m_bGoal = true;
 			m_type = TYPE_NONE;
+
+			if (m_pFade != nullptr) {
+				m_pFade->SetDraw(true);
+				float fPosX = SCREEN_WIDTH * 0.5f;
+				float fPosY = SCREEN_HEIGHT * 0.5f;
+				float fWidth = SCREEN_WIDTH * 0.5f;
+				float fHeight = SCREEN_HEIGHT * 0.5f;
+
+				// 座標設定
+				if (m_nNumCount != 1) {	// 1人以外
+					fPosX = (m_nId % 2) * SCREEN_WIDTH * 0.5f + SCREEN_WIDTH * 0.25f;
+					fPosY = (m_nId / 2) * SCREEN_HEIGHT * 0.5f + SCREEN_HEIGHT * 0.25f;
+					fWidth = SCREEN_WIDTH * 0.25f;
+
+					if (m_nNumCount >= 3) {
+						fHeight = SCREEN_HEIGHT * 0.25f;
+					}
+				}
+
+				// ポリゴンのサイズ調整
+				m_pFade->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
+				m_pFade->SetSize(fWidth, fHeight);
+				m_pFade->SetCol(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+
+				if (m_pEscape != nullptr) {
+					m_pEscape->SetDraw(true);
+					m_pEscape->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
+					m_pEscape->SetSize(fWidth * 0.5f, fHeight * 0.5f);
+					m_pEscape->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+				}
+			}
 		}
 	}
 
@@ -2825,6 +2867,24 @@ void CPlayer::SetDraw(bool bDraw)
 void CPlayer::GoalWait(void)
 {
 	if (m_nQuitCounter >= GOAL_WAITTIME) {	// カウンター規定値の場合
+
+		// フェードの色を濃くする
+		if (m_pFade != nullptr) {
+			D3DXCOLOR col = m_pFade->GetCol();
+			if (col.a < 1.0f) {
+				col.a += 0.01f;
+			}
+			m_pFade->SetCol(col);
+		}
+
+		// フェードの色を濃くする
+		if (m_pEscape != nullptr) {
+			D3DXCOLOR col = m_pEscape->GetCol();
+			if (col.a < 1.0f) {
+				col.a += 0.01f;
+			}
+			m_pEscape->SetCol(col);
+		}
 		return;
 	}
 
@@ -2894,5 +2954,22 @@ void CPlayer::GoalWait(void)
 		// 煙のパーティクル生成
 		CParticle::Create(D3DXVECTOR3(pModel->GetMtx()->_41, pModel->GetMtx()->_42, pModel->GetMtx()->_43), CEffect::TYPE_SMAKE);
 		m_bEnd = true;
+	}
+}
+
+//===============================================
+// カメラ設定
+//===============================================
+void CPlayer::SetCamera(CCamera *pCamera) {
+
+	m_pMyCamera = pCamera;
+
+	// フェードの生成
+	if (m_pMyCamera != nullptr) {	// 分割されている
+		m_pFade = CObject2D::Create(5);
+		m_pFade->SetDraw(false);
+		m_pEscape = CObject2D::Create(5);
+		m_pEscape->SetDraw(false);
+		m_pEscape->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\escape000.png"));
 	}
 }

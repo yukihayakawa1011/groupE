@@ -29,6 +29,8 @@
 #include "gimmick_button.h"
 #include "gimmick_spear.h"
 #include "gimmick_pull.h"
+#include "gimmick_startdoor.h"
+#include "gimmick_lever.h"
 #include "object3D.h"
 #include "enemy.h"
 #include "item.h"
@@ -126,16 +128,10 @@ HRESULT CTutorial::Init(void)
 	}
 
 	// ‰ñ“]”à
-	CGimmickRotateDoor::Create(D3DXVECTOR3(-700.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+	CGimmickRotateDoor::Create(D3DXVECTOR3(-500.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 	// ƒS[ƒ‹
 	CGoal::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 200.0f);
-
-	// ‹¦—Í”à
-	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-1700.0f, 0.0f, -600.0f));
-	CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	pMultiDoor->SetNumButton(1);
-	pMultiDoor->BindButton(pButton);
 
 	// šâ
 	CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -143,7 +139,15 @@ HRESULT CTutorial::Init(void)
 	CGimmickPull::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	// ’n–Ê‚©‚ç‚Ì‘„
-	CGimmickSpear::Create(D3DXVECTOR3(-850.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-650.0f, 0.0f, -500.0f));
+	CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-650.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_PRESSAUTO);
+	pSpear->BindButton(pButton);
+
+	CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-700.0f, 50.0f, -900.0f));
+	l->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
+	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(-1400.0f, 0.0f, -1000.0f));
+	p->SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	p->SetLever(l);
 
 	// l”•ªƒ|ƒCƒ“ƒ^¶¬
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];
@@ -231,32 +235,22 @@ HRESULT CTutorial::Init(void)
 	// ‚¨•óŠÖ˜A
 	if (m_pObject3D[3] == nullptr)
 	{
-		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1200.0f, 10.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[3]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[3]->SetSize(100.0f, 100.0f);
-		m_pObject3D[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial001.png"));
+		m_pObject3D[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial005.png"));
 	}
 
 	//	‰ñ“]”à
 	if (m_pObject3D[4] == nullptr)
 	{
-		m_pObject3D[4] = CObject3D::Create(D3DXVECTOR3(-500.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[4] = CObject3D::Create(D3DXVECTOR3(-300.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[4]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[4]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[4]->SetSize(100.0f, 100.0f);
 		m_pObject3D[4]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial002.png"));
 	}
-
-	////	‰ñ“]”à
-	//if (m_pObject3D[5] == nullptr)
-	//{
-	//	m_pObject3D[5] = CObject3D::Create(D3DXVECTOR3(650.0f, 10.0f, 450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//	m_pObject3D[5]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
-	//	m_pObject3D[5]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	//	m_pObject3D[5]->SetSize(100.0f, 100.0f);
-	//	m_pObject3D[5]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial002.png"));
-	//}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 

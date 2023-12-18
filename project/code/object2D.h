@@ -52,6 +52,7 @@ public:	// 誰でもアクセス可能
 	// メンバ関数(取得)
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
+	D3DXCOLOR GetCol(void) { return m_col; }
 	float GetLength(void) { return m_fLength; }
 	float GetAngle(void) { return m_fAngle; }
 	float GetWidth(void) { return m_fWidth; }

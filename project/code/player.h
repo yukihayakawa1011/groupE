@@ -24,6 +24,7 @@ class CUI;
 class CGage;
 class CThrowItem;
 class CHeadUI;
+class CObject2D;
 
 // マクロ定義
 #define MAX_ITEM  (1280)  // 所持できるアイテムの最大数
@@ -122,7 +123,7 @@ public:	// 誰でもアクセス可能
 	void SetRotation(const D3DXVECTOR3 rot) { m_Info.rot = rot; }
 	void BindId(int nId) { m_nId = nId; }
 	void SetType(TYPE type);
-	void SetCamera(CCamera *pCamera) { m_pMyCamera = pCamera; }
+	void SetCamera(CCamera *pCamera);
 	void BindScore(CScore *pScore) { m_pScore = pScore; }
 	void BindUI(CUI *pUI);
 	void Ninjutsu(void);
@@ -228,6 +229,8 @@ private:	// 自分だけがアクセス可能
 	CGage *m_pGage;		// 忍術ゲージ
 	CThrowItem *m_pThrowItem; // 頭の上に出るアイテムのアイコン
 	CHeadUI *m_pHeadUI;
+	CObject2D *m_pFade;	// ゴール後フェード
+	CObject2D *m_pEscape;
 	bool m_bAttack;
 };
 
