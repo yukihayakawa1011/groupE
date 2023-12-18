@@ -37,6 +37,7 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_GET,			// 取得
 		LABEL_SE_SELECT,		// アイテム選択
 		LABEL_SE_LEVER,			// レバー
+		LABEL_SE_JUMP,			// レバー
 		LABEL_MAX,
 	} LABEL;
 
