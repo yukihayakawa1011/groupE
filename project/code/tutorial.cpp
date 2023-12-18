@@ -41,6 +41,7 @@ namespace
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+	const D3DXVECTOR2 PORISIZE = D3DXVECTOR2(200.0f, 50.0f);
 }
 
 //===============================================
@@ -168,15 +169,21 @@ HRESULT CTutorial::Init(void)
 			if (m_apObject[i] == nullptr)
 			{// 使用されていなかったら
 
-				m_apObject[i] = CEntryIcon::Create(D3DXVECTOR3(190.0f + i * 300.0f, 625.0f, 0.0f), i, 125.0f, 75.0f);
+				m_apObject[i] = CEntryIcon::Create(D3DXVECTOR3(190.0f + i * 300.0f, 570.0f, 0.0f), i, 125.0f, 75.0f);
 			}
 		}
 	}
+
+	CObject2D *pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 680.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
+	pObject2D->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\entrystart.png"));
+	pObject2D->SetSize(PORISIZE.x, PORISIZE.y);
 	
 	// 0番目だけエントリーしている状態にする
 	if (m_apObject[0] != nullptr)
 	{
 		m_apObject[0]->SetbEntry(true);
+		m_apObject[0]->SetState(CEntryIcon::STATE_ENTRY);
+		m_apObject[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_apObject[0]->Entryed();
 	}
 
@@ -346,6 +353,8 @@ void CTutorial::Update(void)
 			CParticle::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffect::TYPE_SMAKE);
 			bCreate = true;
 			m_apObject[nId]->SetbEntry(true);
+			m_apObject[nId]->SetState(CEntryIcon::STATE_ENTRY);
+			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			m_apObject[nId]->Entryed();
 		}
 	}
@@ -356,6 +365,8 @@ void CTutorial::Update(void)
 			m_ppPlayer[nId]->Uninit();
 			m_ppPlayer[nId] = 0;
 			m_apObject[nId]->SetbEntry(false);
+			m_apObject[nId]->SetState(CEntryIcon::STATE_STANDBY);
+			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_apObject[nId]->GetCol()));
 			m_apObject[nId]->NoEntry();
 		}
 	}

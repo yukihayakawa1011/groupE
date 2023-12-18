@@ -497,6 +497,13 @@ void CPlayer::Update(void)
 		m_pMyCamera->Pursue(GetPosition(), GetRotation());
 	}
 
+	if (m_Catch.pPlayer != nullptr) {
+		if (m_Catch.pPlayer->m_Info.state == STATE_CATCH && m_Info.state == STATE_CATCH) {	// どっちも掴んでいる場合
+			m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
+			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+			m_Catch.pPlayer = nullptr;
+		}
+	}
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き [%f, %f, %f] : ID [ %d]\n", GetRotation().x, GetRotation().y, GetRotation().z, m_nId);
 	CManager::GetInstance()->GetDebugProc()->Print("位置 [%f, %f, %f]", GetPosition().x, GetPosition().y, GetPosition().z);
@@ -704,6 +711,13 @@ void CPlayer::Controller(void)
 	}
 
 	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
+
+		if (m_Catch.pPlayer != nullptr) {
+			m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
+			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
+			m_Catch.pPlayer = nullptr;
+		}
+
 		if (m_Catch.pGimmick->GetPull() != nullptr) 
 		{
 			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
@@ -2312,6 +2326,12 @@ void CPlayer::PlayerCatch(D3DXVECTOR3 pos)
 					pPlayer->m_Info.state = STATE_CATCH;	// 相手を掴まれている状態に
 					pPlayer->m_Catch.pPlayer = this;		// 相手に自分を指定
 					m_Catch.pPlayer = pPlayer;				// 自分のポインタに相手を指定
+
+					if (pPlayer->m_Catch.pGimmick != nullptr) {
+						pPlayer->m_Catch.pGimmick->SetMtxParent(nullptr);
+						pPlayer->m_Catch.pGimmick = nullptr;
+					}
+
 					m_Catch.nMoveCnt = 0;
 					CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CATCH);
 				}

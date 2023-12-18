@@ -52,7 +52,7 @@ private:
 	CEnemy*m_apEnemy[NUM_ENEMY];        // 敵のポインタ
 	int m_nCntRespawn;                  // 敵が再び出るまでのカウント
 	int m_nEnemyId;                     // 敵の番号
-	bool m_bEnd;                        // 
+	bool m_bEnd;
 };
 
 #endif
