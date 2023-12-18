@@ -285,38 +285,51 @@ void CMiniMap::ExploredMap(void)
 	{
 		//プレイヤーごとに必要な変数
 		D3DXVECTOR3 posPlayer = pPlayer->GetPosition();
-		D3DXVECTOR3 posWorld;
+		D3DXVECTOR3 posScreen;
 
 		//これでスクリーン座標に変換できた
-		D3DXVec3TransformCoord(&posWorld, &posPlayer, &mtx);
-		int posX = (int)posWorld.x;
-		int posY = (int)posWorld.y;
+		D3DXVec3TransformCoord(&posScreen, &posPlayer, &mtx);
+		int posX = (int)posScreen.x;
+		int posY = (int)posScreen.y;
 		int posElaseMinX = ((posX - m_nElaseWidth) > 0) ? posX - m_nElaseWidth : 0;
 		int posElaseMaxX = ((posX + m_nElaseWidth) < nWidth) ? posX + m_nElaseWidth : nWidth;
 		int posElaseMinY = ((posY - m_nElaseHeight) > 0) ? posY - m_nElaseHeight : 0;
 		int posElaseMaxY = ((posY + m_nElaseHeight) < nHeight) ? posY + m_nElaseHeight : nHeight;
 
-		//一定範囲消す
-		for (int y = posElaseMinY; y < posElaseMaxY; y++)
-		{
-			for (int x = posElaseMinX; x < posElaseMaxX; x++)
+		
+		if (posScreen.x >= 0.0f && posScreen.x <= m_fWidth &&
+			posScreen.y >= 0.0f && posScreen.y <= m_fHeight)
+		{//マップの範囲内なら探索済み状態化とアイコン描画
+			//一定範囲消す
+			for (int y = posElaseMinY; y < posElaseMaxY; y++)
 			{
-				m_ppExplored[x][y] = true;
+				for (int x = posElaseMinX; x < posElaseMaxX; x++)
+				{
+					m_ppExplored[x][y] = true;
+				}
+			}
+
+			//アイコン置く（脱出後の挙動により変更予定）
+			if (nPlaceIcon < m_nPlayerNum)
+			{
+				D3DXVECTOR3 posIcon = m_pos;
+				posIcon.x += -m_fWidth * 0.5f + static_cast<float>(posX);
+				posIcon.y += -m_fHeight * 0.5f + static_cast<float>(posY);
+				m_ppPlayerIcon[nPlaceIcon]->SetPosition(posIcon);
+				m_ppPlayerIcon[nPlaceIcon]->SetVtx();
+				m_ppPlayerIcon[nPlaceIcon]->SetDraw(true);
+			}
+		}
+		else
+		{
+			if (nPlaceIcon < m_nPlayerNum)
+			{
+				m_ppPlayerIcon[nPlaceIcon]->SetDraw(false);
 			}
 		}
 
-		//アイコン置く
-		if (nPlaceIcon < m_nPlayerNum)
-		{
-			D3DXVECTOR3 posIcon = m_pos;
-			posIcon.x += -m_fWidth * 0.5f + static_cast<float>(posX);
-			posIcon.y += -m_fHeight * 0.5f + static_cast<float>(posY);
-			m_ppPlayerIcon[nPlaceIcon]->SetPosition(posIcon);
-			m_ppPlayerIcon[nPlaceIcon]->SetVtx();
-			nPlaceIcon++;
-		}
-
 		//次
+		nPlaceIcon++;
 		pPlayer = pPlayer->GetNext();
 	}
 

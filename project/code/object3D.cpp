@@ -13,6 +13,7 @@
 #include "debugproc.h"
 #include "player.h"
 #include "particle.h"
+#include "sound.h"
 
 //==========================================================
 //ƒ}ƒNƒ’è‹`
@@ -327,14 +328,20 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 			CParticle::Create(D3DXVECTOR3(m_pos.x - m_fWidth, m_pos.y, m_pos.z + m_fHeight), CEffect::TYPE_TUTORIAL);
 			CParticle::Create(D3DXVECTOR3(m_pos.x + m_fWidth, m_pos.y, m_pos.z - m_fHeight), CEffect::TYPE_TUTORIAL);
 			CParticle::Create(D3DXVECTOR3(m_pos.x - m_fWidth, m_pos.y, m_pos.z - m_fHeight), CEffect::TYPE_TUTORIAL);
+
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_GROW);
 		}
 
 		SetSize(m_fWidth, m_fHeight);
 
 		SetLighting(true);
+
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_FADE);
+
 	}
 	else
 	{
+
 		float fDestWidth, fDestHeight;
 
 		fDestWidth = 50.0f - (m_fWidth * 0.5f);
