@@ -752,6 +752,7 @@ void CPlayer::Move(void)
 		return;
 	}
 
+	//落とし穴に落ちなければ操作可能に
 	if (m_Info.pos.y >= 0.0f || m_Info.pos.y <= -1000.0f)
 	{
 		//プレイヤーの更新
