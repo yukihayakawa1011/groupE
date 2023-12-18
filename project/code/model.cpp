@@ -146,22 +146,25 @@ void CModel::Draw(void)
 			}
 			else
 			{
+				m_ChangeMat.Power = pMat[nCntMat].MatD3D.Power;
+				m_ChangeMat.Specular = pMat[nCntMat].MatD3D.Specular;
 				// ƒ}ƒeƒŠƒAƒ‹‚Ìİ’è
-				if (pSlow->Get() != 1.0f)
-				{
-					m_ChangeMat.Emissive.r -= 0.3f;
-					m_ChangeMat.Emissive.g -= 0.3f;
-					m_ChangeMat.Emissive.b -= 0.3f;
-					m_ChangeMat.Emissive.a -= 0.3f;
-				}
-				else
-				{
-					m_ChangeMat.Emissive = pMat[nCntMat].MatD3D.Emissive;
-					m_ChangeMat.Emissive.r += 0.1f;
-					m_ChangeMat.Emissive.g += 0.1f;
-					m_ChangeMat.Emissive.b += 0.1f;
-					m_ChangeMat.Emissive.a += 0.1f;
-				}
+				//if (pSlow->Get() != 1.0f)
+				//{
+				//	m_ChangeMat.Emissive.r -= 0.3f;
+				//	m_ChangeMat.Emissive.g -= 0.3f;
+				//	m_ChangeMat.Emissive.b -= 0.3f;
+				//	m_ChangeMat.Emissive.a -= 0.3f;
+				//}
+				//else
+				//{
+				//	m_ChangeMat.Emissive = pMat[nCntMat].MatD3D.Emissive;
+				//	m_ChangeMat.Emissive.r += 0.1f;
+				//	m_ChangeMat.Emissive.g += 0.1f;
+				//	m_ChangeMat.Emissive.b += 0.1f;
+				//	m_ChangeMat.Emissive.a += 0.1f;
+				//}
+
 				pDevice->SetMaterial(&m_ChangeMat);
 			}
 

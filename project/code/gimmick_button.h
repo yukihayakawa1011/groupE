@@ -21,8 +21,8 @@ private:
 	// 使用モデル列挙型
 	enum MODEL
 	{
-		MODEL_FRAME = 0,	// 枠組み
-		MODEL_BUTTON,		// ボタン
+		MODEL_BUTTON = 0,	// ボタン
+		MODEL_FRAME,		// 枠組み
 		MODEL_MAX
 	};
 
