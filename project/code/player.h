@@ -181,6 +181,7 @@ private:	// 自分だけがアクセス可能
 	void BodySet(void);
 	void ChangeBody(void);
 	void BulletSet(void);
+	void GravitySet(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ

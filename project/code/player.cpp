@@ -714,13 +714,13 @@ void CPlayer::Controller(void)
 	}
 
 	//落ちたら戻る
-	if (pos.y <= -1000.0f)
-	{
-		m_Info.move.y = 0.0f;
-		m_Info.pos.x = POS_WARP.x;
-		m_Info.pos.y = POS_WARP.y;
-		m_Info.pos.z = POS_WARP.z;
-	}
+		if (pos.y <= -1000.0f)
+		{
+			m_Info.move.y = 0.0f;
+			m_Info.pos.x = POS_WARP.x;
+			m_Info.pos.y = POS_WARP.y;
+			m_Info.pos.z = POS_WARP.z;
+		}
 
 	// ゴールとの判定
 	if (!m_bGoal) {	// まだゴールしていない
@@ -752,8 +752,11 @@ void CPlayer::Move(void)
 		return;
 	}
 
-	//プレイヤーの更新
-	MoveController();
+	if (m_Info.pos.y >= 0.0f || m_Info.pos.y <= -1000.0f)
+	{
+		//プレイヤーの更新
+		MoveController();
+	}
 }
 
 //===============================================
