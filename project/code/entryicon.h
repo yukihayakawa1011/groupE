@@ -47,10 +47,19 @@ public:	// 誰でもアクセス可能
 	void Update(void);
 	static CEntryIcon *Create(void);
 	static CEntryIcon *Create(D3DXVECTOR3 Pos, const int nIdx, const float fPolyWidth, const float fPolyHeight);
-	CObject2D *GetObjectBill(void) { return m_pObject; }
-	void SetbEntry(bool bEntry) { m_Info.bEntry = bEntry; }
 	void Entryed(void);
 	void NoEntry(void);
+
+	// 設定
+	void SetState(STATE state) { m_Info.state = state; }
+	void SetbEntry(bool bEntry) { m_Info.bEntry = bEntry; }
+	void SetCol(D3DXCOLOR col) { 
+		m_Info.col = col; 
+	}
+
+	// 取得
+	CObject2D *GetObjectBill(void) { return m_pObject; }
+	static float GetCol(void) { return m_Allcol; }
 
 private:	// 自分だけがアクセス可能
 
@@ -58,9 +67,11 @@ private:	// 自分だけがアクセス可能
 	void SetPolySize(const float fWidth, const float fHeight);
 
 	// メンバ変数
+	D3DXCOLOR col;
 	Info m_Info;                        // 情報
 	CObject2D *m_pObject;	            // オブジェクト2Dのポインタ
 	int m_nIdxPlayer;                   // プレイヤーの番号
+	static float m_Allcol;
 	bool m_bChangeTex;                  // テクスチャが変わっている
 };
 

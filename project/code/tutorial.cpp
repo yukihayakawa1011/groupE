@@ -29,6 +29,8 @@
 #include "gimmick_button.h"
 #include "gimmick_spear.h"
 #include "gimmick_pull.h"
+#include "gimmick_startdoor.h"
+#include "gimmick_lever.h"
 #include "object3D.h"
 #include "enemy.h"
 #include "item.h"
@@ -41,6 +43,7 @@ namespace
 	const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
 	const char* FILEEXT = ".txt";				// ファイルの拡張子
 	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+	const D3DXVECTOR2 PORISIZE = D3DXVECTOR2(200.0f, 50.0f);
 }
 
 //===============================================
@@ -125,16 +128,10 @@ HRESULT CTutorial::Init(void)
 	}
 
 	// 回転扉
-	CGimmickRotateDoor::Create(D3DXVECTOR3(-700.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+	CGimmickRotateDoor::Create(D3DXVECTOR3(-500.0f, 0.0f, -50.0f), D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
 
 	// ゴール
 	CGoal::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 200.0f);
-
-	// 協力扉
-	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-1700.0f, 0.0f, -600.0f));
-	CGimmickMultiDoor *pMultiDoor = CGimmickMultiDoor::Create(D3DXVECTOR3(-1350.0f, 0.0f, -1000.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	pMultiDoor->SetNumButton(1);
-	pMultiDoor->BindButton(pButton);
 
 	// 壺
 	CGimmickPull::Create(D3DXVECTOR3(-400.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
@@ -142,7 +139,15 @@ HRESULT CTutorial::Init(void)
 	CGimmickPull::Create(D3DXVECTOR3(0.0f, 0.0f, -800.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 
 	// 地面からの槍
-	CGimmickSpear::Create(D3DXVECTOR3(-850.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_AUTO);
+	CGimmickButton *pButton = CGimmickButton::Create(D3DXVECTOR3(-650.0f, 0.0f, -500.0f));
+	CGimmickSpear *pSpear = CGimmickSpear::Create(D3DXVECTOR3(-650.0f, 0.0f, -300.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CGimmickSpear::TYPE_PRESSAUTO);
+	pSpear->BindButton(pButton);
+
+	CGimmickLever *l = CGimmickLever::Create(D3DXVECTOR3(-700.0f, 50.0f, -900.0f));
+	l->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI, 0.0f));
+	CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(-1400.0f, 0.0f, -1000.0f));
+	p->SetRotation(D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+	p->SetLever(l);
 
 	// 人数分ポインタ生成
 	m_ppPlayer = new CPlayer*[PLAYER_MAX];
@@ -168,15 +173,21 @@ HRESULT CTutorial::Init(void)
 			if (m_apObject[i] == nullptr)
 			{// 使用されていなかったら
 
-				m_apObject[i] = CEntryIcon::Create(D3DXVECTOR3(190.0f + i * 300.0f, 625.0f, 0.0f), i, 125.0f, 75.0f);
+				m_apObject[i] = CEntryIcon::Create(D3DXVECTOR3(190.0f + i * 300.0f, 570.0f, 0.0f), i, 125.0f, 75.0f);
 			}
 		}
 	}
+
+	CObject2D *pObject2D = CObject2D::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.5f, 680.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
+	pObject2D->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\entrystart.png"));
+	pObject2D->SetSize(PORISIZE.x, PORISIZE.y);
 	
 	// 0番目だけエントリーしている状態にする
 	if (m_apObject[0] != nullptr)
 	{
 		m_apObject[0]->SetbEntry(true);
+		m_apObject[0]->SetState(CEntryIcon::STATE_ENTRY);
+		m_apObject[0]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_apObject[0]->Entryed();
 	}
 
@@ -224,32 +235,22 @@ HRESULT CTutorial::Init(void)
 	// お宝関連
 	if (m_pObject3D[3] == nullptr)
 	{
-		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1300.0f, 10.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[3] = CObject3D::Create(D3DXVECTOR3(-1200.0f, 10.0f, -50.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[3]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[3]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[3]->SetSize(100.0f, 100.0f);
-		m_pObject3D[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial001.png"));
+		m_pObject3D[3]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial005.png"));
 	}
 
 	//	回転扉
 	if (m_pObject3D[4] == nullptr)
 	{
-		m_pObject3D[4] = CObject3D::Create(D3DXVECTOR3(-500.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObject3D[4] = CObject3D::Create(D3DXVECTOR3(-300.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObject3D[4]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
 		m_pObject3D[4]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 		m_pObject3D[4]->SetSize(100.0f, 100.0f);
 		m_pObject3D[4]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial002.png"));
 	}
-
-	////	回転扉
-	//if (m_pObject3D[5] == nullptr)
-	//{
-	//	m_pObject3D[5] = CObject3D::Create(D3DXVECTOR3(650.0f, 10.0f, 450.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	//	m_pObject3D[5]->SetRotation(D3DXVECTOR3(D3DX_PI * 0.5f, D3DX_PI, 0.0f));
-	//	m_pObject3D[5]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
-	//	m_pObject3D[5]->SetSize(100.0f, 100.0f);
-	//	m_pObject3D[5]->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\tutorial002.png"));
-	//}
 
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_BGM_TUTORIAL);
 
@@ -346,6 +347,8 @@ void CTutorial::Update(void)
 			CParticle::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffect::TYPE_SMAKE);
 			bCreate = true;
 			m_apObject[nId]->SetbEntry(true);
+			m_apObject[nId]->SetState(CEntryIcon::STATE_ENTRY);
+			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			m_apObject[nId]->Entryed();
 		}
 	}
@@ -356,6 +359,8 @@ void CTutorial::Update(void)
 			m_ppPlayer[nId]->Uninit();
 			m_ppPlayer[nId] = 0;
 			m_apObject[nId]->SetbEntry(false);
+			m_apObject[nId]->SetState(CEntryIcon::STATE_STANDBY);
+			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_apObject[nId]->GetCol()));
 			m_apObject[nId]->NoEntry();
 		}
 	}

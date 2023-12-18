@@ -9,15 +9,21 @@
 #include "texture.h"
 #include "manager.h"
 
+// 静的メンバ変数
+float CEntryIcon::m_Allcol = 0.0f;
+
 // 無名名前空間
 namespace
 {
-	const char* FILEPASS[2] = 
+	const char* FILEPASS[2] =
 	{
-		"data\\TEXTURE\\tutorial_icon0%d.png",
-		"data\\TEXTURE\\tutorial_icon1%d.png",
+		"data\\TEXTURE\\tutorial_icon0%d.png",                   // エントリー受付中
+		"data\\TEXTURE\\tutorial_icon1%d.png",                   // エントリー完了
 	};
-	const int FILEPASS_SIZE = (200);	// ファイルのパスサイズ
+	const D3DXCOLOR STANDBYCOL = { 1.0f, 1.0f, 1.0f, 0.5f };     // エントリー受付中
+	const D3DXCOLOR ENTRYCOL = { 1.0f, 1.0f, 1.0f, 1.0f };       // エントリー完了
+	const int FILEPASS_SIZE = (200);	                         // ファイルのパスサイズ
+	const float REDUCECOL = (0.01f);                             // 1フレーム間に変位するcolのα値
 }
 
 //==========================================================
@@ -27,11 +33,12 @@ CEntryIcon::CEntryIcon()
 {
 	// 値をクリア
 	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-	m_Info.col = D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	m_Info.col = D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f);
 	m_Info.state = STATE_STANDBY;
 	m_Info.fPolyWidth = 0.0f;
 	m_Info.fPolyHeight = 0.0f;
 	m_Info.bEntry = false;
+	col = D3DXCOLOR(1.0f, 1.0f, 1.0f, REDUCECOL);
 	m_pObject = nullptr;
 	m_nIdxPlayer = -1; 
 	m_bChangeTex = false;
@@ -54,12 +61,15 @@ HRESULT CEntryIcon::Init(D3DXVECTOR3 pos)
 	{// 使用していた場合
 
 		m_pObject = CObject2D::Create(pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
-		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.5f));
+		m_pObject->SetCol(STANDBYCOL);
 		m_pObject->SetDraw(true);
 		char aTexPass[256] = "";
 		sprintf(&aTexPass[0], FILEPASS[STATE_STANDBY], m_nIdxPlayer);
 		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(aTexPass));
 	}
+
+	m_Info.pos = pos;
+	m_Info.col = STANDBYCOL;
 
 	return S_OK;
 }
@@ -73,13 +83,16 @@ HRESULT CEntryIcon::Init(void)
 	{// 使用していた場合
 
 		m_pObject = CObject2D::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 7);
-		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f));
+		m_pObject->SetCol(STANDBYCOL);
 		m_pObject->SetDraw(true);
 		char aTexPass[256] = "";
 		sprintf(&aTexPass[0], FILEPASS[STATE_STANDBY], m_nIdxPlayer);
 		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(aTexPass));
 	}
 	
+	m_Info.pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_Info.col = STANDBYCOL;
+
 	return S_OK;
 }
 
@@ -102,7 +115,21 @@ void CEntryIcon::Uninit(void)
 //==========================================================
 void CEntryIcon::Update(void)
 {
+	if (m_Info.state == STATE_STANDBY)
+	{
+		if (m_Info.col.a >= 0.7f || m_Info.col.a <= 0.1f)
+		{
+			col.a *= -1.0f;
+		}
 
+		m_Info.col.a += col.a;
+		m_Allcol = m_Info.col.a;
+	}
+
+	if (m_pObject != nullptr)
+	{
+		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_Info.col.a));
+	}
 }
 
 //==========================================================
@@ -154,7 +181,7 @@ void CEntryIcon::Entryed(void)
 		char aTexPass[256] = "";
 		sprintf(&aTexPass[0], FILEPASS[STATE_ENTRY], m_nIdxPlayer);
 		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(aTexPass));
-		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
+		m_pObject->SetCol(D3DXCOLOR(ENTRYCOL));
 		m_bChangeTex = true;
 	}
 }
@@ -169,7 +196,7 @@ void CEntryIcon::NoEntry(void)
 		char aTexPass[256] = "";
 		sprintf(&aTexPass[0], FILEPASS[STATE_STANDBY], m_nIdxPlayer);
 		m_pObject->BindTexture(CManager::GetInstance()->GetTexture()->Regist(aTexPass));
-		m_pObject->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.6f));
+		m_pObject->SetCol(m_Info.col);
 		m_bChangeTex = false;
 	}
 }
