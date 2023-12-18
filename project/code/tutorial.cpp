@@ -32,6 +32,7 @@
 #include "object3D.h"
 #include "enemy.h"
 #include "item.h"
+#include "particle.h"
 
 // 無名名前空間
 namespace
@@ -307,6 +308,8 @@ void CTutorial::Update(void)
 				D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nId]->BindId(nId);
 			m_ppPlayer[nId]->SetType(CPlayer::TYPE_ACTIVE);
+			// 煙のパーティクル生成
+			CParticle::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffect::TYPE_SMAKE);
 			bCreate = true;
 		}
 	}
@@ -351,7 +354,6 @@ void CTutorial::Update(void)
 		// ゲームに遷移
 		CManager::GetInstance()->GetFade()->Set(CScene::MODE_GAME);
 		CGame::SetNumPlayer(CPlayer::GetNum());
-
 	}
 
 	// 更新処理

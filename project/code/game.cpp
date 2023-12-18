@@ -79,7 +79,7 @@ namespace {
     const int START_WAITCNT = (430);            // スタート時の走ってる時間
 	const int PLAYER_MOVESTART = (180);
 	const int CAMERA_ROTATESTART = (240);
-	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.51f};
+	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.38f};
     const int SCORE = (5000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 	const int PLAYER_SPWANSTART = (240);

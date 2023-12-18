@@ -985,6 +985,7 @@ void CPlayer::Jump(void)
 			{
 				m_Info.move.y = JUMP;
 				CParticle::Create(m_Info.pos, CEffect::TYPE_JUMP);
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_JUMP);
 			}
 		}
 	}
