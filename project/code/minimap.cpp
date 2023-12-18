@@ -92,9 +92,13 @@ HRESULT CMiniMap::Init(void)
 	}
 
 	//マップオブジェ生成
-	CObject2DScroll* pObjScroll = CObject2DScroll::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
-	pObjScroll->SetSize((m_fHeight * 0.8f) * 2.0f, (m_fHeight * 0.8f));
-	pObjScroll->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\scroll_minimap.png"));
+	if (m_pObjScroll == nullptr)
+	{
+		m_pObjScroll = CObject2DScroll::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+		m_pObjScroll->SetSize((m_fHeight * 0.8f) * 2.0f, (m_fHeight * 0.8f));
+		m_pObjScroll->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\scroll_minimap.png"));
+	}
+	
 	if (m_pObjMap == nullptr)
 	{
 		m_pObjMap = CObject2DMap::Create(m_pos, D3DXVECTOR3(0.0f,0.0f,0.0f), m_fWidth * 0.5f, m_fHeight * 0.5f);
@@ -238,6 +242,33 @@ void CMiniMap::DrawTexture(void)
 	pOrgSurface->Release();
 	pOrgZBuffer->Release();
 	pTexSurface->Release();
+}
+
+//===============================================
+// 3人プレイ用単体描画
+//===============================================
+void CMiniMap::DrawManual(void)
+{
+	CManager::GetInstance()->GetCamera()->SetCamera();
+
+	// オブジェクトの描画
+	if (m_pObjScroll != nullptr)
+	{
+		m_pObjScroll->Draw();
+	}
+
+	if (m_pObjMap != nullptr)
+	{
+		m_pObjMap->Draw();
+	}
+
+	for (int cnt = 0; cnt < m_nPlayerNum; cnt++)
+	{
+		if (m_ppPlayerIcon[cnt] != nullptr)
+		{
+			m_ppPlayerIcon[cnt]->Draw();
+		}
+	}
 }
 
 //===============================================
