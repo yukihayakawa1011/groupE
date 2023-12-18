@@ -665,6 +665,8 @@ void CPlayer::Controller(void)
 
 	if (bOld && !m_bJump) {
 		CParticle::Create(m_Info.pos, CEffect::TYPE_LAND);
+		
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_LAND);
 	}
 
 	// アイテムとの当たり判定
@@ -1502,6 +1504,11 @@ void CPlayer::MotionSet(void)
 		if (m_Catch.pGimmick != nullptr) {	// ギミックを持っている
 			CParticle::Create(D3DXVECTOR3(m_Catch.pGimmick->GetMtxWorld()->_41, m_Catch.pGimmick->GetMtxWorld()->_42, m_Catch.pGimmick->GetMtxWorld()->_43),
 				CEffect::TYPE_PULLNOW);
+
+			if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
+			{
+				//CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+			}
 		}
 	}
 	else
