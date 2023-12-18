@@ -113,10 +113,10 @@ void CCamera::Update(void)
 		Edit();
 	}
 	// 全視点の移動
-	MoveVR();
+	//MoveVR();
 
 	//注視点の移動
-	MoveR();
+	//MoveR();
 
 	//視点の移動
 	MoveV();
@@ -260,66 +260,66 @@ void CCamera::MoveV(void)
 		m_rot.y += -D3DX_PI * ROTATE_SPEED * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_X, 0.0f, CInputPad::STICK_MINUS) * fMultiSlow;
 	}
 
-	//x軸の移動
-	if ((pKey->GetPress(DIK_Z) == true && pKey->GetPress(DIK_C) != true))
-	{//Qキー入力
-		m_rot.y += -D3DX_PI * ROTATE_SPEED;
-		if (m_rot.y < -D3DX_PI)
-		{//角度がΠを超えた場合
-			m_rot.y += D3DX_PI * 2;
-		}
-	}
-	else if ((pKey->GetPress(DIK_C) == true && pKey->GetPress(DIK_Z) != true))
-	{//Eキー入力
-		m_rot.y += D3DX_PI * ROTATE_SPEED;
-		if (m_rot.y > D3DX_PI)
-		{//角度がΠを超えた場合
-			m_rot.y += -D3DX_PI * 2;
-		}
-	}
+	////x軸の移動
+	//if ((pKey->GetPress(DIK_Z) == true && pKey->GetPress(DIK_C) != true))
+	//{//Qキー入力
+	//	m_rot.y += -D3DX_PI * ROTATE_SPEED;
+	//	if (m_rot.y < -D3DX_PI)
+	//	{//角度がΠを超えた場合
+	//		m_rot.y += D3DX_PI * 2;
+	//	}
+	//}
+	//else if ((pKey->GetPress(DIK_C) == true && pKey->GetPress(DIK_Z) != true))
+	//{//Eキー入力
+	//	m_rot.y += D3DX_PI * ROTATE_SPEED;
+	//	if (m_rot.y > D3DX_PI)
+	//	{//角度がΠを超えた場合
+	//		m_rot.y += -D3DX_PI * 2;
+	//	}
+	//}
 
-	//z軸の移動
-	if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_PLUS) == true)
-	{//Yキー入力
-		//角度の変更
-		m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
-		if (m_rot.z > CAMERA_PADMAX)
-		{//角度が限界を超えた場合
-			m_rot.z = CAMERA_PADMAX;
-		}
-	}
-	else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
-	{//Nキー入力
-		//角度の変更
-		m_rot.z += PAD_ROTATE * 2 * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_MINUS) * fMultiSlow;
+	////z軸の移動
+	//if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_PLUS) == true)
+	//{//Yキー入力
+	//	//角度の変更
+	//	m_rot.z += PAD_ROTATE * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_PLUS) * fMultiSlow;
+	//	if (m_rot.z > CAMERA_PADMAX)
+	//	{//角度が限界を超えた場合
+	//		m_rot.z = CAMERA_PADMAX;
+	//	}
+	//}
+	//else if (pInputPad->GetStickPress(nId, CInputPad::BUTTON_RIGHT_Y, 0.1f, CInputPad::STICK_MINUS) == true)
+	//{//Nキー入力
+	//	//角度の変更
+	//	m_rot.z += PAD_ROTATE * 2 * pInputPad->GetStickAdd(nId, CInputPad::BUTTON_RIGHT_Y, 0.5f, CInputPad::STICK_MINUS) * fMultiSlow;
 
-		if (m_rot.z < MIN_CAMERA_ROTZ)
-		{//角度が限界を超えた場合
-			m_rot.z = MIN_CAMERA_ROTZ;
-		}
-	}
+	//	if (m_rot.z < MIN_CAMERA_ROTZ)
+	//	{//角度が限界を超えた場合
+	//		m_rot.z = MIN_CAMERA_ROTZ;
+	//	}
+	//}
 
-	//z軸の移動
-	if (pKey->GetPress(DIK_Y) == true && pKey->GetPress(DIK_N) != true)
-	{//Yキー入力
-	 //角度の変更
-		m_rot.z += -D3DX_PI * ROTATE_SPEED;
-		if (m_rot.z < MIN_CAMERA_ROTZ)
-		{//角度が限界を超えた場合
-			m_rot.z = MIN_CAMERA_ROTZ;
-		}
+	////z軸の移動
+	//if (pKey->GetPress(DIK_Y) == true && pKey->GetPress(DIK_N) != true)
+	//{//Yキー入力
+	// //角度の変更
+	//	m_rot.z += -D3DX_PI * ROTATE_SPEED;
+	//	if (m_rot.z < MIN_CAMERA_ROTZ)
+	//	{//角度が限界を超えた場合
+	//		m_rot.z = MIN_CAMERA_ROTZ;
+	//	}
 
-	}
-	else if (pKey->GetPress(DIK_N) == true && pKey->GetPress(DIK_Y) != true)
-	{//Nキー入力
-	 //角度の変更
-		m_rot.z += D3DX_PI * ROTATE_SPEED;
+	//}
+	//else if (pKey->GetPress(DIK_N) == true && pKey->GetPress(DIK_Y) != true)
+	//{//Nキー入力
+	// //角度の変更
+	//	m_rot.z += D3DX_PI * ROTATE_SPEED;
 
-		if (m_rot.z > MAX_CAMERA_ROTZ)
-		{//角度が限界を超えた場合
-			m_rot.z = MAX_CAMERA_ROTZ;
-		}
-	}
+	//	if (m_rot.z > MAX_CAMERA_ROTZ)
+	//	{//角度が限界を超えた場合
+	//		m_rot.z = MAX_CAMERA_ROTZ;
+	//	}
+	//}
 
 	////注視点からの距離の操作
 	//if (pKey->GetPress(DIK_U) == true && pKey->GetPress(DIK_M) != true)

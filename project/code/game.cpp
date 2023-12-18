@@ -136,6 +136,7 @@ CGame::CGame()
     m_pPause = nullptr;
     m_bQuota = false;
     m_bDispQuataUI = false;
+	m_bSetOnceAngle = false;
 }
 
 //===============================================
@@ -160,6 +161,7 @@ CGame::CGame(int nNumPlayer)
     m_pPause = nullptr;
     m_bQuota = false;
     m_bDispQuataUI = false;
+	m_bSetOnceAngle = false;
 
     // 人数設定
     m_nNumPlayer = nNumPlayer;
@@ -619,6 +621,15 @@ void CGame::Update(void)
     // 開始タイマー
     if(!StartDirection())
     {	// 時間切れ
+		//1度だけプレイヤーのカメラを調整
+		if (m_bSetOnceAngle == false)
+		{
+			for (int cnt = 0; cnt < m_nNumPlayer; cnt++)
+			{
+				m_ppCamera[cnt]->SetRotation(m_ppCamera[cnt]->GetRotation() - D3DXVECTOR3(0.0f, 0.0f, 0.2f * D3DX_PI));
+			}
+			m_bSetOnceAngle = true;
+		}
         if (m_state != STATE_END) {	// 終了状態以外
             if (EndCheck()) {	// 全員ゴールしている
                 CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
