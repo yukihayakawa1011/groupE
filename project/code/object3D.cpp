@@ -314,9 +314,9 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 	{
 		float fDestWidth, fDestHeight;
 
-		fDestWidth = 290.0f - (m_fWidth * 0.5f);
+		fDestWidth = 300.0f - (m_fWidth * 0.5f);
 
-		fDestHeight = 190.0f - (m_fHeight * 0.5f);
+		fDestHeight = 200.0f - (m_fHeight * 0.5f);
 
 		m_fWidth += fDestWidth;
 
