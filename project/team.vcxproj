@@ -166,6 +166,7 @@
     <ClCompile Include="code\effect.cpp" />
     <ClCompile Include="code\enemy.cpp" />
     <ClCompile Include="code\enemymanager.cpp" />
+    <ClCompile Include="code\entryicon.cpp" />
     <ClCompile Include="code\fade.cpp" />
     <ClCompile Include="code\fileload.cpp" />
     <ClCompile Include="code\gage.cpp" />
@@ -249,6 +250,7 @@
     <ClInclude Include="code\effect.h" />
     <ClInclude Include="code\enemy.h" />
     <ClInclude Include="code\enemymanager.h" />
+    <ClInclude Include="code\entryicon.h" />
     <ClInclude Include="code\fade.h" />
     <ClInclude Include="code\fileload.h" />
     <ClInclude Include="code\gage.h" />
