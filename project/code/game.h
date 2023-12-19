@@ -87,7 +87,7 @@ private:
 	CClient *m_pClient;			// クライアントのポインタ
 	CScore *m_QuataScore;       // ノルマのスコア
 	CQuataUI *m_QuataUI;        // ノルマのUI
-	CGimmickLever **m_ppLever;    // 
+	CGimmickLever **m_ppLever;  // レバーのポインタ
 	char m_aAddress[30];		// 接続先サーバーのアドレス
 	static STATE m_state;		// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
