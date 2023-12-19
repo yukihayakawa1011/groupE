@@ -958,6 +958,7 @@ void CEnemy::Damage(int nDamage)
 	if (m_nLife <= 0)
 	{//Ž€
 		m_Info.state = STATE_DEATH;
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DEATH);
 
 		if (m_pBody == nullptr)
 		{

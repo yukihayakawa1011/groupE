@@ -1281,6 +1281,7 @@ void CPlayer::Damage(int nDamage)
 
 		if (m_nLife <= 0)
 		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DEATH);
 			m_nLife = 0;
 			m_Info.state = STATE_DEATH;
 			m_Info.fStateCounter = DAMAGE_APPEAR;

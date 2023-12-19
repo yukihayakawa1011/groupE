@@ -128,10 +128,12 @@ CGame::CGame()
     m_pTimer = nullptr;
     m_QuataScore = nullptr;
     m_QuataUI = nullptr;
+	m_ppLever = nullptr;
     m_nSledCnt = 0;
     m_bEnd = false;
     m_nStartCnt = 0;
     m_nCntLostQuataUI = 0;
+	m_nCntGoal = 0;
     m_bPause = false;
     m_pPause = nullptr;
     m_bQuota = false;
@@ -152,10 +154,12 @@ CGame::CGame(int nNumPlayer)
     m_pTimer = nullptr;
     m_QuataScore = nullptr;
     m_QuataUI = nullptr;
+	m_ppLever = nullptr;
     m_nSledCnt = 0;
     m_bEnd = false;
     m_nStartCnt = 0;
     m_nCntLostQuataUI = 0;
+	m_nCntGoal = 0;
     m_bPause = false;
     m_pPause = nullptr;
     m_bQuota = false;
@@ -240,7 +244,7 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-
+		
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -300,13 +304,14 @@ HRESULT CGame::Init(void)
 
         // ギミックの生成
 
+		m_ppLever = new CGimmickLever*[m_nNumPlayer];
         // 開始扉(人数分)
         for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
-            CGimmickLever *l = CGimmickLever::Create(LEVERPOS[nCnt]);
-            l->SetRotation(LEVERROT[nCnt]);
+			m_ppLever[nCnt] = CGimmickLever::Create(LEVERPOS[nCnt]);
+			m_ppLever[nCnt]->SetRotation(LEVERROT[nCnt]);
             CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
             p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-            p->SetLever(l);
+            p->SetLever(m_ppLever[nCnt]);
         }
 
         // ゴール
@@ -549,6 +554,25 @@ void CGame::Uninit(void)
         m_pTimer = nullptr;
     }
 
+	if (m_ppLever != nullptr)
+	{// 使用されている場合
+
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			// 終了処理
+			m_ppLever[nCnt]->Uninit();
+
+			// 使用されいない状態にする
+			m_ppLever[nCnt] = nullptr;
+		}
+
+		// ポインタの開放
+		delete[] m_ppLever;
+
+		// 使用されていない状態にする
+		m_ppLever = nullptr;
+	}
+
     // defaultカメラオン
     CManager::GetInstance()->GetCamera()->SetDraw(true);
 
@@ -647,6 +671,27 @@ void CGame::Update(void)
             }
         }
     }
+
+	int nCntOpen = 0;
+
+	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	{
+		if (m_ppPlayer[nCnt]->GetType() == CPlayer::TYPE_ACTIVE)
+		{
+			if (m_ppLever[nCnt] != nullptr)
+			{
+				if (m_ppLever[nCnt]->GetState() == CGimmickLever::STATE_PRESS)
+				{
+					nCntOpen++;
+				}
+			}
+		}
+	}
+
+	if (nCntOpen >= m_nNumPlayer)
+	{
+		int n = 0;
+	}
 
     if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
     {
