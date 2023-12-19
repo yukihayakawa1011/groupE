@@ -439,6 +439,16 @@ void CPlayer::Uninit(void)
 		m_pGage = nullptr;
 	}
 
+	if (m_pHeadUI != nullptr) {
+		m_pHeadUI->Uninit();
+		m_pHeadUI = nullptr;
+	}
+
+	if (m_pThrowItem != nullptr) {
+		m_pThrowItem->Uninit();
+		m_pThrowItem = nullptr;
+	}
+
 	if (m_pFade != nullptr) {
 		m_pFade->Uninit();
 		m_pFade = nullptr;
@@ -761,23 +771,33 @@ void CPlayer::Controller(void)
 	}
 
 	//屋根裏にワープ
-	if (pos.x <= 1500.0f
-		&& pos.y <= -1000.0f)
-	{
-		m_Info.move.y = 0.0f;
-		m_Info.pos.x = POS_WARP_ATTIC.x;
-		m_Info.pos.y = POS_WARP_ATTIC.y;
-		m_Info.pos.z = POS_WARP_ATTIC.z;
-	}
+	if (CManager::GetInstance()->GetInstance()->GetMode() == CScene::MODE_GAME) {
+		if (pos.x <= 1500.0f
+			&& pos.y <= -1000.0f)
+		{
+			m_Info.move.y = 0.0f;
+			m_Info.pos.x = POS_WARP_ATTIC.x;
+			m_Info.pos.y = POS_WARP_ATTIC.y;
+			m_Info.pos.z = POS_WARP_ATTIC.z;
+		}
 
-	//屋根裏からワープ
-	if (pos.x > 1500.0f
-		&& pos.y <= -1000.0f)
-	{
-		m_Info.move.y = 0.0f;
-		m_Info.pos.x = POS_WARP.x;
-		m_Info.pos.y = POS_WARP.y;
-		m_Info.pos.z = POS_WARP.z;
+		//屋根裏からワープ
+		if (pos.x > 1500.0f
+			&& pos.y <= -1000.0f)
+		{
+			m_Info.move.y = 0.0f;
+			m_Info.pos.x = POS_WARP.x;
+			m_Info.pos.y = POS_WARP.y;
+			m_Info.pos.z = POS_WARP.z;
+		}
+	}
+	else {	// チュートリアル
+		if (m_Info.pos.y < 1.0f)
+		{
+			m_Info.pos.y = 1.0f;
+			m_Info.move.y = 0.0f;
+			m_bJump = false;
+		}
 	}
 
 	// ゴールとの判定

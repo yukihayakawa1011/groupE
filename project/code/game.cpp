@@ -692,7 +692,7 @@ void CGame::Update(void)
 
 	if (nCntOpen >= m_nNumPlayer && m_bOpenStartDoor == false)
 	{
-		m_bOpenStartDoor == true;
+		m_bOpenStartDoor = true;
 	}
 
     if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)

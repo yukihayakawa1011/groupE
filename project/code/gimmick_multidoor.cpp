@@ -139,6 +139,9 @@ void CGimmickMultiDoor::Update(void)
 			StateSet();
 		}
 	}
+
+	// マテリアル設定
+	SetButtonMaterial(nActive);
 }
 
 //==========================================================
@@ -515,4 +518,49 @@ bool CGimmickMultiDoor::CollisionCheckCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & pos
 	}
 
 	return bCollision;
+}
+
+//==========================================================
+// 入力数に応じて色の変更
+//==========================================================
+void CGimmickMultiDoor::SetButtonMaterial(int nPressCnt)
+{
+	if (m_ppButton == nullptr) {
+		return;
+	}
+
+	D3DMATERIAL9 mat = {};	// マテリアル格納
+	D3DXCOLOR col = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+	
+	// 押されていないボタンの残りの数に合わせて色を変える
+	switch (m_nActiveSwitch - nPressCnt) {
+	case 1:
+		col = D3DXCOLOR(0.35f, 0.3f, 0.05f, 1.0f);
+		break;
+
+	case 2:
+		col = D3DXCOLOR(0.3f, 0.05f, 0.4f, 1.0f);
+		break;
+
+	case 3:
+		col = D3DXCOLOR(0.1f, 0.1f, 0.5f, 1.0f);
+		break;
+
+	default:
+		col = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+		break;
+	}
+
+	// 色を入れる
+	mat.Ambient = col;
+	mat.Diffuse = col;
+	mat.Emissive = col;
+
+	for (int nCnt = 0; nCnt < m_nNumSwitch; nCnt++) {
+		if (m_ppButton[nCnt] == nullptr) {	// 使用されていない
+			continue;
+		}
+		// マテリアル変更
+		m_ppButton[nCnt]->SetPressMaterial(mat);
+	}
 }
