@@ -62,6 +62,7 @@ private:	// 自分だけがアクセス可能
 	// メンバ変数
 	CModel *m_apObj[MODEL_MAX];			// ボタン側
 	STATE m_state;						// 状態
+	bool m_bUpDown;						// 上げ下げ
 	D3DXVECTOR3 m_RotDest;					// 目標の角度
 	static char *m_apFileName[MODEL_MAX];	// モデルファイルネーム
 	int m_nInterval;						// インターバル

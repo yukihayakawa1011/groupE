@@ -216,3 +216,15 @@ void CGimmickButton::TrapMaterial(void)
 		);
 	}
 }
+
+//==========================================================
+// F•ÏX
+//==========================================================
+void CGimmickButton::SetPressMaterial(const D3DMATERIAL9& mat)
+{
+	if (m_apObj[MODEL_BUTTON] == nullptr) {
+		return;
+	}
+
+	m_apObj[MODEL_BUTTON]->SetMaterial(mat);
+}

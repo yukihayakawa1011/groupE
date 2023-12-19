@@ -46,6 +46,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_LAND,		// 着地
 		TYPE_PARTY,		// タイトル
 		TYPE_TUTORIAL,	// チュートリアル
+		TYPE_PULLSMAKE,	// 引き中の手
 		TYPE_MAX
 	}TYPE;
 

@@ -177,7 +177,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\チーム制作\\すたじおI\\groupE\\project\\data\\TEXTURE\\block001.jpg";
+    "data\\TEXTURE\\block001.jpg";
    }
   }
   Material {
@@ -186,7 +186,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.000000;0.000000;0.000000;;
    TextureFilename {
-    "C:\\Users\\student\\Desktop\\チーム制作\\すたじおI\\groupE\\project\\data\\TEXTURE\\block000.jpg";
+    "data\\TEXTURE\\block000.jpg";
    }
   }
  }

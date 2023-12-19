@@ -49,6 +49,7 @@ CGimmickLever::~CGimmickLever()
 //==========================================================
 HRESULT CGimmickLever::Init(void)
 {
+	m_bUpDown = false;
 	// モデルの生成
 	for (int nCnt = 0; nCnt < MODEL_MAX; nCnt++)
 	{
@@ -62,6 +63,12 @@ HRESULT CGimmickLever::Init(void)
 	}
 
 	m_apObj[MODEL_BUTTON]->SetCurrentRotation(D3DXVECTOR3(D3DX_PI * 0.15f, 0.0f, 0.0f));
+
+	D3DMATERIAL9 material = {};
+	material.Ambient = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+	material.Diffuse = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+	material.Emissive = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+	m_apObj[MODEL_BUTTON]->SetMaterial(material);
 
 	return S_OK;
 }
@@ -99,25 +106,30 @@ void CGimmickLever::Update(void)
 
 	// マトリックス設定
 	SetMtxWorld();
+	bool bChange = false;
 
 	// 状態に合わせてボタンの色を変更
-	switch (m_state)
+	switch (m_bUpDown)
 	{
-	case STATE_NONE:	// 何もない
+	case false:	// 何もない
 		m_RotDest = D3DXVECTOR3(D3DX_PI * 0.15f, 0.0f, 0.0f);
 		break;
 
-	case STATE_PRESS:	// 押されている
+	case true:	// 押されている
 		m_RotDest = D3DXVECTOR3(-D3DX_PI * 0.15f, 0.0f, 0.0f);
 		break;
+	}
+
+	if (m_state == STATE_PRESS) {
+		bChange = true;
 	}
 
 	if (m_apObj[MODEL_BUTTON] != nullptr) {
 		D3DXVECTOR3 rot = m_apObj[MODEL_BUTTON]->GetCurrentRotation();
 		D3DXVECTOR3 rotDiff = m_RotDest - rot;
-
 		rot += rotDiff * 0.1f;
 		m_apObj[MODEL_BUTTON]->SetCurrentRotation(rot);
+		m_apObj[MODEL_BUTTON]->ChangeCol(bChange);
 	}
 }
 
@@ -169,7 +181,8 @@ bool CGimmickLever::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 		return bValue;
 	}
 	
-	m_state = (STATE)(m_state ^ 1);	// 押された状態にする
+	m_bUpDown = m_bUpDown ? false : true;
+	m_state = STATE_PRESS;	// 押された状態にする
 	m_nInterval = INTERVAL;			// インターバル
 	CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_LEVER);
 
@@ -186,10 +199,12 @@ void CGimmickLever::Switch(bool bUse)
 	{
 	case false:	// 何もない
 		m_state = STATE_NONE;
+		m_bUpDown = false;
 		break;
 
 	case true:	// 押されている
 		m_state = STATE_PRESS;
+		m_bUpDown = true;
 		break;
 	}
 }

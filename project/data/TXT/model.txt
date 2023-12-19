@@ -9,7 +9,7 @@ SCRIPT			# この行は絶対消さないこと！
 #------------------------------------------------------------------------------
 # テクスチャ数
 #------------------------------------------------------------------------------
-NUM_TEXTURE = 22
+NUM_TEXTURE = 23
 
 #------------------------------------------------------------------------------
 # テクスチャファイル名
@@ -36,6 +36,7 @@ TEXTURE_FILENAME = data/TEXTURE/Cupboard.png        # [18]食器棚
 TEXTURE_FILENAME = data/TEXTURE/stone00.jpg         # [19]石材
 TEXTURE_FILENAME = data/TEXTURE/stonesand.jpg       # [20]砂利
 TEXTURE_FILENAME = data/TEXTURE/wood01.jpg          # [21]木材
+TEXTURE_FILENAME = data/TEXTURE/grass.png           # [22]芝生
 
 #------------------------------------------------------------------------------
 # モデル数
@@ -126,8 +127,17 @@ END_MOUNTAINSET
 #------------------------------------------------------------------------------
 
 FIELDSET
+	TEXTYPE = 2
+	POS = -2500.0 1.0 950.0
+	ROT = 0 0 0
+	BLOCK = 30 30
+	SIZE = 50 50
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
 	TEXTYPE = 1
-	POS = -900.0 1.0 900.0
+	POS = -470.0 1.0 700.0
 	ROT = 0 0 0
 	BLOCK = 13 8
 	SIZE = 100 100
