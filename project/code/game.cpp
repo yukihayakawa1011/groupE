@@ -138,6 +138,7 @@ CGame::CGame()
     m_pPause = nullptr;
     m_bQuota = false;
     m_bDispQuataUI = false;
+	m_bOpenStartDoor = false;
 }
 
 //===============================================
@@ -164,6 +165,7 @@ CGame::CGame(int nNumPlayer)
     m_pPause = nullptr;
     m_bQuota = false;
     m_bDispQuataUI = false;
+	m_bOpenStartDoor = false;
 
     // l”Ý’è
     m_nNumPlayer = nNumPlayer;
@@ -688,9 +690,9 @@ void CGame::Update(void)
 		}
 	}
 
-	if (nCntOpen >= m_nNumPlayer)
+	if (nCntOpen >= m_nNumPlayer && m_bOpenStartDoor == false)
 	{
-		int n = 0;
+		m_bOpenStartDoor == true;
 	}
 
     if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)

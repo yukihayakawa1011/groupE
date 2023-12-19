@@ -54,6 +54,9 @@ public:	// 誰でもアクセス可能
 	// タイトル用
 	void TitleRotateCamera(void);
 
+	// スタートの扉全部開いたとき
+	void AllOpenCamera(void);
+
 	// メンバ関数(取得)
 	D3DXMATRIX GetMtxView(void) { return m_mtxView; }
 	D3DXMATRIX GetMtxProjection(void) { return m_mtxProjection; }
@@ -93,6 +96,8 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_move;		// 移動量
 	D3DXVECTOR3 m_posV;		// 視点
 	D3DXVECTOR3 m_posR;		// 注視点
+	D3DXVECTOR3 m_OldposV;	// 前の視点
+	D3DXVECTOR3 m_OldposR;	// 前の注視点
 	D3DXVECTOR3 m_vecU;		// 上方向ベクトル
 	D3DXVECTOR3 m_rot;		// 向き
 	D3DXVECTOR3 m_SlowOldRot;	// スロー前の向き
