@@ -48,6 +48,7 @@
 #include "quataui.h"
 #include <assert.h>
 #include "particle.h"
+#include "meshdome.h"
 
 // 無名名前空間を定義
 namespace {
@@ -471,6 +472,9 @@ HRESULT CGame::Init(void)
     CGimmick::SwitchOn();
 
     m_nCntLostQuataUI = UNINITCOUNT;
+
+	//ドーム追加
+	CMeshDome::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), 6000.0f, 6000.0f, 3, 8, 8);
 
     return S_OK;
 }
