@@ -103,6 +103,7 @@ private:
 	bool m_bQuota;              // ノルマ達成しているどうか
 	bool m_bDispQuataUI;        // ノルマのUIができるかどうか
 	bool m_bSetOnceAngle;		// 1度だけの角度設定をしたか
+	bool m_bOpenStartDoor;      // スタートのドアがすべて開いているかどうか
 };
 
 #endif
