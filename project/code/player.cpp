@@ -2410,19 +2410,25 @@ void CPlayer::SetCatchMatrix(void)
 	D3DXMatrixIdentity(&m_Info.mtxWorld);
 
 	if (m_Catch.pPlayer != nullptr) {	// プレイヤー
-		D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, m_Info.pos.y - m_Catch.pPlayer->m_Info.mtxWorld._42, -50.0f);
+		if (m_Catch.pPlayer->m_Catch.pPlayer == this) {
+			D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, m_Info.pos.y - m_Catch.pPlayer->m_Info.mtxWorld._42, -50.0f);
 
-		// 位置を反映
-		D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
-		D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
+			// 位置を反映
+			D3DXMatrixTranslation(&mtxTrans, pos.x, pos.y, pos.z);
+			D3DXMatrixMultiply(&m_Info.mtxWorld, &m_Info.mtxWorld, &mtxTrans);
 
-		// パーツのマトリックスと親のマトリックスをかけ合わせる
-		D3DXMatrixMultiply(&m_Info.mtxWorld,
-			&m_Info.mtxWorld, &m_Catch.pPlayer->m_Info.mtxWorld);
+			// パーツのマトリックスと親のマトリックスをかけ合わせる
+			D3DXMatrixMultiply(&m_Info.mtxWorld,
+				&m_Info.mtxWorld, &m_Catch.pPlayer->m_Info.mtxWorld);
 
-		m_Info.pos = D3DXVECTOR3(m_Info.mtxWorld._41, m_Info.mtxWorld._42, m_Info.mtxWorld._43);
+			m_Info.pos = D3DXVECTOR3(m_Info.mtxWorld._41, m_Info.mtxWorld._42, m_Info.mtxWorld._43);
 
-		return;
+			return;
+		}
+		else {
+			m_Info.state = STATE_NORMAL;
+			m_Catch.pPlayer = nullptr;
+		}
 	}
 	else if (m_Catch.pGimmick != nullptr) { // ギミック
 
