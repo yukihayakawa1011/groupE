@@ -779,6 +779,7 @@ void CFileLoad::LoadButtonData(FILE *pFile)
 
 	D3DXVECTOR3 pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	int nIdx = -1;
+	int nType = 0;
 
 	//終了文字まで読み込み
 	while (1)
@@ -798,6 +799,11 @@ void CFileLoad::LoadButtonData(FILE *pFile)
 			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
 			fscanf(pFile, "%d", &nIdx);	// ID
 		}
+		else if (strcmp(&aStr[0], LOAD_MODELTYPE) == 0)
+		{// 種類
+			fscanf(pFile, "%s", &aStr[0]);	//(=)読み込み
+			fscanf(pFile, "%d", &nType);	// 種類
+		}
 
 		//終了
 		if (strcmp(&aStr[0], ENDBUTTONSET_TXT) == 0)
@@ -809,6 +815,10 @@ void CFileLoad::LoadButtonData(FILE *pFile)
 	//フィールドの配置
 	CGimmickButton *pButton = CGimmickButton::Create(pos);
 	pButton->SetActionId(nIdx);
+
+	if (nType == 1) {
+		pButton->TrapMaterial();
+	}
 }
 
 //==========================================================
