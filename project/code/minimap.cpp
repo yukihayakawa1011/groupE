@@ -14,6 +14,7 @@
 #include "object2D.h"
 #include "object2DMap.h"
 #include "object2DScroll.h"
+#include "gimmick.h"
 #include <assert.h>
 
 //===================================================
@@ -27,6 +28,7 @@ CMiniMap::CMiniMap()
 	m_pZSurface = nullptr;
 	m_ppPlayerIcon = nullptr;
 	m_ppExplored = nullptr;
+	m_pExitIcon = nullptr;
 	m_pos = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_fWidth = 0.0f;
 	m_fHeight = 0.0f;
@@ -67,10 +69,6 @@ HRESULT CMiniMap::Init(void)
 		}
 	}
 
-	// テクスチャの生成
-	Load();
-	Reset();
-
 	//プレイヤー人数分アイコン用2Dオブジェ生成
 	if (m_nPlayerNum > 0)
 	{//1人以上いる
@@ -91,10 +89,22 @@ HRESULT CMiniMap::Init(void)
 		assert(false);
 	}
 
+	if (m_pExitIcon == nullptr)
+	{
+		m_pExitIcon = CObject2D::Create(4);
+		m_pExitIcon->BindTexture(pTexture->Regist("data\\TEXTURE\\exit.png"));
+		m_pExitIcon->SetLength(24.0f, 24.0f);
+		m_pExitIcon->SetVtx();
+	}
+
+	// テクスチャの生成
+	Load();
+	Reset();
+
 	//マップオブジェ生成
 	if (m_pObjScroll == nullptr)
 	{
-		m_pObjScroll = CObject2DScroll::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
+ 		m_pObjScroll = CObject2DScroll::Create(m_pos, D3DXVECTOR3(0.0f, 0.0f, 0.0f));
 		m_pObjScroll->SetSize((m_fHeight * 0.8f) * 2.0f, (m_fHeight * 0.8f));
 		m_pObjScroll->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\scroll_minimap.png"));
 	}
@@ -201,6 +211,13 @@ void CMiniMap::DrawTexture(void)
 	//ビューマトリの設定
 	pDevice->SetTransform(D3DTS_VIEW, &m_mtxView);
 
+	//ビューポートマトリ設定
+	D3DXMatrixIdentity(&m_mtxViewPort);
+	m_mtxViewPort._11 = m_fWidth * 0.5f;
+	m_mtxViewPort._22 = -m_fHeight * 0.5f;
+	m_mtxViewPort._41 = m_fWidth * 0.5f;
+	m_mtxViewPort._42 = m_fHeight * 0.5f;
+
 	//テクスチャ
 	//作成テクスチャ用インターフェース取得
 	m_pTextureMap->GetSurfaceLevel(0, &pTexSurface);
@@ -237,11 +254,12 @@ void CMiniMap::DrawTexture(void)
 	pDevice->SetRenderTarget(0, pOrgSurface);
 	pDevice->SetDepthStencilSurface(pOrgZBuffer);
 
-	
-
 	pOrgSurface->Release();
 	pOrgZBuffer->Release();
 	pTexSurface->Release();
+
+	//出口描画
+	SetExit();
 }
 
 //===============================================
@@ -269,6 +287,11 @@ void CMiniMap::DrawManual(void)
 			m_ppPlayerIcon[cnt]->Draw();
 		}
 	}
+
+	if (m_pExitIcon != nullptr && m_pExitIcon->GetDraw() == true)
+	{
+		m_pExitIcon->Draw();
+	}
 }
 
 //===============================================
@@ -280,34 +303,15 @@ void CMiniMap::ExploredMap(void)
 	CManager* pManager = CManager::GetInstance();
 	LPDIRECT3DDEVICE9 pDevice = pManager->GetRenderer()->GetDevice();		//デバイスへのポインタ
 	CScene* pScene = pManager->GetScene();
-	D3DXMATRIX mtxViewPort, mtx;
+	D3DXMATRIX mtx;
 
 	//int型サイズ
 	int nWidth = static_cast<int>(m_fWidth);
 	int nHeight = static_cast<int>(m_fHeight);
 
-	//プロジェクションマトリの初期化
-	D3DXMatrixIdentity(&m_mtxProj);
-
-	D3DXMatrixPerspectiveFovLH(&m_mtxProj,
-		D3DXToRadian(45.0f),
-		(float)m_fWidth / (float)m_fHeight,
-		10.0f,
-		40000.0f);
-
 	//探索済みエリアの透明化（テクスチャが）
 	//必要なマトリ計算
-	{
-		//ビューポートマトリ設定
-		D3DXMatrixIdentity(&mtxViewPort);
-		mtxViewPort._11 = m_fWidth * 0.5f;
-		mtxViewPort._22 = -m_fHeight * 0.5f;
-		mtxViewPort._41 = m_fWidth * 0.5f;
-		mtxViewPort._42 = m_fHeight * 0.5f;
-
-		//全部掛ける
-		mtx = m_mtxView * m_mtxProj * mtxViewPort;	//内部でD3DXMatrixMultiplyやってるみたい
-	}
+	mtx = m_mtxView * m_mtxProj * m_mtxViewPort;	//内部でD3DXMatrixMultiplyやってるみたい
 
 	//プレイヤーすべて見る
 	int nPlaceIcon = 0;
@@ -516,4 +520,58 @@ CMiniMap* CMiniMap::Create(const int playerNum, const int elaseWidth, const int 
 	}
 
 	return pMiniMap;
+}
+
+//===============================================
+// 出口配置
+//===============================================
+void CMiniMap::SetExit(void)
+{
+	//プレイヤーごとに必要な変数
+	CGimmick* pGimmick = CGimmick::GetTop();
+	while (pGimmick != nullptr)
+	{
+		CGimmick* pGimmickNext = pGimmick->GetNext();
+
+		if (pGimmick->GetType() == CGimmick::TYPE_STARTDOOR)
+		{
+			break;
+		}
+
+		pGimmick = pGimmickNext;
+	}
+
+	if (pGimmick != nullptr)
+	{
+		D3DXVECTOR3 posPlayer = pGimmick->GetPosition();
+		D3DXVECTOR3 posScreen;
+		D3DXMATRIX mtx;
+
+		//int型サイズ
+		int nWidth = static_cast<int>(m_fWidth);
+		int nHeight = static_cast<int>(m_fHeight);
+
+		//必要なマトリ計算
+		mtx = m_mtxView * m_mtxProj * m_mtxViewPort;	//内部でD3DXMatrixMultiplyやってるみたい
+
+		//これでスクリーン座標に変換できた
+		D3DXVec3TransformCoord(&posScreen, &posPlayer, &mtx);
+		int posX = (int)posScreen.x;
+		int posY = (int)posScreen.y;
+		int posElaseMinX = ((posX - m_nElaseWidth) > 0) ? posX - m_nElaseWidth : 0;
+		int posElaseMaxX = ((posX + m_nElaseWidth) < nWidth) ? posX + m_nElaseWidth : nWidth;
+		int posElaseMinY = ((posY - m_nElaseHeight) > 0) ? posY - m_nElaseHeight : 0;
+		int posElaseMaxY = ((posY + m_nElaseHeight) < nHeight) ? posY + m_nElaseHeight : nHeight;
+
+		//アイコン置く（脱出後の挙動により変更予定）
+		if (m_pExitIcon != nullptr)
+		{
+			D3DXVECTOR3 posIcon = m_pos;
+			posIcon.x += -m_fWidth * 0.5f + static_cast<float>(posX);
+			posIcon.y += -m_fHeight * 0.5f + static_cast<float>(posY);
+			m_pExitIcon->SetPosition(posIcon);
+			m_pExitIcon->SetVtx();
+			m_pExitIcon->SetDraw(false);
+		}
+	}
 }

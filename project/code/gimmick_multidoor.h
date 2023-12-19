@@ -69,6 +69,7 @@ private:	// 自分だけがアクセス可能
 	void StateSet(void);
 	void UpdateState(void);
 	void ObjIner(void);
+	void SetButtonMaterial(int nPressCnt);
 
 	// メンバ変数
 	SObj m_aObject[TYPE_MAX];

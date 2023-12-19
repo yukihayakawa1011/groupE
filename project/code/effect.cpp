@@ -373,6 +373,21 @@ void CEffect::Update(void)
 		m_Info.col.a -= (rand() % 100) * 0.00065f * CManager::GetInstance()->GetSlow()->Get();
 
 		break;
+
+	case TYPE_PULLSMAKE:	// ‰Œ
+
+		m_Info.col.a -= 0.02f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.x -= m_Info.move.x * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y -= m_Info.move.y * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.z -= m_Info.move.z * 0.025f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.75f * CManager::GetInstance()->GetSlow()->Get();
+
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * 0.005f;
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
@@ -662,6 +677,12 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_SMOOK;
 	}
 	break;
+
+	case TYPE_PULLSMAKE:
+	{
+		return CTexture::TYPE_ITEMGET_EF;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -871,6 +892,15 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetZTest(false);
 		m_pObjectBilBoard->SetLighting(true);
 		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_NORMAL);
+	}
+	break;
+
+	case TYPE_PULLSMAKE:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(false);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 	}
 	break;
 	}

@@ -339,12 +339,12 @@ void CTutorial::Update(void)
 			sprintf(&aBodyPass[0], "%s%d\\motion_ninjabody%s",FILEPASS, nId, FILEEXT);
 			sprintf(&aLegPass[0], "%s%d\\motion_ninjaleg%s", FILEPASS, nId, FILEEXT);
 
-			m_ppPlayer[nId] = CPlayer::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
+			m_ppPlayer[nId] = CPlayer::Create(D3DXVECTOR3(0.0f, 10.0f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f),
 				D3DXVECTOR3(0.0f, 0.0f, 0.0f), &aBodyPass[0], &aLegPass[0]);
 			m_ppPlayer[nId]->BindId(nId);
 			m_ppPlayer[nId]->SetType(CPlayer::TYPE_ACTIVE);
 			// 煙のパーティクル生成
-			CParticle::Create(D3DXVECTOR3(0.0f, 0.0f, 0.0f), CEffect::TYPE_SMAKE);
+			CParticle::Create(D3DXVECTOR3(0.0f, 10.0f, 0.0f), CEffect::TYPE_SMAKE);
 			bCreate = true;
 			m_apObject[nId]->SetbEntry(true);
 			m_apObject[nId]->SetState(CEntryIcon::STATE_ENTRY);

@@ -506,7 +506,7 @@ float CMeshField::GetHeight(D3DXVECTOR3 pos)
 				float fValue = (-((pos.x - (MeshPos.x + Pos0.x)) * nor0.x) +
 					-((pos.z - (MeshPos.z + Pos0.z)) * nor0.z)) / nor0.y + (MeshPos.y + Pos0.y);
 
-				if (fValue > fHeight || bValue == false)
+				if (fValue >= fHeight || bValue == false)
 				{
 					bValue = true;
 					fHeight = fValue;
@@ -548,7 +548,7 @@ float CMeshField::GetHeight(D3DXVECTOR3 pos)
 					-((pos.z - (MeshPos.z + Pos3.z)) * nor3.z)) / nor3.y + (MeshPos.y + Pos3.y);
 
 
-				if (fValue > fHeight || bValue == false)
+				if (fValue >= fHeight || bValue == false)
 				{
 					bValue = true;
 					fHeight = fValue;
