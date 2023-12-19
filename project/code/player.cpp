@@ -89,7 +89,7 @@ namespace {
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
 	const int HEADPARTS_IDX = (1);
 	const D3DXVECTOR3 POS_WARP = D3DXVECTOR3(-760.0f, 1000.0f, 1400.0f);	//屋根裏から帰ってくる時のワープ先
-	const D3DXVECTOR3 POS_WARP_ATTIC = D3DXVECTOR3(5000.0f, 1000.0f, 1400.0f);	//屋根裏へのワープ先
+	const D3DXVECTOR3 POS_WARP_ATTIC = D3DXVECTOR3(4500.0f, 1000.0f, 1400.0f);	//屋根裏へのワープ先
 	const int GOAL_WAITTIME = (180);
 	const int GOAL_QUITTIME = (GOAL_WAITTIME - 60);
 	const D3DXVECTOR3 GOAL_CAMERAROT = { 0.0f, D3DX_PI * 1.0f, D3DX_PI * 0.46f };

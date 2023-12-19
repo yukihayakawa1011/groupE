@@ -270,6 +270,106 @@ FIELDSET
 	MOVE = -0.0005 0.0
 END_FIELDSET
 
+FIELDSET
+	TEXTYPE = 1
+	POS = 4800.0 1.0 1700.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4800.0 1.0 1100.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4800.0 1.0 500.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4800.0 1.0 -100.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4400.0 1.0 500.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4400.0 1.0 1100.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4400.0 1.0 1700.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4100.0 1.0 -100.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4000.0 1.0 500.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4000.0 1.0 1100.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+FIELDSET
+	TEXTYPE = 1
+	POS = 4000.0 1.0 1700.0
+	ROT = 0 0 0
+	BLOCK = 3 2 
+	SIZE = 100 100
+	MOVE = -0.0005 0.0
+END_FIELDSET
+
+
 #==============================================================================
 # モデル配置
 #==============================================================================
@@ -1864,6 +1964,54 @@ END_MODELSET
 MODELSET
 	TYPE = 12
 	POS = 1030 0 -4350
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = 5000 0 1500
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = 5000 0 500
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = 4450 0 2000
+	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = 3900 0 1500
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = 3900 0 500
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 18
+	POS = 4450 0 0
 	ROT = 0 0 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
