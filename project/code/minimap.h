@@ -74,6 +74,9 @@ public:
 	float GetHeight(void) { return m_fHeight; }
 
 private:
+	//メンバ関数
+	void SetExit(void);
+
 	// メンバ変数
 	LPDIRECT3DTEXTURE9 m_pTextureMap;	// テクスチャ
 	LPDIRECT3DTEXTURE9 m_pTextureUnex;	// 未探索場所を黒くしたテクスチャ
@@ -81,9 +84,10 @@ private:
 	CObject2DScroll* m_pObjScroll;		// 巻物背景オブジェクト
 	CObject2DMap* m_pObjMap;			//マップオブジェ
 	CObject2D** m_ppPlayerIcon;
+	CObject2D* m_pExitIcon;
 	bool** m_ppExplored;//探索済みドット
 	D3DXVECTOR3 m_pos;	// 位置
-	D3DXMATRIX m_mtxProj, m_mtxView;	//初期生成・更新共通で使うマトリ
+	D3DXMATRIX m_mtxProj, m_mtxView, m_mtxViewPort;	//初期生成・更新共通で使うマトリ
 	float m_fWidth;		// 幅
 	float m_fHeight;	// 高さ
 	int m_nElaseWidth;	//探索済みにする幅
