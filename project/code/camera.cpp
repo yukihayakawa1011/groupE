@@ -76,6 +76,8 @@ HRESULT CCamera::Init(void)
 	//各変数の初期化
 	m_posR = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_posV = D3DXVECTOR3(0.0f, 1900.0f, 2200.0f);
+	m_OldposV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_OldposR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_fLength = sqrtf((m_posV.x - m_posR.x) * (m_posV.x - m_posR.x) + (m_posV.z - m_posR.z) * (m_posV.z - m_posR.z));
 	m_rot = D3DXVECTOR3(0.0f, atan2f(m_posR.x - m_posV.x, m_posR.z - m_posV.z), 1.56f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -827,6 +829,14 @@ void CCamera::TitleRotateCamera(void)
 	}
 
 	SetV();
+}
+
+//==========================================================
+// すべてのスタートドアが開いたときの演出カメラ
+//==========================================================
+void CCamera::AllOpenCamera(void)
+{
+
 }
 
 //==========================================================
