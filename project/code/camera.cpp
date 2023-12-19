@@ -28,8 +28,8 @@ namespace
 // マクロ定義
 //==========================================================
 #define CAMERA_MOVESPEED	(1.0f)			// 移動量
-#define CAMERA_LENGTHMOVE	(1.0f)			// カメラ距離移動量
-#define ROTATE_SPEED		(0.03f)			// カメラの回転速度
+#define CAMERA_LENGTHMOVE	(0.8f)			// カメラ距離移動量
+#define ROTATE_SPEED		(0.0154f)			// カメラの回転速度
 #define PAD_ROTATE			(0.02f)		// 向き
 #define CAMERA_MAXLENGTH	(5000.0f)		// カメラ最大距離
 #define CAMERA_MINLENGTH	(120.0f)			// カメラ最小距離
@@ -76,6 +76,8 @@ HRESULT CCamera::Init(void)
 	//各変数の初期化
 	m_posR = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_posV = D3DXVECTOR3(0.0f, 1900.0f, 2200.0f);
+	m_OldposV = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_OldposR = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 	m_fLength = sqrtf((m_posV.x - m_posR.x) * (m_posV.x - m_posR.x) + (m_posV.z - m_posR.z) * (m_posV.z - m_posR.z));
 	m_rot = D3DXVECTOR3(0.0f, atan2f(m_posR.x - m_posV.x, m_posR.z - m_posV.z), 1.56f);
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
@@ -766,11 +768,6 @@ void CCamera::Slow(void)
 void CCamera::Zoom(void)
 {
 	m_fZoom += (m_fDestZoom - m_fZoom) * ZOOM_SPEED;
-
-	if (m_fZoom < CAMERA_MINLENGTH / m_fLength)
-	{
-		m_fZoom = CAMERA_MINLENGTH / m_fLength;
-	}
 }
 
 //==========================================================
@@ -827,6 +824,14 @@ void CCamera::TitleRotateCamera(void)
 	}
 
 	SetV();
+}
+
+//==========================================================
+// すべてのスタートドアが開いたときの演出カメラ
+//==========================================================
+void CCamera::AllOpenCamera(void)
+{
+
 }
 
 //==========================================================

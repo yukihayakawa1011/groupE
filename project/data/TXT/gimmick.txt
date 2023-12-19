@@ -40,6 +40,7 @@ END_PULLSET
 BUTTONSET # 槍
 	POS = 130.0 0.0 -1250.0
 	ID = 0
+	TYPE = 1 # 1ならトラップ、1以外は変わらず
 END_BUTTONSET
 
 BUTTONSET # 協力扉
@@ -105,6 +106,7 @@ END_BUTTONSET
 BUTTONSET # 部屋と部屋の間
 	POS = 1100.0 0.0 -150.0
 	ID = 7
+	TYPE = 1 # 1ならトラップ、1以外は変わらず
 END_BUTTONSET
 
 BUTTONSET # 大部屋その2の小部屋
@@ -115,6 +117,7 @@ END_BUTTONSET
 BUTTONSET # 大部屋その2の小部屋
 	POS = 600.0 0.0 -4000.0
 	ID = 9
+	TYPE = 1 # 1ならトラップ、1以外は変わらず
 END_BUTTONSET
 
 BUTTONSET # 大部屋槍まみれの壺

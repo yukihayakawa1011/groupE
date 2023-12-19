@@ -88,7 +88,8 @@ namespace {
 	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
 	const D3DXVECTOR2 NUMBER_SIZE = { 8.0f, 16.0f };	// 頭の上の数字UIのポリゴンサイズ
 	const int HEADPARTS_IDX = (1);
-	const D3DXVECTOR3 POS_WARP = D3DXVECTOR3(-760.0f, 1000.0f, 1400.0f);
+	const D3DXVECTOR3 POS_WARP = D3DXVECTOR3(-760.0f, 1000.0f, 1400.0f);	//屋根裏から帰ってくる時のワープ先
+	const D3DXVECTOR3 POS_WARP_ATTIC = D3DXVECTOR3(5000.0f, 1000.0f, 1400.0f);	//屋根裏へのワープ先
 	const int GOAL_WAITTIME = (180);
 	const int GOAL_QUITTIME = (GOAL_WAITTIME - 60);
 	const D3DXVECTOR3 GOAL_CAMERAROT = { 0.0f, D3DX_PI * 1.0f, D3DX_PI * 0.46f };
@@ -759,14 +760,25 @@ void CPlayer::Controller(void)
 		m_bJump = false;
 	}
 
-	//落ちたら戻る
-		if (pos.y <= -1000.0f)
-		{
-			m_Info.move.y = 0.0f;
-			m_Info.pos.x = POS_WARP.x;
-			m_Info.pos.y = POS_WARP.y;
-			m_Info.pos.z = POS_WARP.z;
-		}
+	//屋根裏にワープ
+	if (pos.x <= 1500.0f
+		&& pos.y <= -1000.0f)
+	{
+		m_Info.move.y = 0.0f;
+		m_Info.pos.x = POS_WARP_ATTIC.x;
+		m_Info.pos.y = POS_WARP_ATTIC.y;
+		m_Info.pos.z = POS_WARP_ATTIC.z;
+	}
+
+	//屋根裏からワープ
+	if (pos.x > 1500.0f
+		&& pos.y <= -1000.0f)
+	{
+		m_Info.move.y = 0.0f;
+		m_Info.pos.x = POS_WARP.x;
+		m_Info.pos.y = POS_WARP.y;
+		m_Info.pos.z = POS_WARP.z;
+	}
 
 	// ゴールとの判定
 	if (!m_bGoal) {	// まだゴールしていない
