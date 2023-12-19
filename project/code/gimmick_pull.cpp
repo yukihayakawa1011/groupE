@@ -111,6 +111,16 @@ void CGimmickPull::Update(void)
 	{
 		// マトリックス設定
 		SetParentMatrix();
+
+		m_nParticleTimer--;
+		if (m_nParticleTimer <= 0) {
+			D3DXVECTOR3 pos = GetPosition();
+			pos.x = GetMtxWorld()->_41;
+			pos.y = GetMtxWorld()->_42 + 50.0f;
+			pos.z = GetMtxWorld()->_43;
+			CParticle::Create(pos, CEffect::TYPE_PULLSMAKE);
+			m_nParticleTimer = PARTICLE_CT - 2;
+		}
 	}
 	break;
 	}
