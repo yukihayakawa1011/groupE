@@ -9,6 +9,7 @@
 #include "manager.h"
 #include "debugproc.h"
 #include "particle.h"
+#include "Xfile.h"
 
 // 静的メンバ変数宣言
 char *CGimmickButton::m_apFileName[MODEL_MAX] = {
@@ -202,4 +203,16 @@ void CGimmickButton::Switch(bool bUse)
 CGimmickButton::STATE CGimmickButton::GetState(void)
 {
 	return m_state;
+}
+
+//==========================================================
+// トラップ色に変更
+//==========================================================
+void CGimmickButton::TrapMaterial(void)
+{
+	if (m_apObj[MODEL_BUTTON] != nullptr) {
+		m_apObj[MODEL_BUTTON]->BindModelFile(
+			CManager::GetInstance()->GetModelFile()->Regist("data\\MODEL\\trans_button_trap.x")
+		);
+	}
 }

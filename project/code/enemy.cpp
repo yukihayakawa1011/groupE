@@ -39,7 +39,7 @@
 //無名名前空間
 namespace
 {
-	const float MOVE = 2.0f;			// 移動量
+	const float MOVE = 1.3f;			// 移動量
 	const float GRAVITY = -0.9f;		// 敵重力
 	const float JUMP = 20.0f;			// 敵ジャンプ力
 	const float ROT_MULTI = 0.1f;		// 向き補正倍率
@@ -49,9 +49,9 @@ namespace
 	const int DAMAGE_INTERVAL = 80;		// ダメージ付与間隔
 	const int APPEAR_INTERVAL = 120;	// 出現中になっている間隔
 	const float DEFAULT_ROTATE = 0.1f;	// プレイヤー探索中の回転量
-	const float SEARCH_LENGTH = 500.0f;	// プレイヤー探索範囲
-	const float SEARCH_RADIUS = 0.3f;	// プレイヤー探索角度
-	const float CHACE_LENGTH = 800.0f;	// 追跡範囲
+	const float SEARCH_LENGTH = 300.0f;	// プレイヤー探索範囲
+	const float SEARCH_RADIUS = 0.25f;	// プレイヤー探索角度
+	const float CHACE_LENGTH = 400.0f;	// 追跡範囲
 	const float ATTACK_LENGTH = 50.0f;	// 攻撃モードにする範囲
 	const int ATTACK_COOLTIME = 60;		// 攻撃クールタイム
 	const float NEXTPOINT_LENGTH = 100.0f;	//次のポイントに切り替える距離
