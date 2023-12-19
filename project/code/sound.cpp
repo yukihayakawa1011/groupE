@@ -36,6 +36,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/seek.wav", 0 },			// Œ©‚Â‚¯‚½
 	{ "data/SE/land.wav", 0 },			// ’…’n
 	{ "data/SE/death.wav", 0 },			// Ž€–S
+	{ "data/SE/spear.wav", 0 },			// Ž€–S
 };										
 
 //=============================================================================

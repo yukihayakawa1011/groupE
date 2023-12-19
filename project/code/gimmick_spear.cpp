@@ -12,6 +12,7 @@
 #include "Xfile.h"
 #include "gimmick_button.h"
 #include "particle.h"
+#include "sound.h"
 
 // マクロ定義
 #define COLLISION_RANGE	(300.0f)		// 当たり判定サイズ
@@ -160,6 +161,7 @@ void CGimmickSpear::StateSet(void)
 	{
 		m_state = STATE_APPEAR;
 		m_PosDest.y = 0.0f;
+		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SPEAR);
 	}
 	break;
 
