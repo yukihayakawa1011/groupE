@@ -594,28 +594,51 @@ void CGame::Uninit(void)
 void CGame::Update(void)
 {
 
-    CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
-    CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
+	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
+	CInputKeyboard *pInputKey = CManager::GetInstance()->GetInputKeyboard();
 
-    if (pInputKey->GetTrigger(DIK_P) == true || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
-    {//ポーズキー(Pキー)が押された
-        m_bPause = m_bPause ? false : true;
+	if (pInputKey->GetTrigger(DIK_P) == true || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
+	{//ポーズキー(Pキー)が押された
+		m_bPause = m_bPause ? false : true;
 
-        if (m_pPause != nullptr) {
-            m_pPause->SetDraw(m_bPause);
-        }
-    }
+		if (m_pPause != nullptr) {
+			m_pPause->SetDraw(m_bPause);
+		}
+	}
 
-    if (m_bPause == true)
-    {
-        if (m_pPause != nullptr) {
-            if (m_pPause->Update()) {
-                m_bPause = false;
-                m_pPause->SetDraw(m_bPause);
-            }
-        }
-        return;
-    }
+	if (m_bPause == true)
+	{
+		if (m_pPause != nullptr) {
+			if (m_pPause->Update()) {
+				m_bPause = false;
+				m_pPause->SetDraw(m_bPause);
+			}
+		}
+		return;
+	}
+
+	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
+	{
+		if (m_ppCamera[nCount]->GetMode() == CCamera::MODE_STARTDOOR)
+		{
+			m_ppCamera[nCount]->AllOpenCamera(m_nCntLookGoal);
+
+			if (m_ppCamera[nCount]->GetPositionR().x <= -969.0f && m_ppCamera[nCount]->GetPositionR().x >= -970.0f)
+			{
+				m_nCntLookGoal++;
+			}
+
+			if (m_ppCamera[nCount]->GetPositionR().x - 1.0f <= m_ppCamera[nCount]->GetOldPositionR().x && m_ppCamera[nCount]->GetPositionR().x + 1.0f >= m_ppCamera[nCount]->GetOldPositionR().x)
+			{
+				m_ppCamera[nCount]->SetMode(CCamera::MODE_NORMAL);
+			}
+		}
+	}
+
+	if (m_ppCamera[0]->GetMode() == CCamera::MODE_STARTDOOR)
+	{
+		return;
+	}
 
 	if (m_QuataScore != nullptr)
 	{
@@ -646,49 +669,52 @@ void CGame::Update(void)
 		}
 	}
 
-    // 開始タイマー
-    if(!StartDirection())
-    {	// 時間切れ
-        if (m_state != STATE_END) {	// 終了状態以外
-            if (EndCheck()) {	// 全員ゴールしている
-                CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-                m_state = STATE_END;
-            }
-            else
-            {
-                if (m_pTimer != nullptr) {
+	// 開始タイマー
+	if (!StartDirection())
+	{	// 時間切れ
+		if (m_state != STATE_END) {	// 終了状態以外
+			if (EndCheck()) {	// 全員ゴールしている
+				CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+				m_state = STATE_END;
+			}
+			else
+			{
+				if (m_pTimer != nullptr) {
 
-                    if (m_QuataUI != nullptr) {
-                        if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
-                            m_pTimer->Update();
-                        }
-                    }
-                    else {
-                        m_pTimer->Update();
-                    }
+					if (m_QuataUI != nullptr) {
+						if (m_QuataUI->GetState() == CQuataUI::STATE_NONE) {
+							m_pTimer->Update();
+						}
+					}
+					else {
+						m_pTimer->Update();
+					}
 
-                    if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
-                        CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
-                        CResult::SetNumPlayer(m_nNumPlayer);
-                        CResult::SetScore(m_ppPlayer);
-                        m_state = STATE_END;
-                    }
-                }
-            }
-        }
-    }
+					if (m_pTimer->GetNum() <= 0) {	// タイムオーバー
+						CManager::GetInstance()->GetFade()->Set(CScene::MODE_RESULT);
+						CResult::SetNumPlayer(m_nNumPlayer);
+						CResult::SetScore(m_ppPlayer);
+						m_state = STATE_END;
+					}
+				}
+			}
+		}
+	}
 
 	int nCntOpen = 0;
 
-	for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+	if (m_bOpenStartDoor == false)
 	{
-		if (m_ppPlayer[nCnt]->GetType() == CPlayer::TYPE_ACTIVE)
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
 		{
-			if (m_ppLever[nCnt] != nullptr)
+			if (m_ppPlayer[nCnt]->GetType() == CPlayer::TYPE_ACTIVE)
 			{
-				if (m_ppLever[nCnt]->GetState() == CGimmickLever::STATE_PRESS)
+				if (m_ppLever[nCnt] != nullptr)
 				{
-					nCntOpen++;
+					if (m_ppLever[nCnt]->GetState() == CGimmickLever::STATE_PRESS)
+					{
+						nCntOpen++;
+					}
 				}
 			}
 		}
@@ -696,13 +722,21 @@ void CGame::Update(void)
 
 	if (nCntOpen >= m_nNumPlayer && m_bOpenStartDoor == false)
 	{
+		for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
+		{
+			if (m_ppCamera[nCount] != nullptr)
+			{
+				m_ppCamera[nCount]->SetMode(CCamera::MODE_STARTDOOR);
+			}
+		}
+
 		m_bOpenStartDoor = true;
 	}
 
-    if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
-    {
-        CScene::Update();
-    }
+	if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME)
+	{
+		CScene::Update();
+	}
 
 	CGimmick::Buttonoff();
 }
