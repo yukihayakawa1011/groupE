@@ -246,8 +246,6 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-
-		m_nNumPlayer = 4;
 		
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
