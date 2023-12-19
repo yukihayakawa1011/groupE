@@ -25,6 +25,7 @@ public:	// 誰でもアクセス可能な定義
 		MODE_NORMAL = 0,	// 通常
 		MODE_SLOWGUN,		// スロー角度強制状態
 		MODE_SLOWSHW,		// シャワー
+		MODE_STARTDOOR,     // スタートドア見るよ
 		MODE_MAX
 	};
 
@@ -55,7 +56,7 @@ public:	// 誰でもアクセス可能
 	void TitleRotateCamera(void);
 
 	// スタートの扉全部開いたとき
-	void AllOpenCamera(void);
+	void AllOpenCamera(int nCount);
 
 	// メンバ関数(取得)
 	D3DXMATRIX GetMtxView(void) { return m_mtxView; }
@@ -63,11 +64,14 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetRotation(void) { return m_rot; }
 	D3DXVECTOR3 GetPositionV(void) { return m_posV; }
 	D3DXVECTOR3 GetPositionR(void) { return m_posR; }
+	D3DXVECTOR3 GetOldPositionV(void) { return m_OldposV; }
+	D3DXVECTOR3 GetOldPositionR(void) { return m_OldposR; }
 	D3DXVECTOR3 GetVectorU(void) { return m_vecU; }
 	void SetRotation(D3DXVECTOR3 rot);
 	void SetLength(float fLength) { m_fLength = fLength; }
 	CCamera *GetNext(void) { return m_pNext; }
 	CCamera *GetPrev(void) { return m_pPrev; }
+	MODE GetMode(void) { return m_mode; }
 	bool GetDraw(void) const { return m_bDraw; }
 	float GetLength(void) { return m_fLength; }
 
@@ -100,7 +104,9 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_OldposR;	// 前の注視点
 	D3DXVECTOR3 m_vecU;		// 上方向ベクトル
 	D3DXVECTOR3 m_rot;		// 向き
+	D3DXVECTOR3 m_Oldrot;   // 前の向き
 	D3DXVECTOR3 m_SlowOldRot;	// スロー前の向き
+	D3DXVECTOR3 m_GoalPos;  // ゴールの位置
 	MODE m_mode;				// モード
 	float m_fMulScore;		// スコア倍率
 	float m_fLength;			// 視点と注視点の距離
@@ -109,6 +115,7 @@ private:	// 自分だけがアクセス可能
 	CCamera *m_pNext;			// 次
 	CCamera *m_pPrev;			// 前
 	int m_nId;				// 使用コントローラー番号
+	int m_nZoomCount;           // スタートドアを見ている時間
 	bool m_bDraw;				// 描画
 	bool m_bActive;			// 操作可能かどうか
 };

@@ -63,6 +63,7 @@ public:
 	static void SetNumPlayer(int nNum) { m_nNumPlayer = nNum; }
 	static int GetNumPlayer(void) { return m_nNumPlayer; }
 	CMiniMap* GetMiniMap(void) { return m_pMiniMap; }
+	bool GetbopenDoor(void) { return m_bOpenStartDoor; }
 
 	// メンバ関数(ポインタ)
 	CPlayer *GetPlayer(void);
@@ -99,6 +100,7 @@ private:
 	int m_nStartCnt;			// 開始タイマー
 	int m_nCntLostQuataUI;      // ノルマのUIが消えるまでのカウント
 	int m_nCntGoal;             // ゴールした人数
+	int m_nCntLookGoal;         //
 	bool m_bPause;              // ポーズ
 	bool m_bQuota;              // ノルマ達成しているどうか
 	bool m_bDispQuataUI;        // ノルマのUIができるかどうか

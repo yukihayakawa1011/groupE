@@ -20,8 +20,11 @@
 //無名名前空間
 namespace
 {
+	const D3DXVECTOR3 GOAL_CAMERAROT = { 0.0f, 0.75f, D3DX_PI * 0.38f };  // 目標の角度
+	const D3DXVECTOR3 GOAL_CAMERAPOS = { -970.0f, 100.0f, 1100.0f };      // 目標の位置
 	const float DEFAULT_LENGTH = 700.0f;
 	const float ZOOM_SPEED = 0.18f;
+	const float ZOOMSTARTDOOR_COUNT = 60;                                 // スタートドアを見ている時間
 }
 
 //==========================================================
@@ -83,7 +86,9 @@ HRESULT CCamera::Init(void)
 	m_vecU = D3DXVECTOR3(0.0f, 1.0f, 0.0f);
 	m_rot.z = MIN_CAMERA_ROTZ;
 	m_mode = MODE_NORMAL;
+	m_nZoomCount = 0;
 	m_move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	m_GoalPos = D3DXVECTOR3(-660.0f, 100.0f, 1300.0f);
 
 	//視点設定
 	SetV();
@@ -122,8 +127,16 @@ void CCamera::Update(void)
 	//注視点の移動
 	//MoveR();
 
-	//視点の移動
-	MoveV();
+	if(m_mode != MODE_STARTDOOR)
+	{
+		//視点の移動
+		MoveV();
+
+		m_OldposR = m_posR;
+		m_OldposV = m_posV;
+		m_Oldrot = m_rot;
+	}
+	
 	//MouseCamera();
 
 	//ズーム
@@ -834,9 +847,26 @@ void CCamera::TitleRotateCamera(void)
 //==========================================================
 // すべてのスタートドアが開いたときの演出カメラ
 //==========================================================
-void CCamera::AllOpenCamera(void)
+void CCamera::AllOpenCamera(int nCount)
 {
+	if (nCount >= ZOOMSTARTDOOR_COUNT)
+	{
+		D3DXVECTOR3 posDest = m_OldposR - m_posR;
+		SetPositionR(m_posR + posDest * 0.1f);
 
+		// カメラを目標の向きまで回転させる
+		D3DXVECTOR3 rotDest = m_Oldrot - m_rot;
+		SetRotation(m_rot + rotDest * 0.1f);
+	}
+	else
+	{
+		// カメラを目標の向きまで回転させる
+		D3DXVECTOR3 rotDest = GOAL_CAMERAROT - m_rot;
+		SetRotation(m_rot + rotDest * 0.03f);
+
+		D3DXVECTOR3 posDest = GOAL_CAMERAPOS - m_posR;
+		SetPositionR(m_posR + posDest * 0.02f);
+	}
 }
 
 //==========================================================
