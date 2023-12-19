@@ -547,7 +547,7 @@ void CGimmickMultiDoor::SetButtonMaterial(int nPressCnt)
 		break;
 
 	default:
-		col = D3DXCOLOR(0.1f, 0.1f, 1.0f, 1.0f);
+		col = D3DXCOLOR(0.3f, 1.0f, 0.3f, 1.0f);
 		break;
 	}
 
