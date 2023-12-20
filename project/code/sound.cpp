@@ -41,6 +41,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/open02.wav", 0 },			// Ž€–S
 	{ "data/SE/open.wav", 0 },			// Ž€–S
 	{ "data/SE/warning.wav", 0 },			// Ž€–S
+	{ "data/SE/coin00.wav", 0 },		// Enter
 };										
 
 //=============================================================================

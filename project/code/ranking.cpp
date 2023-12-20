@@ -22,6 +22,7 @@
 #include "meshdome.h"
 #include "camera.h"
 #include "fileload.h"
+#include "sound.h"
 
 //===============================================
 // ƒ}ƒNƒ’è‹`
@@ -308,8 +309,19 @@ void CRanking::Update(void)
 		pos.z = ((float)(rand() % 2000 - 1000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
 		pos1.z = ((float)(rand() % 2000 - 1000) * 0.01f)* ((float)(rand() % 100)) * 0.6f;
 
+		m_nCounter++;
+
 		CItem::Create(D3DXVECTOR3(pos.x , 1500.0f, pos.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, CItem::STATE_DOWN);
 		CItem::Create(D3DXVECTOR3(pos1.x, 1500.0f, pos1.z), D3DXVECTOR3(0.0f, 0.0f, 0.0f), CItem::TYPE_COIN, CItem::STATE_DOWN);
+
+		if (m_nCounter % 55 == 0)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
+		}
+		if (m_nCounter % 30 == 0)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_COIN);
+		}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))
 	{

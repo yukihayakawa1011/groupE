@@ -185,6 +185,7 @@ private:	// 自分だけがアクセス可能
 	void ChangeBody(void);
 	void BulletSet(void);
 	void GoalWait(void);
+	void SetWarpFadeCol(void);
 
 	// メンバ変数
 	static CPlayer *m_pTop;	// 先頭のオブジェクトへのポインタ
@@ -233,6 +234,8 @@ private:	// 自分だけがアクセス可能
 	CObject2D *m_pFade;	// ゴール後フェード
 	CObject2D *m_pEscape;
 	bool m_bAttack;
+	bool m_bWarp;
+	float m_fFadeCola;	// 透明度変更量
 };
 
 #endif
