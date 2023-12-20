@@ -338,8 +338,6 @@ void CObject3D::ZoomSize(CPlayer ** ppPlayer, float fRadius)
 
 		SetLighting(true);
 
-		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_FADE);
-
 	}
 	else
 	{
