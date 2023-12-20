@@ -70,6 +70,20 @@ namespace {
         D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f),
     };
 
+	const char* TEXPASS[4] =
+	{
+		"data\\TEXTURE\\tutorial_icon10.png",
+		"data\\TEXTURE\\tutorial_icon11.png",
+		"data\\TEXTURE\\tutorial_icon12.png",
+		"data\\TEXTURE\\tutorial_icon13.png",
+	};
+
+	const D3DXVECTOR3 OPEN_SETPOS = { SCREEN_WIDTH * 1.3f, SCREEN_HEIGHT * 0.5f, 0.0f };  // スタートドア開いたときのUIの生成位置
+	const D3DXVECTOR3 OPEN_SETROT = { 0.0f, 0.0f, D3DX_PI * 0.0f };                       // 向き
+	const D3DXVECTOR2 OPEN_SIZE = { 470.0f, 150.0f };                                     // サイズ
+	const float OPEN_MOVESPEED = (-1.5f);                                                 // 移動スピード
+	const float OPEN_MOVESIN = (0.05f);
+	const float OPEN_MOVESIZE = (30.0f);
     const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
     const D3DXVECTOR2 SCORE_SIZE = { 14.0f, 18.0f };	// スコアのサイズ
     const float DOOR_SPACE = (-20.0f);			// 各スタート地点ドアの間
@@ -136,6 +150,7 @@ CGame::CGame()
     m_nStartCnt = 0;
     m_nCntLostQuataUI = 0;
 	m_nCntGoal = 0;
+	m_fOpenDoorUISin = 0.0f;
     m_bPause = false;
     m_pPause = nullptr;
     m_bQuota = false;
@@ -164,6 +179,7 @@ CGame::CGame(int nNumPlayer)
     m_nStartCnt = 0;
     m_nCntLostQuataUI = 0;
 	m_nCntGoal = 0;
+	m_fOpenDoorUISin = 0.0f;
     m_bPause = false;
     m_pPause = nullptr;
     m_bQuota = false;
@@ -179,39 +195,7 @@ CGame::CGame(int nNumPlayer)
 //===============================================
 CGame::~CGame()
 {
-    if (m_pFileLoad != nullptr) {
-        assert(false);
-    }
-    if (m_ppPlayer != nullptr) {
-        assert(false);
-    }
-    if (m_ppCamera != nullptr) {
-        assert(false);
-    }
-    if (m_pMeshDome != nullptr) {
-        assert(false);
-    }
-    if (m_pTimer != nullptr) {
-        assert(false);
-    }
-    if (m_pMiniMap != nullptr) {
-        assert(false);
-    }
-    if (m_pClient != nullptr) {
-        assert(false);
-    }
-    if (m_QuataScore != nullptr) {
-        assert(false);
-    }
-    if (m_QuataUI != nullptr) {
-        assert(false);
-    }
-    if (m_pClient != nullptr) {
-        assert(false);
-    }
-    if (m_pClient != nullptr) {
-        assert(false);
-    }
+   
 }
 
 //===============================================
@@ -249,7 +233,7 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-		
+
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -642,6 +626,85 @@ void CGame::Update(void)
 		return;
 	}
 
+	int nCntOpen = 0;
+	int nCntNoPressLever = m_nNumPlayer;
+
+	if (m_bOpenStartDoor == false)
+	{
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			if (m_ppPlayer[nCnt]->GetType() == CPlayer::TYPE_ACTIVE)
+			{
+				if (m_ppLever[nCnt] != nullptr)
+				{
+					if (m_ppLever[nCnt]->GetState() == CGimmickLever::STATE_PRESS)
+					{
+						nCntOpen++;
+					}
+				}
+			}
+		}
+
+		nCntNoPressLever -= nCntOpen;
+	}
+
+	if ((m_bOpenStartDoor == true && m_bAllOpenUI == false) || nCntOpen > m_nOldOpenDoor)
+	{
+		m_nOldOpenDoor = nCntOpen;
+
+		if (m_pAllOpen == nullptr)
+		{
+			m_pAllOpen = CObject2D::Create(OPEN_SETPOS, OPEN_SETROT, 6);
+
+			if (m_pAllOpen != nullptr) {	// 生成できた
+				m_pAllOpen->SetLength(OPEN_SIZE.x, OPEN_SIZE.y);
+				m_pAllOpen->BindTexture(CManager::GetInstance()->GetTexture()->Regist(TEXPASS[nCntNoPressLever]));
+			}
+		}
+	}
+
+	if (m_pAllOpen != nullptr)
+	{
+		D3DXVECTOR3 pos = m_pAllOpen->GetPosition();
+
+		// 移動
+		if (pos.x > SCREEN_WIDTH * 0.75f)
+		{
+			pos.x -= 40.0f;
+		}
+		else if (pos.x < SCREEN_WIDTH * 0.35f)
+		{
+			pos.x -= 50.0f;
+			m_pAllOpen->SetLength(m_pAllOpen->GetWidth() * 1.7f, m_pAllOpen->GetHeight() * 1.7f);
+		}
+		else
+		{
+			pos.x += OPEN_MOVESPEED;
+
+			// 大きくしたり小さくする
+			m_fOpenDoorUISin += OPEN_MOVESIN;
+			float fSin = sinf(m_fOpenDoorUISin);
+			if (fSin >= 0.0f) {
+				m_pAllOpen->SetLength(OPEN_SIZE.x + fSin * OPEN_MOVESIZE, OPEN_SIZE.y + fSin * OPEN_MOVESIZE);
+			}
+		}
+
+		m_pAllOpen->SetPosition(pos);
+		m_pAllOpen->SetVtx();
+
+		if (pos.x < -SCREEN_WIDTH * 0.7f)
+		{
+			m_pAllOpen->Uninit();
+			m_pAllOpen = nullptr;
+			m_bAllOpenUI = true;
+		}
+
+		if (nCntOpen >= m_nNumPlayer)
+		{
+			return;
+		}
+	}
+
 	for (int nCount = 0; nCount < m_nNumPlayer; nCount++)
 	{
 		if (m_ppCamera[nCount]->GetMode() == CCamera::MODE_STARTDOOR)
@@ -734,25 +797,6 @@ void CGame::Update(void)
 						CResult::SetNumPlayer(m_nNumPlayer);
 						CResult::SetScore(m_ppPlayer);
 						m_state = STATE_END;
-					}
-				}
-			}
-		}
-	}
-
-	int nCntOpen = 0;
-
-	if (m_bOpenStartDoor == false)
-	{
-		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
-		{
-			if (m_ppPlayer[nCnt]->GetType() == CPlayer::TYPE_ACTIVE)
-			{
-				if (m_ppLever[nCnt] != nullptr)
-				{
-					if (m_ppLever[nCnt]->GetState() == CGimmickLever::STATE_PRESS)
-					{
-						nCntOpen++;
 					}
 				}
 			}
