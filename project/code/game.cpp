@@ -179,39 +179,7 @@ CGame::CGame(int nNumPlayer)
 //===============================================
 CGame::~CGame()
 {
-    if (m_pFileLoad != nullptr) {
-        assert(false);
-    }
-    if (m_ppPlayer != nullptr) {
-        assert(false);
-    }
-    if (m_ppCamera != nullptr) {
-        assert(false);
-    }
-    if (m_pMeshDome != nullptr) {
-        assert(false);
-    }
-    if (m_pTimer != nullptr) {
-        assert(false);
-    }
-    if (m_pMiniMap != nullptr) {
-        assert(false);
-    }
-    if (m_pClient != nullptr) {
-        assert(false);
-    }
-    if (m_QuataScore != nullptr) {
-        assert(false);
-    }
-    if (m_QuataUI != nullptr) {
-        assert(false);
-    }
-    if (m_pClient != nullptr) {
-        assert(false);
-    }
-    if (m_pClient != nullptr) {
-        assert(false);
-    }
+   
 }
 
 //===============================================
@@ -249,7 +217,7 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-		
+
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
