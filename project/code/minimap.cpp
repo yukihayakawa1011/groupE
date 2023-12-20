@@ -523,6 +523,17 @@ CMiniMap* CMiniMap::Create(const int playerNum, const int elaseWidth, const int 
 }
 
 //===============================================
+// 出口のアイコン表示・非表示
+//===============================================
+void CMiniMap::SetGoalIcon(const bool bDisp)
+{
+	if (m_pExitIcon != nullptr)
+	{
+		m_pExitIcon->SetDraw(bDisp);
+	}
+}
+
+//===============================================
 // 出口配置
 //===============================================
 void CMiniMap::SetExit(void)
