@@ -10,6 +10,7 @@
 #include "debugproc.h"
 #include "particle.h"
 #include "Xfile.h"
+#include "sound.h"
 
 // Ã“Iƒƒ“ƒo•Ï”éŒ¾
 char *CGimmickButton::m_apFileName[MODEL_MAX] = {
@@ -35,6 +36,8 @@ CGimmickButton::CGimmickButton()
 	}
 
 	m_state = STATE_NONE;
+
+	m_nSound = 0;
 }
 
 //==========================================================
@@ -110,13 +113,21 @@ void CGimmickButton::Update(void)
 	switch (m_state)
 	{
 	case STATE_NONE:	// ‰½‚à‚È‚¢
-		
+		m_nSound = 0;
 		if (m_apObj[MODEL_BUTTON] != nullptr) {
 			m_apObj[MODEL_BUTTON]->ChangeCol();
 		}
 		break;
 
 	case STATE_PRESS:	// ‰Ÿ‚³‚ê‚Ä‚¢‚é
+		m_nSound++;
+
+		if (m_nSound == 1)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_BUTTON);
+		}
+
+
 		CParticle::Create(GetPosition(), CEffect::TYPE_BUTTON);
 		fHeight = PRESS_NOWHEIGHT;
 		if (m_apObj[MODEL_BUTTON] != nullptr) {

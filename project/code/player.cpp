@@ -1594,7 +1594,14 @@ void CPlayer::MotionSet(void)
 
 			if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
 			{
-				//CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_DAMAGE);
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_RAGE);
+			}
+		}
+
+		if (m_Catch.pPlayer != nullptr) {	// ƒvƒŒƒCƒ„[‚ðŽ‚Á‚Ä‚¢‚é
+			if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
+			{
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_RAGE);
 			}
 		}
 	}
@@ -1685,7 +1692,7 @@ void CPlayer::Catch(void)
 		if (m_Catch.pPlayer->m_Info.state != STATE_CATCH) {	// ‘ŠŽè‚Ìó‘Ô‚ª•Ï‚í‚Á‚½ê‡
 			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
 			m_Catch.pPlayer = nullptr;
-			
+
 		}
 		else
 		{
