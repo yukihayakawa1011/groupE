@@ -146,10 +146,11 @@ bool CGimmickPitFall::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DX
 		for (int cnt = 0; cnt < FLOOR_MAX; cnt++)
 		{
 			// Œü‚«‚ð”½‰f
+			int nID = m_apModel[cnt]->GetId();
 			m_apModel[cnt]->SetRotSize(vtxObjMax,
 				vtxObjMin,
-				pFile->GetMax(m_apModel[cnt]->GetId()),
-				pFile->GetMin(m_apModel[cnt]->GetId()),
+				pFile->GetMax(nID),
+				pFile->GetMin(nID),
 				m_apModel[cnt]->GetRotation().y);
 
 			D3DXVECTOR3 posObj = m_apModel[cnt]->GetPosition();
