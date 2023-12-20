@@ -54,10 +54,16 @@ public:	// 誰でもアクセス可能
 	int GetModelType(void) { return m_nIdxModel; }
 
 private:	// 自分だけがアクセス可能
-	
+	enum COLLISION_AXIS
+	{
+		TYPE_X = 0,
+		TYPE_Y,
+		TYPE_Z
+	};
+
 	// メンバ関数
 	//D3DMATERIAL9 SetSlowCol(D3DMATERIAL9 *pMat);
-	bool CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
+	bool CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, COLLISION_AXIS axis, const float fRefMulti = 0.5f);
 	bool CollisionCheckCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3* posCollisioned = nullptr);
 
 	// メンバ変数c

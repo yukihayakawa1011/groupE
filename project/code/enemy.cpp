@@ -288,12 +288,6 @@ void CEnemy::Uninit(void)
 		m_pWaist = nullptr;
 	}
 
-	if (nullptr != m_pFov)
-	{
-		m_pFov->Uninit();
-		m_pFov = nullptr;
-	}
-
 	m_nNumCount--;
 
 	// ”pŠü
@@ -985,6 +979,12 @@ void CEnemy::Damage(int nDamage)
 		}
 
 		m_pLeg->GetMotion()->Set(MOTION_DOWN);
+
+		if (nullptr != m_pFov)
+		{
+			m_pFov->Uninit();
+			m_pFov = nullptr;
+		}
 
 		return;
 	}
