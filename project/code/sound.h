@@ -44,6 +44,8 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_LAND,			// 着地
 		LABEL_SE_DEATH,			// 死亡
 		LABEL_SE_SPEAR,			// 死亡
+		LABEL_SE_OPEN00,
+		LABEL_SE_OPEN01,
 		LABEL_MAX,
 	} LABEL;
 
