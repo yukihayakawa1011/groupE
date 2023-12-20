@@ -83,7 +83,8 @@ void CObjectManager::Draw(void)
 		if (pCamera->GetDraw()) {	// 描画する場合
 
 			// リストの全描画
-			DrawAll();
+			//DrawAll();
+			DrawOneDimension(TYPE_3D);
 		}
 
 		pCamera = pCameraNext;
@@ -146,7 +147,7 @@ void CObjectManager::DrawAll(void)
 //===============================================
 // 3Dのオブジェクトのみ描画
 //===============================================
-void CObjectManager::DrawAll3D(void)
+void CObjectManager::DrawOneDimension(TYPE type)
 {
 	// 死亡フラグをチェック
 	DeathCheck();
@@ -161,9 +162,16 @@ void CObjectManager::DrawAll3D(void)
 			CObject *pObjectNext = pObject->GetNext();	// 次のオブジェクトへのポインタを取得
 
 			// 描画処理
-			if (pObject->GetObject2D() == nullptr)
+			if (pObject->GetDraw() == true)
 			{
-				pObject->Draw();
+				if (type == TYPE_2D && pObject->GetObject2D() != nullptr)
+				{
+					pObject->Draw();
+				}
+				else if (type == TYPE_3D && pObject->GetObject2D() == nullptr)
+				{
+					pObject->Draw();
+				}
 			}
 
 			pObject = pObjectNext;	// 次のオブジェクトに移動

@@ -244,7 +244,7 @@ void CMiniMap::DrawTexture(void)
 	{// 描画が成功した場合
 
 		// オブジェクトの描画
-		CObjectManager::GetInstance()->DrawAll3D();
+		CObjectManager::GetInstance()->DrawOneDimension(CObjectManager::TYPE_3D);
 
 		// 描画終了
 		pDevice->EndScene();
