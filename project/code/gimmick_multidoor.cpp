@@ -228,10 +228,11 @@ bool CGimmickMultiDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 			D3DXVECTOR3 ObjRot = GetRotation();
 
 			// Œü‚«‚ð”½‰f
+			int nID = m_aObject[nCnt].pModel->GetId();
 			m_aObject[nCnt].pModel->SetRotSize(vtxObjMax,
 				vtxObjMin,
-				pFile->GetMax(m_aObject[nCnt].pModel->GetId()),
-				pFile->GetMin(m_aObject[nCnt].pModel->GetId()),
+				pFile->GetMax(nID),
+				pFile->GetMin(nID),
 				m_aObject[nCnt].pModel->GetRotation().y);
 
 			if (pos.y + vtxMax.y > ObjPos.y + vtxObjMin.y
@@ -455,10 +456,11 @@ bool CGimmickMultiDoor::CollisionCheckCloss(D3DXVECTOR3 & pos, D3DXVECTOR3 & pos
 			D3DXVECTOR3 ObjPos = D3DXVECTOR3(m_aObject[nCnt].pModel->GetMtx()->_41, m_aObject[nCnt].pModel->GetMtx()->_42, m_aObject[nCnt].pModel->GetMtx()->_43);
 
 			// Œü‚«‚ð”½‰f
+			int nID = m_aObject[nCnt].pModel->GetId();
 			m_aObject[nCnt].pModel->SetRotSize(vtxObjMax,
 				vtxObjMin,
-				pFile->GetMax(m_aObject[nCnt].pModel->GetId()),
-				pFile->GetMin(m_aObject[nCnt].pModel->GetId()),
+				pFile->GetMax(nID),
+				pFile->GetMin(nID),
 				m_aObject[nCnt].pModel->GetRotation().y);
 
 			D3DXVECTOR3 posPoint[4] =

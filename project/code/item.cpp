@@ -335,8 +335,9 @@ void CItem::Update(void)
 	{
 		//当たり判定生成
 		CXFile* pFile = CManager::GetInstance()->GetModelFile();
-		D3DXVECTOR3 vtxObjMax = pFile->GetMax(m_pObject->GetId());
-		D3DXVECTOR3 vtxObjMin = pFile->GetMin(m_pObject->GetId());
+		int nID = m_pObject->GetId();
+		D3DXVECTOR3 vtxObjMax = pFile->GetMax(nID);
+		D3DXVECTOR3 vtxObjMin = pFile->GetMin(nID);
 
 		//オブジェクト
 		CObjectX::Collision(m_pos, m_posOld, m_move, vtxObjMin, vtxObjMax);
