@@ -25,8 +25,8 @@ private:
 public:
 	enum TYPE
 	{
-		TYPE_ALL = 0,
-		TYPE_3DONLY,
+		TYPE_2D = 0,
+		TYPE_3D,
 	};
 
 	// ÉäÉXÉgä«óùÉÅÉìÉoä÷êî
@@ -34,7 +34,7 @@ public:
 	void Uninit(void);
 	void Draw(void);
 	void DrawAll(void);
-	void DrawAll3D(void);
+	void DrawOneDimension(TYPE type);
 	void ListIn(CObject *pObject);
 	CObject *GetTop(const int nPriority) { return m_apTop[nPriority]; }
 	int GetNumAll(void) { return m_nNumAll; }

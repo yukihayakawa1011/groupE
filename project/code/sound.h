@@ -48,6 +48,7 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_OPEN01,		//協力扉が開く
 		LABEL_SE_OPEN02,		//開始扉
 		LABEL_SE_WARNING,		//警告音
+		LABEL_SE_COIN,			// コイン
 		LABEL_MAX,
 	} LABEL;
 

@@ -12,6 +12,7 @@
 #include "object_manager.h"
 #include "object.h"
 #include "minimap.h"
+#include "camera.h"
 
 //===================================================
 // コンストラクタ
@@ -222,11 +223,8 @@ void CRenderer::Draw(void)
 
 	 // エディターの描画
 #endif
-		CMiniMap* pMinimap = CManager::GetInstance()->GetScene()->GetMiniMap();
-		if (pMinimap != nullptr && pMinimap->GetPlayerNum() == 3)
-		{
-			pMinimap->DrawManual();
-		}
+		CManager::GetInstance()->GetCamera()->SetCamera();
+		CObjectManager::GetInstance()->DrawOneDimension(CObjectManager::TYPE_2D);
 
 		// デバッグ表示
 		if (pDebugProc != NULL)
