@@ -22,6 +22,7 @@ namespace ExPattern
 {
 	const int POINTID_FREE = -1;
 	const int POINTID_TITLE = -2;
+	const int POINTID_GAMESTART = -3;
 }
 
 //==========================================================
@@ -122,6 +123,7 @@ private:	// 自分だけがアクセス可能
 	void MotionSet(void);
 	void BodySet(void);
 	void Collision(void);
+	void GameStart(void);
 	void CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, const float fRefMulti = 0.5f);
 	CPlayer* SearchNearPlayer(float fRadiusRest, float* pLength = nullptr);
 	D3DXVECTOR3 CollisionAllEnemy(D3DXVECTOR3 pos);

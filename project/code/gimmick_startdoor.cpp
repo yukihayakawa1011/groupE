@@ -160,10 +160,11 @@ bool CGimmickStartDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	// Œü‚«‚ð”½‰f
+	int nID = m_pObj->GetId();
 	m_pObj->SetRotSize(vtxObjMax,
 		vtxObjMin,
-		pFile->GetMax(m_pObj->GetId()),
-		pFile->GetMin(m_pObj->GetId()),
+		pFile->GetMax(nID),
+		pFile->GetMin(nID),
 		GetRotation().y);
 
 	// X

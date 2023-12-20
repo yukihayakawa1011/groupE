@@ -25,9 +25,10 @@ CMotion::CMotion()
 	m_nNowFrame = 0;
 	m_nNumMotion = 0;
 	m_nNowKey = 0;
-	m_nNowMotion = 1;
+	m_nNowMotion = 0;
 	m_FileData.nNumParts = 0;
 	m_FileData.ppParts = NULL;
+	m_nOldType = m_nNowMotion;
 
 	for (int nCnt = 0; nCnt < MAX_MOTION; nCnt++)
 	{
@@ -359,6 +360,7 @@ void CMotion::InitSet(int nType)
 	if (nType >= 0 && nType < m_nNumMotion)
 	{// ƒ‚[ƒVƒ‡ƒ“”ÍˆÍ“à
 		m_nNowMotion = nType;	// Ží—Þ‚ðÝ’è
+		m_nOldType = nType;
 		m_nNowKey = 0;
 		m_fNowFrame = 0;
 		m_bEnd = false;
@@ -392,6 +394,7 @@ void CMotion::Set(int nType)
 			m_nNowMotion = nType;	// Ží—Þ‚ðÝ’è
 			m_nNowKey = 0;
 			m_fNowFrame = 0;
+			m_nOldType = nType;
 			m_bEnd = false;
 
 			for (int nCntParts = 0; nCntParts < m_FileData.nNumParts; nCntParts++)
