@@ -65,13 +65,15 @@ public:
 
 	static CMiniMap* Create(const int playerNum, const int elaseWidth, const int elaseHeight);
 
-	//マップポリゴンの設定・取得処理
-	void SetPosition(const D3DXVECTOR3 pos){ m_pos = pos; }
+	//設定・取得処理
+	void SetPosition(const D3DXVECTOR3 pos) { m_pos = pos; }
+	void SetGoalIcon(const bool bDisp);
 
 	D3DXVECTOR3 GetPosition(void) { return m_pos; }
 	D3DXVECTOR3 GetRotation(void) { return m_pObjMap->GetRotation(); }
 	float GetWidth(void) { return m_fWidth; }
 	float GetHeight(void) { return m_fHeight; }
+	int GetPlayerNum(void) { return m_nPlayerNum; }
 
 private:
 	//メンバ関数

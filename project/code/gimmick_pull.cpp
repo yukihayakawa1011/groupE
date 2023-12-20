@@ -134,10 +134,11 @@ void CGimmickPull::Update(void)
 	D3DXVECTOR3 pos = D3DXVECTOR3(GetMtxWorld()->_41, GetMtxWorld()->_42, GetMtxWorld()->_43);
 
 	// Œü‚«‚ð”½‰f
+	int nID = m_pObj->GetId();
 	m_pObj->SetRotSize(vtxMax,
 		vtxMin,
-		pFile->GetMax(m_pObj->GetId()),
-		pFile->GetMin(m_pObj->GetId()),
+		pFile->GetMax(nID),
+		pFile->GetMin(nID),
 		0.0f);
 
 	CGimmick::Collision(pos, m_posOld, m_move, SetPos, vtxMin, vtxMax, -1, &pGimmick, &bLand);
@@ -193,10 +194,11 @@ bool CGimmickPull::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVEC
 	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 
 	// Œü‚«‚ð”½‰f
+	int nID = m_pObj->GetId();
 	m_pObj->SetRotSize(vtxObjMax,
 		vtxObjMin,
-		pFile->GetMax(m_pObj->GetId()),
-		pFile->GetMin(m_pObj->GetId()),
+		pFile->GetMax(nID),
+		pFile->GetMin(nID),
 		ObjRot.y);
 
 	if (pos.x + vtxMin.x <= ObjPos.x + vtxObjMax.x && pos.x + vtxMax.x >= ObjPos.x + vtxObjMin.x &&

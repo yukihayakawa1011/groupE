@@ -21,6 +21,7 @@ class CMiniMap;
 class CPause;
 class CQuataUI;
 class CGimmickLever;
+class CGimmickStartDoor;
 
 // マクロ定義
 #define NUM_FILTER	(2)
@@ -89,6 +90,7 @@ private:
 	CScore *m_QuataScore;       // ノルマのスコア
 	CQuataUI *m_QuataUI;        // ノルマのUI
 	CGimmickLever **m_ppLever;  // レバーのポインタ
+	CGimmickStartDoor **m_ppMultiDoor;  // 協力扉のポインタ
 	char m_aAddress[30];		// 接続先サーバーのアドレス
 	static STATE m_state;		// 状態
 	int m_nSledCnt;				// 現在動作しているスレッド数
