@@ -130,6 +130,7 @@ CGame::CGame()
     m_QuataScore = nullptr;
     m_QuataUI = nullptr;
 	m_ppLever = nullptr;
+	m_ppMultiDoor = nullptr;
     m_nSledCnt = 0;
     m_bEnd = false;
     m_nStartCnt = 0;
@@ -308,13 +309,14 @@ HRESULT CGame::Init(void)
         // ギミックの生成
 
 		m_ppLever = new CGimmickLever*[m_nNumPlayer];
+		m_ppMultiDoor = new CGimmickStartDoor*[m_nNumPlayer];
         // 開始扉(人数分)
         for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++) {
 			m_ppLever[nCnt] = CGimmickLever::Create(LEVERPOS[nCnt]);
 			m_ppLever[nCnt]->SetRotation(LEVERROT[nCnt]);
-            CGimmickStartDoor *p = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
-            p->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
-            p->SetLever(m_ppLever[nCnt]);
+			m_ppMultiDoor[nCnt] = CGimmickStartDoor::Create(D3DXVECTOR3(STARTDOORPOS.x + nCnt * DOOR_SPACE, STARTDOORPOS.y, STARTDOORPOS.z));
+            m_ppMultiDoor[nCnt]->SetRotation(D3DXVECTOR3(0.0f, D3DX_PI * 0.5f, 0.0f));
+            m_ppMultiDoor[nCnt]->SetLever(m_ppLever[nCnt]);
         }
 
         // ゴール
@@ -579,6 +581,25 @@ void CGame::Uninit(void)
 		m_ppLever = nullptr;
 	}
 
+	if (m_ppMultiDoor != nullptr)
+	{// 使用されている場合
+
+		for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+		{
+			// 終了処理
+			m_ppMultiDoor[nCnt]->Uninit();
+
+			// 使用されいない状態にする
+			m_ppMultiDoor[nCnt] = nullptr;
+		}
+
+		// ポインタの開放
+		delete[] m_ppMultiDoor;
+
+		// 使用されていない状態にする
+		m_ppMultiDoor = nullptr;
+	}
+
     // defaultカメラオン
     CManager::GetInstance()->GetCamera()->SetDraw(true);
 
@@ -637,6 +658,20 @@ void CGame::Update(void)
 
 	if (m_ppCamera[0]->GetMode() == CCamera::MODE_STARTDOOR)
 	{
+		if (m_nCntLookGoal < 1) {
+			return;
+		}
+		// ドアを開けてー
+		if (m_ppMultiDoor != nullptr)
+		{// 使用されている場合
+
+			for (int nCnt = 0; nCnt < m_nNumPlayer; nCnt++)
+			{
+				// 更新処理
+				m_ppMultiDoor[nCnt]->Update();
+			}
+		}
+
 		return;
 	}
 
