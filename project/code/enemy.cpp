@@ -288,6 +288,12 @@ void CEnemy::Uninit(void)
 		m_pWaist = nullptr;
 	}
 
+	if (nullptr != m_pFov)
+	{
+		m_pFov->Uninit();
+		m_pFov = nullptr;
+	}
+
 	m_nNumCount--;
 
 	// ”pŠü

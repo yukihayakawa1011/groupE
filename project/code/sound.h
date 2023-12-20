@@ -46,6 +46,7 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_SPEAR,			// 死亡
 		LABEL_SE_OPEN00,		//協力扉が閉まる
 		LABEL_SE_OPEN01,		//協力扉が開く
+		LABEL_SE_OPEN02,		//開始扉
 		LABEL_SE_WARNING,		//警告音
 		LABEL_MAX,
 	} LABEL;

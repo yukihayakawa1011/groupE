@@ -252,8 +252,6 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 	while (pObj != NULL)
 	{
 		CObjectX* pObjNext = pObj->m_pNext;
-		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		if (pObj->m_bEnableCollision == true && pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, TYPE_Y, fRefMulti))
 		{
 			bLand = true;
@@ -268,8 +266,6 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 	while (pObj != NULL)
 	{
 		CObjectX* pObjNext = pObj->m_pNext;
-		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		if (pObj->m_bEnableCollision == true)
 		{
 			pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, TYPE_Z, fRefMulti);
@@ -284,8 +280,6 @@ bool CObjectX::Collision(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVECTOR3 &mov
 	while (pObj != NULL)
 	{
 		CObjectX *pObjNext = pObj->m_pNext;
-		D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
-		D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
 		if (pObj->m_bEnableCollision == true)
 		{
 			pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, TYPE_X, fRefMulti);
@@ -362,53 +356,49 @@ bool CObjectX::CollisionCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3
 //==========================================================
 void CObjectX::SetRotSize(D3DXVECTOR3 &SetMax, D3DXVECTOR3 &SetMin, D3DXVECTOR3 vtxMax, D3DXVECTOR3 vtxMin, float fRot)
 {
+	//すべて同じ値を先に入れる
+	SetMax.y = vtxMax.y;	//Maxのy座標
+	SetMin.y = vtxMin.y;	//Minのy座標
+
 	//向きによって変更する
 	if (fRot == D3DX_PI * 0.5f)
 	{//左向き
 		//最大値反映
 		SetMax.x = vtxMax.z;	//x座標
-		SetMax.y = vtxMax.y;	//y座標
 		SetMax.z = -vtxMin.x;	//z座標
 
 		//最小値反映
 		SetMin.x = vtxMin.z;	//x座標
-		SetMin.y = vtxMin.y;	//y座標
 		SetMin.z = -vtxMax.x;	//z座標
 	}
 	else if (fRot == -D3DX_PI * 0.5f)
 	{//右向き
 		//最大値反映
 		SetMax.x = -vtxMin.z;	//x座標
-		SetMax.y = vtxMax.y;	//y座標
 		SetMax.z = vtxMax.x;	//z座標
 
 		//最小値反映
 		SetMin.x = -vtxMax.z;	//x座標
-		SetMin.y = vtxMin.y;	//y座標
 		SetMin.z = vtxMin.x;	//z座標
 	}
-	else if (fRot == -D3DX_PI || fRot == D3DX_PI)
+	else if(fRot == D3DX_PI || fRot == -D3DX_PI)
 	{//反転している場合
 		//高さ以外の最大値を最小値にする
 		SetMax.x = -vtxMin.x;	//x座標
-		SetMax.y = vtxMax.y;	//y座標
 		SetMax.z = -vtxMin.z;	//z座標
 
 		//高さ以外の最小値を最大値にする
 		SetMin.x = -vtxMax.x;	//x座標
-		SetMin.y = vtxMin.y;	//y座標
 		SetMin.z = -vtxMax.z;	//z座標
 	}
 	else
 	{//それ以外の場合
 		//最大値反映
 		SetMax.x = vtxMax.x;	//x座標
-		SetMax.y = vtxMax.y;	//y座標
 		SetMax.z = vtxMax.z;	//z座標
 
 		//最小値反映
 		SetMin.x = vtxMin.x;	//x座標
-		SetMin.y = vtxMin.y;	//y座標
 		SetMin.z = vtxMin.z;	//z座標
 	}
 }
