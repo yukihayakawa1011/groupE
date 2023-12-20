@@ -141,6 +141,7 @@ CGame::CGame()
     m_bQuota = false;
     m_bDispQuataUI = false;
 	m_bOpenStartDoor = false;
+	m_pEnemy = nullptr;
 }
 
 //===============================================
@@ -430,6 +431,9 @@ HRESULT CGame::Init(void)
             }
         }
     }
+
+	// 演出用の敵を追加
+	m_pEnemy = CEnemy::Create(PLAYERSTARTPOS, D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f), D3DXVECTOR3(0.0f, 0.0f, 0.0f), NULL, NULL, ExPattern::POINTID_GAMESTART);;
 
     // タイムの生成
     m_pTimer = CTime::Create(D3DXVECTOR3(SCREEN_WIDTH * 0.4375f, SCREEN_HEIGHT * 0.05f, 0.0f));
@@ -1253,6 +1257,11 @@ bool CGame::StartDirection(void)
 
 			if (m_nStartCnt == START_WAITCNT - 30) {	// 規定値
 				CGimmick::SwitchOff();
+
+				if (m_pEnemy != nullptr) {
+					m_pEnemy->Uninit();
+					m_pEnemy = nullptr;
+				}
 			}
 			else if (m_nStartCnt >= START_WAITCNT) {	// 規定値以上
 				if (m_ppPlayer != nullptr) { // 使用していた場合

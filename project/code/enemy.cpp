@@ -91,7 +91,7 @@ CEnemy::CEnemy()
 	m_fRotDest = 0.0f;
 	m_pBody = nullptr;
 	m_nLife = 0;
-	m_nCounterAttack = ATTACK_COOLTIME;
+	m_nCounterAttack = 0;
 	m_bChace = false;
 	m_bJump = false;
 	m_type = TYPE_NONE;
@@ -310,10 +310,15 @@ void CEnemy::Update(void)
 
 	m_nCounterAttack--;
 
-	if (m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW)
-	{
-		// 敵操作
-		Controller();
+	if (m_nPointID == ExPattern::POINTID_GAMESTART) {
+		GameStart();
+	}
+	else{
+		if (m_Info.state < STATE_DAMAGE || m_Info.state >= STATE_BLOW)
+		{
+			// 敵操作
+			Controller();
+		}
 	}
 
 	// モーション設定
@@ -1160,4 +1165,28 @@ void CEnemy::SetMatrix(void)
 void CEnemy::Blow(void) {
 	m_Info.nStateCounter = DAMAGE_INTERVAL;
 	m_Info.state = STATE_BLOW;
+}
+
+//===============================================
+// 開始時の演出追加
+//===============================================
+void CEnemy::GameStart(void)
+{
+	m_Info.pos.x += 5.0f * CManager::GetInstance()->GetSlow()->Get();
+	m_fRotMove = m_Info.rot.y;	//現在の向きを取得
+	m_fRotDest = -D3DX_PI * 0.5f;
+
+	
+	m_pBody->GetMotion()->Set(MOTION_MOVE);
+	m_pLeg->GetMotion()->Set(MOTION_MOVE);
+
+	Adjust();
+
+	// 起伏との当たり判定
+	float fHeight = CMeshField::GetHeight(m_Info.pos);
+	if (m_Info.pos.y <= fHeight)
+	{
+		m_Info.pos.y = fHeight;
+		m_bJump = false;
+	}
 }
