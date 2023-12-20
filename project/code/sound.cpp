@@ -39,6 +39,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/spear.wav", 0 },			// Ž€–S
 	{ "data/SE/open01.wav", 0 },			// Ž€–S
 	{ "data/SE/open02.wav", 0 },			// Ž€–S
+	{ "data/SE/warning.wav", 0 },			// Ž€–S
 };										
 
 //=============================================================================
