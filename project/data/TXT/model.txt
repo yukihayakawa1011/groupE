@@ -41,7 +41,7 @@ TEXTURE_FILENAME = data/TEXTURE/grass.png           # [22]芝生
 #------------------------------------------------------------------------------
 # モデル数
 #------------------------------------------------------------------------------
-NUM_MODEL = 35
+NUM_MODEL = 37
 
 #------------------------------------------------------------------------------
 # モデルファイル名
@@ -81,6 +81,8 @@ MODEL_FILENAME = data\MODEL\Cupboard00.x   # [31]食器棚
 MODEL_FILENAME = data\MODEL\longbrazier.x  # [32]長火鉢
 MODEL_FILENAME = data\MODEL\ido.x          # [33]井戸
 MODEL_FILENAME = data\MODEL\tree_01.x      # [34]木
+MODEL_FILENAME = data\MODEL\fence.x        # [35]フェンス
+MODEL_FILENAME = data\MODEL\fence_corner.x # [36]角フェンス
 
 #------------------------------------------------------------------------------
 # カメラ情報
@@ -2130,5 +2132,76 @@ MODELSET
 	SHADOW = 1
 END_MODELSET
 
+MODELSET
+	TYPE = 36
+	POS = -3500 0 2500
+	ROT = 0 180 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 -4900
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 1700
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 100
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 -900
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 -1900
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 -2900
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 35
+	POS = -3500 0 -3900
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 36
+	POS = -3500 0 -5800
+	ROT = 0 90 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
 
 END_SCRIPT

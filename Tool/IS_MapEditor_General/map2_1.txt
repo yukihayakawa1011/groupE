@@ -18,7 +18,7 @@ NUM_TEXTURE = 0
 #==============================================================================
 # モデル数
 #==============================================================================
-NUM_MODEL = 39
+NUM_MODEL = 41
 
 #==============================================================================
 # モデルファイル名
@@ -62,6 +62,8 @@ MODEL_FILENAME = data\MODEL\shrub.x
 MODEL_FILENAME = data\MODEL\stonelight01.x
 MODEL_FILENAME = data\MODEL\ido.x
 MODEL_FILENAME = data\MODEL\tree_01.x
+MODEL_FILENAME = data\MODEL\fence.x
+MODEL_FILENAME = data\MODEL\fence_corner.x
 
 #==============================================================================
 # カメラ情報
@@ -1776,6 +1778,78 @@ MODELSET
 	TYPE = 38
 	POS = -2500 0 -200
 	ROT = 0 0 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 40
+	POS = -3500 0 2500
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 -4900
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 1700
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 100
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 -900
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 -1900
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 -2900
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 39
+	POS = -3500 0 -3900
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 40
+	POS = -3500 0 -5800
+	ROT = 0 1.572 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET
