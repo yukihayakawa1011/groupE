@@ -72,10 +72,10 @@ namespace {
 
 	const char* TEXPASS[4] =
 	{
-		"data\\TEXTURE\\tutorial_icon10.png",
-		"data\\TEXTURE\\tutorial_icon11.png",
-		"data\\TEXTURE\\tutorial_icon12.png",
-		"data\\TEXTURE\\tutorial_icon13.png",
+		"data\\TEXTURE\\opendoor00.png",
+		"data\\TEXTURE\\opendoor01.png",
+		"data\\TEXTURE\\opendoor02.png",
+		"data\\TEXTURE\\opendoor03.png",
 	};
 
 	const D3DXVECTOR3 OPEN_SETPOS = { SCREEN_WIDTH * 1.3f, SCREEN_HEIGHT * 0.5f, 0.0f };  // スタートドア開いたときのUIの生成位置

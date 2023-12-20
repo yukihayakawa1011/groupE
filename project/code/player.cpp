@@ -83,6 +83,7 @@ namespace {
 	const float AIR_GAGE = (100.0f);	// 風神の術のゲージ必要量
 	const float KAKUREMI_GAGE = (1.0f);	// 隠れ蓑術のゲージ必要量
 	const float GAGE_UPHEIGHT = (150.0f);	// ゲージの設置高さ
+	const float FADE_COLA = (0.05f);
 	const D3DXVECTOR2 GAGE_SIZE = { 75.0f, 5.0f };	// ゲージのポリゴンサイズ
 	const float ITEMUI_UPHEIGHT = (180.0f); // アイテムUIの設置高さ
 	const D3DXVECTOR2 ITEMUI_SIZE = { 75.0f, 25.0f };	// アイテムUIのポリゴンサイズ
@@ -158,6 +159,7 @@ CPlayer::CPlayer()
 	m_pHeadUI = nullptr;
 	m_pFade = nullptr;
 	m_pEscape = nullptr;
+	m_bWarp = false;
 	m_nQuitCounter = 0;
 
 	for (int i = 0; i < MAX_ITEM; i++)
@@ -345,6 +347,7 @@ HRESULT CPlayer::Init(const char *pBodyName, const char *pLegName)
 	m_action = ACTION_NEUTRAL;
 	m_bJump = false;
 	m_nItemCnt = 0;
+	m_fFadeCola = FADE_COLA;
 
 	//m_pScore->AddScore(500 * m_nItemCnt);
 
@@ -521,6 +524,8 @@ void CPlayer::Update(void)
 		{
 			m_pMyCamera->Pursue(GetPosition(), GetRotation());
 		}
+
+		SetWarpFadeCol();
 	}
 
 	if (m_Catch.pPlayer != nullptr) {
@@ -777,22 +782,32 @@ void CPlayer::Controller(void)
 	//屋根裏にワープ
 	if (CManager::GetInstance()->GetInstance()->GetMode() == CScene::MODE_GAME) {
 		if (pos.x <= 1500.0f
-			&& pos.y <= -1000.0f)
+			&& pos.y <= -100.0f)
 		{
-			m_Info.move.y = 0.0f;
-			m_Info.pos.x = POS_WARP_ATTIC.x;
-			m_Info.pos.y = POS_WARP_ATTIC.y;
-			m_Info.pos.z = POS_WARP_ATTIC.z;
+
+			m_bWarp = true;
+
+			if (pos.y <= -1000.0f) {
+				m_Info.move.y = 0.0f;
+				m_Info.pos.x = POS_WARP_ATTIC.x;
+				m_Info.pos.y = POS_WARP_ATTIC.y;
+				m_Info.pos.z = POS_WARP_ATTIC.z;
+			}
 		}
 
 		//屋根裏からワープ
 		if (pos.x > 1500.0f
-			&& pos.y <= -1000.0f)
+			&& pos.y <= -100.0f)
 		{
-			m_Info.move.y = 0.0f;
-			m_Info.pos.x = POS_WARP.x;
-			m_Info.pos.y = POS_WARP.y;
-			m_Info.pos.z = POS_WARP.z;
+
+			m_bWarp = true;
+
+			if (pos.y <= -1000.0f) {
+				m_Info.move.y = 0.0f;
+				m_Info.pos.x = POS_WARP.x;
+				m_Info.pos.y = POS_WARP.y;
+				m_Info.pos.z = POS_WARP.z;
+			}
 		}
 	}
 	else {	// チュートリアル
@@ -809,37 +824,6 @@ void CPlayer::Controller(void)
 		if (CGoal::Collision(m_Info.pos, m_Info.posOld)) {	// ゴールを跨いだ
 			m_bGoal = true;
 			m_type = TYPE_NONE;
-
-			if (m_pFade != nullptr) {
-				m_pFade->SetDraw(true);
-				float fPosX = SCREEN_WIDTH * 0.5f;
-				float fPosY = SCREEN_HEIGHT * 0.5f;
-				float fWidth = SCREEN_WIDTH * 0.5f;
-				float fHeight = SCREEN_HEIGHT * 0.5f;
-
-				// 座標設定
-				if (m_nNumCount != 1) {	// 1人以外
-					fPosX = (m_nId % 2) * SCREEN_WIDTH * 0.5f + SCREEN_WIDTH * 0.25f;
-					fPosY = (m_nId / 2) * SCREEN_HEIGHT * 0.5f + SCREEN_HEIGHT * 0.25f;
-					fWidth = SCREEN_WIDTH * 0.25f;
-
-					if (m_nNumCount >= 3) {
-						fHeight = SCREEN_HEIGHT * 0.25f;
-					}
-				}
-
-				// ポリゴンのサイズ調整
-				m_pFade->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
-				m_pFade->SetSize(fWidth, fHeight);
-				m_pFade->SetCol(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
-
-				if (m_pEscape != nullptr) {
-					m_pEscape->SetDraw(true);
-					m_pEscape->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
-					m_pEscape->SetSize(fWidth * 0.5f, fHeight * 0.5f);
-					m_pEscape->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
-				}
-			}
 		}
 	}
 
@@ -3016,10 +3000,74 @@ void CPlayer::SetCamera(CCamera *pCamera) {
 
 	// フェードの生成
 	if (m_pMyCamera != nullptr) {	// 分割されている
-		m_pFade = CObject2D::Create(5);
+		m_pFade = CObject2D::Create(6);
 		m_pFade->SetDraw(false);
-		m_pEscape = CObject2D::Create(5);
+		m_pEscape = CObject2D::Create(6);
 		m_pEscape->SetDraw(false);
 		m_pEscape->BindTexture(CManager::GetInstance()->GetTexture()->Regist("data\\TEXTURE\\escape000.png"));
 	}
+
+	if (m_pFade != nullptr) {
+		m_pFade->SetDraw(false);
+		float fPosX = SCREEN_WIDTH * 0.5f;
+		float fPosY = SCREEN_HEIGHT * 0.5f;
+		float fWidth = SCREEN_WIDTH * 0.5f;
+		float fHeight = SCREEN_HEIGHT * 0.5f;
+
+		// 座標設定
+		if (m_nNumCount != 1) {	// 1人以外
+			fPosX = (m_nId % 2) * SCREEN_WIDTH * 0.5f + SCREEN_WIDTH * 0.25f;
+			fWidth = SCREEN_WIDTH * 0.25f;
+
+			if (m_nNumCount >= 3) {
+				fHeight = SCREEN_HEIGHT * 0.25f;
+				fPosY = (m_nId / 2) * SCREEN_HEIGHT * 0.5f + SCREEN_HEIGHT * 0.25f;
+			}
+		}
+
+		// ポリゴンのサイズ調整
+		m_pFade->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
+		m_pFade->SetSize(fWidth, fHeight);
+		m_pFade->SetCol(D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f));
+
+		if (m_pEscape != nullptr) {
+			m_pEscape->SetDraw(false);
+			m_pEscape->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
+			m_pEscape->SetSize(fWidth * 0.5f, fHeight * 0.5f);
+			m_pEscape->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
+		}
+	}
+}
+
+//===============================================
+// フェードの色変更
+//===============================================
+void CPlayer::SetWarpFadeCol(void)
+{
+	if (!m_bWarp) {	// warpしていない
+		return;
+	}
+
+	if (m_pFade == nullptr) {	// フェードがない
+		return;
+	}
+
+
+	m_pFade->SetDraw(true);
+	D3DXCOLOR col = m_pFade->GetCol();
+
+	col.a += m_fFadeCola;
+
+	if (col.a <= 0.0f) {
+		col.a = 0.0f;
+		m_fFadeCola = FADE_COLA;
+		m_bWarp = false;
+		m_pFade->SetDraw(false);
+	}
+	else if (col.a >= 1.5f) {
+		m_fFadeCola = -FADE_COLA * 0.75f;
+		col.a = 1.5f;
+	}
+
+	m_pFade->SetCol(col);
 }
