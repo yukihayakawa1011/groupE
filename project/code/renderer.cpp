@@ -120,13 +120,6 @@ HRESULT CRenderer::Init(HWND hWnd, BOOL bWindow)
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG1, D3DTA_TEXTURE);
 	m_pD3DDevice->SetTextureStageState(0, D3DTSS_ALPHAARG2, D3DTA_CURRENT);
 
-	//
-	D3DXCreateTexture(m_pD3DDevice, SCREEN_WIDTH, SCREEN_HEIGHT, 1, D3DUSAGE_RENDERTARGET, D3DFMT_A8R8G8B8, D3DPOOL_DEFAULT, &pTexture);
-	pTexture->GetSurfaceLevel(0, &(m_pRenderTextureSurface));
-	m_pD3DDevice->CreateDepthStencilSurface(SCREEN_WIDTH, SCREEN_HEIGHT, D3DFMT_D16, D3DMULTISAMPLE_NONE, 0, false, &m_pZSurface, nullptr);
-	m_pD3DDevice->GetRenderTarget(0, &m_pOrgSurface);
-	m_pD3DDevice->GetDepthStencilSurface(&m_pOrgZBuffer);
-
 	return S_OK;
 }
 

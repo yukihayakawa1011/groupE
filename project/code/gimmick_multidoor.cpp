@@ -13,6 +13,7 @@
 #include "gimmick_button.h"
 #include "input.h"
 #include "manager.h"
+#include "sound.h"
 
 // –³–¼–¼‘O‹óŠÔ
 namespace {
@@ -42,6 +43,7 @@ CGimmickMultiDoor::CGimmickMultiDoor()
 	m_fInerMulti = 0.0f;
 	m_ppButton = nullptr;
 	m_nActiveSwitch = 0;
+	m_nCount = 0;
 }
 
 //==========================================================
@@ -307,15 +309,29 @@ void CGimmickMultiDoor::UpdateState(void)
 
 	case STATE_OPEN:
 
+		m_nCount++;
+
+		if (m_nCount == 1)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_OPEN00);
+		}
+
 		break;
 
 	case STATE_CLOSE:
 
+		m_nCount = 0;
 		m_nStateCnt--;
+
+		if (m_nStateCnt == 299)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_OPEN01);
+		}
 
 		if (m_nStateCnt < 0) {
 			m_state = STATE_NEUTRAL;	// ‘Ò‹@ó‘Ô‚É•ÏX
 			StateSet();
+			
 		}
 
 		break;

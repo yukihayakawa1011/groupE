@@ -58,7 +58,8 @@ private:	// 自分だけがアクセス可能
 	D3DXVECTOR3 m_PosDest;		// 目標の角度
 	CGimmickLever *m_pLever;	// 同期されるレバーのポインタ
 	static char *m_pFileName;	// モデルファイルネーム
-	
+	int m_nSoundDown;
+	int m_nSoundUp;
 };
 
 #endif

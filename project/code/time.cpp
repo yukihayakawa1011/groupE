@@ -12,6 +12,7 @@
 #include "object2D.h"
 #include "slow.h"
 #include "debugproc.h"
+#include "sound.h"
 
 // ƒ}ƒNƒ’è‹`
 #define X_SPACE		(50)	// ‰¡‚ÌˆÚ“®—Ê
@@ -49,6 +50,7 @@ CTime::CTime()
 	m_mode = MODE_MAX;
 	m_bActive = false;
 	m_pWarning = nullptr;
+	m_nSound = 0;
 }
 
 //===============================================
@@ -149,6 +151,11 @@ void CTime::Update(void)
 	}
 
 	{
+		m_nSound++;
+		if (m_nSound == 1)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_WARNING);
+		}
 
 		D3DXVECTOR3 pos = m_pWarning->GetPosition();
 
@@ -181,6 +188,7 @@ void CTime::Update(void)
 		{
 			m_pWarning->Uninit();
 			m_pWarning = NULL;
+			m_nSound = 0;
 		}
 	}
 }
