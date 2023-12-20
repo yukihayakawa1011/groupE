@@ -11,6 +11,7 @@
 #include "debugproc.h"
 #include "player.h"
 #include "Xfile.h"
+#include "sound.h"
 
 // マクロ定義
 #define COLLISION_RANGE	(50.0f)
@@ -29,6 +30,8 @@ CGimmickStartDoor::CGimmickStartDoor()
 	// 値のクリア
 	m_pObj = nullptr;
 	m_state = STATE_NONE;
+	m_nSoundUp = 0;
+	m_nSoundDown = 0;
 }
 
 //==========================================================
@@ -88,10 +91,24 @@ void CGimmickStartDoor::Update(void)
 	{
 	case STATE_NONE:	// 何もない
 		m_PosDest = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+		m_nSoundDown++;
+
+		if (m_nSoundDown == 1)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_OPEN02);
+		}
 		break;
 
 	case STATE_OPEN:	// 押されている
 		m_PosDest = D3DXVECTOR3(0.0f, UPPOSITION, 0.0f);
+		m_nSoundUp++;
+
+		if (m_nSoundUp == 1)
+		{
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_OPEN02);
+		}
+	
 		break;
 	}
 
@@ -104,6 +121,7 @@ void CGimmickStartDoor::Update(void)
 	}
 
 	if (m_pLever != nullptr) {	// レバーが使われている
+
 		switch (m_pLever->GetState())
 		{
 		case CGimmickLever::STATE_NONE:

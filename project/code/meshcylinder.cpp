@@ -68,7 +68,7 @@ void CMeshCylinder::Draw(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, FALSE);
 
 	// ƒJƒŠƒ“ƒOÝ’è
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_FORCE_DWORD);
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	// •`‰æ
 	CObjectMesh::Draw();
@@ -77,7 +77,7 @@ void CMeshCylinder::Draw(void)
 	pDevice->SetRenderState(D3DRS_LIGHTING, TRUE);
 
 	// ƒJƒŠƒ“ƒOÝ’è’¼‚·
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 //==========================================================
@@ -298,7 +298,7 @@ void CMeshSmake::Draw(void)
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_ONE);
 
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
+	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
 
 	// •`‰æ
 	CMeshCylinder::Draw();
@@ -312,7 +312,8 @@ void CMeshSmake::Draw(void)
 	pDevice->SetRenderState(D3DRS_BLENDOP, D3DBLENDOP_ADD);
 	pDevice->SetRenderState(D3DRS_SRCBLEND, D3DBLEND_SRCALPHA);
 	pDevice->SetRenderState(D3DRS_DESTBLEND, D3DBLEND_INVSRCALPHA);
-	pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_NONE);
+
+	//pDevice->SetRenderState(D3DRS_CULLMODE, D3DCULL_CCW);
 }
 
 //==========================================================

@@ -80,6 +80,7 @@ private:	// 自分だけがアクセス可能
 	STATE m_state;					// 状態
 	int m_nStateCnt;					// 状態管理カウンター
 	float m_fInerMulti;				// 補正倍率
+	int m_nCount;
 };
 
 #endif

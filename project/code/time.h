@@ -81,6 +81,7 @@ private:	// 自分だけがアクセス可能
 	int m_nIdxTexture;	// テクスチャ番号
 	bool m_bActive;	// 動作可能状態
 	MODE m_mode;		// モード
+	int m_nSound;
 };
 
 #endif
