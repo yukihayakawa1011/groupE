@@ -19,9 +19,9 @@
 namespace {
 	const char* FILENAME = "data\\MODEL\\multidoor.x";	// 使用するモデルファイル名
 	const D3DXVECTOR3 SETPOS = { 150.0f, 0.0f, 0.0f };		// 初期設定座標
-	const float INERMULTI[CGimmickMultiDoor::STATE_MAX] = {0.75f, 0.15f, 0.01f};	// 補正倍率
+	const float INERMULTI[CGimmickMultiDoor::STATE_MAX] = {0.75f, 0.15f, 0.0045f};	// 補正倍率
 	const D3DXVECTOR3 OPENPOS = { 300.0f, 0.0f, 0.0f };
-	const int CLOSECOUNTER = (300);
+	const int CLOSECOUNTER = (600);
 }
 
 //==========================================================
