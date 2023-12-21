@@ -12,6 +12,7 @@
 #include "player.h"
 #include "Xfile.h"
 #include "sound.h"
+#include "effect.h"
 
 // マクロ定義
 #define COLLISION_RANGE	(50.0f)
@@ -32,6 +33,10 @@ CGimmickStartDoor::CGimmickStartDoor()
 	m_state = STATE_NONE;
 	m_nSoundUp = 0;
 	m_nSoundDown = 0;
+
+	for (int nCnt = 0; nCnt < DOOR_EFFECT::NUM_EFFECT; nCnt++) {
+		m_apEffect[nCnt] = nullptr;
+	}
 }
 
 //==========================================================
@@ -69,6 +74,14 @@ void CGimmickStartDoor::Uninit(void)
 	{
 		m_pObj->Uninit();
 		m_pObj = nullptr;
+	}
+
+	for (int nCnt = 0; nCnt < DOOR_EFFECT::NUM_EFFECT; nCnt++) {
+		if (m_apEffect[nCnt] == nullptr) {
+			continue;
+		}
+		m_apEffect[nCnt]->Uninit();
+		m_apEffect[nCnt] = nullptr;
 	}
 
 	// リストから削除
@@ -118,7 +131,49 @@ void CGimmickStartDoor::Update(void)
 
 		pos += posDiff * 0.1f;
 		m_pObj->SetCurrentPosition(pos);
+
+		if (m_PosDest.y == UPPOSITION && posDiff.y >= 0.1f && posDiff.y <= 5.0f)
+		{
+			// エフェクトを生成する
+			for (int nCnt = 0; nCnt < DOOR_EFFECT::NUM_EFFECT; nCnt++) {
+				if (m_apEffect[nCnt] != nullptr) {
+					continue;
+				}
+				// 座標の設定
+				D3DXVECTOR3 pos = GetPosition();
+
+				if (m_pObj != nullptr) {
+					pos.x = m_pObj->GetMtx()->_41;
+					pos.y = m_pObj->GetMtx()->_42;
+					pos.z = m_pObj->GetMtx()->_43;
+				}
+
+				pos.x += sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 1.0f;
+				pos.z += cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 1.0f;
+
+				//移動量の設定
+				D3DXVECTOR3 move = { 0.0f, 0.0f, 0.0f };
+				move.x = sinf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.01f;
+				move.y = ((float)(rand() % 10 + 1)) * 0.5f;
+				move.z = cosf((float)(rand() % 629 - 314) * 0.01f) * ((float)(rand() % 100)) * 0.01f;
+
+				float frand = rand() % 8 * 0.1f;
+
+				//色の設定
+				D3DXCOLOR col = D3DXCOLOR(frand, frand, frand, 1.0f);
+
+				//半径の設定
+				float fRadius = 10.0f;
+
+				//寿命の設定
+				float fLife = 200.0f;
+
+				m_apEffect[nCnt] = CEffect::Create(pos + move, move, col, fRadius, fLife, CEffect::TYPE_DUST);
+			}
+		}
 	}
+
+	STATE stateOld = m_state;
 
 	if (m_pLever != nullptr) {	// レバーが使われている
 
@@ -135,6 +190,21 @@ void CGimmickStartDoor::Update(void)
 		default:
 			m_state = STATE_NONE;
 			break;
+		}
+	}
+
+	// エフェクトの更新処理
+	for (int nCnt = 0; nCnt < DOOR_EFFECT::NUM_EFFECT; nCnt++) {
+		if (m_apEffect[nCnt] == nullptr) {
+			continue;
+		}
+
+		// 更新処理
+		m_apEffect[nCnt]->Update();
+
+		if (m_apEffect[nCnt]->GetCol().a <= 0.0f || m_apEffect[nCnt]->GetRange() <= 0.0f || m_apEffect[nCnt]->GetLife() <= 0.0f) {	// 色が消えたもしくはサイズが小さくなった
+			m_apEffect[nCnt]->Uninit();
+			m_apEffect[nCnt] = nullptr;
 		}
 	}
 }
@@ -233,12 +303,12 @@ bool CGimmickStartDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 		&& pos.x + vtxMin.x < ObjPos.x + vtxObjMax.x
 		&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
 		&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z)
-	{//範囲内にある
-	 //上からの判定
+	{// 範囲内にある
+	 // 上からの判定
 		if (posOld.y + vtxMin.y >= ObjPos.y + vtxObjMax.y
 			&& pos.y + vtxMin.y < ObjPos.y + vtxObjMax.y)
 		{//上からめり込んだ
-		 //上にのせる
+			// 上にのせる
 			pos.y = ObjPos.y + vtxObjMax.y - vtxMin.y;
 			move.y = 0.0f;
 		}

@@ -247,6 +247,7 @@ bool CGimmickMultiDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 				{//右から左にめり込んだ
 					//位置を戻す
 					pos.x = ObjPos.x + vtxObjMax.x - vtxMin.x + 0.1f;
+					move.x = 0.0f;
 				}
 				else if (posOld.x + vtxMax.x <= m_aObject[nCnt].posOld.x + vtxObjMin.x
 					&& pos.x + vtxMax.x > ObjPos.x + vtxObjMin.x
@@ -255,6 +256,7 @@ bool CGimmickMultiDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 				{//左から右にめり込んだ
 					//位置を戻す
 					pos.x = ObjPos.x + vtxObjMin.x - vtxMax.x - 0.1f;
+					move.x = 0.0f;
 				}
 				else if (posOld.z + vtxMin.z >= m_aObject[nCnt].posOld.z + vtxObjMax.z
 					&& pos.z + vtxMin.z < ObjPos.z + vtxObjMax.z
@@ -263,6 +265,7 @@ bool CGimmickMultiDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 				{//奥から手前にめり込んだ
 					//位置を戻す
 					pos.z = ObjPos.z + vtxObjMax.z - vtxMin.z + 0.1f;
+					move.z = 0.0f;
 				}
 				else if (posOld.z + vtxMax.z <= m_aObject[nCnt].posOld.z + vtxObjMin.z
 					&& pos.z + vtxMax.z > ObjPos.z + vtxObjMin.z
@@ -271,6 +274,7 @@ bool CGimmickMultiDoor::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3
 				{//手前から奥にめり込んだt
 				 //位置を戻す
 					pos.z = ObjPos.z + vtxObjMin.z - vtxMax.z - 0.1f;
+					move.z = 0.0f;
 				}
 			}
 

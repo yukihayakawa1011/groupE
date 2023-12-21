@@ -99,10 +99,11 @@ void CEffect::Update(void)
 	if (m_Info.fLife < 0)
 	{// 寿命がなくなった場合
 
-		// 終了する
-		Uninit();
-
-		return;
+		if (m_Info.Type != TYPE_DUST) {
+			// 終了する
+			Uninit();
+			return;
+		}
 	}
 
 	D3DXVECTOR3 pos = GetPosition();	// 座標
@@ -388,11 +389,33 @@ void CEffect::Update(void)
 			m_pObjectBilBoard->SetRotation(rot);
 		}
 		break;
+
+	case TYPE_DUST:	// 煙
+
+		m_Info.col.a -= 0.0035f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.move.y += -0.3f * CManager::GetInstance()->GetSlow()->Get();
+		m_Info.fRadius -= 0.1f * CManager::GetInstance()->GetSlow()->Get();
+
+		if (m_Info.pos.y <= 0.0f)
+		{
+			m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		}
+		else
+		{
+			D3DXVECTOR3 rot = m_pObjectBilBoard->GetRotation();
+			rot.z += D3DX_PI * (rand() % 50 * 0.0001f + 0.065f);
+			m_pObjectBilBoard->SetRotation(rot);
+		}
+
+		break;
 	}
 
 	if (m_Info.col.a < 0.0f || m_Info.fRadius < 0.0f)
 	{// 値がひっくり返った
-		Uninit();
+
+		if (m_Info.Type != TYPE_DUST) {
+			Uninit();
+		}
 
 		return;
 	}
@@ -683,6 +706,12 @@ CTexture::TYPE CEffect::SetTex(TYPE type)
 		return CTexture::TYPE_ITEMGET_EF;
 	}
 	break;
+
+	case TYPE_DUST:
+	{
+		return CTexture::TYPE_EFFECT;
+	}
+	break;
 	}
 
 	return CTexture::TYPE();
@@ -903,5 +932,39 @@ void CEffect::DrawSet(void)
 		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 	}
 	break;
+
+	case TYPE_DUST:
+	{
+		m_pObjectBilBoard->SetAlphaText(true);
+		m_pObjectBilBoard->SetZTest(true);
+		m_pObjectBilBoard->SetLighting(true);
+		m_pObjectBilBoard->SetFusion(CObjectBillboard::FUSION_ADD);
 	}
+	break;
+
+	}
+}
+
+//===============================================
+// 半径取得
+//===============================================
+float CEffect::GetRange(void) const
+{
+	if (m_pObjectBilBoard == nullptr) {
+		return 0.0f;
+	}
+
+	return m_pObjectBilBoard->GetWidth();
+}
+
+//===============================================
+// 色取得
+//===============================================
+D3DXCOLOR CEffect::GetCol(void) const
+{
+	if (m_pObjectBilBoard == nullptr) {
+		return D3DXCOLOR(0.0f, 0.0f, 0.0f, 0.0f);
+	}
+
+	return m_pObjectBilBoard->GetCol();
 }

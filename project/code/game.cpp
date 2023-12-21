@@ -81,7 +81,7 @@ namespace {
 	const D3DXVECTOR3 OPEN_SETPOS = { SCREEN_WIDTH * 1.3f, SCREEN_HEIGHT * 0.5f, 0.0f };  // スタートドア開いたときのUIの生成位置
 	const D3DXVECTOR3 OPEN_SETROT = { 0.0f, 0.0f, D3DX_PI * 0.0f };                       // 向き
 	const D3DXVECTOR2 OPEN_SIZE = { 470.0f, 150.0f };                                     // サイズ
-	const float OPEN_MOVESPEED = (-2.5f);                                                 // 移動スピード
+	const float OPEN_MOVESPEED = (-3.3f);                                                 // 移動スピード
 	const float OPEN_MOVESIN = (0.05f);
 	const float OPEN_MOVESIZE = (30.0f);
     const D3DXVECTOR2 QUATAUI_SIZE = { 100.0f, 50.0f };	// ノルマのUIのサイズ
@@ -233,7 +233,7 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-
+		
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 

@@ -47,6 +47,7 @@ public:	// 誰でもアクセス可能な定義
 		TYPE_PARTY,		// タイトル
 		TYPE_TUTORIAL,	// チュートリアル
 		TYPE_PULLSMAKE,	// 引き中の手
+		TYPE_DUST,		// 埃
 		TYPE_MAX
 	}TYPE;
 
@@ -80,6 +81,9 @@ public:	// 誰でもアクセス可能
 	D3DXVECTOR3 GetMove(void) { return m_Info.move; }
 	void SetType(TYPE type) { m_Info.Type = type; }
 	CObjectBillboard *GetObj(void) { return m_pObjectBilBoard; }
+	float GetRange(void) const;
+	D3DXCOLOR GetCol(void) const;
+	float GetLife(void) const { return m_Info.fLife; }
 
 private:	// 自分だけがアクセス可能
 
