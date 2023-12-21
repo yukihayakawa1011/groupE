@@ -689,6 +689,8 @@ void CPlayer::Controller(void)
 	// オブジェクトとの当たり判定
 	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 120.0f, 50.0f);
 	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
+	D3DXVECTOR3 vtxMaxOld = vtxMax;
+	D3DXVECTOR3 vtxMinOld = vtxMin;
 	if (m_Catch.pPlayer != nullptr) {
 		vtxMax.x *= 2;
 		vtxMax.z *= 2;
@@ -696,7 +698,7 @@ void CPlayer::Controller(void)
 		vtxMin.z *= 2;
 	}
 
-	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, 0.3f))
+	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, vtxMinOld, vtxMaxOld))
 	{
 		m_bJump = false;
 	}

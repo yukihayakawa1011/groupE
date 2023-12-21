@@ -667,3 +667,151 @@ void CObjectX::CollisionLand(D3DXVECTOR3 &pos)
 		pObj = pObjNext;
 	}
 }
+
+bool CObjectX::Collision(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, D3DXVECTOR3 vtxMinOld, D3DXVECTOR3 vtxMaxOld)
+{
+	CObjectX *pObj = m_pTop;	// 先頭取得
+	bool bLand = false;	// 着地したか否か
+	D3DXVECTOR3 moveOld = move;
+
+	//仮置き
+	D3DXVECTOR3 posTemp = posOld;
+
+	//Y
+	posTemp.y = pos.y;
+	pObj = m_pTop;
+	while (pObj != NULL)
+	{
+		CObjectX* pObjNext = pObj->m_pNext;
+		if (pObj->m_bEnableCollision == true && pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, vtxMinOld, vtxMaxOld, TYPE_Y))
+		{
+			bLand = true;
+		}
+
+		pObj = pObjNext;
+	}
+
+	//Z
+	posTemp.z = pos.z;
+	pObj = m_pTop;
+	while (pObj != NULL)
+	{
+		CObjectX* pObjNext = pObj->m_pNext;
+		if (pObj->m_bEnableCollision == true)
+		{
+			pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, vtxMinOld, vtxMaxOld, TYPE_Z);
+		}
+
+		pObj = pObjNext;
+	}
+
+	//X
+	posTemp.x = pos.x;
+	pObj = m_pTop;
+	while (pObj != NULL)
+	{
+		CObjectX *pObjNext = pObj->m_pNext;
+		if (pObj->m_bEnableCollision == true)
+		{
+			pObj->CollisionCheck(posTemp, posOld, move, vtxMin, vtxMax, vtxMinOld, vtxMaxOld, TYPE_X);
+		}
+
+		pObj = pObjNext;
+	}
+
+	pos = posTemp;
+
+	return bLand;
+}
+
+bool CObjectX::CollisionCheck(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVECTOR3& move, D3DXVECTOR3 vtxMin, D3DXVECTOR3 vtxMax, D3DXVECTOR3 vtxMinOld, D3DXVECTOR3 vtxMaxOld, COLLISION_AXIS axis)
+{
+	CXFile *pFile = CManager::GetInstance()->GetModelFile();
+	bool bLand = false;	// 着地したか否か
+	D3DXVECTOR3 vtxObjMax = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+	D3DXVECTOR3 vtxObjMin = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+
+	// 向きを反映
+	int nIdx = GetIdx();
+	SetRotSize(vtxObjMax,
+		vtxObjMin,
+		pFile->GetMax(nIdx),
+		pFile->GetMin(nIdx),
+		m_rot.y);
+
+
+	switch (axis)
+	{
+	case CObjectX::TYPE_X:	//X
+		if (pos.y + vtxMax.y > m_pos.y + vtxObjMin.y
+			&& pos.y + vtxMin.y < m_pos.y + vtxObjMax.y
+			&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z
+			&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
+		{//範囲内にある
+			if (posOld.x + vtxMinOld.x >= m_pos.x + vtxObjMax.x
+				&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x)
+			{//右から左にめり込んだ
+				move.x *= -0.0f;
+				pos.x = m_pos.x + vtxObjMax.x - vtxMin.x + 0.1f + move.x;
+			}
+			else if (posOld.x + vtxMaxOld.x <= m_pos.x + vtxObjMin.x
+				&& pos.x + vtxMax.x > m_pos.x + vtxObjMin.x)
+			{//左から右にめり込んだ
+				move.x *= -0.0f;
+				pos.x = m_pos.x + vtxObjMin.x - vtxMax.x - 0.1f + move.x;
+			}
+		}
+		break;
+	case CObjectX::TYPE_Y:	//Y
+		if (pos.x + vtxMax.x > m_pos.x + vtxObjMin.x
+			&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x
+			&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z
+			&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
+		{//範囲内にある
+		 //上からの判定
+			if (posOld.y + vtxMinOld.y >= m_pos.y + vtxObjMax.y
+				&& pos.y + vtxMin.y < m_pos.y + vtxObjMax.y)
+			{//上からめり込んだ
+				pos.y = m_pos.y + vtxObjMax.y - vtxMin.y;
+				move.y = 0.0f;
+				bLand = true;
+			}
+
+			//下からの判定
+			if (posOld.y + vtxMaxOld.y <= m_pos.y + vtxObjMin.y
+				&& pos.y + vtxMax.y > m_pos.y + vtxObjMin.y)
+			{//下からめり込んだ
+				pos.y = m_pos.y - vtxObjMin.y - vtxMax.y;
+				move.y = 0.0f;
+				bLand = true;
+			}
+		}
+		break;
+	case CObjectX::TYPE_Z:	//Z
+		if (pos.x + vtxMax.x > m_pos.x + vtxObjMin.x
+			&& pos.x + vtxMin.x < m_pos.x + vtxObjMax.x
+			&& pos.y + vtxMax.y > m_pos.y + vtxObjMin.y
+			&& pos.y + vtxMin.y < m_pos.y + vtxObjMax.y)
+		{//範囲内にある
+			if (posOld.z + vtxMinOld.z >= m_pos.z + vtxObjMax.z
+				&& pos.z + vtxMin.z < m_pos.z + vtxObjMax.z)
+			{//奥から手前にめり込んだ
+			 //位置を戻す
+				move.z *= -0.0f;
+				pos.z = m_pos.z + vtxObjMax.z - vtxMin.z + 0.1f + move.z;
+			}
+			else if (posOld.z + vtxMaxOld.z <= m_pos.z + vtxObjMin.z
+				&& pos.z + vtxMax.z > m_pos.z + vtxObjMin.z)
+			{//手前から奥にめり込んだ
+			 //位置を戻す
+				move.z *= -0.0f;
+				pos.z = m_pos.z + vtxObjMin.z - vtxMax.z - 0.1f + move.z;
+			}
+		}
+		break;
+	default:
+		break;
+	}
+
+	return bLand;
+}
