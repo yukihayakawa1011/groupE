@@ -2543,7 +2543,10 @@ void CPlayer::BodySet(void)
 	// 下半身更新
 	if (m_pLeg != nullptr)
 	{// 使用されている場合
-		m_pLeg->Update();
+
+		if (CManager::GetInstance()->GetMode() != CScene::MODE_GAME) {
+			m_pLeg->Update();
+		}
 
 		// 腰の設定
 		if (m_pWaist != nullptr)
@@ -2553,6 +2556,10 @@ void CPlayer::BodySet(void)
 			// 腰の高さを補填
 			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
 			m_pWaist->SetMatrix();
+		}
+
+		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME) {
+			m_pLeg->Update();
 		}
 	}
 
@@ -2922,6 +2929,7 @@ void CPlayer::GoalWait(void)
 				col.a += 0.01f;
 			}
 			m_pFade->SetCol(col);
+			m_pFade->SetDraw(true);
 		}
 
 		// フェードの色を濃くする
@@ -2931,6 +2939,7 @@ void CPlayer::GoalWait(void)
 				col.a += 0.01f;
 			}
 			m_pEscape->SetCol(col);
+			m_pEscape->SetDraw(true);
 		}
 		return;
 	}
@@ -3046,7 +3055,7 @@ void CPlayer::SetCamera(CCamera *pCamera) {
 		if (m_pEscape != nullptr) {
 			m_pEscape->SetDraw(false);
 			m_pEscape->SetPosition(D3DXVECTOR3(fPosX, fPosY, 0.0f));
-			m_pEscape->SetSize(fWidth * 0.5f, fHeight * 0.5f);
+			m_pEscape->SetSize(fWidth * 0.5f, fHeight * ((m_nNumCount == 2) ? 0.25f : 0.5f));
 			m_pEscape->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 0.0f));
 		}
 	}
