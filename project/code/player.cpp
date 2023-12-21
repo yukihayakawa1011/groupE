@@ -2373,6 +2373,19 @@ void CPlayer::DropAll(void)
 		}
 	}
 
+	//各アイテム数を0にする
+	m_nNumItemCoin = 0;
+	m_nNumItemBrecetet = 0;
+	m_nNumItemCup = 0;
+	m_nNumItemEmerald = 0;
+	m_nNumItemDiamond = 0;
+	m_nNumItemGold = 0;
+	m_nNumItemJar = 0;
+	m_nNumItemKunai = 0;
+	m_nNumItemRing = 0;
+	m_nNumItemScroll = 0;
+	m_nNumItemShuriken = 0;
+
 	// 所持しているアイテムの総数をゼロにする
 	m_nItemCnt = 0;
 }
