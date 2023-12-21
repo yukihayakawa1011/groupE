@@ -45,6 +45,7 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/button.wav", 0 },		// Enter
 	{ "data/SE/move.wav", 0 },		// Enter
 	{ "data/SE/rage.wav", 0 },		// Enter
+	{ "data/SE/entry.wav", 0 },		// Enter
 };										
 
 //=============================================================================

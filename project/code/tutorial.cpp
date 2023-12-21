@@ -36,6 +36,7 @@
 #include "item.h"
 #include "particle.h"
 #include "entryicon.h"
+#include "sound.h"
 
 // –³–¼–¼‘O‹óŠÔ
 namespace
@@ -350,6 +351,8 @@ void CTutorial::Update(void)
 			m_apObject[nId]->SetState(CEntryIcon::STATE_ENTRY);
 			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, 1.0f));
 			m_apObject[nId]->Entryed();
+
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_ENTRY);
 		}
 	}
 
@@ -362,6 +365,8 @@ void CTutorial::Update(void)
 			m_apObject[nId]->SetState(CEntryIcon::STATE_STANDBY);
 			m_apObject[nId]->SetCol(D3DXCOLOR(1.0f, 1.0f, 1.0f, m_apObject[nId]->GetCol()));
 			m_apObject[nId]->NoEntry();
+
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_ENTRY);
 		}
 	}
 
