@@ -1578,7 +1578,7 @@ void CPlayer::MotionSet(void)
 
 			if (m_pLeg->GetMotion()->GetNowFrame() == 0 && (m_pLeg->GetMotion()->GetNowKey() == 0 || m_pLeg->GetMotion()->GetNowKey() == 2))
 			{
-				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_RAGE);
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_MOVE);
 			}
 		}
 

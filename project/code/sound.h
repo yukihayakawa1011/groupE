@@ -52,6 +52,7 @@ public:	// 誰でもアクセス可能な定義
 		LABEL_SE_BUTTON,			// コイン
 		LABEL_SE_MOVE,			// コイン
 		LABEL_SE_RAGE,			// コイン
+		LABEL_SE_ENTRY,			// コイン
 		LABEL_MAX,
 	} LABEL;
 
