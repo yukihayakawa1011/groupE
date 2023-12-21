@@ -2452,7 +2452,7 @@ END_MODELSET
 
 MODELSET
 	TYPE = 40
-	POS = 4000 100 500
+	POS = 3950 100 500
 	ROT = 0 -90 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
@@ -2460,7 +2460,7 @@ END_MODELSET
 
 MODELSET
 	TYPE = 40
-	POS = 4000 100 1300
+	POS = 3950 100 1300
 	ROT = 0 -90 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1

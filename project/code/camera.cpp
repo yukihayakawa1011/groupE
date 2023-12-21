@@ -918,7 +918,7 @@ void CCamera::CollisionObj(void)
 		}
 	}
 
-	m_fDestZoom = fLengthNew / m_fLength;
+	m_fDestZoom = fLengthNew / m_fLength * 0.8f;
 }
 
 //==========================================================
