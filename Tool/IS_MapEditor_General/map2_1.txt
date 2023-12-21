@@ -18,7 +18,7 @@ NUM_TEXTURE = 0
 #==============================================================================
 # モデル数
 #==============================================================================
-NUM_MODEL = 44
+NUM_MODEL = 45
 
 #==============================================================================
 # モデルファイル名
@@ -67,6 +67,7 @@ MODEL_FILENAME = data\MODEL\fence_corner.x
 MODEL_FILENAME = data\MODEL\soil.x
 MODEL_FILENAME = data\MODEL\fence00.x
 MODEL_FILENAME = data\MODEL\fence01.x
+MODEL_FILENAME = data\MODEL\kakeziku001.x
 
 #==============================================================================
 # カメラ情報
@@ -2069,6 +2070,62 @@ MODELSET
 	TYPE = 43
 	POS = -2600 1 -100
 	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 28
+	POS = 4530 0 600
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 28
+	POS = 4530 0 1000
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 28
+	POS = 4530 0 1400
+	ROT = 0 3.14159 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 44
+	POS = 5500 50 500
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 44
+	POS = 5500 50 1300
+	ROT = 0 1.572 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 27
+	POS = 5470 1 750
+	ROT = 0 1.5724 0
+#	影設定はエディタ未実装のため手動で入力してください
+	SHADOW = 1
+END_MODELSET
+
+MODELSET
+	TYPE = 27
+	POS = 5470 1 1050
+	ROT = 0 1.5724 0
 #	影設定はエディタ未実装のため手動で入力してください
 	SHADOW = 1
 END_MODELSET

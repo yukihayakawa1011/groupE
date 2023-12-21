@@ -638,7 +638,7 @@ Mesh {
    0.000000;0.000000;0.000000;;
    0.300000;0.300000;0.300000;;
    TextureFilename {
-    "C:\\Users\\student\\Downloads\\gold00.jpg";
+    "data\\TEXTURE\\gold00.jpg";
    }
   }
   Material {
