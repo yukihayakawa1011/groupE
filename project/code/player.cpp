@@ -2923,6 +2923,7 @@ void CPlayer::GoalWait(void)
 				col.a += 0.01f;
 			}
 			m_pFade->SetCol(col);
+			m_pFade->SetCol(true);
 		}
 
 		// フェードの色を濃くする
@@ -2932,6 +2933,7 @@ void CPlayer::GoalWait(void)
 				col.a += 0.01f;
 			}
 			m_pEscape->SetCol(col);
+			m_pEscape->SetCol(true);
 		}
 		return;
 	}
