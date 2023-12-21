@@ -10,6 +10,7 @@
 #include "player.h"
 #include "objectX.h"
 #include "particle.h"
+#include "gimmick.h"
 
 // 無名名前空間
 namespace {
@@ -196,9 +197,9 @@ void CBullet::Hit(void)
 	}
 
 	// オブジェクトとの判定
+	D3DXVECTOR3 vtxMax = D3DXVECTOR3(COLLRANGE * 0.5f, COLLRANGE * 0.15f, COLLRANGE * 0.5f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-COLLRANGE * 0.5f, -COLLRANGE * 0.15f, -COLLRANGE * 0.5f);
 	if (m_bMove) {
-		D3DXVECTOR3 vtxMax = D3DXVECTOR3(COLLRANGE * 0.5f, COLLRANGE * 0.15f, COLLRANGE * 0.5f);
-		D3DXVECTOR3 vtxMin = D3DXVECTOR3(-COLLRANGE * 0.5f, -COLLRANGE * 0.15f, -COLLRANGE * 0.5f);
 		D3DXVECTOR3 moveOld = m_Info.move;
 		D3DXVECTOR3 posOld = m_Info.pos;
 		CObjectX::Touch(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax);
@@ -208,6 +209,14 @@ void CBullet::Hit(void)
 			m_Info.pos = posOld;
 			m_bMove = false;
 		}
+	}
+
+	D3DXVECTOR3 moveTemp = m_Info.move;
+	CGimmick::Collision(m_Info.pos, m_Info.posOld, m_Info.move, D3DXVECTOR3(0.0f, 0.0f, 0.0f), vtxMin, vtxMax, 0);
+	if (moveTemp != m_Info.move)
+	{//クナイは当たったら停止
+		m_Info.move = D3DXVECTOR3(0.0f, 0.0f, 0.0f);
+		m_bMove = false;
 	}
 
 	if (bHit) {	// 当たった
