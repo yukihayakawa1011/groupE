@@ -2544,6 +2544,10 @@ void CPlayer::BodySet(void)
 	if (m_pLeg != nullptr)
 	{// 使用されている場合
 
+		if (CManager::GetInstance()->GetMode() != CScene::MODE_GAME) {
+			m_pLeg->Update();
+		}
+
 		// 腰の設定
 		if (m_pWaist != nullptr)
 		{
@@ -2554,7 +2558,9 @@ void CPlayer::BodySet(void)
 			m_pWaist->SetMatrix();
 		}
 
-		m_pLeg->Update();
+		if (CManager::GetInstance()->GetMode() == CScene::MODE_GAME) {
+			m_pLeg->Update();
+		}
 	}
 
 	// 胴体更新
