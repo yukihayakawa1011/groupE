@@ -20,11 +20,12 @@
 //無名名前空間
 namespace
 {
-	const D3DXVECTOR3 GOAL_CAMERAROT = { 0.0f, 0.75f, D3DX_PI * 0.38f };  // 目標の角度
-	const D3DXVECTOR3 GOAL_CAMERAPOS = { -970.0f, 100.0f, 1100.0f };      // 目標の位置
+	const D3DXVECTOR3 GOAL_CAMERAROT = { 0.0f, 0.75f, D3DX_PI * 0.38f };   // 目標の角度
+	const D3DXVECTOR3 GOAL_CAMERAPOSR = { -970.0f, 100.0f, 1100.0f };      // 目標の位置
+	const D3DXVECTOR3 GOAL_CAMERAPOSV = { -660.0f, 280.0f, 1460.0f };      // 目標の位置
 	const float DEFAULT_LENGTH = 700.0f;
 	const float ZOOM_SPEED = 0.18f;
-	const float ZOOMSTARTDOOR_COUNT = 60;                                 // スタートドアを見ている時間
+	const float ZOOMSTARTDOOR_COUNT = 60;                                  // スタートドアを見ている時間
 }
 
 //==========================================================
@@ -143,6 +144,7 @@ void CCamera::Update(void)
 	Zoom();
 
 	CManager::GetInstance()->GetDebugProc()->Print("向き[%f, %f, %f]\n", m_rot.x, m_rot.y, m_rot.z);
+	
 }
 
 //==========================================================
@@ -846,12 +848,15 @@ void CCamera::AllOpenCamera(int nCount)
 {
 	if (nCount >= ZOOMSTARTDOOR_COUNT)
 	{
-		D3DXVECTOR3 posDest = m_OldposR - m_posR;
-		SetPositionR(m_posR + posDest * 0.1f);
-
 		// カメラを目標の向きまで回転させる
 		D3DXVECTOR3 rotDest = m_Oldrot - m_rot;
 		SetRotation(m_rot + rotDest * 0.1f);
+
+		D3DXVECTOR3 posDestR = m_OldposR - m_posR;
+		SetPositionR(m_posR + posDestR * 0.1f);
+
+		D3DXVECTOR3 posDestV = m_OldposV - m_posV;
+		m_posV = m_posV + posDestV * 0.1f;
 	}
 	else
 	{
@@ -859,9 +864,15 @@ void CCamera::AllOpenCamera(int nCount)
 		D3DXVECTOR3 rotDest = GOAL_CAMERAROT - m_rot;
 		SetRotation(m_rot + rotDest * 0.03f);
 
-		D3DXVECTOR3 posDest = GOAL_CAMERAPOS - m_posR;
-		SetPositionR(m_posR + posDest * 0.02f);
+		D3DXVECTOR3 posDestR = GOAL_CAMERAPOSR - m_posR;
+		SetPositionR(m_posR + posDestR * 0.02f);
+
+		D3DXVECTOR3 posDestV = GOAL_CAMERAPOSV - m_posV;
+		m_posV = m_posV + posDestV * 0.02f;
 	}
+
+	CManager::GetInstance()->GetDebugProc()->Print("位置R[%f, %f, %f]\n", m_posR.x, m_posR.y, m_posR.z);
+	CManager::GetInstance()->GetDebugProc()->Print("位置V[%f, %f, %f]\n", m_posV.x, m_posV.y, m_posV.z);
 }
 
 //==========================================================

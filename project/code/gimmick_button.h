@@ -66,6 +66,7 @@ private:	// 自分だけがアクセス可能
 	CModel *m_apObj[MODEL_MAX];	// ボタン側
 	STATE m_state;				// 状態
 	static char *m_apFileName[MODEL_MAX];	// モデルファイルネーム
+	int m_nSound;
 };
 
 #endif

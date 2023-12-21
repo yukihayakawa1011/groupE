@@ -161,7 +161,7 @@ void CGimmickSpear::StateSet(void)
 	{
 		m_state = STATE_APPEAR;
 		m_PosDest.y = 0.0f;
-		CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SPEAR);
+		
 	}
 	break;
 
@@ -250,6 +250,7 @@ bool CGimmickSpear::CollisionCheck(D3DXVECTOR3 &pos, D3DXVECTOR3 &posOld, D3DXVE
 			{
 				CParticle::Create(ObjPos, CEffect::TYPE_SPEAR);
 				m_bParticle = true;
+				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_SPEAR);
 			}
 			bValue = true;
 		}
