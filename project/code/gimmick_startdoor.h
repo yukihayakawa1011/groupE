@@ -11,6 +11,13 @@
 
 class CModel;
 class CGimmickLever;
+class CEffect;
+
+// エフェクトの名前空間
+namespace DOOR_EFFECT
+{
+	const int NUM_EFFECT = (20);
+}
 
 //==========================================================
 // 開始地点ドアのクラス定義
@@ -57,6 +64,7 @@ private:	// 自分だけがアクセス可能
 	STATE m_state;			// 状態
 	D3DXVECTOR3 m_PosDest;		// 目標の角度
 	CGimmickLever *m_pLever;	// 同期されるレバーのポインタ
+	CEffect *m_apEffect[DOOR_EFFECT::NUM_EFFECT];
 	static char *m_pFileName;	// モデルファイルネーム
 	int m_nSoundDown;
 	int m_nSoundUp;
