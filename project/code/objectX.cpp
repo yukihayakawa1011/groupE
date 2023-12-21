@@ -556,17 +556,21 @@ bool CObjectX::CollisionCheckCloss(D3DXVECTOR3& pos, D3DXVECTOR3& posOld, D3DXVE
 		{
 			if (fAreaA / fAreaB >= 0.0f && fAreaA / fAreaB <= 1.0f)
 			{
-				if (pos.y >= m_pos.y + vtxObjMin.y)
+				float fRate = fAreaA / fAreaB;
+				D3DXVECTOR3 posXZ = posPoint[cnt];
+				posXZ.x += vecLine.x * fRate;
+				posXZ.y = posOld.y;
+				posXZ.z += vecLine.z * fRate;
+				float fTemp1 = D3DXVec3Length(&(D3DXVECTOR3(pos.x, posOld.y, pos.z) - posOld));
+				float fTemp2 = D3DXVec3Length(&(D3DXVECTOR3(posXZ.x, posOld.y, posXZ.z) - posOld));
+				float fRate2 = fTemp2 / fTemp1;
+				D3DXVECTOR3 posCulc = posOld + (pos - posOld) * fRate2;
+
+				if (posCulc.y >= m_pos.y + vtxObjMin.y && posCulc.y <= m_pos.y + vtxObjMax.y)
 				{//ごっつん
-					//衝突位置（XZのみ。Yはposの値を使用）が欲しければあげる
+					//衝突位置が欲しければあげる
 					if (posCollisioned != nullptr)
 					{//ほしいみたいなのであげる
-						float fRate = fAreaA / fAreaB;
-						D3DXVECTOR3 posCulc = posPoint[cnt];
-						posCulc.x += vecLine.x * fRate;
-						posCulc.y = posOld.y;
-						posCulc.z += vecLine.z * fRate;
-
 						if (D3DXVec3Length(&(posCulc - posOld)) < D3DXVec3Length(&(posCulcNear - posOld)))
 						{
 							posCulcNear = posCulc;
