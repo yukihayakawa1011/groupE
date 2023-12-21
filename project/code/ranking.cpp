@@ -448,26 +448,19 @@ void CRanking::RankIn(int *pScore, int nResult, const char *pFileName, int nNew)
 
 				if (nNew == 0)
 				{
-					if (m_nRank == 0)
-					{
-						m_bOne = true;
-					}
 					if (m_nRank != -1)
 					{
 						m_nOne = m_nRank;
 					}
+					m_bOne = true;
 				}
 				else if (nNew == 1)
 				{
-					if (m_nRank == 0)
-					{
-						m_bTotal = true;
-					}
 					if (m_nRank != -1)
 					{
 						m_nTotal = m_nRank;
 					}
-
+					m_bTotal = true;
 				}
 
 				break;
