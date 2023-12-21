@@ -233,7 +233,7 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-
+		m_nNumPlayer = 4;
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];
 
@@ -711,12 +711,9 @@ void CGame::Update(void)
 		{
 			m_ppCamera[nCount]->AllOpenCamera(m_nCntLookGoal);
 
-			if (m_ppCamera[nCount]->GetPositionR().x <= -969.0f && m_ppCamera[nCount]->GetPositionR().x >= -970.0f)
-			{
-				m_nCntLookGoal++;
-			}
+			m_nCntLookGoal++;
 
-			if (m_ppCamera[nCount]->GetPositionR().x - 1.0f <= m_ppCamera[nCount]->GetOldPositionR().x && m_ppCamera[nCount]->GetPositionR().x + 1.0f >= m_ppCamera[nCount]->GetOldPositionR().x)
+			if (m_nCntLookGoal >= 400 * m_nNumPlayer)
 			{
 				m_ppCamera[nCount]->SetMode(CCamera::MODE_NORMAL);
 			}
@@ -725,7 +722,7 @@ void CGame::Update(void)
 
 	if (m_ppCamera[0]->GetMode() == CCamera::MODE_STARTDOOR)
 	{
-		if (m_nCntLookGoal < 1) {
+		if (m_nCntLookGoal < 200 * m_nNumPlayer) {
 			return;
 		}
 		// ドアを開けてー

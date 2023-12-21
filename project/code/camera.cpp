@@ -25,7 +25,7 @@ namespace
 	const D3DXVECTOR3 GOAL_CAMERAPOSV = { -660.0f, 280.0f, 1460.0f };      // 目標の位置
 	const float DEFAULT_LENGTH = 700.0f;
 	const float ZOOM_SPEED = 0.18f;
-	const float ZOOMSTARTDOOR_COUNT = 60;                                  // スタートドアを見ている時間
+	const float ZOOMSTARTDOOR_COUNT = 300;                                  // スタートドアを見ている時間
 }
 
 //==========================================================
@@ -846,7 +846,7 @@ void CCamera::TitleRotateCamera(void)
 //==========================================================
 void CCamera::AllOpenCamera(int nCount)
 {
-	if (nCount >= ZOOMSTARTDOOR_COUNT)
+	if (nCount >= ZOOMSTARTDOOR_COUNT * CGame::GetNumPlayer())
 	{
 		// カメラを目標の向きまで回転させる
 		D3DXVECTOR3 rotDest = m_Oldrot - m_rot;
