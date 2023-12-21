@@ -36,16 +36,16 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/seek.wav", 0 },			// 見つけた
 	{ "data/SE/land.wav", 0 },			// 着地
 	{ "data/SE/death.wav", 0 },			// 死亡
-	{ "data/SE/spear.wav", 0 },			// 死亡
-	{ "data/SE/open01.wav", 0 },			// 死亡
-	{ "data/SE/open02.wav", 0 },			// 死亡
-	{ "data/SE/open.wav", 0 },			// 死亡
-	{ "data/SE/warning.wav", 0 },			// 死亡
-	{ "data/SE/coin00.wav", 0 },		// Enter
-	{ "data/SE/button.wav", 0 },		// Enter
-	{ "data/SE/move.wav", 0 },		// Enter
-	{ "data/SE/rage.wav", 0 },		// Enter
-	{ "data/SE/entry.wav", 0 },		// Enter
+	{ "data/SE/spear.wav", 0 },			// 槍
+	{ "data/SE/open01.wav", 0 },		// 協力扉が開く
+	{ "data/SE/open02.wav", 0 },		// 協力扉が閉まる
+	{ "data/SE/open.wav", 0 },			// 開始扉
+	{ "data/SE/warning.wav", 0 },		// 警告音
+	{ "data/SE/coin00.wav", 0 },		// コインの音
+	{ "data/SE/button.wav", 0 },		// ボタンを押した
+	{ "data/SE/move.wav", 0 },			// 壺移動
+	{ "data/SE/rage.wav", 0 },			// バタバタ
+	{ "data/SE/entry.wav", 0 },			// エントリー
 };										
 
 //=============================================================================
