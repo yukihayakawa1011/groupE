@@ -1122,7 +1122,6 @@ void CEnemy::BodySet(void)
 	// 下半身更新
 	if (m_pLeg != nullptr)
 	{// 使用されている場合
-		m_pLeg->Update();
 
 		// 腰の設定
 		if (m_pWaist != nullptr)
@@ -1133,6 +1132,8 @@ void CEnemy::BodySet(void)
 			m_pWaist->SetPosition(m_pWaist->GetSetPosition() + pModel->GetCurrentPosition());
 			m_pWaist->SetMatrix();
 		}
+
+		m_pLeg->Update();
 	}
 
 	// 胴体更新
