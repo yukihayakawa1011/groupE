@@ -53,7 +53,7 @@
 // 無名名前空間を定義
 namespace {
     const D3DXVECTOR3 STARTDOORPOS = { -1160.0f, 0.0f, 950.0f };	// スタート地点ドア基本座標
-	const D3DXVECTOR3 PLAYERSTARTPOS = { -2500.0f, 0.0f, 950.0f };  // プレイヤーのスタート位置
+	const D3DXVECTOR3 PLAYERSTARTPOS = { -2500.0f, 0.0f, 990.0f };  // プレイヤーのスタート位置
     const D3DXVECTOR3 LEVERPOS[4] =
     {
         D3DXVECTOR3(130.0f, 100.0f, -5130.0f),
@@ -95,7 +95,7 @@ namespace {
 	const int PLAYER_MOVESTART = (180);
 	const int CAMERA_ROTATESTART = (240);
 	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.38f};
-    const int SCORE = (5000);                   // 初期のスコア
+    const int SCORE = (10000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 	const int PLAYER_SPWANSTART = (240);
 }
@@ -233,7 +233,6 @@ HRESULT CGame::Init(void)
         {// 人数が指定されていない
             m_nNumPlayer = 1;
         }
-		m_nNumPlayer = 4;
 
         // 人数分ポインタ生成
         m_ppPlayer = new CPlayer*[m_nNumPlayer];

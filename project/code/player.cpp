@@ -72,7 +72,7 @@
 #define START_COIN	(10)
 #define CATCH_LIMIT	(90)
 #define CATCH_MOVE	(2.0f)
-#define SPEED_DECAY (0.075f)  // 持っているアイテムの数に応じてスピードが下がる
+#define SPEED_DECAY (0.04f)  // 持っているアイテムの数に応じてスピードが下がる
 #define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
 #define MAX_GAGE		(100.0f)		// ゲージ最大
 
