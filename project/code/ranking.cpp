@@ -316,11 +316,11 @@ void CRanking::Update(void)
 
 		if (m_nCounter % 55 == 0)
 		{
-			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CLICK);
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_COIN00);
 		}
 		if (m_nCounter % 30 == 0)
 		{
-			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_COIN);
+			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_COIN01);
 		}
 
 	if (CManager::GetInstance()->GetInputKeyboard()->GetTrigger(DIK_RETURN) || pInputPad->GetTrigger(CInputPad::BUTTON_START, 0))

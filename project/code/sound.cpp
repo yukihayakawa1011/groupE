@@ -41,7 +41,8 @@ const CSound::SOUNDINFO CSound::m_aSoundInfo[LABEL_MAX] =
 	{ "data/SE/open02.wav", 0 },		// 協力扉が閉まる
 	{ "data/SE/open.wav", 0 },			// 開始扉
 	{ "data/SE/warning.wav", 0 },		// 警告音
-	{ "data/SE/coin00.wav", 0 },		// コインの音
+	{ "data/SE/coin01.wav", 0 },		// コインの音
+	{ "data/SE/coin01.wav", 0 },		// コインの音
 	{ "data/SE/button.wav", 0 },		// ボタンを押した
 	{ "data/SE/move.wav", 0 },			// 壺移動
 	{ "data/SE/rage.wav", 0 },			// バタバタ
