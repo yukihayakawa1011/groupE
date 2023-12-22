@@ -76,7 +76,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_SMAKE:	// 煙
 
-		for (int nCnt = 0; nCnt < 30; nCnt++)
+		for (int nCnt = 0; nCnt < 20; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -102,7 +102,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_ITEMGET:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 30; nCnt++)
+		for (int nCnt = 0; nCnt < 20; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -178,7 +178,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_HIT:	// ヒット
 	{
-		for (int nCnt = 0; nCnt < 20; nCnt++)
+		for (int nCnt = 0; nCnt < 15; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -204,7 +204,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_SPEAR:	// ヒット
 	{
-		for (int nCnt = 0; nCnt < 30; nCnt++)
+		for (int nCnt = 0; nCnt < 25; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -230,7 +230,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_BLACKSMAKE:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 30; nCnt++)
+		for (int nCnt = 0; nCnt < 25; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -334,7 +334,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_ROTATEDOOR:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 20; nCnt++)
+		for (int nCnt = 0; nCnt < 12; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -362,7 +362,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_ITEMBOX:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 15; nCnt++)
+		for (int nCnt = 0; nCnt < 12; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -390,7 +390,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_ITEMBOXSTAR:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 4; nCnt++)
+		for (int nCnt = 0; nCnt < 3; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -556,7 +556,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_JUMP:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 15; nCnt++)
+		for (int nCnt = 0; nCnt < 12; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;
@@ -582,7 +582,7 @@ void CParticle::Set(const D3DXVECTOR3& Defpos, const D3DXVECTOR3& Defmove, CEffe
 
 	case CEffect::TYPE_LAND:	// 煙
 	{
-		for (int nCnt = 0; nCnt < 15; nCnt++)
+		for (int nCnt = 0; nCnt < 12; nCnt++)
 		{
 			// 座標の設定
 			pos = Defpos;

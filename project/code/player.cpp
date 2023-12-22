@@ -65,14 +65,14 @@
 #define SPAWN_INTERVAL	(60.0f)
 #define PARTICLE_TIMER	 (5.0f)
 #define SHADOW_ALPHA	(0.4f)
-#define JUMP	(25.0f)
+#define JUMP	(20.0f)
 #define ATK_RANGE	(50.0f)
 #define CATCH_RANGE	(100.0f)
 #define DROP_CNT	(4)
 #define START_COIN	(10)
 #define CATCH_LIMIT	(90)
 #define CATCH_MOVE	(2.0f)
-#define SPEED_DECAY (0.1f)  // 持っているアイテムの数に応じてスピードが下がる
+#define SPEED_DECAY (0.075f)  // 持っているアイテムの数に応じてスピードが下がる
 #define HAND_PARTS	(4)	 // 手のモデル番号(後ろから
 #define MAX_GAGE		(100.0f)		// ゲージ最大
 
@@ -688,7 +688,7 @@ void CPlayer::Controller(void)
 
 	// オブジェクトとの当たり判定
 	D3DXVECTOR3 vtxMax = D3DXVECTOR3(50.0f, 120.0f, 50.0f);
-	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, -10.0f, -50.0f);
+	D3DXVECTOR3 vtxMin = D3DXVECTOR3(-50.0f, 0.0f, -50.0f);
 	D3DXVECTOR3 vtxMaxOld = vtxMax;
 	D3DXVECTOR3 vtxMinOld = vtxMin;
 	if (m_Catch.pPlayer != nullptr) {
@@ -696,6 +696,13 @@ void CPlayer::Controller(void)
 		vtxMax.z *= 2;
 		vtxMin.x *= 2;
 		vtxMin.z *= 2;
+	}
+
+	if (m_Catch.pGimmick != nullptr) {
+		vtxMax.x *= 3;
+		vtxMax.z *= 3;
+		vtxMin.x *= 3;
+		vtxMin.z *= 3;
 	}
 
 	if (CObjectX::Collision(m_Info.pos, m_Info.posOld, m_Info.move, vtxMin, vtxMax, vtxMinOld, vtxMaxOld))
@@ -755,23 +762,23 @@ void CPlayer::Controller(void)
 	if (pGimmick != m_Catch.pGimmick && m_Catch.pGimmick != nullptr) {
 
 		if (m_Catch.pPlayer != nullptr) {
-			m_Catch.pPlayer->m_Info.state = STATE_NORMAL;
-			m_Catch.pPlayer->m_Catch.pPlayer = nullptr;
-			m_Catch.pPlayer = nullptr;
+			m_Catch.pGimmick->SetMtxParent(nullptr);
+			m_Catch.pGimmick = nullptr;
 		}
-
-		if (m_Catch.pGimmick->GetPull() != nullptr) 
-		{
-			if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
-			{// 掴むことができるモーションタイミング
-				m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
-				m_action = ACTION_CATCH;
-				CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CATCH);
-			}
-			else 
+		else {
+			if (m_Catch.pGimmick->GetPull() != nullptr)
 			{
-				m_Catch.pGimmick->SetMtxParent(nullptr);
-				m_Catch.pGimmick = nullptr;
+				if (m_pBody->GetMotion()->GetNowKey() == m_pBody->GetMotion()->GetNowNumKey() - 1 && m_pBody->GetMotion()->GetNowFrame() == 0)
+				{// 掴むことができるモーションタイミング
+					m_Catch.pGimmick->SetMtxParent(&m_Info.mtxWorld);
+					m_action = ACTION_CATCH;
+					CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_CATCH);
+				}
+				else
+				{
+					m_Catch.pGimmick->SetMtxParent(nullptr);
+					m_Catch.pGimmick = nullptr;
+				}
 			}
 		}
 	}
@@ -977,9 +984,11 @@ void CPlayer::MoveController(void)
 	D3DXVECTOR3 CamRot = pCamera->GetRotation();	// カメラの角度
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();
 	float fSpeed = MOVE;	// 移動量
+	fSpeed -= (m_nItemCnt * SPEED_DECAY);
 
 	if (m_Catch.pPlayer != nullptr || m_Catch.pGimmick != nullptr) {
 		fSpeed = CATCH_MOVE;
+		fSpeed -= (m_nItemCnt * (SPEED_DECAY * 0.5f));
 	}
 
 	fSpeed -= (m_nItemCnt * SPEED_DECAY);
@@ -1066,6 +1075,11 @@ void CPlayer::Jump(void)
 	}
 
 	if (m_Catch.pPlayer != nullptr && m_Info.state != STATE_CATCH && m_action == ACTION_AIR)
+	{
+		return;
+	}
+
+	if (m_Catch.pGimmick != nullptr)
 	{
 		return;
 	}
@@ -2813,6 +2827,11 @@ bool CPlayer::HitCheck(D3DXVECTOR3 pos, float fRange, int nDamage)
 void CPlayer::Blow(void) {
 	m_Info.fStateCounter = DAMAGE_APPEAR;
 	m_Info.state = STATE_BLOW;
+
+	if (m_Catch.pGimmick != nullptr) {
+		m_Catch.pGimmick->SetMtxParent(nullptr);
+		m_Catch.pGimmick = nullptr;
+	}
 }
 
 //===============================================
