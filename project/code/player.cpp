@@ -727,7 +727,7 @@ void CPlayer::Controller(void)
 
 			// パーティクルの設定
 			CParticle::Create(m_Info.pos, CEffect::TYPE_ITEMGET);
-			CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_GET);
+			//CManager::GetInstance()->GetSound()->Play(CSound::LABEL_SE_GET);
 		}
 
 		for (int i = 0; i < MAX_ITEM; i++)
