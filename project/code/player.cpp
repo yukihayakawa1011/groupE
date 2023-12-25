@@ -1085,7 +1085,7 @@ void CPlayer::Jump(void)
 	}
 
 	if (m_action == ACTION_AIR) {
-
+		return;
 	}
 
 	CInputPad *pInputPad = CManager::GetInstance()->GetInputPad();

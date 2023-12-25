@@ -90,12 +90,12 @@ namespace {
     const char* FILEPASS = "data\\TXT\\player";	// ファイルのパス
     const char* FILEEXT = ".txt";				// ファイルの拡張子
     const int FILEPASS_SIZE = (200);			// ファイルのパスサイズ
-    const int START_TIMER = (180);				// 開始制限時間
+    const int START_TIMER = (210);				// 開始制限時間
     const int START_WAITCNT = (430);            // スタート時の走ってる時間
 	const int PLAYER_MOVESTART = (180);
 	const int CAMERA_ROTATESTART = (240);
 	const D3DXVECTOR3 START_CAMERAROT = {0.0f, D3DX_PI * 0.0f, D3DX_PI * 0.38f};
-    const int SCORE = (10000);                   // 初期のスコア
+    const int SCORE = (15000);                   // 初期のスコア
     const int UNINITCOUNT = (120);              // ノルマのUIが消えるまでの時間
 	const int PLAYER_SPWANSTART = (240);
 }
@@ -121,7 +121,7 @@ namespace {
 #define ADDRESSFILE	"data\\TXT\\address.txt"
 #define WIDTH_NUM		(2)		// 横の分割数
 #define HEIGHT_NUM	(2)		// 縦の分割数
-#define STANDARDSCORE  (5000)   // ノルマの基準点
+#define STANDARDSCORE  (1000)   // ノルマの基準点
 
 //===============================================
 // 静的メンバ変数

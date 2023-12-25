@@ -73,7 +73,7 @@ HRESULT CManager::Init(HINSTANCE hInstance, HWND hWnd, BOOL bWindow)
 	//‰Šú‰»ˆ—
 	if (m_pRenderer != NULL)
 	{// g—p‚µ‚Ä‚¢‚éê‡
-		if (FAILED(m_pRenderer->Init(hWnd, TRUE)))
+		if (FAILED(m_pRenderer->Init(hWnd, FALSE)))
 		{//‰Šú‰»‚ª¸”s‚µ‚½ê‡
 			return E_FAIL;
 		}
