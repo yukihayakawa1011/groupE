@@ -70,6 +70,7 @@ namespace {
         D3DXVECTOR3(0.0f, -D3DX_PI * 0.5f, 0.0f),
     };
 
+
 	const char* TEXPASS[4] =
 	{
 		"data\\TEXTURE\\opendoor00.png",
